@@ -5350,8 +5350,19 @@ h+='<span id="admFilterLbl" style="color:var(--t2);font-size:.78rem;margin-right
 h+='</div>';
 
 h+='<div style="overflow-x:auto;border-radius:12px;border:1px solid rgba(108,99,255,.15)" id="admTableWrap">'+buildAdmTable(approvedUsers)+'</div>';
+
+// Notify emails section
+h+='<div style="margin-top:2rem;padding:1.2rem;border-radius:16px;border:2px solid rgba(108,99,255,.15);background:rgba(108,99,255,.05)">';
+h+='<h3 style="margin:0 0 .8rem;font-size:1.1rem;text-align:center">📩 התראות מייל לבקשות הצטרפות</h3>';
+h+='<p style="color:var(--t2);font-size:.8rem;text-align:center;margin-bottom:.8rem">מיילים ברשימה יקבלו התראה כשמישהו מבקש להצטרף למערכת</p>';
+h+='<div id="notifyEmailsList" style="margin-bottom:.8rem"></div>';
+h+='<div style="display:flex;gap:.5rem"><input id="newNotifyEmail" type="email" placeholder="כתובת מייל..." style="flex:1;padding:.5rem .8rem;border-radius:10px;border:2px solid rgba(108,99,255,.3);background:rgba(15,14,23,.8);color:var(--t1);font-size:.85rem;font-family:inherit" onkeydown="if(event.key===\'Enter\')admAddNotifyEmail()">';
+h+='<button class="bs" style="font-size:.8rem;white-space:nowrap" onclick="admAddNotifyEmail()">➕ הוסף</button></div>';
+h+='</div>';
+
 h+='</div>';
 $('adv').innerHTML=h;
+admLoadNotifyEmails();
 }
 
 function buildAdmTable(users){
@@ -5576,6 +5587,35 @@ function admClearMsg(name){
 function _admBackToUsers(){
   if(_admUsers&&_admUsers.length>0){renderAdminDashboard()}
   else{loadAdminData()}
+}
+
+let _notifyEmails=[];
+function admLoadNotifyEmails(){
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getNotifyEmails'}),headers:{'Content-Type':'text/plain'}})
+.then(r=>r.json()).then(d=>{if(d.success){_notifyEmails=d.emails||[];_renderNotifyEmails()}}).catch(()=>{})
+}
+function _renderNotifyEmails(){
+const el=$('notifyEmailsList');if(!el)return;
+if(_notifyEmails.length===0){el.innerHTML='<div style="text-align:center;color:var(--t2);font-size:.8rem;padding:.5rem">אין מיילים ברשימה</div>';return}
+el.innerHTML=_notifyEmails.map((e,i)=>'<div style="display:flex;align-items:center;justify-content:space-between;padding:.4rem .6rem;margin-bottom:.3rem;border-radius:10px;background:rgba(108,99,255,.08)"><span style="font-size:.85rem;color:var(--t1)">📧 '+esc(e)+'</span><button class="bs" style="font-size:.7rem;padding:.2rem .5rem;background:rgba(255,101,132,.1);color:var(--s);border-color:rgba(255,101,132,.3)" onclick="admRemoveNotifyEmail('+i+')">🗑️ הסר</button></div>').join('')
+}
+function admAddNotifyEmail(){
+const inp=$('newNotifyEmail');if(!inp)return;
+const email=inp.value.trim();
+if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showModal('⚠️','מייל לא תקין','נא להזין כתובת מייל תקינה.','הבנתי');return}
+if(_notifyEmails.includes(email)){showModal('ℹ️','כבר קיים','המייל הזה כבר ברשימה.','הבנתי');return}
+_notifyEmails.push(email);inp.value='';
+_saveNotifyEmails()
+}
+function admRemoveNotifyEmail(idx){
+_notifyEmails.splice(idx,1);
+_saveNotifyEmails()
+}
+function _saveNotifyEmails(){
+_renderNotifyEmails();
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'setNotifyEmails',emails:_notifyEmails}),headers:{'Content-Type':'text/plain'}})
+.then(r=>r.json()).then(d=>{if(d.success){_notifyEmails=d.emails;_renderNotifyEmails();showAchievement('📩','רשימת מיילים עודכנה',_notifyEmails.length+' מיילים ברשימה')}})
+.catch(()=>{showModal('⚠️','שגיאה','לא הצלחנו לשמור. נסו שוב.','הבנתי')})
 }
 
 function admShowBugs(){
