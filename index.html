@@ -4769,7 +4769,7 @@ function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/<
 function sanitizeName(s){if(!s)return'';s=s.replace(/[<>"'&\\\/\{\}\(\);]/g,'').replace(/[\x00-\x1F\x7F]/g,'');s=s.replace(/\s+/g,' ');const parts=s.split(' ');if(parts.length>2)s=parts[0]+' '+parts.slice(1).join('');return s.substring(0,20).trim()}
 
 // ========== NAME PREVIEW ==========
-function updateNamePreview(){const ni=$('nameInput');const np=$('namePreview');if(ni&&np){ni.value=sanitizeName(ni.value);if(ni.value.trim()){np.textContent='שלום, '+ni.value.trim()+'! 👋'}else{np.textContent=''}}}
+function updateNamePreview(){const ni=$('nameInput');const np=$('namePreview');if(ni&&np){let v=ni.value.replace(/[<>"'&\\\/\{\}\(\);]/g,'').replace(/[\x00-\x1F\x7F]/g,'');v=v.replace(/\s+/g,' ');const parts=v.split(' ');if(parts.length>2)v=parts[0]+' '+parts.slice(1).join('');ni.value=v.substring(0,20);if(ni.value.trim()){np.textContent='שלום, '+ni.value.trim()+'! 👋'}else{np.textContent=''}}}
 
 // ========== LEADERBOARD (localStorage-based, shared on same computer) ==========
 const LB_KEY='pmV7_leaderboard';
