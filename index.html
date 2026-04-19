@@ -5837,7 +5837,11 @@ function _dcSel(gid,val,btn){
 // Pick random questions
 function _pickDuelQuestions(count){
   const allQ=[];
-  S.forEach(s=>{if(s.q&&s.q.length)s.q.forEach(q=>allQ.push({q:q.q,o:[...q.o],c:q.c,e:q.e||''}))});
+  S.forEach(s=>{if(s.q&&s.q.length)s.q.forEach(q=>{
+    const opts=q.o.map((txt,i)=>({txt,isCorrect:i===q.c}));
+    for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]]}
+    allQ.push({q:q.q,o:opts.map(x=>x.txt),c:opts.findIndex(x=>x.isCorrect),e:q.e||''});
+  })});
   for(let i=allQ.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[allQ[i],allQ[j]]=[allQ[j],allQ[i]]}
   return allQ.slice(0,count);
 }
@@ -5908,9 +5912,9 @@ function _showDuelNotif(duel){
 }
 function _respondToDuel(duelId,accept){
   $('duelNotif').classList.remove('show');
+  if(accept){_duelId=duelId;_stopPendingDuelCheck()}
   _duelPost('respondDuel',{duelId:duelId,accept:accept}).then(d=>{
     if(d.success&&accept){
-      _duelId=duelId;
       _duelPost('getDuelState',{duelId:duelId}).then(d2=>{
         if(d2.success&&d2.data)_enterDuelGame(d2.data);
       });
@@ -5952,7 +5956,7 @@ function _startDuelRound(){
   const isC=_duelState.challenger===G.userName;
   const myName=G.userName;
   const opName=isC?_duelState.opponent:_duelState.challenger;
-  let timeLeft=15;_duelQStart=Date.now();
+  let timeLeft=20;_duelQStart=Date.now();
   const dv=$('duelView');
   dv.innerHTML='<div class="duel-game-hdr">'+
     '<div class="duel-player-score"><div class="duel-player-name">🙋 '+myName+'</div><div class="duel-player-pts" id="duelMyPts">'+_duelMyScore+'</div></div>'+
