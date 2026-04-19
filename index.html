@@ -849,7 +849,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 </div>
 <div class="pbar hid" id="pb"><div class="pfill" id="pf" style="width:0%"></div></div>
 <div class="hdr hid" id="hd">
-<div style="display:flex;align-items:center;gap:.6rem"><div class="hdr-logo" onclick="mp()">Product Master ⚓</div><div id="hdr-user" style="font-size:.65rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"></div><div class="hdr-home" onclick="goHome()" title="חזרה למסך הכניסה">🏠</div></div>
+<div style="display:flex;align-items:center;gap:.6rem"><div class="hdr-logo" onclick="_logoClick()">Product Master ⚓</div><div id="hdr-user" style="font-size:.65rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"></div><div class="hdr-home" onclick="goHome()" title="חזרה למסך הכניסה">🏠</div></div>
 <div class="hdr-stats">
 <div class="badge"><span>⭐</span><span class="v" id="ts">0</span><span>נק'</span></div>
 <div class="badge"><span>🏆</span><span class="v" id="cs">0</span><span>/44</span></div>
@@ -3769,6 +3769,7 @@ window.scrollTo(0,0);
 }
 function goHome(){G.v='w';$('ws').classList.remove('hid');$('mv').classList.add('hid');$('sv').classList.add('hid');$('hd').classList.add('hid');$('pb').classList.add('hid');$('ib').classList.add('hid');$('miv').classList.add('hid');$('pendingView').classList.add('hid');$('duelView').classList.add('hid');$('duelFab').classList.add('hid');if($('ab'))$('ab').classList.add('hid');window.scrollTo(0,0)}
 function mp(){G.v='m';$('ws').classList.add('hid');$('mv').classList.remove('hid');$('sv').classList.add('hid');$('hd').classList.remove('hid');$('pb').classList.remove('hid');$('ib').classList.add('hid');$('miv').classList.add('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');$('pendingView').classList.add('hid');$('duelView').classList.add('hid');uh();rg();renderTipMap();renderDailyModal();renderMapActions();renderMapRank();renderXPArea();renderSkillBadges();startTickers();updateDailyFab();_initDuelSystem();updateAdminMsgFab();checkCloudUnlocks()}
+function _logoClick(){const adv=$('adv');if(adv&&!adv.classList.contains('hid')){goHome();return}mp()}
 function renderContinueHero(currentId){
 const el=$('continue-hero');if(!el)return;
 if(currentId<0){el.innerHTML='<div class="continue-hero" onclick="mp()" style="cursor:default;justify-content:center"><div class="ch-icon">🏆</div><div class="ch-body" style="text-align:center"><div class="ch-title">סיימת את כל שלבי הליבה!</div><div class="ch-sub">חזרו על שלבים לשפר ציונים, או פתחו פרקי ספרים</div></div></div>';return}
