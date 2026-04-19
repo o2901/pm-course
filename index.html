@@ -48,7 +48,20 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--t1);min-hei
 .hdr-stats{display:flex;gap:.4rem;align-items:center;flex-wrap:nowrap;overflow:hidden}
 .badge{display:flex;align-items:center;gap:.2rem;padding:.18rem .5rem;border-radius:14px;background:rgba(255,255,255,.06);font-size:.72rem;white-space:nowrap}
 .badge .v{font-weight:700;color:var(--g)}
-@media(max-width:600px){.hdr{padding:.3rem .5rem;gap:.3rem}.hdr-logo{font-size:.85rem}.hdr-stats{gap:.25rem}.badge{padding:.15rem .35rem;font-size:.65rem;gap:.15rem}.streak-badge{padding:.15rem .35rem;font-size:.65rem}.hdr-btn,.hdr-bug{font-size:.8rem;padding:.1rem}.hdr-home{font-size:.85rem}#tb .title-badge{font-size:.6rem!important;padding:.1rem .35rem!important}#tb>div:last-child{max-width:70px!important;font-size:.58rem!important}}
+@media(max-width:600px){
+.hdr{padding:0;gap:0;flex-direction:column;align-items:stretch}
+.hdr>div:first-child{padding:.55rem .9rem;justify-content:space-between;width:100%;display:flex;align-items:center;gap:.5rem;background:linear-gradient(180deg,rgba(15,14,23,.98),rgba(15,14,23,.95))}
+.hdr-logo{font-size:1.02rem;font-weight:800;letter-spacing:-.3px}
+#hdr-user{max-width:140px!important;font-size:.72rem!important;color:var(--p);font-weight:600;background:rgba(108,99,255,.1);padding:.15rem .5rem;border-radius:10px;border:1px solid rgba(108,99,255,.2)}
+.hdr-home{font-size:1.1rem;opacity:.8}
+.hdr-stats{padding:.4rem .7rem;justify-content:space-between;overflow:visible;flex-wrap:nowrap;width:100%;gap:.3rem;background:rgba(108,99,255,.06);border-top:1px solid rgba(108,99,255,.12);align-items:center}
+.hdr-stats .badge,.hdr-stats .streak-badge{padding:.25rem .55rem;font-size:.72rem;gap:.2rem;flex-shrink:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.05)}
+.hdr-btn,.hdr-bug{font-size:1rem;padding:.2rem .35rem;flex-shrink:0;opacity:.85}
+.hdr-btn:hover,.hdr-bug:hover{opacity:1}
+#tb{display:none}
+.map{padding-top:7rem!important}
+#adv{padding-top:7rem!important}
+}
 .map{min-height:100vh;padding:5.5rem 1.5rem 3rem;display:flex;flex-direction:column;align-items:center}
 .map h2{font-size:2.2rem;font-weight:800;margin-bottom:.3rem;text-align:center}
 .map .ms{color:var(--t2);margin-bottom:1rem;font-size:1rem;text-align:center}
@@ -4938,7 +4951,8 @@ function _doSync(){
     avgSessionDur:avgSess,
     stageTimeJSON:JSON.stringify(G.stageTime||{}),
     activityLogJSON:JSON.stringify((G.activityLog||[]).slice(-50)),
-    lastStageVisited:G.lastStageVisited||''
+    lastStageVisited:G.lastStageVisited||'',
+    sessionStart:G.sessionStart||0
   };
   fetch(DB_URL,{method:'POST',body:JSON.stringify(payload),headers:{'Content-Type':'text/plain'}})
   .then(r=>r.json())
@@ -5283,7 +5297,7 @@ $('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');$('srFab').
 renderAdminGate();window.scrollTo(0,0);
 }
 
-function hideAdmin(){$('adv').classList.add('hid');if(G.s){mp()}else{goHome()}}
+function hideAdmin(){$('adv').classList.add('hid');if(_admAutoRefresh){clearInterval(_admAutoRefresh);_admAutoRefresh=null}if(G.s){mp()}else{goHome()}}
 
 function renderAdminGate(){
 $('adv').innerHTML='<div class="adm-wrap"><button class="bbtn" onclick="hideAdmin()">→ חזרה</button>'+
@@ -5301,15 +5315,17 @@ if(pass===ADMIN_PASS){loadAdminData()}
 else{$('admErr').textContent='❌ סיסמה שגויה'}
 }
 
-function loadAdminData(){
-$('adv').innerHTML='<div class="adm-wrap" style="text-align:center;padding:4rem"><div style="font-size:2.5rem;margin-bottom:.5rem">⏳</div><p style="color:var(--t2)">טוען נתוני משתמשים מהענן...</p></div>';
+let _admAutoRefresh=null;
+function loadAdminData(silent){
+if(!silent)$('adv').innerHTML='<div class="adm-wrap" style="text-align:center;padding:4rem"><div style="font-size:2.5rem;margin-bottom:.5rem">⏳</div><p style="color:var(--t2)">טוען נתוני משתמשים מהענן...</p></div>';
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'admin'}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json())
 .then(d=>{
   if(d.success&&d.data){_admUsers=d.data;renderAdminDashboard()}
-  else{return _admFallbackLeaderboard()}
+  else if(!silent){return _admFallbackLeaderboard()}
 })
-.catch(()=>_admFallbackLeaderboard());
+.catch(()=>{if(!silent)_admFallbackLeaderboard()});
+if(!_admAutoRefresh){_admAutoRefresh=setInterval(()=>{if($('adv')&&!$('adv').classList.contains('hid'))loadAdminData(true)},15000)}
 }
 function _admFallbackLeaderboard(){
 fetch(DB_URL+'?action=leaderboard')
@@ -5355,7 +5371,8 @@ const activeMonth=approvedUsers.filter(u=>_isThisMonth({lastLogin:u.lastLogin}))
 const activeToday=todayUsers.length;
 // Online now: users active in last 2 minutes (via heartbeat)
 const _nowTs=Date.now();
-const onlineNow=approvedUsers.filter(u=>{const la=parseInt(u.lastActivity)||0;return la>0&&(_nowTs-la)<120000}).length;
+const onlineUsersList=approvedUsers.filter(u=>{const la=parseInt(u.lastActivity)||0;return la>0&&(_nowTs-la)<120000});
+const onlineNow=onlineUsersList.length;
 const avgStagesDaily=activeToday>0?(todayUsers.reduce((a,u)=>a+(parseInt(u.stagesCount)||0),0)/activeToday).toFixed(1):'—';
 const avgScoreDaily=activeToday>0?Math.round(todayUsers.reduce((a,u)=>a+(parseInt(u.score)||0),0)/activeToday):'—';
 const completedAll=approvedUsers.filter(u=>(parseInt(u.stagesCount)||0)>=22).length;
@@ -5395,6 +5412,30 @@ h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'core\'
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'rated\')"><div class="as-val" style="font-size:1.6rem">'+avgSat+' '+satStars+'</div><div class="as-lbl">שביעות רצון ('+ratedUsers.length+')</div></div>';
 if(pendingUsers.length>0){h+='<div class="adm-stat" style="border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.08)"><div class="as-val" style="color:var(--g)">'+pendingUsers.length+'</div><div class="as-lbl" style="color:var(--g)">ממתינים לאישור</div></div>';}
 h+='</div>';
+
+// Online now panel with live session times
+if(onlineUsersList.length>0){
+  h+='<div style="background:linear-gradient(135deg,rgba(0,201,167,.1),rgba(108,99,255,.08));border:2px solid rgba(0,201,167,.25);border-radius:16px;padding:1rem 1.2rem;margin-bottom:1.2rem">';
+  h+='<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem"><span style="font-size:1.1rem">🟢</span><strong style="color:var(--a);font-size:1rem">מחוברים עכשיו ('+onlineUsersList.length+')</strong></div>';
+  h+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem">';
+  onlineUsersList.forEach(u=>{
+    const _ss=parseInt(u.sessionStart)||0;
+    const _liveDur=_ss>0?Math.round((Date.now()-_ss)/1000):0;
+    const _la=parseInt(u.lastActivity)||0;
+    const _lastActiveSec=_la>0?Math.round((Date.now()-_la)/1000):0;
+    const _lsv=u.lastStageVisited?S.find(s=>s.id===parseInt(u.lastStageVisited)):null;
+    const _en=esc(u.userName||'').replace(/'/g,"\\'");
+    h+='<div onclick="showUserDetail(\''+_en+'\')" style="background:rgba(15,14,23,.4);border-radius:12px;padding:.6rem .8rem;cursor:pointer;border:1px solid rgba(255,255,255,.08);transition:all .2s" onmouseover="this.style.borderColor=\'rgba(0,201,167,.4)\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,.08)\'">';
+    h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.2rem"><span style="font-weight:700;color:var(--t1);font-size:.88rem">'+esc(u.userName)+'</span>';
+    h+=_liveDur>0?'<span style="font-size:.72rem;color:var(--a);font-weight:600">⏱ '+fmtDuration(_liveDur)+'</span>':'';
+    h+='</div>';
+    h+='<div style="font-size:.72rem;color:var(--t2)">';
+    if(_lsv){h+='📖 '+_lsv.ic+' שלב '+_lsv.id+': '+esc(_lsv.t)}else{h+='במסך הראשי'}
+    h+='</div>';
+    h+='</div>';
+  });
+  h+='</div></div>';
+}
 
 h+='<div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem">';
 h+='<input class="adm-search" placeholder="🔍 חיפוש משתמש..." oninput="admFilter(this.value)">';
@@ -5487,7 +5528,11 @@ const uLastStageVisited=u.lastStageVisited?S.find(s=>s.id===parseInt(u.lastStage
 let h='<div class="adm-modal-overlay" onclick="if(event.target===this)this.remove()">';
 h+='<div class="adm-modal">';
 h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem"><h3>'+(uIsOnline?'<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#00C9A7;box-shadow:0 0 8px rgba(0,201,167,.7);margin-left:6px" title="מחובר עכשיו"></span>':'')+'👤 '+esc(u.userName)+'</h3><span style="cursor:pointer;font-size:1.3rem;color:var(--t2)" onclick="this.closest(\'.adm-modal-overlay\').remove()">✕</span></div>';
-if(uIsOnline){h+='<div style="background:rgba(0,201,167,.1);border-radius:10px;padding:.5rem .8rem;margin-bottom:.8rem;text-align:center;font-size:.82rem;color:var(--a);font-weight:600">🟢 מחובר למערכת עכשיו</div>'}
+if(uIsOnline){
+  const _ss=parseInt(u.sessionStart)||0;
+  const _liveDur=_ss>0?Math.round((Date.now()-_ss)/1000):0;
+  h+='<div style="background:rgba(0,201,167,.1);border-radius:10px;padding:.5rem .8rem;margin-bottom:.8rem;text-align:center;font-size:.82rem;color:var(--a);font-weight:600">🟢 מחובר עכשיו'+(_liveDur>0?' · סשן נוכחי: '+fmtDuration(_liveDur):'')+'</div>';
+}
 if(uLastStageVisited){h+='<div class="am-stat"><span class="am-k">שלב אחרון שנכח בו</span><span class="am-v">'+(uLastStageVisited.ic||'')+' שלב '+uLastStageVisited.id+': '+esc(uLastStageVisited.t)+'</span></div>'}
 
 h+='<div style="background:rgba(108,99,255,.1);border-radius:12px;padding:.8rem;margin-bottom:1rem;text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--p)">'+pct+'%</div><div style="font-size:.8rem;color:var(--t2)">התקדמות כללית</div><div style="background:rgba(255,255,255,.1);border-radius:6px;height:8px;margin-top:.5rem;overflow:hidden"><div style="background:var(--gr1);height:100%;width:'+pct+'%;border-radius:6px;transition:width .5s"></div></div></div>';
