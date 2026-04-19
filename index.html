@@ -649,7 +649,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 .cert-fab{position:fixed;bottom:12rem;left:1.5rem;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,rgba(255,215,0,.9),rgba(245,158,11,.9));color:#000;border:none;font-size:1.4rem;cursor:pointer;z-index:50;box-shadow:0 4px 18px rgba(255,215,0,.35);display:flex;align-items:center;justify-content:center;transition:.3s}
 .cert-fab:hover{transform:scale(1.1);box-shadow:0 6px 25px rgba(255,215,0,.5)}
 /* Admin message FAB */
-.admin-msg-fab{position:fixed;bottom:8.5rem;left:1.5rem;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);color:#000;border:none;font-size:1.3rem;cursor:pointer;z-index:50;box-shadow:0 4px 15px rgba(255,215,0,.4);display:flex;align-items:center;justify-content:center;transition:.3s;animation:fabPulse 2s infinite}
+.admin-msg-fab{position:fixed;bottom:15.5rem;left:1.5rem;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);color:#000;border:none;font-size:1.3rem;cursor:pointer;z-index:190;box-shadow:0 4px 15px rgba(255,215,0,.4);display:flex;align-items:center;justify-content:center;transition:.3s;animation:fabPulse 2s infinite}
 .admin-msg-fab:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(255,215,0,.5)}
 @keyframes fabPulse{0%,100%{box-shadow:0 4px 15px rgba(255,215,0,.4)}50%{box-shadow:0 4px 25px rgba(255,215,0,.6)}}
 /* Reserved */
@@ -3474,11 +3474,12 @@ q:[
 ];
 
 // ============ GAME ENGINE ============
-let G={s:false,v:'w',st:null,tab:'l',sc:{},done:new Set(),ts:0,qa:{},streak:0,lastDay:null,titleShown2:false,titleShown9:false,titleShown15:false,titleShownAll:false,wrongQ:{},miHistory:[],weeklyDone:[],darkMode:false,firstUse:null,userName:'',_achShown:[],interviewUnlocked:false,adminMessage:'',adminMessageRead:false,sessionStart:null,sessions:[],stageTime:{},satisfactionRating:0};
+let G={s:false,v:'w',st:null,tab:'l',sc:{},done:new Set(),ts:0,qa:{},streak:0,lastDay:null,titleShown2:false,titleShown9:false,titleShown15:false,titleShownAll:false,wrongQ:{},miHistory:[],weeklyDone:[],darkMode:false,firstUse:null,userName:'',_achShown:[],interviewUnlocked:false,adminMessage:'',adminMessageRead:false,sessionStart:null,sessions:[],stageTime:{},satisfactionRating:0,activityLog:[],lastStageVisited:null};
+function logActivity(action,details){if(!G.activityLog)G.activityLog=[];G.activityLog.push({t:Date.now(),a:action,d:details||''});if(G.activityLog.length>100)G.activityLog=G.activityLog.slice(-100);try{sv()}catch(e){}}
 const LS='pmV7';
 function ti(el){document.querySelectorAll('.tp.show').forEach(t=>{if(t!==el.nextElementSibling)t.classList.remove('show')});const tp=el.nextElementSibling;tp.classList.toggle('show');if(tp.classList.contains('show')){const r=el.getBoundingClientRect();const tw=320;let left=r.left+r.width/2-tw/2;if(left<10)left=10;if(left+tw>window.innerWidth-10)left=window.innerWidth-tw-10;let top=r.top-10;tp.style.left=left+'px';tp.style.bottom=(window.innerHeight-top)+'px';tp.style.top='auto'}}
 document.addEventListener('click',e=>{if(!e.target.classList.contains('ib')&&!e.target.closest('.tp')){document.querySelectorAll('.tp.show').forEach(t=>t.classList.remove('show'))}});
-function ld(){const s=localStorage.getItem(LS);if(s){const p=JSON.parse(s);Object.assign(G,p);G.done=new Set(p.done||[]);if(!G.wrongQ)G.wrongQ={};if(!G.miHistory)G.miHistory=[];if(!G.weeklyDone)G.weeklyDone=[];if(!G._achShown)G._achShown=[];if(!G.userName)G.userName='';G.userName=sanitizeName(G.userName);if(!G.titleShownAll)G.titleShownAll=false;if(G.darkMode)document.body.classList.add('light');if(!G.firstUse)G.firstUse=Date.now();if(!G.sessions)G.sessions=[];if(!G.stageTime)G.stageTime={};if(G.adminMessage===undefined)G.adminMessage='';if(G.adminMessageRead===undefined)G.adminMessageRead=false;if(G.interviewUnlocked===undefined)G.interviewUnlocked=false}const ni=$('nameInput');if(ni&&G.userName&&G.userName!=='אנונימי'){ni.value=G.userName}}
+function ld(){const s=localStorage.getItem(LS);if(s){const p=JSON.parse(s);Object.assign(G,p);G.done=new Set(p.done||[]);if(!G.wrongQ)G.wrongQ={};if(!G.miHistory)G.miHistory=[];if(!G.weeklyDone)G.weeklyDone=[];if(!G._achShown)G._achShown=[];if(!G.userName)G.userName='';G.userName=sanitizeName(G.userName);if(!G.titleShownAll)G.titleShownAll=false;if(G.darkMode)document.body.classList.add('light');if(!G.firstUse)G.firstUse=Date.now();if(!G.sessions)G.sessions=[];if(!G.stageTime)G.stageTime={};if(G.adminMessage===undefined)G.adminMessage='';if(G.adminMessageRead===undefined)G.adminMessageRead=false;if(G.interviewUnlocked===undefined)G.interviewUnlocked=false;if(!G.activityLog)G.activityLog=[];if(G.lastStageVisited===undefined)G.lastStageVisited=null}const ni=$('nameInput');if(ni&&G.userName&&G.userName!=='אנונימי'){ni.value=G.userName}}
 function sv(){localStorage.setItem(LS,JSON.stringify({...G,done:[...G.done]}))}
 ld();
 
@@ -3673,25 +3674,33 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
       _showPendingScreen(name);return;
     }
     // Existing approved user — load their cloud data
-    // CRITICAL: if different user logging in, clear per-user state to prevent data leakage
-    if(G.userName && G.userName!==name){
+    // Detect if this is a brand new user (zero activity on server)
+    const cloudScore=parseInt(d.data.score)||0;
+    const cloudStagesList=String(d.data.stagesList||'');
+    const cloudStreak=parseInt(d.data.streak)||0;
+    const isNewUser=cloudScore===0&&!cloudStagesList&&cloudStreak===0;
+    // CRITICAL: Clear per-user state if (a) different user or (b) new user with leftover data
+    if((G.userName && G.userName!==name) || isNewUser){
       G.qa={};G.sc={};G.wrongQ={};G._pu={};G._seenSec={};G._tabVisits={};
       G.done=new Set();G.miHistory=[];G.weeklyDone=[];G._achShown=[];
       G.titleShown2=false;G.titleShown9=false;G.titleShown15=false;G.titleShownAll=false;
       G.interviewUnlocked=false;G.stageTime={};G.satisfactionRating=0;
       G.adminMessage='';G.adminMessageRead=false;G.streak=0;G.ts=0;G.firstUse=null;
+      G.activityLog=[];G.lastStageVisited=null;
     }
     G.userName=name;
-    G.ts=parseInt(d.data.score)||G.ts;
-    G.streak=parseInt(d.data.streak)||G.streak;
+    G.ts=cloudScore;
+    G.streak=cloudStreak;
     if(d.data.lastDay)G.lastDay=d.data.lastDay;
-    const cloudStages=(String(d.data.stagesList)||'').split(',').filter(Boolean).map(Number);
+    const cloudStages=cloudStagesList.split(',').filter(Boolean).map(Number);
     cloudStages.forEach(id=>G.done.add(id));
     if(d.data.interviewUnlocked==='true')G.interviewUnlocked=true;
     if(parseInt(d.data.satisfaction)>0)G.satisfactionRating=parseInt(d.data.satisfaction);
     if(d.data.adminMessage&&d.data.adminMessage.trim()){if(d.data.adminMessage!==G.adminMessage){G.adminMessage=d.data.adminMessage;G.adminMessageRead=false}}else{G.adminMessage='';G.adminMessageRead=true}
     G.s=true;if(!G.firstUse)G.firstUse=Date.now();updateStreak();sv();updateLeaderboard();mp();
-    showAchievement('👋','ברוך שובך!',name);
+    logActivity('login',isNewUser?'first':'return');
+    if(isNewUser){showAchievement('👋','ברוך הבא!',name)}else{showAchievement('👋','ברוך שובך!',name)}
+    updateAdminMsgFab();
   }else{
     // New user — request approval
     _requestApproval(name);
@@ -3763,7 +3772,7 @@ $('pendingView').classList.add('hid');$('ws').classList.remove('hid');
 window.scrollTo(0,0);
 }
 function goHome(){G.v='w';$('ws').classList.remove('hid');$('mv').classList.add('hid');$('sv').classList.add('hid');$('hd').classList.add('hid');$('pb').classList.add('hid');$('ib').classList.add('hid');$('miv').classList.add('hid');$('pendingView').classList.add('hid');$('duelView').classList.add('hid');$('duelFab').classList.add('hid');if($('ab'))$('ab').classList.add('hid');window.scrollTo(0,0)}
-function mp(){G.v='m';$('ws').classList.add('hid');$('mv').classList.remove('hid');$('sv').classList.add('hid');$('hd').classList.remove('hid');$('pb').classList.remove('hid');$('ib').classList.add('hid');$('miv').classList.add('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');$('pendingView').classList.add('hid');$('duelView').classList.add('hid');uh();rg();renderTipMap();renderDailyModal();renderMapActions();renderMapRank();renderXPArea();renderSkillBadges();startTickers();updateDailyFab();_initDuelSystem()}
+function mp(){G.v='m';$('ws').classList.add('hid');$('mv').classList.remove('hid');$('sv').classList.add('hid');$('hd').classList.remove('hid');$('pb').classList.remove('hid');$('ib').classList.add('hid');$('miv').classList.add('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');$('pendingView').classList.add('hid');$('duelView').classList.add('hid');uh();rg();renderTipMap();renderDailyModal();renderMapActions();renderMapRank();renderXPArea();renderSkillBadges();startTickers();updateDailyFab();_initDuelSystem();updateAdminMsgFab();checkCloudUnlocks()}
 function renderContinueHero(currentId){
 const el=$('continue-hero');if(!el)return;
 if(currentId<0){el.innerHTML='<div class="continue-hero" onclick="mp()" style="cursor:default;justify-content:center"><div class="ch-icon">🏆</div><div class="ch-body" style="text-align:center"><div class="ch-title">סיימת את כל שלבי הליבה!</div><div class="ch-sub">חזרו על שלבים לשפר ציונים, או פתחו פרקי ספרים</div></div></div>';return}
@@ -3899,7 +3908,7 @@ sv();
 
 function ss(id){
 if(id===22&&!G.interviewUnlocked){showModal('🔒','שלב נעול','שלב "בסוף השירות הצבאי" נעול כרגע.<br>פנו למנהל המערכת כדי לפתוח גישה.','הבנתי');return}
-G.v='s';G.st=id;G.tab='l';$('mv').classList.add('hid');$('sv').classList.remove('hid');$('ib').classList.remove('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');renderInfoBar();rs();window.scrollTo(0,0)}
+G.v='s';G.st=id;G.tab='l';G.lastStageVisited=id;const _st=S.find(s=>s.id===id);logActivity('openStage',id+': '+(_st?_st.t:''));$('mv').classList.add('hid');$('sv').classList.remove('hid');$('ib').classList.remove('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');renderInfoBar();rs();window.scrollTo(0,0)}
 function $(id){return document.getElementById(id)}
 function uh(){$('ts').textContent=G.ts;$('cs').textContent=G.done.size;$('pf').style.width=(G.done.size/S.length*100)+'%';
 // Title badge + username in header
@@ -4020,7 +4029,7 @@ const qBadge=qDone?'tb-done':G.tab==='q'?'tb-current':'tb-empty';
 const maxPts=s.q.length*10;
 const prevScore=G.sc[s.id]||0;
 v.innerHTML=`<button class="bbtn" onclick="mp()">→ חזרה למפה</button><div class="shdr"><div class="nm">שלב ${s.id} / ${S.length}</div><h2>${s.ic} ${s.t}</h2><div class="d">${s.d}</div><div class="stage-reward"><div class="sr-item"><span>🎯</span> ${s.q.length} שאלות</div><div class="sr-item"><span>⭐</span> עד ${maxPts} נק'</div>${prevScore>0?`<div class="sr-item"><span>📊</span> שיא: ${prevScore} נק'</div>`:''}<div class="sr-item"><span>📖</span> ${s.th.length} נושאים</div></div></div><div class="tabs"><button class="tab${G.tab==='l'?' act':''}" onclick="st('l',this)"><span class="tab-badge ${lBadge}"></span>📚 לימוד</button><button class="tab${G.tab==='c'?' act':''}" onclick="st('c',this)"><span class="tab-badge ${cBadge}"></span>📋 קייס</button><button class="tab${G.tab==='q'?' act':''}" onclick="st('q',this)"><span class="tab-badge ${qBadge}"></span>❓ מבחן</button></div><div id="tc"></div>`;rt()}
-function st(t,el){G.tab=t;if(!G._tabVisits)G._tabVisits={};if(!G._tabVisits[G.st])G._tabVisits[G.st]={};G._tabVisits[G.st][t]=true;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('act'));el.classList.add('act');rt()}
+function st(t,el){G.tab=t;if(!G._tabVisits)G._tabVisits={};if(!G._tabVisits[G.st])G._tabVisits[G.st]={};G._tabVisits[G.st][t]=true;const _tn=t==='l'?'קריאה':t==='c'?'קייס':t==='q'?'מבחן':t;logActivity('switchTab','שלב '+G.st+' → '+_tn);document.querySelectorAll('.tab').forEach(x=>x.classList.remove('act'));el.classList.add('act');rt()}
 const learnEncourage=['🧠 מעולה! ממשיכים לנושא הבא...','💡 הידע מצטבר - כל נושא בונה על הקודם!','🚀 קדימה! עוד קצת ומסיימים את החלק התיאורטי.','⚡ את/ה בדרך הנכונה - הכל מתחבר בסוף!','🎯 נושא אחד בכל פעם - ככה בונים מומחיות!','🌊 כמו גל - כל נושא דוחף אותך קדימה!','🔥 הידע הזה ישנה את הדרך שבה אתה רואה מוצרים!','💪 PM טוב לומד כל יום - את/ה בדיוק שם!','🎖️ תצפיינים מצטיינים - ממשיכים!','🏗️ בונים שריר-שריר את המומחיות!','✨ הנושא הבא מחכה - ושווה כל רגע!','🧩 עוד חלק בפאזל - התמונה מתחילה להתגבש!'];
 const learnInsights={0:'💎 תובנת מפתח: לדעת מאיפה מתחילים ולאן הולכים - זה כבר חצי מהדרך.',1:'💎 תובנת מפתח: הבנת הארגון שאתה משרת היא הבסיס לכל מוצר רלוונטי.',2:'💎 תובנת מפתח: מוצר מצליח = פתרון כאב אמיתי × תזמון נכון × ביצוע חזק.',3:'💎 תובנת מפתח: מנהל מוצר הוא לא הבוס - הוא הדבק שמחבר טכנולוגיה, עסקים ומשתמשים.',4:'💎 תובנת מפתח: אם לא דיברת עם 5 משתמשים - אתה לא מבין את הבעיה באמת.',5:'💎 תובנת מפתח: הדרך לנצח מתחרים היא לא לחקות אותם - אלא לבחור מגרש משחק אחר.',6:'💎 תובנת מפתח: חזון בלי אסטרטגיה הוא חלום. אסטרטגיה בלי חזון היא שגרה.',7:'💎 תובנת מפתח: כל פעם שאומרים "כן" לפיצ\'ר, אומרים "לא" למשהו אחר.',8:'💎 תובנת מפתח: אג\'ייל הוא לא תהליך - זו חשיבה. הכלים משתנים, הגישה נשארת.',9:'💎 תובנת מפתח: מסמך דרישות טוב חוסך חודשים של פיתוח בכיוון הלא נכון.',10:'💎 תובנת מפתח: MVP לא אומר חצי מוצר - אומר הניסוי הכי קטן שמוכיח את ההשערה.',11:'💎 תובנת מפתח: בלי נתונים את/ה סתם עוד אחד עם דעה.',12:'💎 תובנת מפתח: חוויית משתמש טובה היא כזו שלא מרגישים אותה - הכל פשוט עובד.',13:'💎 תובנת מפתח: השקה מוצלחת מתחילה חודשים לפני כפתור ה-"פרסם".',14:'💎 תובנת מפתח: שימור הוא הצמיחה החדשה - עדיף לקוח שנשאר על 10 שבאים והולכים.',15:'💎 תובנת מפתח: אנשים לא זוכרים מה אמרת - הם זוכרים איך גרמת להם להרגיש.',16:'💎 תובנת מפתח: AI הוא לא קסם - זה מנחש מילים מתוחכם. PM שמבין את המגבלות בונה מוצרים טובים יותר מ-PM שמאמין בקסמים.',17:'💎 תובנת מפתח: הראיון הוא לא מבחן - זו שיחה. הכי חשוב: לחשוב בקול ולהראות מבנה.',18:'💎 תובנת מפתח: בסביבה ביטחונית, תקשורת ותיאום הם 70% מהעבודה. PM שלא מדבר בשפה של המפקד - לא מקדם את המוצר.',19:'💎 תובנת מפתח: בחומרה, כל החלטה היא כמעט בלתי הפיכה. בדוק פי 3, שנה פי 1.'};
 function rt(){const s=S.find(x=>x.id===G.st),c=$('tc');if(G.tab==='l'){const total=s.th.length;
@@ -4134,7 +4143,7 @@ G._pu[sid].h[qi]=true;
 sv();rq(s);
 showAchievement('💡','רמז נחשף!','חלק מההסבר נגלה (קנס: -3 נק\')');
 }
-function sa(sid,qi,sel){if(!G.qa[sid])G.qa[sid]={};if(G.qa[sid][qi]!==undefined)return;G.qa[sid][qi]=sel;const _s=S.find(x=>x.id===sid);if(_s&&sel!==_s.q[qi].c){trackWrongAnswer(sid,qi)}else if(_s){trackCorrectAnswer(sid,qi)}const s=S.find(x=>x.id===sid),al=Object.keys(G.qa[sid]).length===s.q.length;if(al){const ok=s.q.filter((q,i)=>G.qa[sid][i]===q.c).length;const puS=G._pu&&G._pu[sid]||{f:{},h:{}};let sc=0;s.q.forEach((q,i)=>{if(G.qa[sid][i]===q.c){let pts=10;if(puS.f&&puS.f[i])pts-=5;if(puS.h&&puS.h[i])pts-=3;sc+=Math.max(pts,0)}});const prev=G.sc[sid]||0;if(sc>prev){G.ts=G.ts-prev+sc;G.sc[sid]=sc}G.done.add(sid);updateStreak();uh();if(ok/s.q.length>=.8)cf();showHook();setTimeout(()=>checkTitleCeremony(),800);setTimeout(()=>checkSectionAchievements(sid),1200)}sv();rq(s)}
+function sa(sid,qi,sel){if(!G.qa[sid])G.qa[sid]={};if(G.qa[sid][qi]!==undefined)return;G.qa[sid][qi]=sel;const _s=S.find(x=>x.id===sid);const _correct=_s&&sel===_s.q[qi].c;logActivity('answer','שלב '+sid+' ש.'+(qi+1)+': '+(_correct?'✓':'✗'));if(_s&&sel!==_s.q[qi].c){trackWrongAnswer(sid,qi)}else if(_s){trackCorrectAnswer(sid,qi)}const s=S.find(x=>x.id===sid),al=Object.keys(G.qa[sid]).length===s.q.length;if(al){const ok=s.q.filter((q,i)=>G.qa[sid][i]===q.c).length;const puS=G._pu&&G._pu[sid]||{f:{},h:{}};let sc=0;s.q.forEach((q,i)=>{if(G.qa[sid][i]===q.c){let pts=10;if(puS.f&&puS.f[i])pts-=5;if(puS.h&&puS.h[i])pts-=3;sc+=Math.max(pts,0)}});const prev=G.sc[sid]||0;if(sc>prev){G.ts=G.ts-prev+sc;G.sc[sid]=sc}const wasDone=G.done.has(sid);G.done.add(sid);if(!wasDone)logActivity('completeStage','שלב '+sid+' ('+ok+'/'+s.q.length+' נכונים, '+sc+' נק\')');updateStreak();uh();if(ok/s.q.length>=.8)cf();showHook();setTimeout(()=>checkTitleCeremony(),800);setTimeout(()=>checkSectionAchievements(sid),1200)}sv();rq(s)}
 function rr(sid){delete G.qa[sid];if(G._pu)delete G._pu[sid];S.find(x=>x.id===sid).q.forEach((_,i)=>{delete _shuffleCache[sid+'_'+i]});sv();rq(S.find(x=>x.id===sid))}
 function cf(){const cols=['#6C63FF','#FF6584','#00C9A7','#FFD700','#FF9800','#E91E63'];for(let i=0;i<40;i++){const p=document.createElement('div');p.className='confp';p.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${cols[Math.floor(Math.random()*cols.length)]};border-radius:${Math.random()>.5?'50%':'0'};width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;animation-delay:${Math.random()*.5}s;animation-duration:${1+Math.random()*1.5}s`;document.body.appendChild(p);setTimeout(()=>p.remove(),3000)}}
 
@@ -4313,11 +4322,48 @@ const GLOSSARY=[
 {term:"Crossing the Chasm",heb:"חציית התהום",desc:"המעבר הקשה מ-Early Adopters לשוק הרחב - לפי ג'פרי מור",stage:2},
 {term:"Wireframe",heb:"שרטוט מסך",desc:"שרטוט בסיסי של ממשק משתמש ללא עיצוב גרפי",stage:12},
 {term:"Prototype",heb:"אב טיפוס",desc:"גרסה אינטראקטיבית לבדיקה לפני פיתוח מלא",stage:12},
-{term:"Usability Testing",heb:"בדיקת שמישות",desc:"בדיקה עם משתמשים אמיתיים האם הממשק קל לשימוש",stage:12}
+{term:"Usability Testing",heb:"בדיקת שמישות",desc:"בדיקה עם משתמשים אמיתיים האם הממשק קל לשימוש",stage:12},
+{term:"LLM",heb:"מודל שפה גדול",desc:"Large Language Model - מודל AI שמבין ומייצר טקסט (כמו ChatGPT)",stage:18},
+{term:"Prompt Engineering",heb:"הנדסת פרומפטים",desc:"אמנות כתיבת הוראות טובות למודלי AI כדי לקבל תוצאות איכותיות",stage:18},
+{term:"RAG",heb:"יצירה מוגברת באחזור",desc:"Retrieval Augmented Generation - שילוב של חיפוש מידע עם מודל AI",stage:18},
+{term:"Fine-tuning",heb:"כוונון עדין",desc:"התאמת מודל AI קיים לצרכים ספציפיים עם דאטה ייעודי",stage:18},
+{term:"Hallucination",heb:"הזיה",desc:"כשמודל AI מייצר מידע שגוי אך נראה אמין",stage:18},
+{term:"Token",heb:"טוקן",desc:"יחידת עיבוד של מודלי שפה - חלק של מילה או מילה שלמה",stage:18},
+{term:"Embedding",heb:"שיכון",desc:"ייצוג מתמטי של טקסט כווקטור - בסיס לחיפוש סמנטי ב-AI",stage:18},
+{term:"Agent",heb:"סוכן AI",desc:"מערכת AI אוטונומית שמבצעת משימות עם שימוש בכלים",stage:18},
+{term:"OODA Loop",heb:"לולאת OODA",desc:"Observe-Orient-Decide-Act - מודל החלטה בצבא ובסטארטאפים",stage:19},
+{term:"Mission Critical",heb:"קריטי למשימה",desc:"מערכת שכשל שלה פוגע ישירות במשימה המבצעית",stage:19},
+{term:"C4I",heb:"פיקוד ושליטה",desc:"Command, Control, Communications, Computers, Intelligence - מערכות פיקוד",stage:19},
+{term:"Dual-Use",heb:"שימוש דו-תכליתי",desc:"טכנולוגיה שמשמשת גם לצרכים צבאיים וגם אזרחיים",stage:19},
+{term:"IoT",heb:"אינטרנט של הדברים",desc:"Internet of Things - מכשירים מחוברים לאינטרנט (חיישנים, מכשירי חשמל)",stage:20},
+{term:"Firmware",heb:"קושחה",desc:"תוכנה שרצה על חומרה - בין הארדוור לסופטוור",stage:20},
+{term:"OTA Update",heb:"עדכון מרחוק",desc:"Over-The-Air - עדכון תוכנה/קושחה דרך הרשת למכשירי קצה",stage:20},
+{term:"Embedded System",heb:"מערכת משובצת",desc:"מחשב שמובנה בתוך מוצר חומרה (מכונית, מכשיר רפואי)",stage:20},
+{term:"Gamification",heb:"גיימיפיקציה",desc:"שימוש בטכניקות משחק (נקודות, מדליות, לוחות) במוצר לא-משחקי",stage:21},
+{term:"Points & Badges",heb:"נקודות ותגים",desc:"מערכת תגמול שמניעה משתמשים להתקדם ולהשיג יעדים",stage:21},
+{term:"Leaderboard",heb:"לוח מובילים",desc:"דירוג משתמשים לפי ביצועים - יוצר תחרות חיובית",stage:21},
+{term:"Progress Bar",heb:"סרגל התקדמות",desc:"ויזואליזציה של התקדמות - מגדיל מחויבות לסיום",stage:21},
+{term:"Streak",heb:"רצף",desc:"סדרת פעולות רצופות (ימים) שמעודדת שימוש יומיומי",stage:21},
+{term:"Onboarding",heb:"קליטה",desc:"תהליך הכרת משתמש חדש עם המוצר בצעדים מודרכים",stage:2},
+{term:"Feature Flag",heb:"דגל פיצ'ר",desc:"מתג שמאפשר להפעיל/לכבות פיצ'ר ללא רילוק - לבדיקות ודיפלוי בטוח",stage:13},
+{term:"Dark Launch",heb:"שחרור סמוי",desc:"שחרור פיצ'ר בפרודקשן מבלי שמשתמשים יראו אותו - לבדיקת עומסים",stage:13},
+{term:"Outcome vs Output",heb:"תוצאה מול תפוקה",desc:"התוצאה היא השינוי שהפיצ'ר יצר; התפוקה היא הפיצ'ר עצמו",stage:7},
+{term:"Opportunity Tree",heb:"עץ הזדמנויות",desc:"כלי גילוי של טרזה טורס למיפוי הזדמנויות, פתרונות ונסיונות",stage:7},
+{term:"Stickiness",heb:"היצמדות",desc:"DAU/MAU - מדד שמראה כמה המוצר חיוני למשתמשים ביומיום",stage:14},
+{term:"Cohort Analysis",heb:"ניתוח קוהורטות",desc:"ניתוח קבוצות משתמשים שנרשמו באותה תקופה לזיהוי דפוסים",stage:11},
+{term:"PQL",heb:"ליד מוצרי",desc:"Product Qualified Lead - משתמש חינמי שהגיע לרגע קנייה פוטנציאלי",stage:14},
+{term:"Unit Economics",heb:"כלכלת יחידה",desc:"הרווח לכל לקוח - ההפרש בין LTV ל-CAC",stage:14},
+{term:"5 Whys",heb:"5 למה",desc:"טכניקה לזיהוי גורם שורש על ידי שאלת 'למה?' 5 פעמים",stage:4},
+{term:"Minimum Lovable Product",heb:"מוצר מינימלי אהוב",desc:"MLP - הגרסה הכי קטנה שמייצרת אהבה אמיתית, לא רק שימוש",stage:10},
+{term:"Continuous Discovery",heb:"גילוי מתמשך",desc:"שיחות שבועיות עם משתמשים לגילוי הזדמנויות חדשות (טורס)",stage:10},
+{term:"North Star Framework",heb:"מסגרת כוכב הצפון",desc:"מסגרת של Amplitude לחיבור בין חזון, מטריקה ואסטרטגיה",stage:11},
+{term:"Product Trio",heb:"שלישיית המוצר",desc:"PM + עיצוב + הנדסה - הקבוצה שצריכה להיות נוכחת בגילוי",stage:3},
+{term:"Job Story",heb:"סיפור עבודה",desc:"כש... אני רוצה... כדי ש... - חלופה ל-User Story מוכוונת-מצב",stage:9},
+{term:"Feature Creep",heb:"זחילת פיצ'רים",desc:"הוספה מתמשכת של פיצ'רים שלא במקור - מובילה לסיבוך",stage:9}
 ];
 
 function showGlossary(){
-  G.v='g';
+  G.v='g';logActivity('openGlossary','');
   $('ws').classList.add('hid');
   $('mv').classList.add('hid');
   $('sv').classList.add('hid');
@@ -4369,7 +4415,7 @@ function hideGlossary(){
 
 // ========== PROFILE / STATS PAGE ==========
 function showProfile(){
-  G.v='p';
+  G.v='p';logActivity('openProfile','');
   $('ws').classList.add('hid');
   $('mv').classList.add('hid');
   $('sv').classList.add('hid');
@@ -4893,7 +4939,9 @@ function _doSync(){
     firstUse:G.firstUse?new Date(G.firstUse).toLocaleDateString('he-IL'):'',
     lastSessionDur:lastSess,
     avgSessionDur:avgSess,
-    stageTimeJSON:JSON.stringify(G.stageTime||{})
+    stageTimeJSON:JSON.stringify(G.stageTime||{}),
+    activityLogJSON:JSON.stringify((G.activityLog||[]).slice(-50)),
+    lastStageVisited:G.lastStageVisited||''
   };
   fetch(DB_URL,{method:'POST',body:JSON.stringify(payload),headers:{'Content-Type':'text/plain'}})
   .then(r=>r.json())
@@ -5035,6 +5083,7 @@ function updateAdminMsgFab(){
 function showAdminMessage(){
   if(!G.adminMessage)return;
   G.adminMessageRead=true;sv();updateAdminMsgFab();
+  logActivity('readAdminMsg',G.adminMessage.substring(0,50));
   showModal('💬','הודעה מהמנהל',G.adminMessage,'הבנתי');
 }
 
@@ -5054,6 +5103,8 @@ function endSessionTimer(){
     if(!G.sessions)G.sessions=[];
     G.sessions.push(dur);
     if(G.sessions.length>50)G.sessions=G.sessions.slice(-50);// Keep last 50
+    const _mins=Math.floor(dur/60);const _secs=dur%60;
+    logActivity('endSession',_mins+'ד\' '+_secs+'ש\'');
     sv();
   }
   G.sessionStart=null;
@@ -5095,6 +5146,8 @@ go=function(){_origGo();startSessionTimer();startSatisfactionTimer()};
 
 // Periodic save for mobile (every 60 sec if active session)
 setInterval(()=>{if(G.sessionStart&&_tabTimerStart)sv()},60000);
+// Periodic admin message check (every 60 sec)
+setInterval(()=>{if(G.userName&&G.s)checkCloudUnlocks()},60000);
 
 // beforeunload - save session
 window.addEventListener('beforeunload',()=>{stopTabTimer();endSessionTimer()});
@@ -5303,6 +5356,9 @@ const approvedUsers=users.filter(u=>String(u.status||'')!=='pending');
 const todayUsers=approvedUsers.filter(u=>_isToday(u.lastLogin));
 const activeMonth=approvedUsers.filter(u=>_isThisMonth({lastLogin:u.lastLogin})).length;
 const activeToday=todayUsers.length;
+// Online now: users active in last 2 minutes (via heartbeat)
+const _nowTs=Date.now();
+const onlineNow=approvedUsers.filter(u=>{const la=parseInt(u.lastActivity)||0;return la>0&&(_nowTs-la)<120000}).length;
 const avgStagesDaily=activeToday>0?(todayUsers.reduce((a,u)=>a+(parseInt(u.stagesCount)||0),0)/activeToday).toFixed(1):'—';
 const avgScoreDaily=activeToday>0?Math.round(todayUsers.reduce((a,u)=>a+(parseInt(u.score)||0),0)/activeToday):'—';
 const completedAll=approvedUsers.filter(u=>(parseInt(u.stagesCount)||0)>=22).length;
@@ -5337,6 +5393,7 @@ h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'today\
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'month\')"><div class="as-val">'+activeMonth+'</div><div class="as-lbl">פעילים החודש</div></div>';
 h+='<div class="adm-stat"><div class="as-val">'+avgStagesDaily+'</div><div class="as-lbl">ממוצע שלבים יומי</div></div>';
 h+='<div class="adm-stat"><div class="as-val">'+avgScoreDaily+'</div><div class="as-lbl">ניקוד ממוצע יומי</div></div>';
+h+='<div class="adm-stat" style="border-color:rgba(0,201,167,.4);background:rgba(0,201,167,.08)"><div class="as-val" style="color:var(--a)">🟢 '+onlineNow+'</div><div class="as-lbl" style="color:var(--a)">מחוברים עכשיו</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'core\')"><div class="as-val">'+completedAll+'</div><div class="as-lbl">סיימו ליבה</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'rated\')"><div class="as-val" style="font-size:1.6rem">'+avgSat+' '+satStars+'</div><div class="as-lbl">שביעות רצון ('+ratedUsers.length+')</div></div>';
 if(pendingUsers.length>0){h+='<div class="adm-stat" style="border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.08)"><div class="as-val" style="color:var(--g)">'+pendingUsers.length+'</div><div class="as-lbl" style="color:var(--g)">ממתינים לאישור</div></div>';}
@@ -5385,8 +5442,9 @@ t+='</tr></thead><tbody>';
 if(sorted.length===0){t+='<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--t2)">לא נמצאו משתמשים</td></tr>'}
 sorted.forEach((u,i)=>{
   const n=esc(u.userName||'').replace(/'/g,"\\'");
+  const _la=parseInt(u.lastActivity)||0;const _isOnline=_la>0&&(Date.now()-_la)<120000;
   t+='<tr style="cursor:pointer" onclick="showUserDetail(\''+n+'\')">';
-  t+='<td style="font-weight:600;color:var(--t1)">'+esc(u.userName)+'</td>';
+  t+='<td style="font-weight:600;color:var(--t1)">'+(_isOnline?'<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#00C9A7;box-shadow:0 0 6px rgba(0,201,167,.7);margin-left:6px" title="מחובר עכשיו"></span>':'')+esc(u.userName)+'</td>';
   t+='<td>'+(parseInt(u.score)||0)+'</td>';
   t+='<td>'+(parseInt(u.stagesCount)||0)+'/44</td>';
   t+='<td style="font-size:.76rem">'+esc(u.title||'—')+'</td>';
@@ -5423,10 +5481,17 @@ const lastSessDur=parseInt(u.lastSessionDur)||0;
 const avgSessDur=parseInt(u.avgSessionDur)||0;
 let stageTimeObj={};
 try{stageTimeObj=JSON.parse(u.stageTimeJSON||'{}')}catch(e){}
+let activityLog=[];
+try{activityLog=JSON.parse(u.activityLogJSON||'[]')}catch(e){}
+const uLastActivity=parseInt(u.lastActivity)||0;
+const uIsOnline=uLastActivity>0&&(Date.now()-uLastActivity)<120000;
+const uLastStageVisited=u.lastStageVisited?S.find(s=>s.id===parseInt(u.lastStageVisited)):null;
 
 let h='<div class="adm-modal-overlay" onclick="if(event.target===this)this.remove()">';
 h+='<div class="adm-modal">';
-h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem"><h3>👤 '+esc(u.userName)+'</h3><span style="cursor:pointer;font-size:1.3rem;color:var(--t2)" onclick="this.closest(\'.adm-modal-overlay\').remove()">✕</span></div>';
+h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem"><h3>'+(uIsOnline?'<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#00C9A7;box-shadow:0 0 8px rgba(0,201,167,.7);margin-left:6px" title="מחובר עכשיו"></span>':'')+'👤 '+esc(u.userName)+'</h3><span style="cursor:pointer;font-size:1.3rem;color:var(--t2)" onclick="this.closest(\'.adm-modal-overlay\').remove()">✕</span></div>';
+if(uIsOnline){h+='<div style="background:rgba(0,201,167,.1);border-radius:10px;padding:.5rem .8rem;margin-bottom:.8rem;text-align:center;font-size:.82rem;color:var(--a);font-weight:600">🟢 מחובר למערכת עכשיו</div>'}
+if(uLastStageVisited){h+='<div class="am-stat"><span class="am-k">שלב אחרון שנכח בו</span><span class="am-v">'+(uLastStageVisited.ic||'')+' שלב '+uLastStageVisited.id+': '+esc(uLastStageVisited.t)+'</span></div>'}
 
 h+='<div style="background:rgba(108,99,255,.1);border-radius:12px;padding:.8rem;margin-bottom:1rem;text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--p)">'+pct+'%</div><div style="font-size:.8rem;color:var(--t2)">התקדמות כללית</div><div style="background:rgba(255,255,255,.1);border-radius:6px;height:8px;margin-top:.5rem;overflow:hidden"><div style="background:var(--gr1);height:100%;width:'+pct+'%;border-radius:6px;transition:width .5s"></div></div></div>';
 
@@ -5489,13 +5554,31 @@ if(stKeys.length>0){
   h+='</div>';
 }
 
+// Activity log
+if(activityLog.length>0){
+  h+='<div style="margin-top:1rem"><strong style="color:var(--p);font-size:.9rem">📊 יומן פעילות ('+activityLog.length+' פעולות אחרונות):</strong>';
+  h+='<div style="max-height:250px;overflow-y:auto;margin-top:.5rem;border-radius:10px;background:rgba(108,99,255,.05);padding:.5rem">';
+  const actIcons={login:'🚪',openStage:'📖',switchTab:'🔀',answer:'✍️',completeStage:'🏆',openGlossary:'📚',openProfile:'👤',readAdminMsg:'💬',duelAccept:'⚔️',duelDecline:'🚫',endSession:'⏱️'};
+  const actNames={login:'התחברות',openStage:'פתח שלב',switchTab:'מעבר טאב',answer:'תשובה',completeStage:'סיים שלב',openGlossary:'פתח מילון',openProfile:'פרופיל',readAdminMsg:'קרא הודעה',duelAccept:'קיבל דו-קרב',duelDecline:'דחה דו-קרב',endSession:'סיים סשן'};
+  [...activityLog].reverse().forEach(act=>{
+    const tm=new Date(act.t);const tStr=tm.toLocaleString('he-IL',{timeZone:'Asia/Jerusalem'});
+    h+='<div style="font-size:.75rem;padding:.3rem .4rem;border-bottom:1px solid rgba(108,99,255,.08);display:flex;gap:.5rem;align-items:center">';
+    h+='<span style="font-size:1rem">'+(actIcons[act.a]||'•')+'</span>';
+    h+='<span style="color:var(--t1);font-weight:600;min-width:90px">'+(actNames[act.a]||act.a)+'</span>';
+    h+='<span style="color:var(--t2);flex:1">'+esc(String(act.d||''))+'</span>';
+    h+='<span style="color:var(--t2);font-size:.68rem">'+tStr+'</span>';
+    h+='</div>';
+  });
+  h+='</div></div>';
+}
+
 // Admin controls: Interview unlock + Admin message
 h+='<div class="adm-ctrl-section">';
 h+='<h4>🔧 פעולות מנהל</h4>';
 
 // Interview unlock toggle
 const isUnlocked=String(u.interviewUnlocked||'')==='true';
-h+='<div class="adm-ctrl-row"><label>🔓 פתיחת שלב 17 - בסוף השירות</label>';
+h+='<div class="adm-ctrl-row"><label>🔓 פתיחת שלב 22 - בסוף השירות הצבאי</label>';
 h+='<label class="adm-toggle"><input type="checkbox" '+(isUnlocked?'checked':'')+' onchange="admToggleInterview(\''+eName+'\',this.checked)"><span class="slider"></span></label></div>';
 
 // Admin message
@@ -5523,14 +5606,14 @@ function fmtDuration(sec){
 }
 
 function admToggleInterview(name,unlock){
-  _admMsgStatus(unlock?'פותח שלב 17...':'נועל שלב 17...','var(--t2)');
+  _admMsgStatus(unlock?'פותח שלב 22...':'נועל שלב 22...','var(--t2)');
   fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'unlockInterview',userName:name,unlock:unlock}),headers:{'Content-Type':'text/plain'}})
   .then(r=>r.json())
   .then(d=>{
     if(d.success){
       const u=_admUsers.find(x=>x.userName===name);
       if(u)u.interviewUnlocked=unlock?'true':'false';
-      _admMsgStatus(unlock?'✅ שלב 17 נפתח עבור '+name:'🔒 שלב 17 ננעל עבור '+name,'var(--a)',4000);
+      _admMsgStatus(unlock?'✅ שלב 22 נפתח עבור '+name:'🔒 שלב 22 ננעל עבור '+name,'var(--a)',4000);
     }else{_admMsgStatus('❌ שגיאה: '+(d.error||'לא ניתן לעדכן'),'var(--s)',5000)}
   }).catch(()=>{_admMsgStatus('📴 שגיאת חיבור - ודאו שה-Apps Script עודכן','var(--s)',5000)});
 }
@@ -5893,7 +5976,7 @@ function _startPendingDuelCheck(){
   _pendingDuelTimer=setInterval(()=>{
     if(_duelId)return;
     _duelPost('getPendingDuels',{userName:G.userName}).then(d=>{
-      if(d.success&&d.data&&d.data.length>0)_showDuelNotif(d.data[0]);
+      if(d.success&&d.data&&d.data.length>0&&!_duelId)_showDuelNotif(d.data[0]);
     });
   },5000);
 }
@@ -5912,6 +5995,7 @@ function _showDuelNotif(duel){
 }
 function _respondToDuel(duelId,accept){
   $('duelNotif').classList.remove('show');
+  logActivity(accept?'duelAccept':'duelDecline','');
   if(accept){_duelId=duelId;_stopPendingDuelCheck()}
   _duelPost('respondDuel',{duelId:duelId,accept:accept}).then(d=>{
     if(d.success&&accept){
