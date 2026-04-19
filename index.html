@@ -52,13 +52,14 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--t1);min-hei
 .hdr{padding:0;gap:0;flex-direction:column;align-items:stretch}
 .hdr>div:first-child{padding:.55rem .9rem;justify-content:space-between;width:100%;display:flex;align-items:center;gap:.5rem;background:linear-gradient(180deg,rgba(15,14,23,.98),rgba(15,14,23,.95))}
 .hdr-logo{font-size:1.02rem;font-weight:800;letter-spacing:-.3px}
-#hdr-user{max-width:140px!important;font-size:.72rem!important;color:var(--p);font-weight:600;background:rgba(108,99,255,.1);padding:.15rem .5rem;border-radius:10px;border:1px solid rgba(108,99,255,.2)}
+#hdr-user-group{flex-direction:column;gap:.15rem!important;align-items:center}
+#hdr-user{max-width:160px!important;font-size:.7rem!important;color:var(--t2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tb .title-badge{font-size:.68rem!important;padding:.12rem .55rem!important;white-space:nowrap}
 .hdr-home{font-size:1.1rem;opacity:.8}
 .hdr-stats{padding:.4rem .7rem;justify-content:space-between;overflow:visible;flex-wrap:nowrap;width:100%;gap:.3rem;background:rgba(108,99,255,.06);border-top:1px solid rgba(108,99,255,.12);align-items:center}
 .hdr-stats .badge,.hdr-stats .streak-badge{padding:.25rem .55rem;font-size:.72rem;gap:.2rem;flex-shrink:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.05)}
 .hdr-btn,.hdr-bug{font-size:1rem;padding:.2rem .35rem;flex-shrink:0;opacity:.85}
 .hdr-btn:hover,.hdr-bug:hover{opacity:1}
-#tb{display:none}
 .map{padding-top:7rem!important}
 #adv{padding-top:7rem!important}
 }
@@ -862,12 +863,11 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 </div>
 <div class="pbar hid" id="pb"><div class="pfill" id="pf" style="width:0%"></div></div>
 <div class="hdr hid" id="hd">
-<div style="display:flex;align-items:center;gap:.6rem"><div class="hdr-logo" onclick="_logoClick()">Product Master ⚓</div><div id="hdr-user" style="font-size:.65rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"></div><div class="hdr-home" onclick="goHome()" title="חזרה למסך הכניסה">🏠</div></div>
+<div style="display:flex;align-items:center;gap:.6rem"><div class="hdr-logo" onclick="_logoClick()">Product Master ⚓</div><div id="hdr-user-group" style="display:flex;align-items:center;gap:.35rem;flex-wrap:nowrap;min-width:0;flex:1;justify-content:center"><div id="hdr-user" style="font-size:.65rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"></div><div id="tb"></div></div><div class="hdr-home" onclick="goHome()" title="חזרה למסך הכניסה">🏠</div></div>
 <div class="hdr-stats">
 <div class="badge"><span>⭐</span><span class="v" id="ts">0</span><span>נק'</span></div>
 <div class="badge"><span>🏆</span><span class="v" id="cs">0</span><span>/44</span></div>
 <div class="streak-badge" id="stb" style="display:none"><span>🔥</span><span class="v" id="stv">0</span></div>
-<div id="tb"></div>
 </div>
 </div>
 <div class="info-bar hid" id="ib"><div class="ib-item" id="ib-tip"></div><div class="ib-sep"></div><div class="ib-item" id="ib-chal"></div></div>
