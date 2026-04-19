@@ -5308,7 +5308,7 @@ const avgScoreDaily=activeToday>0?Math.round(todayUsers.reduce((a,u)=>a+(parseIn
 const completedAll=approvedUsers.filter(u=>(parseInt(u.stagesCount)||0)>=22).length;
 const ratedUsers=approvedUsers.filter(u=>parseInt(u.satisfaction)>0);
 const avgSat=ratedUsers.length>0?(ratedUsers.reduce((a,u)=>a+(parseInt(u.satisfaction)||0),0)/ratedUsers.length).toFixed(1):'—';
-const satStars=avgSat!=='—'?'⭐'.repeat(Math.round(parseFloat(avgSat))):'';
+const satStars=avgSat!=='—'?(function(){const v=parseFloat(avgSat);const full=Math.floor(v);const half=v-full>=0.5?1:0;const empty=5-full-half;return '★'.repeat(full)+(half?'½':'')+'☆'.repeat(empty)})():'';
 
 let h='<div class="adm-wrap">';
 h+='<button class="bbtn" onclick="hideAdmin()">→ חזרה</button>';
