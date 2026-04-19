@@ -5373,6 +5373,38 @@ const activeToday=todayUsers.length;
 const _nowTs=Date.now();
 const onlineUsersList=approvedUsers.filter(u=>{const la=parseInt(u.lastActivity)||0;return la>0&&(_nowTs-la)<120000});
 const onlineNow=onlineUsersList.length;
+// Aggregate stage-time data
+const _stageData={};const _allL=[],_allC=[],_allQ=[],_allTotal=[];
+approvedUsers.forEach(u=>{
+  try{
+    const stMap=JSON.parse(u.stageTimeJSON||'{}');
+    const stageTotals={};
+    Object.keys(stMap).forEach(k=>{
+      const p=k.split('_');const sid=p[0];const tab=p[1];const dur=parseInt(stMap[k])||0;
+      if(dur<=0)return;
+      if(!_stageData[sid])_stageData[sid]={l:[],c:[],q:[],total:[]};
+      if(tab==='l'||tab==='c'||tab==='q'){_stageData[sid][tab].push(dur);if(tab==='l')_allL.push(dur);else if(tab==='c')_allC.push(dur);else _allQ.push(dur)}
+      stageTotals[sid]=(stageTotals[sid]||0)+dur;
+    });
+    Object.keys(stageTotals).forEach(sid=>{if(_stageData[sid]){_stageData[sid].total.push(stageTotals[sid]);_allTotal.push(stageTotals[sid])}});
+  }catch(e){}
+});
+const _avg=arr=>arr.length>0?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):0;
+const avgL=_avg(_allL);const avgC=_avg(_allC);const avgQ=_avg(_allQ);const avgTotalStage=_avg(_allTotal);
+// Find shortest/longest stages
+let shortStage=null,longStage=null,shortAvg=Infinity,longAvg=0;
+Object.keys(_stageData).forEach(sid=>{
+  const a=_avg(_stageData[sid].total);
+  if(a>0&&_stageData[sid].total.length>=1){
+    if(a<shortAvg){shortAvg=a;shortStage=parseInt(sid)}
+    if(a>longAvg){longAvg=a;longStage=parseInt(sid)}
+  }
+});
+// Today's average session
+const _todaySess=todayUsers.map(u=>parseInt(u.lastSessionDur)||0).filter(d=>d>0);
+const avgSessionToday=_avg(_todaySess);
+// Helper to get stage info
+const _getStage=sid=>S.find(s=>s.id===sid);
 const avgStagesDaily=activeToday>0?(todayUsers.reduce((a,u)=>a+(parseInt(u.stagesCount)||0),0)/activeToday).toFixed(1):'—';
 const avgScoreDaily=activeToday>0?Math.round(todayUsers.reduce((a,u)=>a+(parseInt(u.score)||0),0)/activeToday):'—';
 const completedAll=approvedUsers.filter(u=>(parseInt(u.stagesCount)||0)>=22).length;
@@ -5411,6 +5443,38 @@ h+='<div class="adm-stat" style="border-color:rgba(0,201,167,.4);background:rgba
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'core\')"><div class="as-val">'+completedAll+'</div><div class="as-lbl">סיימו ליבה</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'rated\')"><div class="as-val" style="font-size:1.6rem">'+avgSat+' '+satStars+'</div><div class="as-lbl">שביעות רצון ('+ratedUsers.length+')</div></div>';
 if(pendingUsers.length>0){h+='<div class="adm-stat" style="border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.08)"><div class="as-val" style="color:var(--g)">'+pendingUsers.length+'</div><div class="as-lbl" style="color:var(--g)">ממתינים לאישור</div></div>';}
+h+='</div>';
+
+// Time metrics section
+h+='<div style="margin-bottom:1.2rem"><h3 style="font-size:1rem;color:var(--p);margin:0 0 .7rem;display:flex;align-items:center;gap:.4rem">⏱️ מדדי זמן</h3>';
+h+='<div class="adm-stats">';
+h+='<div class="adm-stat"><div class="as-val" style="font-size:1.4rem">'+(avgSessionToday>0?fmtDuration(avgSessionToday):'—')+'</div><div class="as-lbl">סשן ממוצע היום</div></div>';
+h+='<div class="adm-stat"><div class="as-val" style="font-size:1.4rem">'+(avgTotalStage>0?fmtDuration(avgTotalStage):'—')+'</div><div class="as-lbl">סיום שלב ממוצע</div></div>';
+h+='<div class="adm-stat"><div class="as-val" style="font-size:1.4rem">'+(avgL>0?fmtDuration(avgL):'—')+'</div><div class="as-lbl">📚 קריאה ממוצע</div></div>';
+h+='<div class="adm-stat"><div class="as-val" style="font-size:1.4rem">'+(avgC>0?fmtDuration(avgC):'—')+'</div><div class="as-lbl">📋 קייס ממוצע</div></div>';
+h+='<div class="adm-stat"><div class="as-val" style="font-size:1.4rem">'+(avgQ>0?fmtDuration(avgQ):'—')+'</div><div class="as-lbl">❓ מבחן ממוצע</div></div>';
+h+='</div>';
+// Shortest + Longest stage highlights
+if(shortStage!==null||longStage!==null){
+  h+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.8rem;margin-top:.8rem">';
+  if(shortStage!==null){
+    const ss=_getStage(shortStage);
+    h+='<div style="background:linear-gradient(135deg,rgba(0,201,167,.15),rgba(0,201,167,.05));border:2px solid rgba(0,201,167,.35);border-radius:16px;padding:1rem 1.2rem">';
+    h+='<div style="font-size:.78rem;color:var(--a);font-weight:700;margin-bottom:.3rem">⚡ הכי מהיר לסיום</div>';
+    h+='<div style="font-size:1rem;font-weight:800;color:var(--t1);margin-bottom:.2rem">'+(ss?ss.ic+' שלב '+ss.id+': '+esc(ss.t):'—')+'</div>';
+    h+='<div style="font-size:1.2rem;color:var(--a);font-weight:700">'+fmtDuration(shortAvg)+' בממוצע</div>';
+    h+='</div>';
+  }
+  if(longStage!==null){
+    const ls=_getStage(longStage);
+    h+='<div style="background:linear-gradient(135deg,rgba(255,101,132,.15),rgba(255,101,132,.05));border:2px solid rgba(255,101,132,.35);border-radius:16px;padding:1rem 1.2rem">';
+    h+='<div style="font-size:.78rem;color:var(--s);font-weight:700;margin-bottom:.3rem">🐢 הכי ארוך לסיום</div>';
+    h+='<div style="font-size:1rem;font-weight:800;color:var(--t1);margin-bottom:.2rem">'+(ls?ls.ic+' שלב '+ls.id+': '+esc(ls.t):'—')+'</div>';
+    h+='<div style="font-size:1.2rem;color:var(--s);font-weight:700">'+fmtDuration(longAvg)+' בממוצע</div>';
+    h+='</div>';
+  }
+  h+='</div>';
+}
 h+='</div>';
 
 // Online now panel with live session times
