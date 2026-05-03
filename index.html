@@ -5297,7 +5297,7 @@ $('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');$('srFab').
 renderAdminGate();window.scrollTo(0,0);
 }
 
-function hideAdmin(){$('adv').classList.add('hid');if(_admAutoRefresh){clearInterval(_admAutoRefresh);_admAutoRefresh=null}if(G.s){mp()}else{goHome()}}
+function hideAdmin(){$('adv').classList.add('hid');if(G.s){mp()}else{goHome()}}
 
 function renderAdminGate(){
 $('adv').innerHTML='<div class="adm-wrap"><button class="bbtn" onclick="hideAdmin()">→ חזרה</button>'+
@@ -5316,16 +5316,15 @@ else{$('admErr').textContent='❌ סיסמה שגויה'}
 }
 
 let _admAutoRefresh=null;
-function loadAdminData(silent){
-if(!silent)$('adv').innerHTML='<div class="adm-wrap" style="text-align:center;padding:4rem"><div style="font-size:2.5rem;margin-bottom:.5rem">⏳</div><p style="color:var(--t2)">טוען נתוני משתמשים מהענן...</p></div>';
+function loadAdminData(){
+$('adv').innerHTML='<div class="adm-wrap" style="text-align:center;padding:4rem"><div style="font-size:2.5rem;margin-bottom:.5rem">⏳</div><p style="color:var(--t2)">טוען נתוני משתמשים מהענן...</p></div>';
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'admin'}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json())
 .then(d=>{
   if(d.success&&d.data){_admUsers=d.data;renderAdminDashboard()}
-  else if(!silent){return _admFallbackLeaderboard()}
+  else{return _admFallbackLeaderboard()}
 })
-.catch(()=>{if(!silent)_admFallbackLeaderboard()});
-if(!_admAutoRefresh){_admAutoRefresh=setInterval(()=>{if($('adv')&&!$('adv').classList.contains('hid'))loadAdminData(true)},15000)}
+.catch(()=>_admFallbackLeaderboard());
 }
 function _admFallbackLeaderboard(){
 fetch(DB_URL+'?action=leaderboard')
@@ -5503,7 +5502,8 @@ if(onlineUsersList.length>0){
 
 h+='<div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem">';
 h+='<input class="adm-search" placeholder="🔍 חיפוש משתמש..." oninput="admFilter(this.value)">';
-h+='<button class="bs" style="font-size:.78rem" onclick="loadAdminData()">🔄 רענן</button>';
+h+='<button class="bs" style="font-size:.78rem" onclick="loadAdminData()">🔄 רענן נתונים</button>';
+h+='<span style="color:var(--t2);font-size:.72rem">עודכן: '+new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+'</span>';
 h+='<button class="bs" style="font-size:.78rem;background:rgba(255,101,132,.1);color:var(--s);border-color:rgba(255,101,132,.3)" onclick="admShowBugs()">🐛 דיווחי באגים</button>';
 h+='<span id="admFilterLbl" style="color:var(--t2);font-size:.78rem;margin-right:auto">'+approvedUsers.length+' משתמשים</span>';
 h+='</div>';
