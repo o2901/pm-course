@@ -5785,11 +5785,19 @@ h+='<div class="adm-ctrl-row"><label>🔓 פתיחת שלב 24 - בסוף השי
 h+='<label class="adm-toggle"><input type="checkbox" '+(isUnlocked?'checked':'')+' onchange="admToggleInterview(\''+eName+'\',this.checked)"><span class="slider"></span></label></div>';
 
 // Admin message
-h+='<div style="margin-top:.6rem"><label style="font-size:.82rem;color:var(--t2);display:block;margin-bottom:.3rem">💬 הודעה למשתמש:</label>';
-h+='<textarea class="adm-msg-textarea" id="admMsgBox" maxlength="500" placeholder="כתוב הודעה למשתמש...">'+esc(u.adminMessage||'')+'</textarea>';
+h+='<div style="margin-top:.6rem">';
+// Show currently saved message as a status indicator
+if(u.adminMessage&&u.adminMessage.trim()){
+  h+='<div id="admMsgCurrent" style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:10px;padding:.55rem .75rem;margin-bottom:.6rem">';
+  h+='<div style="font-size:.72rem;color:var(--g);font-weight:700;margin-bottom:.25rem;display:flex;align-items:center;gap:.35rem">📬 <span>הודעה שמורה כרגע למשתמש</span></div>';
+  h+='<div style="font-size:.85rem;color:var(--t1);line-height:1.4">'+esc(u.adminMessage)+'</div>';
+  h+='<button class="bs" style="font-size:.7rem;padding:.2rem .5rem;margin-top:.4rem;color:var(--s);border-color:rgba(255,101,132,.3)" onclick="admClearMsg(\''+eName+'\')">🗑️ הסר הודעה זו</button>';
+  h+='</div>';
+}
+h+='<label style="font-size:.82rem;color:var(--t2);display:block;margin-bottom:.3rem">💬 שליחת הודעה חדשה:</label>';
+h+='<textarea class="adm-msg-textarea" id="admMsgBox" maxlength="500" placeholder="כתוב הודעה חדשה למשתמש..."></textarea>';
 h+='<div style="display:flex;gap:.5rem;align-items:center;margin-top:.4rem">';
 h+='<button class="bp" style="font-size:.78rem;padding:.4rem .8rem" id="admMsgSendBtn" onclick="admSendMsg(\''+eName+'\')">📤 שלח</button>';
-h+='<button class="bs" style="font-size:.78rem;padding:.4rem .8rem" onclick="admClearMsg(\''+eName+'\')">🗑️ נקה</button>';
 h+='</div>';
 h+='<div id="admMsgStatus" style="margin-top:.5rem;padding:.5rem .8rem;border-radius:8px;font-size:.82rem;font-weight:600;display:none;text-align:center"></div>';
 h+='</div>';
@@ -5847,8 +5855,26 @@ function admSendMsg(name){
     if(d.success){
       const u=_admUsers.find(x=>x.userName===name);
       if(u)u.adminMessage=msg;
-      // Keep textarea content - this is what's currently saved for the user
+      box.value='';// Clear textarea - the message has been sent
       _admMsgStatus('✅ הודעה נשלחה ונשמרה!','var(--a)',4000);
+      // Update the "currently saved" display in real-time
+      const cur=$('admMsgCurrent');
+      const eMsg=esc(msg);
+      if(cur){
+        // Update existing display
+        const txtDiv=cur.querySelector('div:nth-child(2)');
+        if(txtDiv)txtDiv.innerHTML=eMsg;
+      }else{
+        // Create new "currently saved" display above textarea
+        const lbl=box.previousElementSibling;
+        if(lbl){
+          const newDiv=document.createElement('div');
+          newDiv.id='admMsgCurrent';
+          newDiv.style.cssText='background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:10px;padding:.55rem .75rem;margin-bottom:.6rem';
+          newDiv.innerHTML='<div style="font-size:.72rem;color:var(--g);font-weight:700;margin-bottom:.25rem;display:flex;align-items:center;gap:.35rem">📬 <span>הודעה שמורה כרגע למשתמש</span></div><div style="font-size:.85rem;color:var(--t1);line-height:1.4">'+eMsg+'</div><button class="bs" style="font-size:.7rem;padding:.2rem .5rem;margin-top:.4rem;color:var(--s);border-color:rgba(255,101,132,.3)" onclick="admClearMsg(\''+name.replace(/'/g,"\\'")+'\')">🗑️ הסר הודעה זו</button>';
+          lbl.parentNode.insertBefore(newDiv,lbl);
+        }
+      }
     }else{_admMsgStatus('❌ שגיאה: '+(d.error||'לא ניתן לשלוח'),'var(--s)',5000)}
   }).catch(e=>{
     if(btn){btn.disabled=false;btn.textContent='📤 שלח'}
@@ -5865,6 +5891,7 @@ function admClearMsg(name){
       const u=_admUsers.find(x=>x.userName===name);
       if(u)u.adminMessage='';
       const box=$('admMsgBox');if(box)box.value='';
+      const cur=$('admMsgCurrent');if(cur)cur.remove();
       _admMsgStatus('✅ הודעה נמחקה','var(--a)',4000);
     }else{_admMsgStatus('❌ שגיאה: '+(d.error||'לא ניתן למחוק'),'var(--s)',5000)}
   }).catch(()=>{_admMsgStatus('📴 שגיאת חיבור','var(--s)',5000)});
