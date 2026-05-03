@@ -310,6 +310,8 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--t1);min-hei
 .case h3{font-size:1.3rem;margin-bottom:.8rem}
 .case p{color:var(--t2);line-height:1.75;margin-bottom:.6rem}
 .qq{background:var(--card);border-radius:14px;padding:1.8rem;margin-bottom:1.2rem;border:1px solid rgba(255,255,255,.05);transition:.3s}
+.qq.qq-golden{border:2px solid rgba(255,215,0,.45);background:linear-gradient(135deg,rgba(255,215,0,.04),var(--card) 60%);box-shadow:0 0 14px rgba(255,215,0,.08)}
+.qq.qq-golden::before{content:'';position:absolute}
 .qq.qok{border-color:var(--a);background:rgba(0,201,167,.04)}
 .qq.qno{border-color:var(--s);background:rgba(255,101,132,.04)}
 .qn{font-size:.8rem;color:var(--p);font-weight:600;margin-bottom:.4rem}
@@ -876,6 +878,8 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 <div id="mv" class="map hid">
 <h2>⚓ מפת המסע</h2>
 <div class="ms" id="map-sub"></div>
+<div id="daily-goal" style="display:none"></div>
+<div id="social-ticker" style="display:none;background:linear-gradient(135deg,rgba(0,201,167,.08),rgba(108,99,255,.05));border:1px solid rgba(0,201,167,.18);border-radius:14px;padding:.55rem 1rem;margin:.4rem auto 1rem;max-width:500px;text-align:center;font-size:.82rem;color:var(--t1)"></div>
 <div id="map-rank" style="text-align:center;margin-bottom:.5rem"></div>
 <div id="xp-area" style="display:flex;flex-direction:column;align-items:center"></div>
 <div id="skill-badges"></div>
@@ -3566,17 +3570,28 @@ q:[
 ];
 
 // ============ GAME ENGINE ============
-let G={s:false,v:'w',st:null,tab:'l',sc:{},done:new Set(),ts:0,qa:{},streak:0,lastDay:null,titleShown2:false,titleShown9:false,titleShown15:false,titleShownAll:false,wrongQ:{},miHistory:[],weeklyDone:[],darkMode:false,firstUse:null,userName:'',_achShown:[],interviewUnlocked:false,adminMessage:'',adminMessageRead:false,sessionStart:null,sessions:[],stageTime:{},satisfactionRating:0,activityLog:[],lastStageVisited:null};
+let G={s:false,v:'w',st:null,tab:'l',sc:{},done:new Set(),ts:0,qa:{},streak:0,lastDay:null,titleShown2:false,titleShown9:false,titleShown15:false,titleShownAll:false,wrongQ:{},miHistory:[],weeklyDone:[],darkMode:false,firstUse:null,userName:'',_achShown:[],interviewUnlocked:false,adminMessage:'',adminMessageRead:false,sessionStart:null,sessions:[],stageTime:{},satisfactionRating:0,activityLog:[],lastStageVisited:null,combo:0,maxCombo:0,goldenQuestions:{},streakFreezes:1,lastFreezeWeek:null,reflections:{}};
 function logActivity(action,details){if(!G.activityLog)G.activityLog=[];G.activityLog.push({t:Date.now(),a:action,d:details||''});if(G.activityLog.length>100)G.activityLog=G.activityLog.slice(-100);try{sv()}catch(e){}}
 const LS='pmV7';
 function ti(el){const myTp=el.nextElementSibling;document.querySelectorAll('.tp.show').forEach(t=>{if(t===myTp)return;if(t.contains(el))return;t.classList.remove('show')});myTp.classList.toggle('show');if(myTp.classList.contains('show')){const r=el.getBoundingClientRect();const tw=320;let left=r.left+r.width/2-tw/2;if(left<10)left=10;if(left+tw>window.innerWidth-10)left=window.innerWidth-tw-10;let top=r.top-10;myTp.style.left=left+'px';myTp.style.bottom=(window.innerHeight-top)+'px';myTp.style.top='auto'}}
 document.addEventListener('click',e=>{if(!e.target.classList.contains('ib')&&!e.target.closest('.tp')){document.querySelectorAll('.tp.show').forEach(t=>t.classList.remove('show'))}});
-function ld(){const s=localStorage.getItem(LS);if(s){const p=JSON.parse(s);Object.assign(G,p);G.done=new Set(p.done||[]);if(!G.wrongQ)G.wrongQ={};if(!G.miHistory)G.miHistory=[];if(!G.weeklyDone)G.weeklyDone=[];if(!G._achShown)G._achShown=[];if(!G.userName)G.userName='';G.userName=sanitizeName(G.userName);if(!G.titleShownAll)G.titleShownAll=false;if(G.darkMode)document.body.classList.add('light');if(!G.firstUse)G.firstUse=Date.now();if(!G.sessions)G.sessions=[];if(!G.stageTime)G.stageTime={};if(G.adminMessage===undefined)G.adminMessage='';if(G.adminMessageRead===undefined)G.adminMessageRead=false;if(G.interviewUnlocked===undefined)G.interviewUnlocked=false;if(!G.activityLog)G.activityLog=[];if(G.lastStageVisited===undefined)G.lastStageVisited=null}const ni=$('nameInput');if(ni&&G.userName&&G.userName!=='אנונימי'){ni.value=G.userName}}
+function ld(){const s=localStorage.getItem(LS);if(s){const p=JSON.parse(s);Object.assign(G,p);G.done=new Set(p.done||[]);if(!G.wrongQ)G.wrongQ={};if(!G.miHistory)G.miHistory=[];if(!G.weeklyDone)G.weeklyDone=[];if(!G._achShown)G._achShown=[];if(!G.userName)G.userName='';G.userName=sanitizeName(G.userName);if(!G.titleShownAll)G.titleShownAll=false;if(G.darkMode)document.body.classList.add('light');if(!G.firstUse)G.firstUse=Date.now();if(!G.sessions)G.sessions=[];if(!G.stageTime)G.stageTime={};if(G.adminMessage===undefined)G.adminMessage='';if(G.adminMessageRead===undefined)G.adminMessageRead=false;if(G.interviewUnlocked===undefined)G.interviewUnlocked=false;if(!G.activityLog)G.activityLog=[];if(G.lastStageVisited===undefined)G.lastStageVisited=null;if(G.combo===undefined)G.combo=0;if(G.maxCombo===undefined)G.maxCombo=0;if(!G.goldenQuestions)G.goldenQuestions={};if(G.streakFreezes===undefined)G.streakFreezes=1;if(G.lastFreezeWeek===undefined)G.lastFreezeWeek=null;if(!G.reflections)G.reflections={}}const ni=$('nameInput');if(ni&&G.userName&&G.userName!=='אנונימי'){ni.value=G.userName}}
 function sv(){localStorage.setItem(LS,JSON.stringify({...G,done:[...G.done]}))}
 ld();
 
 // Streak system
-function updateStreak(){const today=new Date().toDateString();if(G.lastDay!==today){const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);if(G.lastDay===yesterday.toDateString()){G.streak++}else if(G.lastDay){G.streak=1}else{if(!G.streak)G.streak=1}G.lastDay=today;sv()}}
+function _getWeekKey(){const d=new Date();d.setHours(0,0,0,0);const day=d.getDay();const monday=new Date(d);monday.setDate(d.getDate()-(day===0?6:day-1));return monday.toDateString()}
+function updateStreak(){const today=new Date().toDateString();if(G.lastDay!==today){const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);const dayBeforeY=new Date();dayBeforeY.setDate(dayBeforeY.getDate()-2);
+  // Refresh streak freezes weekly
+  const wk=_getWeekKey();if(G.lastFreezeWeek!==wk){G.streakFreezes=1;G.lastFreezeWeek=wk}
+  if(G.lastDay===yesterday.toDateString()){G.streak++}
+  else if(G.lastDay===dayBeforeY.toDateString()&&G.streakFreezes>0){
+    // Use streak freeze - skip 1 day
+    G.streakFreezes--;G.streak++;
+    setTimeout(()=>showAchievement('🧊','הקפאת רצף!','הסטריק נשמר למרות שדילגת יום'),1500);
+  }
+  else if(G.lastDay){G.streak=1}else{if(!G.streak)G.streak=1}
+  G.lastDay=today;sv()}}
 
 // Title system
 const PM_IDS=[2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
@@ -3866,7 +3881,43 @@ $('pendingView').classList.add('hid');$('ws').classList.remove('hid');
 window.scrollTo(0,0);
 }
 function goHome(){G.v='w';$('ws').classList.remove('hid');$('mv').classList.add('hid');$('sv').classList.add('hid');$('hd').classList.add('hid');$('pb').classList.add('hid');$('ib').classList.add('hid');$('miv').classList.add('hid');$('pendingView').classList.add('hid');$('duelView').classList.add('hid');$('duelFab').classList.add('hid');if($('ab'))$('ab').classList.add('hid');window.scrollTo(0,0)}
-function mp(){G.v='m';$('ws').classList.add('hid');$('mv').classList.remove('hid');$('sv').classList.add('hid');$('hd').classList.remove('hid');$('pb').classList.remove('hid');$('ib').classList.add('hid');$('miv').classList.add('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');$('pendingView').classList.add('hid');$('duelView').classList.add('hid');uh();rg();renderTipMap();renderDailyModal();renderMapActions();renderMapRank();renderXPArea();renderSkillBadges();startTickers();updateDailyFab();_initDuelSystem();updateAdminMsgFab();checkCloudUnlocks()}
+function mp(){G.v='m';$('ws').classList.add('hid');$('mv').classList.remove('hid');$('sv').classList.add('hid');$('hd').classList.remove('hid');$('pb').classList.remove('hid');$('ib').classList.add('hid');$('miv').classList.add('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');$('pendingView').classList.add('hid');$('duelView').classList.add('hid');uh();rg();renderTipMap();renderDailyModal();renderMapActions();renderMapRank();renderXPArea();renderSkillBadges();startTickers();updateDailyFab();_initDuelSystem();updateAdminMsgFab();checkCloudUnlocks();renderSocialTicker();renderDailyGoal()}
+function renderDailyGoal(){
+  const el=$('daily-goal');if(!el)return;
+  const today=new Date().toDateString();
+  // Track today's stages completed
+  if(!G._dailyDone)G._dailyDone={};
+  if(!G._dailyDone[today]){
+    // Initialize - count what's been completed in last 24h via activityLog
+    G._dailyDone[today]=0;
+  }
+  const goal=1;// 1 stage per day = realistic baseline
+  const done=G._dailyDone[today]||0;
+  const pct=Math.min(100,Math.round(done/goal*100));
+  if(done>=goal){
+    el.innerHTML='<div style="background:linear-gradient(135deg,rgba(0,201,167,.15),rgba(108,99,255,.08));border:1px solid rgba(0,201,167,.3);border-radius:14px;padding:.65rem 1rem;margin:.4rem auto 1rem;max-width:500px;text-align:center"><div style="font-size:.85rem;color:var(--a);font-weight:700">✅ סיימת את היעד היומי! המשך לשיפור</div></div>';
+  }else{
+    el.innerHTML='<div style="background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,101,132,.05));border:1px solid rgba(255,215,0,.2);border-radius:14px;padding:.65rem 1rem;margin:.4rem auto 1rem;max-width:500px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem"><span style="font-size:.85rem;font-weight:700;color:var(--g)">🎯 יעד היום: השלם שלב אחד</span><span style="font-size:.75rem;color:var(--t2)">'+done+'/'+goal+'</span></div><div style="background:rgba(255,255,255,.05);height:6px;border-radius:3px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,#FFD700,#f59e0b);width:'+pct+'%;transition:width .5s"></div></div></div>';
+  }
+  el.style.display='block';
+}
+function renderSocialTicker(){
+  const el=$('social-ticker');if(!el||!DB_URL||!G.userName)return;
+  fetch(DB_URL+'?action=leaderboard').then(r=>r.json()).then(d=>{
+    if(!d.success||!d.data)return;
+    // Today's active count (leaderboard returns top 50 with lastLogin)
+    const today=new Date();const todayStr=today.toLocaleDateString('he-IL');
+    const activeToday=d.data.filter(u=>{const ll=String(u.lastLogin||'');return ll.includes(todayStr)}).length;
+    if(activeToday<=1){el.style.display='none';return}
+    // Top performer today
+    const todayUsers=d.data.filter(u=>{const ll=String(u.lastLogin||'');return ll.includes(todayStr)&&u.name!==G.userName});
+    let msg='';
+    if(activeToday>=2){msg='👥 <strong>'+activeToday+' משתמשים</strong> פעילים היום במערכת';
+      if(todayUsers.length>0){const top=todayUsers[0];msg+=' · 🔥 '+esc(top.name)+' מוביל היום עם '+top.score+' נק\''}
+    }
+    el.innerHTML=msg;el.style.display='block';
+  }).catch(()=>{el.style.display='none'});
+}
 function _logoClick(){const adv=$('adv');if(adv&&!adv.classList.contains('hid')){goHome();return}mp()}
 function renderContinueHero(currentId){
 const el=$('continue-hero');if(!el)return;
@@ -3874,7 +3925,15 @@ if(currentId<0){el.innerHTML='<div class="continue-hero" onclick="mp()" style="c
 const s=S.find(x=>x.id===currentId);if(!s)return;
 const doneCount=S.filter(x=>x.tg!=='בונוס - ספר'&&x.tg!=='בונוס מיוחד').filter(x=>G.done.has(x.id)).length;
 const totalCore=S.filter(x=>x.tg!=='בונוס - ספר'&&x.tg!=='בונוס מיוחד').length;
-el.innerHTML='<div class="continue-hero" onclick="ss('+s.id+')"><div class="ch-icon">'+s.ic+'</div><div class="ch-body"><div class="ch-label">▶ המשך המסע שלך ('+doneCount+'/'+totalCore+')</div><div class="ch-title">שלב '+s.id+': '+s.t+'</div><div class="ch-sub">'+s.d+'</div></div><div class="ch-arrow">←</div></div>'}
+el.innerHTML='<div class="continue-hero" onclick="ss('+s.id+')"><div class="ch-icon">'+s.ic+'</div><div class="ch-body"><div class="ch-label">▶ המשך המסע שלך ('+doneCount+'/'+totalCore+')</div><div class="ch-title">שלב '+s.id+': '+s.t+'</div><div class="ch-sub">'+s.d+'</div></div><div class="ch-arrow">←</div></div>'+
+'<div style="display:flex;gap:.5rem;justify-content:center;margin-top:.6rem;flex-wrap:wrap"><button class="bs" style="font-size:.8rem;padding:.4rem .9rem" onclick="goToRandomStage()">🎲 שלב אקראי</button>'+(G.lastStageVisited&&G.lastStageVisited!==s.id?'<button class="bs" style="font-size:.8rem;padding:.4rem .9rem" onclick="ss('+G.lastStageVisited+')">↩ חזור לאחרון שביקרתי</button>':'')+'</div>'}
+function goToRandomStage(){
+  const unfinished=S.filter(s=>!G.done.has(s.id)&&s.tg!=='בונוס - ספר'&&!(s.id===24&&!G.interviewUnlocked));
+  if(unfinished.length===0){showAchievement('🏆','סיימת הכל!','אין שלבים חדשים - חזור על שלב כדי לשפר ציון');return}
+  const random=unfinished[Math.floor(Math.random()*unfinished.length)];
+  showAchievement('🎲','שלב אקראי!',random.ic+' שלב '+random.id+': '+random.t);
+  setTimeout(()=>ss(random.id),900);
+}
 function renderMapRank(){const el=$('map-rank');if(!el)return;el.innerHTML=''}
 function updateDailyFab(){const fab=$('dailyFab');if(!fab)return;const day=getDayNumber();const done=G.weeklyDone&&G.weeklyDone.includes(day);fab.classList.toggle('has-new',!done);const dot=fab.querySelector('.fab-dot');if(dot)dot.style.display=done?'none':'block'}
 
@@ -3942,6 +4001,65 @@ el.innerHTML=h;
 
 // Achievement toast system
 let _achQueue=[];let _achShowing=false;
+// Audio feedback - subtle web-audio sounds (no external files)
+let _audioCtx=null;
+function _audio(){if(_audioCtx)return _audioCtx;try{_audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}return _audioCtx}
+function playSfx(type){
+  if(G.soundOff)return;
+  const ctx=_audio();if(!ctx)return;
+  const now=ctx.currentTime;
+  const o=ctx.createOscillator();const g=ctx.createGain();o.connect(g);g.connect(ctx.destination);
+  if(type==='correct'){o.type='sine';o.frequency.setValueAtTime(523,now);o.frequency.exponentialRampToValueAtTime(784,now+0.12);g.gain.setValueAtTime(.08,now);g.gain.exponentialRampToValueAtTime(.001,now+.18);o.start(now);o.stop(now+.2)}
+  else if(type==='wrong'){o.type='triangle';o.frequency.setValueAtTime(280,now);o.frequency.exponentialRampToValueAtTime(180,now+.15);g.gain.setValueAtTime(.06,now);g.gain.exponentialRampToValueAtTime(.001,now+.2);o.start(now);o.stop(now+.22)}
+  else if(type==='bonus'){[523,659,784,1046].forEach((f,i)=>{const oo=ctx.createOscillator();const gg=ctx.createGain();oo.connect(gg);gg.connect(ctx.destination);oo.type='sine';oo.frequency.setValueAtTime(f,now+i*.06);gg.gain.setValueAtTime(.07,now+i*.06);gg.gain.exponentialRampToValueAtTime(.001,now+i*.06+.18);oo.start(now+i*.06);oo.stop(now+i*.06+.2)})}
+  else if(type==='complete'){[392,494,587,784].forEach((f,i)=>{const oo=ctx.createOscillator();const gg=ctx.createGain();oo.connect(gg);gg.connect(ctx.destination);oo.type='triangle';oo.frequency.setValueAtTime(f,now+i*.08);gg.gain.setValueAtTime(.08,now+i*.08);gg.gain.exponentialRampToValueAtTime(.001,now+i*.08+.25);oo.start(now+i*.08);oo.stop(now+i*.08+.27)})}
+}
+function toggleSound(){G.soundOff=!G.soundOff;sv();showAchievement(G.soundOff?'🔇':'🔊',G.soundOff?'צלילים כבויים':'צלילים פעילים','');updateSoundButton()}
+function updateSoundButton(){const btn=$('btn-sound');if(btn)btn.textContent=G.soundOff?'🔇':'🔊'}
+// Easter egg detector - tracks hidden achievements
+function _checkEasterEgg(triggerType){
+  if(!G._easterEggs)G._easterEggs={};
+  const eggs={
+    nightOwl:{cond:()=>{const h=new Date().getHours();return h>=23||h<5},icon:'🦉',title:'ינשוף לילה',sub:'+25 נק׳ · למידה אחרי 23:00 או לפני 05:00'},
+    earlyBird:{cond:()=>{const h=new Date().getHours();return h>=5&&h<7},icon:'🐦',title:'ציפור מוקדמת',sub:'+25 נק׳ · התחלת היום ב-5-7 בבוקר'},
+    speedDemon:{cond:()=>G.combo>=10,icon:'💨',title:'שד מהירות',sub:'+30 נק׳ · 10 תשובות נכונות ברצף!'},
+    perfectionist:{cond:()=>{const perfects=Object.keys(G.sc).filter(k=>{const s=S.find(x=>x.id===parseInt(k));return s&&G.sc[k]===s.q.length*10});return perfects.length>=5},icon:'💎',title:'פרפקציוניסט',sub:'+50 נק׳ · 5 שלבים עם ציון מושלם!'},
+    weekWarrior:{cond:()=>(G.streak||0)>=7,icon:'⚔️',title:'לוחם השבוע',sub:'+50 נק׳ · רצף של 7 ימים רצופים!'},
+    explorer:{cond:()=>(G.activityLog||[]).filter(a=>a.a==='openGlossary').length>=10,icon:'🗺️',title:'חוקר',sub:'+20 נק׳ · פתחת מילון 10 פעמים'}
+  };
+  Object.keys(eggs).forEach(key=>{
+    if(G._easterEggs[key])return;
+    if(eggs[key].cond()){
+      G._easterEggs[key]=Date.now();
+      const bonus={nightOwl:25,earlyBird:25,speedDemon:30,perfectionist:50,weekWarrior:50,explorer:20}[key]||10;
+      G.ts+=bonus;
+      setTimeout(()=>showAchievement(eggs[key].icon,eggs[key].title+' (Easter Egg)',eggs[key].sub),1200);
+      sv();
+    }
+  });
+}
+// Reflection prompt - quick 1-line reflection after stage
+function maybeShowReflection(sid){
+  if(!G.reflections)G.reflections={};
+  if(G.reflections[sid])return;// already reflected
+  const s=S.find(x=>x.id===sid);if(!s)return;
+  const overlay=document.createElement('div');
+  overlay.className='daily-modal';
+  overlay.style.zIndex='9999';
+  overlay.onclick=function(e){if(e.target===overlay){overlay.remove()}};
+  overlay.innerHTML='<div class="daily-modal-box" style="max-width:480px"><div style="text-align:center"><div style="font-size:3rem;margin-bottom:.4rem">'+s.ic+'</div><h3 style="font-size:1.15rem;margin:0 0 .3rem;color:var(--t1)">סיימת את שלב '+sid+': '+esc(s.t)+'!</h3><p style="color:var(--t2);font-size:.9rem;margin-bottom:1rem">לפני שתמשיך — מה התובנה החזקה ביותר שלקחת איתך?</p></div><textarea id="_reflTxt" maxlength="200" placeholder="במשפט אחד... (לא חובה)" style="width:100%;min-height:75px;padding:.65rem .85rem;border-radius:10px;border:2px solid rgba(108,99,255,.25);background:rgba(15,14,23,.6);color:var(--t1);font-family:inherit;font-size:.92rem;resize:vertical;direction:rtl"></textarea><div style="display:flex;gap:.6rem;justify-content:flex-end;margin-top:.7rem"><button class="bs" onclick="this.closest(\'.daily-modal\').remove()">דלג</button><button class="bp" onclick="_saveReflection('+sid+')">📌 שמור והמשך</button></div></div>';
+  document.body.appendChild(overlay);
+  setTimeout(()=>{const txt=document.getElementById('_reflTxt');if(txt)txt.focus()},100);
+}
+function _saveReflection(sid){
+  const txt=document.getElementById('_reflTxt');
+  if(!txt)return;
+  const v=txt.value.trim();
+  if(!G.reflections)G.reflections={};
+  if(v){G.reflections[sid]={text:v.substring(0,200),t:Date.now()};G.ts+=5;showAchievement('📌','תובנה נשמרה!','+5 נק׳ · אפשר לראות ברטרוספקטיבה')}
+  sv();
+  const overlay=txt.closest('.daily-modal');if(overlay)overlay.remove();
+}
 function showAchievement(icon,title,sub){
 _achQueue.push({icon:icon,title:title,sub:sub||''});
 if(!_achShowing)_processAchQueue();
@@ -3959,7 +4077,44 @@ setTimeout(()=>{toast.classList.remove('show');setTimeout(()=>{toast.remove();_p
 }
 
 // Check for section completion achievements
+// Micro-celebration: frequent positive feedback at key counts
+function _checkMicroMilestones(stageId){
+  if(!G._achShown)G._achShown=[];
+  const totalDone=G.done.size;
+  const milestones={
+    3:{icon:'🌱',title:'מתחיל!',sub:'3 שלבים סיימת - ההרגל מתחיל'},
+    5:{icon:'⚡',title:'התחלת לרוץ!',sub:'5 שלבים - אתה בקצב טוב'},
+    7:{icon:'🎯',title:'ממוקד מטרה!',sub:'7 שלבים - יודע איפה להתמקד'},
+    12:{icon:'🚀',title:'מואץ!',sub:'12 שלבים - עברת חצי דרך'},
+    17:{icon:'🔥',title:'בועט!',sub:'17 שלבים - אגדה מתחילה'},
+    20:{icon:'💎',title:'אבן יקרה!',sub:'20 שלבים - מומחה מתפתח'}
+  };
+  if(milestones[totalDone]){
+    const key='micro_'+totalDone;
+    if(!G._achShown.includes(key)){
+      G._achShown.push(key);
+      G.ts+=15;
+      setTimeout(()=>showAchievement(milestones[totalDone].icon,milestones[totalDone].title,milestones[totalDone].sub+' · +15 נק׳'),700);
+      sv();
+    }
+  }
+  // Score milestones
+  const scoreMs=[500,1000,2000,3000,5000,7500,10000];
+  scoreMs.forEach(m=>{
+    if(G.ts>=m){
+      const key='score_'+m;
+      if(!G._achShown.includes(key)){
+        G._achShown.push(key);
+        setTimeout(()=>showAchievement('🌟','אבן דרך: '+m+' נקודות!','המשך לצבור יותר!'),1100);
+        sv();
+      }
+    }
+  });
+  // Easter egg checks
+  _checkEasterEgg('milestone');
+}
 function checkSectionAchievements(stageId){
+_checkMicroMilestones(stageId);
 if(!G._achShown)G._achShown=[];
 const stage=S.find(s=>s.id===stageId);if(!stage)return;
 const tg=stage.tg;if(tg==='בונוס - ספר')return;
@@ -4017,7 +4172,7 @@ const hdrStats=document.querySelector('.hdr-stats');
 if(hdrStats && !$('btn-glossary')){
   const btnWrap=document.createElement('div');
   btnWrap.style.cssText='display:flex;gap:.3rem;align-items:center';
-  btnWrap.innerHTML='<button id="btn-glossary" class="hdr-btn" onclick="showGlossary()" title="מילון מונחים">📖</button><button id="btn-profile" class="hdr-btn" onclick="showProfile()" title="הפרופיל שלי">📊</button><button id="btn-bug" class="hdr-bug" onclick="showBugReport()" title="דווח על בעיה">🐛</button><button id="btn-theme" class="hdr-btn" onclick="toggleTheme()" title="מצב בהיר/כהה">'+(document.body.classList.contains('light')?'☀️':'🌙')+'</button>';
+  btnWrap.innerHTML='<button id="btn-glossary" class="hdr-btn" onclick="showGlossary()" title="מילון מונחים">📖</button><button id="btn-profile" class="hdr-btn" onclick="showProfile()" title="הפרופיל שלי">📊</button><button id="btn-bug" class="hdr-bug" onclick="showBugReport()" title="דווח על בעיה">🐛</button><button id="btn-sound" class="hdr-btn" onclick="toggleSound()" title="צלילים">'+(G.soundOff?'🔇':'🔊')+'</button><button id="btn-theme" class="hdr-btn" onclick="toggleTheme()" title="מצב בהיר/כהה">'+(document.body.classList.contains('light')?'☀️':'🌙')+'</button>';
   hdrStats.insertBefore(btnWrap,hdrStats.firstChild);
 }
 if($('btn-theme')){$('btn-theme').textContent=document.body.classList.contains('light')?'☀️':'🌙'}
@@ -4123,8 +4278,15 @@ const cBadge=cDone?'tb-done':G.tab==='c'?'tb-current':'tb-empty';
 const qBadge=qDone?'tb-done':G.tab==='q'?'tb-current':'tb-empty';
 const maxPts=s.q.length*10;
 const prevScore=G.sc[s.id]||0;
-v.innerHTML=`<button class="bbtn" onclick="mp()">→ חזרה למפה</button><div class="shdr"><div class="nm">שלב ${s.id} / ${S.length}</div><h2>${s.ic} ${s.t}</h2><div class="d">${s.d}</div><div class="stage-reward"><div class="sr-item"><span>🎯</span> ${s.q.length} שאלות</div><div class="sr-item"><span>⭐</span> עד ${maxPts} נק'</div>${prevScore>0?`<div class="sr-item"><span>📊</span> שיא: ${prevScore} נק'</div>`:''}<div class="sr-item"><span>📖</span> ${s.th.length} נושאים</div></div></div><div class="tabs"><button class="tab${G.tab==='l'?' act':''}" onclick="st('l',this)"><span class="tab-badge ${lBadge}"></span>📚 לימוד</button><button class="tab${G.tab==='c'?' act':''}" onclick="st('c',this)"><span class="tab-badge ${cBadge}"></span>📋 קייס</button><button class="tab${G.tab==='q'?' act':''}" onclick="st('q',this)"><span class="tab-badge ${qBadge}"></span>❓ מבחן</button></div><div id="tc"></div>`;rt()}
-function st(t,el){G.tab=t;if(!G._tabVisits)G._tabVisits={};if(!G._tabVisits[G.st])G._tabVisits[G.st]={};G._tabVisits[G.st][t]=true;const _tn=t==='l'?'קריאה':t==='c'?'קייס':t==='q'?'מבחן':t;logActivity('switchTab','שלב '+G.st+' → '+_tn);document.querySelectorAll('.tab').forEach(x=>x.classList.remove('act'));el.classList.add('act');rt();window.scrollTo({top:0,behavior:'smooth'})}
+// Estimate time per tab based on content length
+const _lWords=s.th.reduce((a,t)=>a+(t.c||'').length,0);const _lMin=Math.max(2,Math.round(_lWords/2200));
+const _cWords=(s.cs&&s.cs.c||'').length;const _cMin=Math.max(2,Math.round(_cWords/2200));
+const _qMin=Math.max(2,Math.round(s.q.length*0.7));
+v.innerHTML=`<button class="bbtn" onclick="mp()">→ חזרה למפה</button><div class="shdr"><div class="nm">שלב ${s.id} / ${S.length}</div><h2>${s.ic} ${s.t}</h2><div class="d">${s.d}</div><div class="stage-reward"><div class="sr-item"><span>🎯</span> ${s.q.length} שאלות</div><div class="sr-item"><span>⭐</span> עד ${maxPts} נק'</div>${prevScore>0?`<div class="sr-item"><span>📊</span> שיא: ${prevScore} נק'</div>`:''}<div class="sr-item"><span>📖</span> ${s.th.length} נושאים</div><div class="sr-item"><span>⏱</span> ~${_lMin+_cMin+_qMin} דק׳ סה״כ</div></div></div><div class="tabs"><button class="tab${G.tab==='l'?' act':''}" onclick="st('l',this)"><span class="tab-badge ${lBadge}"></span>📚 לימוד <span style="font-size:.65rem;opacity:.65;font-weight:400">~${_lMin}דק'</span></button><button class="tab${G.tab==='c'?' act':''}" onclick="st('c',this)"><span class="tab-badge ${cBadge}"></span>📋 קייס <span style="font-size:.65rem;opacity:.65;font-weight:400">~${_cMin}דק'</span></button><button class="tab${G.tab==='q'?' act':''}" onclick="st('q',this)"><span class="tab-badge ${qBadge}"></span>❓ מבחן <span style="font-size:.65rem;opacity:.65;font-weight:400">~${_qMin}דק'</span></button></div><div id="tc"></div>`;rt()}
+function st(t,el){G.tab=t;if(!G._tabVisits)G._tabVisits={};if(!G._tabVisits[G.st])G._tabVisits[G.st]={};G._tabVisits[G.st][t]=true;const _tn=t==='l'?'קריאה':t==='c'?'קייס':t==='q'?'מבחן':t;logActivity('switchTab','שלב '+G.st+' → '+_tn);
+// Quiz speed timer - start when entering quiz tab
+if(t==='q'&&G.st!==null){if(!G._quizStart)G._quizStart={};if(!G._quizStart[G.st])G._quizStart[G.st]=Date.now()}
+document.querySelectorAll('.tab').forEach(x=>x.classList.remove('act'));el.classList.add('act');rt();window.scrollTo({top:0,behavior:'smooth'})}
 const learnEncourage=['🧠 מעולה! ממשיכים לנושא הבא...','💡 הידע מצטבר - כל נושא בונה על הקודם!','🚀 קדימה! עוד קצת ומסיימים את החלק התיאורטי.','⚡ את/ה בדרך הנכונה - הכל מתחבר בסוף!','🎯 נושא אחד בכל פעם - ככה בונים מומחיות!','🌊 כמו גל - כל נושא דוחף אותך קדימה!','🔥 הידע הזה ישנה את הדרך שבה אתה רואה מוצרים!','💪 PM טוב לומד כל יום - את/ה בדיוק שם!','🎖️ תצפיינים מצטיינים - ממשיכים!','🏗️ בונים שריר-שריר את המומחיות!','✨ הנושא הבא מחכה - ושווה כל רגע!','🧩 עוד חלק בפאזל - התמונה מתחילה להתגבש!'];
 const learnInsights={0:'💎 תובנת מפתח: לדעת מאיפה מתחילים ולאן הולכים - זה כבר חצי מהדרך.',1:'💎 תובנת מפתח: הבנת הארגון שאתה משרת היא הבסיס לכל מוצר רלוונטי.',2:'💎 תובנת מפתח: מוצר מצליח = פתרון כאב אמיתי × תזמון נכון × ביצוע חזק.',3:'💎 תובנת מפתח: מנהל מוצר הוא לא הבוס - הוא הדבק שמחבר טכנולוגיה, עסקים ומשתמשים.',4:'💎 תובנת מפתח: אם לא דיברת עם 5 משתמשים - אתה לא מבין את הבעיה באמת.',5:'💎 תובנת מפתח: הדרך לנצח מתחרים היא לא לחקות אותם - אלא לבחור מגרש משחק אחר.',6:'💎 תובנת מפתח: חזון בלי אסטרטגיה הוא חלום. אסטרטגיה בלי חזון היא שגרה.',7:'💎 תובנת מפתח: כל פעם שאומרים "כן" לפיצ\'ר, אומרים "לא" למשהו אחר.',8:'💎 תובנת מפתח: אג\'ייל הוא לא תהליך - זו חשיבה. הכלים משתנים, הגישה נשארת.',9:'💎 תובנת מפתח: מסמך דרישות טוב חוסך חודשים של פיתוח בכיוון הלא נכון.',10:'💎 תובנת מפתח: MVP לא אומר חצי מוצר - אומר הניסוי הכי קטן שמוכיח את ההשערה.',11:'💎 תובנת מפתח: בלי נתונים את/ה סתם עוד אחד עם דעה.',12:'💎 תובנת מפתח: חוויית משתמש טובה היא כזו שלא מרגישים אותה - הכל פשוט עובד.',13:'💎 תובנת מפתח: השקה מוצלחת מתחילה חודשים לפני כפתור ה-"פרסם".',14:'💎 תובנת מפתח: שימור הוא הצמיחה החדשה - עדיף לקוח שנשאר על 10 שבאים והולכים.',15:'💎 תובנת מפתח: אנשים לא זוכרים מה אמרת - הם זוכרים איך גרמת להם להרגיש.',16:'💎 תובנת מפתח: AI הוא לא קסם - זה מנחש מילים מתוחכם. PM שמבין את המגבלות בונה מוצרים טובים יותר מ-PM שמאמין בקסמים.',17:'💎 תובנת מפתח: הראיון הוא לא מבחן - זו שיחה. הכי חשוב: לחשוב בקול ולהראות מבנה.',18:'💎 תובנת מפתח: בסביבה ביטחונית, תקשורת ותיאום הם 70% מהעבודה. PM שלא מדבר בשפה של המפקד - לא מקדם את המוצר.',19:'💎 תובנת מפתח: בחומרה, כל החלטה היא כמעט בלתי הפיכה. בדוק פי 3, שנה פי 1.'};
 function rt(){const s=S.find(x=>x.id===G.st),c=$('tc');if(G.tab==='l'){const total=s.th.length;
@@ -4152,7 +4314,13 @@ if(i<total-1){const msg=learnEncourage[i%learnEncourage.length];sections+=`<div 
 const insight=learnInsights[s.id]||'';
 if(insight)sections+=`<div class="learn-insight"><strong>${insight}</strong></div>`;
 if(allRead){sections+=`<div class="learn-cta"><div class="lc-trophy">🏆</div><p><strong>מעולה!</strong> סיימת לקרוא את כל ${total} הנושאים! עכשיו בואו נראה את זה בפעולה.</p><button class="bp" onclick="G.tab='c';rs()">לקייס סטאדי &larr;</button></div>`}else{sections+=`<div class="learn-cta"><p>✅ סיימת את החלק התיאורטי? עכשיו בואו נראה את זה בפעולה.</p><button class="bp" onclick="G.tab='c';rs()">לקייס סטאדי &larr;</button></div>`}
-c.innerHTML=h+sections;initSecObserver()}else if(G.tab==='c'){const caseTeasers={0:'ברוכים הבאים! הכל מתחיל כאן - הכירו את המערכת ואת האנשים שילוו אתכם.',1:'מבנה זרוע הים מקרוב - שייטות, מספנים, מפת״ח ועוד.',2:'מיכל מתחילה את דרכה כמנהלת מוצר ב-TaskFlow. מה ילמד אותה היום הראשון?',3:'מיכל צריכה להגדיר את תפקידה. אבל מה בדיוק עושים כל היום?',4:'המשתמשים מתלוננים - אבל האם הם באמת יודעים מה כואב להם?',5:'המתחרים תופסים נתח שוק. איך מיכל תזהה את היתרון התחרותי?',6:'צריך חזון חדש למוצר. אבל מה ההבדל בין חלום לאסטרטגיה?',7:'100 בקשות פיצ\'רים, זמן ל-3. איך מחליטים?',8:'הצוות עובד קשה אבל לא מספיק. אולי הבעיה היא בתהליך?',9:'המפתחים לא מבינים מה לבנות. אולי הבעיה בדרישות?',10:'יש רעיון מגניב, אבל האם מישהו באמת צריך את זה?',11:'ההרגשה אומרת דבר אחד, הנתונים אומרים אחר. למי מאמינים?',12:'המשתמשים מבולבלים מהממשק. איך מתקנים בלי לשבור הכל?',13:'המוצר מוכן, אבל איך משיקים בלי לפספס?',14:'יש משתמשים חדשים, אבל הם נוטשים מהר מדי.',15:'כולם רוצים משהו אחר. איך מנהלים את כולם בלי סמכות?',16:'הדירקטוריון רוצה AI ב-TaskFlow. אבל AI למה? ובאיזה מחיר?',17:'מיכל בצד השני של השולחן - עכשיו היא המראיינת.',18:'מיכל נכנסת לעולם הביטחוני - חוקים חדשים, שפה חדשה, אתגרים חדשים.',19:'TaskFlow בונה מכשיר פיזי - וכל טעות עולה פי 100.'};const teaser=caseTeasers[s.id]||'';c.innerHTML=`${teaser?`<div class="case-teaser"><p>📖 <strong>${teaser}</strong></p></div>`:''}<div class="case"><div class="cb">📋 קייס ${s.id}</div><h3>${s.cs.t}</h3>${s.cs.c}</div><div style="text-align:center"><button class="bp" onclick="G.tab='q';rs()">למבחן &larr;</button></div>`}else{rq(s)}}
+c.innerHTML=h+sections;initSecObserver()}else if(G.tab==='c'){const caseTeasers={0:'ברוכים הבאים! הכל מתחיל כאן - הכירו את המערכת ואת האנשים שילוו אתכם.',1:'מבנה זרוע הים מקרוב - שייטות, מספנים, מפת״ח ועוד.',2:'מיכל מתחילה את דרכה כמנהלת מוצר ב-TaskFlow. מה ילמד אותה היום הראשון?',3:'מיכל צריכה להגדיר את תפקידה. אבל מה בדיוק עושים כל היום?',4:'המשתמשים מתלוננים - אבל האם הם באמת יודעים מה כואב להם?',5:'המתחרים תופסים נתח שוק. איך מיכל תזהה את היתרון התחרותי?',6:'צריך חזון חדש למוצר. אבל מה ההבדל בין חלום לאסטרטגיה?',7:'100 בקשות פיצ\'רים, זמן ל-3. איך מחליטים?',8:'הצוות עובד קשה אבל לא מספיק. אולי הבעיה היא בתהליך?',9:'המפתחים לא מבינים מה לבנות. אולי הבעיה בדרישות?',10:'יש רעיון מגניב, אבל האם מישהו באמת צריך את זה?',11:'ההרגשה אומרת דבר אחד, הנתונים אומרים אחר. למי מאמינים?',12:'המשתמשים מבולבלים מהממשק. איך מתקנים בלי לשבור הכל?',13:'המוצר מוכן, אבל איך משיקים בלי לפספס?',14:'יש משתמשים חדשים, אבל הם נוטשים מהר מדי.',15:'כולם רוצים משהו אחר. איך מנהלים את כולם בלי סמכות?',16:'הדירקטוריון רוצה AI ב-TaskFlow. אבל AI למה? ובאיזה מחיר?',17:'מיכל בצד השני של השולחן - עכשיו היא המראיינת.',18:'מיכל נכנסת לעולם הביטחוני - חוקים חדשים, שפה חדשה, אתגרים חדשים.',19:'TaskFlow בונה מכשיר פיזי - וכל טעות עולה פי 100.'};const teaser=caseTeasers[s.id]||'';// Next stage teaser
+const _sortedAll=sortStages(S.filter(x=>x.tg!=='בונוס - ספר'));
+const _myIdx=_sortedAll.findIndex(x=>x.id===s.id);
+const _next=_myIdx>=0&&_myIdx<_sortedAll.length-1?_sortedAll[_myIdx+1]:null;
+const _nextTeaser=_next&&caseTeasers[_next.id]?caseTeasers[_next.id]:'';
+const _nextHtml=_next?`<div style="margin-top:1rem;padding:.9rem 1rem;background:linear-gradient(135deg,rgba(108,99,255,.08),rgba(0,201,167,.06));border:1px dashed rgba(108,99,255,.3);border-radius:14px;text-align:center"><div style="font-size:.7rem;color:var(--p);font-weight:700;margin-bottom:.3rem">🔮 הצצה לשלב הבא</div><div style="font-weight:700;color:var(--t1);margin-bottom:.2rem">${_next.ic} שלב ${_next.id}: ${_next.t}</div>${_nextTeaser?`<div style="font-size:.82rem;color:var(--t2);font-style:italic">${_nextTeaser}</div>`:''}</div>`:'';
+c.innerHTML=`${teaser?`<div class="case-teaser"><p>📖 <strong>${teaser}</strong></p></div>`:''}<div class="case"><div class="cb">📋 קייס ${s.id}</div><h3>${s.cs.t}</h3>${s.cs.c}</div>${_nextHtml}<div style="text-align:center;margin-top:1rem"><button class="bp" onclick="G.tab='q';rs()">למבחן &larr;</button></div>`}else{rq(s)}}
 function initSecObserver(){const dots=document.querySelectorAll('.sec-dot');const secs=document.querySelectorAll('.csec[data-idx]');if(!secs.length||!dots.length)return;const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{const i=parseInt(e.target.dataset.idx);if(e.isIntersecting){dots.forEach((d,di)=>{d.classList.toggle('active',di===i);if(di<i)d.classList.add('done-dot');});if(!G._seenSec)G._seenSec={};const wasNew=!G._seenSec[G.st+'_'+i];G._seenSec[G.st+'_'+i]=true;e.target.classList.add('sec-seen');dots[i]?.classList.add('done-dot');if(wasNew){const s=S.find(x=>x.id===G.st);if(s){const total=s.th.length;const seenCount=s.th.filter((_,j)=>G._seenSec[G.st+'_'+j]).length;const pct=Math.round(seenCount/total*100);const bar=document.querySelector('.learn-xp-fill');if(bar)bar.style.width=pct+'%';const lbl=document.querySelector('.learn-xp-pts');if(lbl)lbl.textContent=pct+'% הושלם';const sub=document.querySelector('.learn-header-sub');if(sub)sub.textContent=seenCount+'/'+total+' נושאים נקראו'+(seenCount>0?' | +'+(seenCount*5)+' XP קריאה':'');if(seenCount===total){const ttl=document.querySelector('.learn-header-title');if(ttl)ttl.innerHTML='🎉 קראת הכל!'}}}}})},{threshold:0.3});secs.forEach(s=>obs.observe(s))}
 const quizFacts=['💡 ידעת? חברות שמנוהלות ע״י PM חזק צומחות פי 2 מהר יותר.','💡 ידעת? 70% מהפיצ\'רים שנבנים כמעט לא נמצאים בשימוש.','💡 ידעת? אמזון כותבים מסמך PR/FAQ לפני שמתחילים לפתח.','💡 ידעת? הפיצ\'ר הכי מבוקש הוא כמעט אף פעם לא הכי חשוב.','💡 ידעת? ספוטיפיי משתמשים ב-Squads עם PM בכל צוות.','💡 ידעת? גוגל הורגים מוצרים בקצב של אחד כל חודשיים.','💡 ידעת? מנהלי מוצר מבלים רק 15% מהזמן בכתיבת דרישות.','💡 ידעת? סטארטאפים שעושים Pivot מגייסים פי 2.5 יותר.','💡 ידעת? 42% מהסטארטאפים נכשלים כי אין צורך אמיתי במוצר.','💡 ידעת? A/B Test ממוצע צריך לרוץ לפחות שבועיים לתוצאות אמינות.'];
 const streakMsgs=['🔥 שתיים רצוף!','🔥🔥 שלוש רצוף! להבה!','🔥🔥🔥 ארבע! בלתי ניתן לעצירה!','⚡ חמש רצוף! אלוף/ה!','💎 שש! כמעט מושלם!','👑 שבע! PM מוכשר/ת!','🏆 שמונה! פרפקט מושלם!'];
@@ -4183,7 +4351,8 @@ let streak=0;s.q.forEach((q,i)=>{const shuf=getShuffledOpts(s.id,i,q);const ans=
 // Check if 50/50 was used on this question
 const hidden5050=puState.f[i]||null;
 const q5050Used=!!puState.f[i];const qHintUsed=!!puState.h[i];
-h+=`<div class="qq${ans?(ok?' qok':' qno'):''}"><div class="qn">שאלה ${i+1}/${s.q.length}</div><div class="qt">${q.q}</div><div class="opts">${shuf.order.map(origJ=>{const o=q.o[origJ];let cl='';if(ans){if(origJ===q.c)cl='ok dis ans-pop';else if(origJ===a[i]&&origJ!==q.c)cl='no dis';else cl='dis'}else if(hidden5050&&hidden5050.includes(origJ)){cl='pu-hidden'}return`<div class="opt ${cl}" onclick="sa(${s.id},${i},${origJ})">${o}</div>`}).join('')}</div>`;
+const _isGold=isGoldenQuestion(s.id,i);
+h+=`<div class="qq${ans?(ok?' qok':' qno'):''}${_isGold?' qq-golden':''}"><div class="qn">שאלה ${i+1}/${s.q.length}${_isGold?' <span style="background:linear-gradient(135deg,#FFD700,#f59e0b);color:#000;padding:.1rem .4rem;border-radius:8px;font-size:.65rem;font-weight:800;margin-right:.4rem">⚡ זהובה · x2</span>':''}</div><div class="qt">${q.q}</div><div class="opts">${shuf.order.map(origJ=>{const o=q.o[origJ];let cl='';if(ans){if(origJ===q.c)cl='ok dis ans-pop';else if(origJ===a[i]&&origJ!==q.c)cl='no dis';else cl='dis'}else if(hidden5050&&hidden5050.includes(origJ)){cl='pu-hidden'}return`<div class="opt ${cl}" onclick="sa(${s.id},${i},${origJ})">${o}</div>`}).join('')}</div>`;
 // Per-question power-up buttons
 if(!ans){const penPts=(q5050Used?5:0)+(qHintUsed?3:0);h+=`<div class="quiz-powerups"><button class="powerup-btn${q5050Used?' pu-used':''}" onclick="${q5050Used?'':'use5050('+s.id+','+i+')'}"><span class="pu-ic">🎲</span> 50/50 <span class="pu-cost">(-5 נק')</span></button><button class="powerup-btn${qHintUsed?' pu-used':''}" onclick="${qHintUsed?'':'useHint('+s.id+','+i+')'}"><span class="pu-ic">💡</span> רמז <span class="pu-cost">(-3 נק')</span></button>${penPts>0?`<span class="pu-penalty">⚠️ -${penPts} נק' מהשאלה</span>`:''}</div>`}
 // Hint display
@@ -4238,7 +4407,30 @@ G._pu[sid].h[qi]=true;
 sv();rq(s);
 showAchievement('💡','רמז נחשף!','חלק מההסבר נגלה (קנס: -3 נק\')');
 }
-function sa(sid,qi,sel){if(!G.qa[sid])G.qa[sid]={};if(G.qa[sid][qi]!==undefined)return;G.qa[sid][qi]=sel;const _s=S.find(x=>x.id===sid);const _correct=_s&&sel===_s.q[qi].c;logActivity('answer','שלב '+sid+' ש.'+(qi+1)+': '+(_correct?'✓':'✗'));if(_s&&sel!==_s.q[qi].c){trackWrongAnswer(sid,qi)}else if(_s){trackCorrectAnswer(sid,qi)}const s=S.find(x=>x.id===sid),al=Object.keys(G.qa[sid]).length===s.q.length;if(al){const ok=s.q.filter((q,i)=>G.qa[sid][i]===q.c).length;const puS=G._pu&&G._pu[sid]||{f:{},h:{}};let sc=0;s.q.forEach((q,i)=>{if(G.qa[sid][i]===q.c){let pts=10;if(puS.f&&puS.f[i])pts-=5;if(puS.h&&puS.h[i])pts-=3;sc+=Math.max(pts,0)}});const prev=G.sc[sid]||0;if(sc>prev){G.ts=G.ts-prev+sc;G.sc[sid]=sc}const wasDone=G.done.has(sid);G.done.add(sid);if(!wasDone)logActivity('completeStage','שלב '+sid+' ('+ok+'/'+s.q.length+' נכונים, '+sc+' נק\')');updateStreak();uh();if(ok/s.q.length>=.8)cf();showHook();setTimeout(()=>checkTitleCeremony(),800);setTimeout(()=>checkSectionAchievements(sid),1200)}sv();rq(s)}
+// Golden question detector - deterministic 12% chance per question
+function isGoldenQuestion(sid,qi){const seed=(sid*31+qi*7)%100;return seed<12}
+function sa(sid,qi,sel){if(!G.qa[sid])G.qa[sid]={};if(G.qa[sid][qi]!==undefined)return;G.qa[sid][qi]=sel;const _s=S.find(x=>x.id===sid);const _correct=_s&&sel===_s.q[qi].c;logActivity('answer','שלב '+sid+' ש.'+(qi+1)+': '+(_correct?'✓':'✗'));
+// Combo tracking
+if(_correct){G.combo=(G.combo||0)+1;if(G.combo>(G.maxCombo||0))G.maxCombo=G.combo;
+  playSfx('correct');
+  // Combo bonus every 3 in a row
+  if(G.combo>0&&G.combo%3===0){G.ts+=5;playSfx('bonus');showAchievement('🔥','קומבו!','+5 נקודות בונוס · '+G.combo+' נכונות ברצף')}
+  // Golden question bonus
+  if(isGoldenQuestion(sid,qi)){G.ts+=10;playSfx('bonus');setTimeout(()=>showAchievement('⚡','שאלה זהובה!','+10 נקודות בונוס · נצנוצים זהובים'),300)}
+  // Easter egg checks on activity
+  _checkEasterEgg('answer');
+}else{G.combo=0;playSfx('wrong')}
+if(_s&&sel!==_s.q[qi].c){trackWrongAnswer(sid,qi)}else if(_s){trackCorrectAnswer(sid,qi)}const s=S.find(x=>x.id===sid),al=Object.keys(G.qa[sid]).length===s.q.length;if(al){const ok=s.q.filter((q,i)=>G.qa[sid][i]===q.c).length;const puS=G._pu&&G._pu[sid]||{f:{},h:{}};let sc=0;s.q.forEach((q,i)=>{if(G.qa[sid][i]===q.c){let pts=10;if(puS.f&&puS.f[i])pts-=5;if(puS.h&&puS.h[i])pts-=3;sc+=Math.max(pts,0)}});
+// Speed bonus: if quiz completed < 20 sec/question average
+const _qStart=G._quizStart&&G._quizStart[sid];
+if(_qStart){const _dur=(Date.now()-_qStart)/1000;const _perQ=_dur/s.q.length;if(_perQ<20&&ok===s.q.length){sc+=15;setTimeout(()=>showAchievement('⚡','בונוס מהירות!','+15 נקודות · ענית מהר ובדיוק'),600)}}
+const prev=G.sc[sid]||0;if(sc>prev){G.ts=G.ts-prev+sc;G.sc[sid]=sc}const wasDone=G.done.has(sid);G.done.add(sid);if(!wasDone){logActivity('completeStage','שלב '+sid+' ('+ok+'/'+s.q.length+' נכונים, '+sc+' נק\')');playSfx('complete');
+  // Track daily goal
+  const _today=new Date().toDateString();if(!G._dailyDone)G._dailyDone={};G._dailyDone[_today]=(G._dailyDone[_today]||0)+1;
+  if(G._dailyDone[_today]===1)setTimeout(()=>showAchievement('🎯','יעד יומי הושלם!','+20 נק׳ · המשך לעוד שלב!'),1400);if(G._dailyDone[_today]===1)G.ts+=20;
+}updateStreak();uh();if(ok/s.q.length>=.8)cf();showHook();setTimeout(()=>checkTitleCeremony(),800);setTimeout(()=>checkSectionAchievements(sid),1200);
+// Reflection prompt for newly completed stage
+if(!wasDone)setTimeout(()=>maybeShowReflection(sid),1800)}sv();rq(s)}
 function rr(sid){delete G.qa[sid];if(G._pu)delete G._pu[sid];S.find(x=>x.id===sid).q.forEach((_,i)=>{delete _shuffleCache[sid+'_'+i]});sv();rq(S.find(x=>x.id===sid))}
 function cf(){const cols=['#6C63FF','#FF6584','#00C9A7','#FFD700','#FF9800','#E91E63'];for(let i=0;i<40;i++){const p=document.createElement('div');p.className='confp';p.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${cols[Math.floor(Math.random()*cols.length)]};border-radius:${Math.random()>.5?'50%':'0'};width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;animation-delay:${Math.random()*.5}s;animation-duration:${1+Math.random()*1.5}s`;document.body.appendChild(p);setTimeout(()=>p.remove(),3000)}}
 
@@ -4649,6 +4841,22 @@ function renderProfile(){
   }
 
   h+='</div>';
+  // Reflections journal
+  const _refKeys=Object.keys(G.reflections||{});
+  if(_refKeys.length>0){
+    h+='<div class="pv-card"><h3>📌 יומן תובנות אישי</h3>';
+    h+='<p style="color:var(--t2);font-size:.85rem;margin-bottom:.8rem">תובנות שכתבת בסיום שלבים</p>';
+    _refKeys.sort((a,b)=>(G.reflections[b].t||0)-(G.reflections[a].t||0)).forEach(sid=>{
+      const refl=G.reflections[sid];const stage=S.find(x=>x.id===parseInt(sid));
+      if(!refl||!stage)return;
+      const date=new Date(refl.t).toLocaleDateString('he-IL');
+      h+='<div style="background:rgba(108,99,255,.06);border-right:3px solid var(--p);border-radius:8px;padding:.6rem .85rem;margin-bottom:.5rem">';
+      h+='<div style="font-size:.75rem;color:var(--t2);margin-bottom:.2rem">'+stage.ic+' שלב '+sid+': '+esc(stage.t)+' · '+date+'</div>';
+      h+='<div style="color:var(--t1);font-size:.95rem;line-height:1.5;font-style:italic">"'+esc(refl.text)+'"</div>';
+      h+='</div>';
+    });
+    h+='</div>';
+  }
   $('pv').innerHTML=h;
 }
 
@@ -5197,7 +5405,15 @@ const INACTIVITY_MS=10*60*1000;
 let _lastActivityTime=Date.now();
 
 function startSessionTimer(){
-  G.sessionStart=Date.now();_lastActivityTime=Date.now();sv();
+  G.sessionStart=Date.now();_lastActivityTime=Date.now();
+  // First-of-the-day bonus - skips day 1, starts from day 2
+  const today=new Date().toDateString();
+  const firstDay=G.firstUse?new Date(G.firstUse).toDateString():today;
+  if(G.lastBonusDay!==today&&G.s&&firstDay!==today){
+    G.lastBonusDay=today;G.ts+=10;
+    setTimeout(()=>showAchievement('☀️','בוקר טוב!','+10 נק׳ בונוס כניסה יומית · המשך כך'),900);
+  }
+  sv();
 }
 
 function endSessionTimer(){
