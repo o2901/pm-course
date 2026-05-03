@@ -5188,13 +5188,22 @@ let _tabTimerInterval=null;
 let _tabTimerStart=null;
 let _currentTabKey=null;
 
+// Max session duration: 90 minutes (5400 sec). Beyond that = idle.
+const MAX_SESSION_SEC=5400;
+// Max single tab visit: 30 minutes (1800 sec)
+const MAX_TAB_SEC=1800;
+// Inactivity threshold: 10 minutes without interaction = end session
+const INACTIVITY_MS=10*60*1000;
+let _lastActivityTime=Date.now();
+
 function startSessionTimer(){
-  G.sessionStart=Date.now();sv();
+  G.sessionStart=Date.now();_lastActivityTime=Date.now();sv();
 }
 
 function endSessionTimer(){
   if(!G.sessionStart)return;
-  const dur=Math.round((Date.now()-G.sessionStart)/1000);
+  let dur=Math.round((Date.now()-G.sessionStart)/1000);
+  if(dur>MAX_SESSION_SEC)dur=MAX_SESSION_SEC;// Cap at max
   if(dur>5){// Only record sessions > 5 sec
     if(!G.sessions)G.sessions=[];
     G.sessions.push(dur);
@@ -5214,7 +5223,8 @@ function startTabTimer(stageId,tab){
 
 function stopTabTimer(){
   if(!_tabTimerStart||!_currentTabKey)return;
-  const elapsed=Math.round((Date.now()-_tabTimerStart)/1000);
+  let elapsed=Math.round((Date.now()-_tabTimerStart)/1000);
+  if(elapsed>MAX_TAB_SEC)elapsed=MAX_TAB_SEC;// Cap at max
   if(elapsed>2){// Only count > 2 sec
     if(!G.stageTime)G.stageTime={};
     if(!G.stageTime[_currentTabKey])G.stageTime[_currentTabKey]=0;
@@ -5223,6 +5233,21 @@ function stopTabTimer(){
   }
   _tabTimerStart=null;_currentTabKey=null;
 }
+
+// Track user activity (clicks, scrolls, key presses)
+['click','scroll','keydown','touchstart'].forEach(ev=>{
+  document.addEventListener(ev,()=>{_lastActivityTime=Date.now()},{passive:true});
+});
+
+// Check for inactivity every minute
+setInterval(()=>{
+  if(!G.sessionStart)return;
+  if(Date.now()-_lastActivityTime>INACTIVITY_MS){
+    // User idle - end session
+    stopTabTimer();
+    endSessionTimer();
+  }
+},60000);
 
 // Hook into ss() - when opening a stage, start timer for 'l' tab
 const _origSS=ss;
@@ -5248,10 +5273,17 @@ setInterval(()=>{if(G.userName&&G.s)checkCloudUnlocks()},60000);
 // beforeunload - save session
 window.addEventListener('beforeunload',()=>{stopTabTimer();endSessionTimer()});
 
-// visibilitychange - pause/resume timer
+// visibilitychange - pause/resume timer + end session on hide
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){stopTabTimer()}
-  else{if(G.v==='s'&&G.st!==null){startTabTimer(G.st,G.tab)}}
+  if(document.hidden){
+    stopTabTimer();
+    endSessionTimer();// End session when tab hidden - prevents inflated counts
+  }
+  else{
+    if(!G.sessionStart&&G.s)startSessionTimer();// Restart session on return
+    if(G.v==='s'&&G.st!==null){startTabTimer(G.st,G.tab)}
+    _lastActivityTime=Date.now();
+  }
 });
 
 // ========== SATISFACTION SURVEY ==========
@@ -5461,15 +5493,17 @@ const activeToday=todayUsers.length;
 const _nowTs=Date.now();
 const onlineUsersList=approvedUsers.filter(u=>{const la=parseInt(u.lastActivity)||0;return la>0&&(_nowTs-la)<120000});
 const onlineNow=onlineUsersList.length;
-// Aggregate stage-time data
+// Aggregate stage-time data — ONLY from users active today (to avoid inflated historical data)
 const _stageData={};const _allL=[],_allC=[],_allQ=[],_allTotal=[];
-approvedUsers.forEach(u=>{
+todayUsers.forEach(u=>{
   try{
     const stMap=JSON.parse(u.stageTimeJSON||'{}');
     const stageTotals={};
     Object.keys(stMap).forEach(k=>{
       const p=k.split('_');const sid=p[0];const tab=p[1];const dur=parseInt(stMap[k])||0;
       if(dur<=0)return;
+      // Filter out unrealistic durations (>2h on single tab = bad data)
+      if(dur>7200)return;
       if(!_stageData[sid])_stageData[sid]={l:[],c:[],q:[],total:[]};
       if(tab==='l'||tab==='c'||tab==='q'){_stageData[sid][tab].push(dur);if(tab==='l')_allL.push(dur);else if(tab==='c')_allC.push(dur);else _allQ.push(dur)}
       stageTotals[sid]=(stageTotals[sid]||0)+dur;
@@ -5488,8 +5522,8 @@ Object.keys(_stageData).forEach(sid=>{
     if(a>longAvg){longAvg=a;longStage=parseInt(sid)}
   }
 });
-// Today's average session
-const _todaySess=todayUsers.map(u=>parseInt(u.lastSessionDur)||0).filter(d=>d>0);
+// Today's average session — filter out inflated values (>90 min)
+const _todaySess=todayUsers.map(u=>parseInt(u.lastSessionDur)||0).filter(d=>d>0&&d<=5400);
 const avgSessionToday=_avg(_todaySess);
 // Helper to get stage info
 const _getStage=sid=>S.find(s=>s.id===sid);
@@ -5542,7 +5576,7 @@ if(pendingUsers.length>0){h+='<div class="adm-stat" style="border-color:rgba(255
 h+='</div>';
 
 // Time metrics section
-h+='<div style="margin-bottom:1.2rem"><h3 style="font-size:1rem;color:var(--p);margin:0 0 .7rem;display:flex;align-items:center;gap:.4rem">⏱️ מדדי זמן</h3>';
+h+='<div style="margin-bottom:1.2rem"><h3 style="font-size:1rem;color:var(--p);margin:0 0 .7rem;display:flex;align-items:center;gap:.4rem">⏱️ מדדי זמן <span style="font-size:.72rem;color:var(--t2);font-weight:500">(משתמשים פעילים היום בלבד · מסונן מערכים חריגים)</span></h3>';
 h+='<div class="adm-stats">';
 h+='<div class="adm-stat"><div class="as-val" style="font-size:1.4rem">'+(avgSessionToday>0?fmtDuration(avgSessionToday):'—')+'</div><div class="as-lbl">סשן ממוצע היום</div></div>';
 h+='<div class="adm-stat"><div class="as-val" style="font-size:1.4rem">'+(avgTotalStage>0?fmtDuration(avgTotalStage):'—')+'</div><div class="as-lbl">סיום שלב ממוצע</div></div>';
