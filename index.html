@@ -6151,7 +6151,7 @@ fetch(DB_URL+'?action=leaderboard')
 
 var _admStatFilter=null;
 function _getFilteredUsers(){
-  var approved=_admUsers.filter(function(u){return String(u.status||'')!=='pending'});
+  var approved=_admUsers.filter(function(u){var s=String(u.status||'');return s!=='pending'&&s!=='pending_admin'&&s!=='pending_email'});
   if(!_admStatFilter||_admStatFilter==='all')return approved;
   if(_admStatFilter==='today')return approved.filter(function(u){return _isToday(u.lastLogin)});
   if(_admStatFilter==='month')return approved.filter(function(u){return _isThisMonth({lastLogin:u.lastLogin})});
@@ -6176,8 +6176,11 @@ function renderAdminDashboard(){
 _admStatFilter=null;
 const users=_admUsers;
 const total=users.length;
-const pendingUsers=users.filter(u=>String(u.status||'')==='pending');
-const approvedUsers=users.filter(u=>String(u.status||'')!=='pending');
+// Pending approval = legacy 'pending' OR new 'pending_admin' (email already verified, waiting for admin)
+// NOT 'pending_email' (still waiting for user to click verification link)
+const pendingUsers=users.filter(u=>{const s=String(u.status||'');return s==='pending'||s==='pending_admin'});
+const pendingEmailUsers=users.filter(u=>String(u.status||'')==='pending_email');
+const approvedUsers=users.filter(u=>{const s=String(u.status||'');return s!=='pending'&&s!=='pending_admin'&&s!=='pending_email'});
 const todayUsers=approvedUsers.filter(u=>_isToday(u.lastLogin));
 const activeMonth=approvedUsers.filter(u=>_isThisMonth({lastLogin:u.lastLogin})).length;
 const activeToday=todayUsers.length;
