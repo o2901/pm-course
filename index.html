@@ -5011,6 +5011,37 @@ if(t==='q'&&G.st!==null){if(!G._quizStart)G._quizStart={};if(!G._quizStart[G.st]
 document.querySelectorAll('.tab').forEach(x=>x.classList.remove('act'));el.classList.add('act');rt();window.scrollTo({top:0,behavior:'smooth'})}
 const learnEncourage=['🧠 מעולה! ממשיכים לנושא הבא...','💡 הידע מצטבר - כל נושא בונה על הקודם!','🚀 קדימה! עוד קצת ומסיימים את החלק התיאורטי.','⚡ את/ה בדרך הנכונה - הכל מתחבר בסוף!','🎯 נושא אחד בכל פעם - ככה בונים מומחיות!','🌊 כמו גל - כל נושא דוחף אותך קדימה!','🔥 הידע הזה ישנה את הדרך שבה אתה רואה מוצרים!','💪 PM טוב לומד כל יום - את/ה בדיוק שם!','🎖️ תצפיינים מצטיינים - ממשיכים!','🏗️ בונים שריר-שריר את המומחיות!','✨ הנושא הבא מחכה - ושווה כל רגע!','🧩 עוד חלק בפאזל - התמונה מתחילה להתגבש!'];
 const learnInsights={0:'💎 תובנת מפתח: לדעת מאיפה מתחילים ולאן הולכים - זה כבר חצי מהדרך.',1:'💎 תובנת מפתח: הבנת הארגון שאתה משרת היא הבסיס לכל מוצר רלוונטי.',2:'💎 תובנת מפתח: מוצר מצליח = פתרון כאב אמיתי × תזמון נכון × ביצוע חזק.',3:'💎 תובנת מפתח: מנהל מוצר הוא לא הבוס - הוא הדבק שמחבר טכנולוגיה, עסקים ומשתמשים.',4:'💎 תובנת מפתח: אם לא דיברת עם 5 משתמשים - אתה לא מבין את הבעיה באמת.',5:'💎 תובנת מפתח: הדרך לנצח מתחרים היא לא לחקות אותם - אלא לבחור מגרש משחק אחר.',6:'💎 תובנת מפתח: חזון בלי אסטרטגיה הוא חלום. אסטרטגיה בלי חזון היא שגרה.',7:'💎 תובנת מפתח: כל פעם שאומרים "כן" לפיצ\'ר, אומרים "לא" למשהו אחר.',8:'💎 תובנת מפתח: אג\'ייל הוא לא תהליך - זו חשיבה. הכלים משתנים, הגישה נשארת.',9:'💎 תובנת מפתח: מסמך דרישות טוב חוסך חודשים של פיתוח בכיוון הלא נכון.',10:'💎 תובנת מפתח: MVP לא אומר חצי מוצר - אומר הניסוי הכי קטן שמוכיח את ההשערה.',11:'💎 תובנת מפתח: בלי נתונים את/ה סתם עוד אחד עם דעה.',12:'💎 תובנת מפתח: חוויית משתמש טובה היא כזו שלא מרגישים אותה - הכל פשוט עובד.',13:'💎 תובנת מפתח: השקה מוצלחת מתחילה חודשים לפני כפתור ה-"פרסם".',14:'💎 תובנת מפתח: שימור הוא הצמיחה החדשה - עדיף לקוח שנשאר על 10 שבאים והולכים.',15:'💎 תובנת מפתח: אנשים לא זוכרים מה אמרת - הם זוכרים איך גרמת להם להרגיש.',16:'💎 תובנת מפתח: AI הוא לא קסם - זה מנחש מילים מתוחכם. PM שמבין את המגבלות בונה מוצרים טובים יותר מ-PM שמאמין בקסמים.',17:'💎 תובנת מפתח: הראיון הוא לא מבחן - זו שיחה. הכי חשוב: לחשוב בקול ולהראות מבנה.',18:'💎 תובנת מפתח: בסביבה ביטחונית, תקשורת ותיאום הם 70% מהעבודה. PM שלא מדבר בשפה של המפקד - לא מקדם את המוצר.',19:'💎 תובנת מפתח: בחומרה, כל החלטה היא כמעט בלתי הפיכה. בדוק פי 3, שנה פי 1.'};
+// RTL/bidi helper: walks text nodes and wraps LTR-strong tokens (currency amounts,
+// English terms followed by units/numbers, percentages, etc.) in <bdi> so they
+// render correctly when embedded inside Hebrew RTL paragraphs.
+function _wrapBidi(root){
+  if(!root)return;
+  try{
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{
+      if(!n.parentElement)return NodeFilter.FILTER_REJECT;
+      const p=n.parentElement;
+      if(p.closest('bdi,code,.ltr,script,style,.bidi-done'))return NodeFilter.FILTER_REJECT;
+      return /[$%]\d|\d+[A-Za-z]{1,3}\b|\b[A-Za-z]{2,}\s?[$0-9]/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+    }});
+    const targets=[];let n;while(n=walker.nextNode())targets.push(n);
+    const re=/(\$[\d,\.]+[KMBkmb]?\+?|\d{1,4}[KMB]\b|\d+(?:\.\d+)?%|\d+pp\b)/g;
+    targets.forEach(t=>{
+      const text=t.nodeValue;
+      if(!re.test(text))return;
+      re.lastIndex=0;
+      const frag=document.createDocumentFragment();
+      let last=0,m;
+      while((m=re.exec(text))!==null){
+        if(m.index>last)frag.appendChild(document.createTextNode(text.slice(last,m.index)));
+        const b=document.createElement('bdi');b.textContent=m[0];frag.appendChild(b);
+        last=m.index+m[0].length;
+      }
+      if(last<text.length)frag.appendChild(document.createTextNode(text.slice(last)));
+      t.parentNode.replaceChild(frag,t);
+    });
+    root.classList&&root.classList.add('bidi-done');
+  }catch(e){}
+}
 function rt(){const s=S.find(x=>x.id===G.st),c=$('tc');if(G.tab==='l'){const total=s.th.length;
 if(!G._seenSec)G._seenSec={};
 const seenCount=s.th.filter((_,i)=>G._seenSec[s.id+'_'+i]).length;
@@ -5036,13 +5067,13 @@ if(i<total-1){const msg=learnEncourage[i%learnEncourage.length];sections+=`<div 
 const insight=learnInsights[s.id]||'';
 if(insight)sections+=`<div class="learn-insight"><strong>${insight}</strong></div>`;
 if(allRead){sections+=`<div class="learn-cta"><div class="lc-trophy">🏆</div><p><strong>מעולה!</strong> סיימת לקרוא את כל ${total} הנושאים! עכשיו בואו נראה את זה בפעולה.</p><button class="bp" onclick="G.tab='c';rs()">לקייס סטאדי &larr;</button></div>`}else{sections+=`<div class="learn-cta"><p>✅ סיימת את החלק התיאורטי? עכשיו בואו נראה את זה בפעולה.</p><button class="bp" onclick="G.tab='c';rs()">לקייס סטאדי &larr;</button></div>`}
-c.innerHTML=h+sections;initSecObserver()}else if(G.tab==='c'){const caseTeasers={0:'ברוכים הבאים! הכל מתחיל כאן - הכירו את המערכת ואת האנשים שילוו אתכם.',1:'מבנה זרוע הים מקרוב - שייטות, מספנים, מפת״ח ועוד.',2:'מיכל מתחילה את דרכה כמנהלת מוצר ב-TaskFlow. מה ילמד אותה היום הראשון?',3:'מיכל צריכה להגדיר את תפקידה. אבל מה בדיוק עושים כל היום?',4:'המשתמשים מתלוננים - אבל האם הם באמת יודעים מה כואב להם?',5:'המתחרים תופסים נתח שוק. איך מיכל תזהה את היתרון התחרותי?',6:'צריך חזון חדש למוצר. אבל מה ההבדל בין חלום לאסטרטגיה?',7:'100 בקשות פיצ\'רים, זמן ל-3. איך מחליטים?',8:'הצוות עובד קשה אבל לא מספיק. אולי הבעיה היא בתהליך?',9:'המפתחים לא מבינים מה לבנות. אולי הבעיה בדרישות?',10:'יש רעיון מגניב, אבל האם מישהו באמת צריך את זה?',11:'ההרגשה אומרת דבר אחד, הנתונים אומרים אחר. למי מאמינים?',12:'המשתמשים מבולבלים מהממשק. איך מתקנים בלי לשבור הכל?',13:'המוצר מוכן, אבל איך משיקים בלי לפספס?',14:'יש משתמשים חדשים, אבל הם נוטשים מהר מדי.',15:'כולם רוצים משהו אחר. איך מנהלים את כולם בלי סמכות?',16:'הדירקטוריון רוצה AI ב-TaskFlow. אבל AI למה? ובאיזה מחיר?',17:'מיכל בצד השני של השולחן - עכשיו היא המראיינת.',18:'מיכל נכנסת לעולם הביטחוני - חוקים חדשים, שפה חדשה, אתגרים חדשים.',19:'TaskFlow בונה מכשיר פיזי - וכל טעות עולה פי 100.'};const teaser=caseTeasers[s.id]||'';// Next stage teaser
+c.innerHTML=h+sections;_wrapBidi(c);initSecObserver()}else if(G.tab==='c'){const caseTeasers={0:'ברוכים הבאים! הכל מתחיל כאן - הכירו את המערכת ואת האנשים שילוו אתכם.',1:'מבנה זרוע הים מקרוב - שייטות, מספנים, מפת״ח ועוד.',2:'מיכל מתחילה את דרכה כמנהלת מוצר ב-TaskFlow. מה ילמד אותה היום הראשון?',3:'מיכל צריכה להגדיר את תפקידה. אבל מה בדיוק עושים כל היום?',4:'המשתמשים מתלוננים - אבל האם הם באמת יודעים מה כואב להם?',5:'המתחרים תופסים נתח שוק. איך מיכל תזהה את היתרון התחרותי?',6:'צריך חזון חדש למוצר. אבל מה ההבדל בין חלום לאסטרטגיה?',7:'100 בקשות פיצ\'רים, זמן ל-3. איך מחליטים?',8:'הצוות עובד קשה אבל לא מספיק. אולי הבעיה היא בתהליך?',9:'המפתחים לא מבינים מה לבנות. אולי הבעיה בדרישות?',10:'יש רעיון מגניב, אבל האם מישהו באמת צריך את זה?',11:'ההרגשה אומרת דבר אחד, הנתונים אומרים אחר. למי מאמינים?',12:'המשתמשים מבולבלים מהממשק. איך מתקנים בלי לשבור הכל?',13:'המוצר מוכן, אבל איך משיקים בלי לפספס?',14:'יש משתמשים חדשים, אבל הם נוטשים מהר מדי.',15:'כולם רוצים משהו אחר. איך מנהלים את כולם בלי סמכות?',16:'הדירקטוריון רוצה AI ב-TaskFlow. אבל AI למה? ובאיזה מחיר?',17:'מיכל בצד השני של השולחן - עכשיו היא המראיינת.',18:'מיכל נכנסת לעולם הביטחוני - חוקים חדשים, שפה חדשה, אתגרים חדשים.',19:'TaskFlow בונה מכשיר פיזי - וכל טעות עולה פי 100.'};const teaser=caseTeasers[s.id]||'';// Next stage teaser
 const _sortedAll=sortStages(S.filter(x=>x.tg!=='בונוס - ספר'));
 const _myIdx=_sortedAll.findIndex(x=>x.id===s.id);
 const _next=_myIdx>=0&&_myIdx<_sortedAll.length-1?_sortedAll[_myIdx+1]:null;
 const _nextTeaser=_next&&caseTeasers[_next.id]?caseTeasers[_next.id]:'';
 const _nextHtml=_next?`<div style="margin-top:1rem;padding:.9rem 1rem;background:linear-gradient(135deg,rgba(108,99,255,.08),rgba(0,201,167,.06));border:1px dashed rgba(108,99,255,.3);border-radius:14px;text-align:center"><div style="font-size:.7rem;color:var(--p);font-weight:700;margin-bottom:.3rem">🔮 הצצה לשלב הבא</div><div style="font-weight:700;color:var(--t1);margin-bottom:.2rem">${_next.ic} שלב ${_next.id}: ${_next.t}</div>${_nextTeaser?`<div style="font-size:.82rem;color:var(--t2);font-style:italic">${_nextTeaser}</div>`:''}</div>`:'';
-c.innerHTML=`${teaser?`<div class="case-teaser"><p>📖 <strong>${teaser}</strong></p></div>`:''}<div class="case"><div class="cb">📋 קייס ${s.id}</div><h3>${s.cs.t}</h3>${s.cs.c}</div>${_nextHtml}<div style="text-align:center;margin-top:1rem"><button class="bp" onclick="G.tab='q';rs()">למבחן &larr;</button></div>`}else{rq(s)}}
+c.innerHTML=`${teaser?`<div class="case-teaser"><p>📖 <strong>${teaser}</strong></p></div>`:''}<div class="case"><div class="cb">📋 קייס ${s.id}</div><h3>${s.cs.t}</h3>${s.cs.c}</div>${_nextHtml}<div style="text-align:center;margin-top:1rem"><button class="bp" onclick="G.tab='q';rs()">למבחן &larr;</button></div>`;_wrapBidi(c)}else{rq(s)}}
 function initSecObserver(){const dots=document.querySelectorAll('.sec-dot');const secs=document.querySelectorAll('.csec[data-idx]');if(!secs.length||!dots.length)return;const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{const i=parseInt(e.target.dataset.idx);if(e.isIntersecting){dots.forEach((d,di)=>{d.classList.toggle('active',di===i);if(di<i)d.classList.add('done-dot');});if(!G._seenSec)G._seenSec={};const wasNew=!G._seenSec[G.st+'_'+i];G._seenSec[G.st+'_'+i]=true;e.target.classList.add('sec-seen');dots[i]?.classList.add('done-dot');if(wasNew){const s=S.find(x=>x.id===G.st);if(s){const total=s.th.length;const seenCount=s.th.filter((_,j)=>G._seenSec[G.st+'_'+j]).length;const pct=Math.round(seenCount/total*100);const bar=document.querySelector('.learn-xp-fill');if(bar)bar.style.width=pct+'%';const lbl=document.querySelector('.learn-xp-pts');if(lbl)lbl.textContent=pct+'% הושלם';const sub=document.querySelector('.learn-header-sub');if(sub)sub.textContent=seenCount+'/'+total+' נושאים נקראו'+(seenCount>0?' | +'+(seenCount*5)+' XP קריאה':'');if(seenCount===total){const ttl=document.querySelector('.learn-header-title');if(ttl)ttl.innerHTML='🎉 קראת הכל!'}}}}})},{threshold:0.3});secs.forEach(s=>obs.observe(s))}
 const quizFacts=['💡 ידעת? חברות שמנוהלות ע״י PM חזק צומחות פי 2 מהר יותר.','💡 ידעת? 70% מהפיצ\'רים שנבנים כמעט לא נמצאים בשימוש.','💡 ידעת? אמזון כותבים מסמך PR/FAQ לפני שמתחילים לפתח.','💡 ידעת? הפיצ\'ר הכי מבוקש הוא כמעט אף פעם לא הכי חשוב.','💡 ידעת? ספוטיפיי משתמשים ב-Squads עם PM בכל צוות.','💡 ידעת? גוגל הורגים מוצרים בקצב של אחד כל חודשיים.','💡 ידעת? מנהלי מוצר מבלים רק 15% מהזמן בכתיבת דרישות.','💡 ידעת? סטארטאפים שעושים Pivot מגייסים פי 2.5 יותר.','💡 ידעת? 42% מהסטארטאפים נכשלים כי אין צורך אמיתי במוצר.','💡 ידעת? A/B Test ממוצע צריך לרוץ לפחות שבועיים לתוצאות אמינות.'];
 const streakMsgs=['🔥 שתיים רצוף!','🔥🔥 שלוש רצוף! להבה!','🔥🔥🔥 ארבע! בלתי ניתן לעצירה!','⚡ חמש רצוף! אלוף/ה!','💎 שש! כמעט מושלם!','👑 שבע! PM מוכשר/ת!','🏆 שמונה! פרפקט מושלם!'];
@@ -5099,7 +5130,7 @@ const nextLabel=nextStage?'לשלב הבא &larr;':'';
 h+=`<div class="qres" id="quizResult"><div class="grade-badge ${gradeClass}">${grade}</div><div class="sc">${fpct}%</div><div class="sl">${gradeNames[grade]}</div><div class="res-stats"><div class="res-stat"><div class="rs-val">${ok}/${s.q.length}</div><div class="rs-lbl">תשובות נכונות</div></div><div class="res-stat"><div class="rs-val">${sc}</div><div class="rs-lbl">נקודות</div></div><div class="res-stat"><div class="rs-val">${maxStreak}</div><div class="rs-lbl">רצף מקסימלי</div></div></div>${bonus}${penaltyMsg}${improved}<div style="display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1rem">${nextLabel?`<button class="bp" onclick="ss(${nextStage.id})">${nextLabel}</button>`:''}<button class="bs" onclick="rr(${s.id})">נסו שוב</button> <button class="bs" onclick="mp()">למפה</button></div></div>`}
 // Always add navigation buttons at the bottom (even if quiz incomplete)
 if(!al){h+=`<div style="display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1.5rem;padding:1rem 0"><button class="bs" onclick="rr(${s.id})">🔄 התחל מחדש</button> <button class="bs" onclick="mp()">→ חזרה למפה</button></div>`}
-c.innerHTML=h;
+c.innerHTML=h;_wrapBidi(c);
 if(al){setTimeout(()=>{const r=$('quizResult');if(r)r.scrollIntoView({behavior:'smooth',block:'center'})},300)}}
 // ========== POWER-UPS ==========
 function use5050(sid,qi){
