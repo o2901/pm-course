@@ -4050,6 +4050,11 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
     const status=String(d.data.status||'');
     const storedEmail=String(d.data.email||'').toLowerCase();
     const emailVerified=String(d.data.emailVerified||'')==='true';
+    // Blocked: account deactivated by user — block re-login
+    if(status==='deactivated'){
+      showModal('🚫','החשבון בוטל','חשבון זה בוטל. אם זו טעות — פנו למנהל המערכת לחיבור מחדש.','הבנתי');
+      return;
+    }
     // Security: existing user typed an email that doesn't match the stored one — reject
     if(storedEmail && email && storedEmail!==email){
       showModal('🔒','המייל לא תואם','שם המשתמש הזה כבר רשום עם כתובת מייל אחרת. נא להזין את כתובת המייל שאיתה נרשמת במקור, או לבחור שם משתמש אחר.','הבנתי');
@@ -5333,7 +5338,30 @@ function renderProfile(){
     });
     h+='</div>';
   }
+
+  // Account deactivation block (soft delete) — always at the bottom
+  h+='<div class="pv-card" style="border-color:rgba(255,101,132,.25);background:rgba(255,101,132,.04);margin-top:1.5rem"><h3 style="color:var(--s)">⚠️ ניהול חשבון</h3>';
+  h+='<p style="color:var(--t2);font-size:.85rem;line-height:1.6;margin:0 0 .8rem">אם תרצה/י להפסיק להשתמש במערכת — תוכל/י לבטל את החשבון. הגישה תיחסם, לא יישלחו תזכורות, והנתונים יישמרו לצורך גיבוי בלבד. ניתן לבקש מנהל המערכת להפעיל מחדש.</p>';
+  h+='<button class="bs" style="font-size:.85rem;background:rgba(255,101,132,.1);color:var(--s);border-color:rgba(255,101,132,.3)" onclick="_confirmDeactivateAccount()">🚫 בטל את החשבון שלי</button>';
+  h+='</div>';
+
   $('pv').innerHTML=h;
+}
+
+function _confirmDeactivateAccount(){
+  if(!G.userName)return;
+  if(!confirm('האם את/ה בטוח/ה שברצונך לבטל את החשבון "'+G.userName+'"?\n\n• הגישה לחשבון תיחסם\n• לא יישלחו עוד תזכורות במייל\n• הנתונים יישמרו (לא יימחקו)\n• ניתן לבקש ממנהל המערכת לחדש את הגישה\n\nלחיצה על אישור תנתק אותך ותחסום את הכניסה הבאה.'))return;
+  if(!DB_URL){showModal('📴','אין חיבור','לא ניתן לבטל חשבון במצב לא־מקוון.','הבנתי');return}
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'deactivateAccount',userName:G.userName}),headers:{'Content-Type':'text/plain'}})
+  .then(r=>r.json()).then(d=>{
+    if(d.success){
+      try{localStorage.removeItem('pm-game-state')}catch(e){}
+      showModal('👋','החשבון בוטל','החשבון בוטל בהצלחה. אם תרצה/י להתחבר מחדש — פנה/י למנהל המערכת.','הבנתי');
+      setTimeout(()=>{location.reload()},1500);
+    }else{
+      showModal('⚠️','שגיאה',d.error||'לא ניתן לבטל את החשבון. נסו שוב מאוחר יותר.','הבנתי');
+    }
+  }).catch(()=>{showModal('📴','שגיאת חיבור','לא ניתן לבטל את החשבון כרגע.','הבנתי')});
 }
 
 function buildRadarSVG(labels,values){
@@ -5705,7 +5733,8 @@ function syncToCloud(){
 function _doSync(){
   const t=getTitle();
   const lastSess=G.sessions&&G.sessions.length>0?G.sessions[G.sessions.length-1]:0;
-  const avgSess=G.sessions&&G.sessions.length>0?Math.round(G.sessions.reduce((a,b)=>a+b,0)/G.sessions.length):0;
+  // Average is meaningful only with 2+ sessions. For 0 or 1 session, send 0 (admin shows "—").
+  const avgSess=G.sessions&&G.sessions.length>=2?Math.round(G.sessions.reduce((a,b)=>a+b,0)/G.sessions.length):0;
   const payload={
     action:'save',
     userName:G.userName,
@@ -5720,7 +5749,13 @@ function _doSync(){
     avgSessionDur:avgSess,
     stageTimeJSON:JSON.stringify(G.stageTime||{}),
     activityLogJSON:JSON.stringify((G.activityLog||[]).slice(-50)),
-    lastStageVisited:G.lastStageVisited||'',
+    lastStageVisited:(function(){
+      // Send a rich label like "5: רכיבי המוצר" so the reminder email shows a meaningful stage name.
+      // parseInt() of "5: ..." still returns 5, so admin lookups (S.find by id) keep working.
+      if(!G.lastStageVisited)return'';
+      const _st=S.find(x=>x.id===parseInt(G.lastStageVisited));
+      return _st?(G.lastStageVisited+': '+_st.t):String(G.lastStageVisited);
+    })(),
     sessionStart:G.sessionStart||0
   };
   fetch(DB_URL,{method:'POST',body:JSON.stringify(payload),headers:{'Content-Type':'text/plain'}})
@@ -6591,7 +6626,8 @@ setTimeout(function(){_admLoadEmailLog(u.userName)},50);
 
 // Session time stats
 h+='<div class="am-stat"><span class="am-k">סשן אחרון</span><span class="am-v">'+(lastSessDur>0?fmtDuration(lastSessDur):'—')+'</span></div>';
-h+='<div class="am-stat"><span class="am-k">ממוצע סשן</span><span class="am-v">'+(avgSessDur>0?fmtDuration(avgSessDur):'—')+'</span></div>';
+// Average only shown for users with 2+ sessions (avgSessDur===0 = insufficient data)
+h+='<div class="am-stat"><span class="am-k">ממוצע סשן</span><span class="am-v" title="ממוצע מחושב רק לאחר 2+ סשנים">'+(avgSessDur>0?fmtDuration(avgSessDur):'<span style="color:var(--t2);font-size:.78rem">— (נדרשים 2+ סשנים)</span>')+'</span></div>';
 
 // Satisfaction rating
 var uSat=parseInt(u.satisfaction)||0;
@@ -6641,13 +6677,14 @@ if(stKeys.length>0){
   h+='</div>';
 }
 
-// Activity log
+// Activity log — show last 10 by default (was constrained to ~3 visible due to max-height:250px)
 if(activityLog.length>0){
-  h+='<div style="margin-top:1rem"><strong style="color:var(--p);font-size:.9rem">📊 יומן פעילות ('+activityLog.length+' פעולות אחרונות):</strong>';
-  h+='<div style="max-height:250px;overflow-y:auto;margin-top:.5rem;border-radius:10px;background:rgba(108,99,255,.05);padding:.5rem">';
+  const _shown=Math.min(10,activityLog.length);
+  h+='<div style="margin-top:1rem"><strong style="color:var(--p);font-size:.9rem">📊 יומן פעילות (10 אחרונות מתוך '+activityLog.length+'):</strong>';
+  h+='<div style="max-height:480px;overflow-y:auto;margin-top:.5rem;border-radius:10px;background:rgba(108,99,255,.05);padding:.5rem">';
   const actIcons={login:'🚪',openStage:'📖',switchTab:'🔀',answer:'✍️',completeStage:'🏆',openGlossary:'📚',openProfile:'👤',readAdminMsg:'💬',duelAccept:'⚔️',duelDecline:'🚫',endSession:'⏱️'};
   const actNames={login:'התחברות',openStage:'פתח שלב',switchTab:'מעבר טאב',answer:'תשובה',completeStage:'סיים שלב',openGlossary:'פתח מילון',openProfile:'פרופיל',readAdminMsg:'קרא הודעה',duelAccept:'קיבל דו-קרב',duelDecline:'דחה דו-קרב',endSession:'סיים סשן'};
-  [...activityLog].reverse().forEach(act=>{
+  [...activityLog].reverse().slice(0,10).forEach(act=>{
     const tm=new Date(act.t);const tStr=tm.toLocaleString('he-IL',{timeZone:'Asia/Jerusalem'});
     h+='<div style="font-size:.75rem;padding:.3rem .4rem;border-bottom:1px solid rgba(108,99,255,.08);display:flex;gap:.5rem;align-items:center">';
     h+='<span style="font-size:1rem">'+(actIcons[act.a]||'•')+'</span>';
