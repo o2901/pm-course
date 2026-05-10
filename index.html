@@ -821,6 +821,8 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 <div style="margin:.8rem 0;display:flex;flex-direction:column;align-items:center;gap:.4rem;animation:fiu .8s ease .45s both">
 <input id="nameInput" type="text" maxlength="20" placeholder="שם משתמש" style="padding:.7rem 1.2rem;border-radius:12px;border:2px solid rgba(108,99,255,.3);background:rgba(15,14,23,.8);color:var(--tx);font-size:1rem;text-align:center;width:280px;font-family:inherit;transition:.3s;backdrop-filter:blur(8px)" onfocus="this.style.borderColor='var(--p)';this.style.boxShadow='0 0 20px rgba(108,99,255,.2)'" onblur="this.style.borderColor='rgba(108,99,255,.3)';this.style.boxShadow='none'" oninput="updateNamePreview()">
 <div id="namePreview" style="font-size:.75rem;color:var(--t2);min-height:1.1em"></div>
+<input id="emailInput" type="email" maxlength="80" placeholder="אימייל (לקבלת תזכורות)" style="padding:.7rem 1.2rem;border-radius:12px;border:2px solid rgba(108,99,255,.3);background:rgba(15,14,23,.8);color:var(--tx);font-size:1rem;text-align:center;width:280px;font-family:inherit;transition:.3s;backdrop-filter:blur(8px);direction:ltr" onfocus="this.style.borderColor='var(--p)';this.style.boxShadow='0 0 20px rgba(108,99,255,.2)'" onblur="this.style.borderColor='rgba(108,99,255,.3)';this.style.boxShadow='none'">
+<label style="display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--t2);cursor:pointer;max-width:280px;line-height:1.4"><input id="emailConsent" type="checkbox" checked style="width:18px;height:18px;accent-color:var(--p);cursor:pointer;flex-shrink:0">אני מסכים/ה לקבל תזכורות במייל אם לא אכנס</label>
 </div>
 
 <button class="btn-go" onclick="go()">התחל את המסע &larr;</button>
@@ -4022,12 +4024,20 @@ const raw=nameEl?nameEl.value.trim():'';
 if(!raw||raw.length<2){showModal('✍️','נדרש שם משתמש','נא להזין שם משתמש (לפחות 2 תווים) כדי להתחיל.','הבנתי');if(nameEl)nameEl.focus();return}
 const name=sanitizeName(raw);
 if(!name||name.length<2){showModal('⚠️','שם לא תקין','השם מכיל תווים לא מורשים. נסו שם אחר.','הבנתי');return}
+// Capture email + consent (optional for existing users, validated for new users in _tryLogin)
+const emEl=$('emailInput');const csEl=$('emailConsent');
+const email=emEl?emEl.value.trim().toLowerCase():'';
+const consent=csEl?!!csEl.checked:false;
+if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showModal('📧','מייל לא תקין','כתובת המייל שהזנת לא נראית תקינה. ודאו שיש @ ונקודה.','הבנתי');if(emEl)emEl.focus();return}
 // Check cloud for existing user
-_tryLogin(name);
+_tryLogin(name,email,consent);
 }
 let _pendingPollTimer=null;
 let _pendingName='';
-function _tryLogin(name){
+let _pendingEmail='';
+let _pendingConsent=false;
+function _tryLogin(name,email,consent){
+email=email||'';consent=!!consent;
 const btn=document.querySelector('.btn-go');
 if(btn){btn.disabled=true;btn.textContent='⏳ בודק...'}
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),headers:{'Content-Type':'text/plain'}})
@@ -4063,13 +4073,29 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
     if(d.data.interviewUnlocked==='true')G.interviewUnlocked=true;
     if(parseInt(d.data.satisfaction)>0)G.satisfactionRating=parseInt(d.data.satisfaction);
     if(d.data.adminMessage&&d.data.adminMessage.trim()){if(d.data.adminMessage!==G.adminMessage){G.adminMessage=d.data.adminMessage;G.adminMessageRead=false}}else{G.adminMessage='';G.adminMessageRead=true}
+    // Cache email status for popup logic
+    G.cloudEmail=String(d.data.email||'');
+    G.cloudEmailConsent=String(d.data.emailConsent||'')==='true';
+    // If existing user typed a NEW email and we don't have one stored — save it
+    if(email && !G.cloudEmail){
+      _saveEmailToCloud(name,email,consent);
+      G.cloudEmail=email;G.cloudEmailConsent=consent;
+    }
     G.s=true;if(!G.firstUse)G.firstUse=Date.now();updateStreak();sv();updateLeaderboard();mp();
     logActivity('login',isNewUser?'first':'return');
     if(isNewUser){showAchievement('👋','ברוך הבא!',name)}else{showAchievement('👋','ברוך שובך!',name)}
     updateAdminMsgFab();
+    // Existing user without email on file — prompt them (once per session, can decline)
+    if(!G.cloudEmail && !sessionStorage.getItem('pmEmailAsked')){
+      sessionStorage.setItem('pmEmailAsked','1');
+      setTimeout(_promptAddEmail,2500);
+    }
   }else{
-    // New user — request approval
-    _requestApproval(name);
+    // New user — require email + consent
+    if(!email){showModal('📧','נדרש מייל לרישום','כדי להירשם לקורס נא להזין כתובת מייל. נשתמש בה רק לתזכורות אם לא תיכנסו זמן רב.','הבנתי');const btn=document.querySelector('.btn-go');if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}const emEl=$('emailInput');if(emEl)emEl.focus();return}
+    if(!consent){showModal('☑️','נדרש אישור','כדי להירשם נא לסמן את הסכמתכם לקבל תזכורות במייל. תוכלו לבטל בכל עת.','הבנתי');const btn=document.querySelector('.btn-go');if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}return}
+    _pendingEmail=email;_pendingConsent=consent;
+    _requestApproval(name,email,consent);
   }
 })
 .catch(()=>{
@@ -4083,10 +4109,34 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
   G.userName=name;G.s=true;if(!G.firstUse)G.firstUse=Date.now();updateStreak();sv();updateLeaderboard();mp();
 });
 }
-function _requestApproval(name){
+function _saveEmailToCloud(name,email,consent){
+if(!DB_URL||!name||!email)return;
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'setEmail',userName:name,email:email,emailConsent:!!consent}),headers:{'Content-Type':'text/plain'}}).catch(()=>{});
+}
+function _promptAddEmail(){
+if(!G.userName||G.cloudEmail)return;
+const ov=document.createElement('div');
+ov.className='daily-modal';ov.id='emailPromptOverlay';
+ov.onclick=function(e){if(e.target===ov){ov.remove()}};
+ov.innerHTML='<div class="daily-modal-box" style="text-align:center;max-width:420px;direction:rtl"><div style="font-size:3rem;margin-bottom:.5rem">📧</div><h3 style="font-size:1.2rem;margin:0 0 .6rem;color:var(--t1)">הוסף מייל לתזכורות</h3><p style="color:var(--t2);font-size:.9rem;line-height:1.6;margin:0 0 1rem">נשלח לך תזכורת ידידותית אם תיעדר/י 24+ שעות. תוכל/י להסיר את עצמך בכל עת מהמייל.</p><input id="pmAddEmail" type="email" placeholder="example@gmail.com" style="width:100%;padding:.7rem;border-radius:10px;border:2px solid rgba(108,99,255,.3);background:rgba(15,14,23,.8);color:var(--tx);font-family:inherit;direction:ltr;text-align:center;font-size:1rem" maxlength="80"><label style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--t2);cursor:pointer;margin-top:.8rem;justify-content:center"><input id="pmAddConsent" type="checkbox" checked style="width:18px;height:18px;accent-color:var(--p)">מסכים/ה לקבל תזכורות</label><div style="display:flex;gap:.5rem;margin-top:1.1rem;justify-content:center"><button class="bs" onclick="document.getElementById(\'emailPromptOverlay\').remove()">דלג</button><button class="bp" onclick="_submitAddEmail()">שמור מייל</button></div></div>';
+document.body.appendChild(ov);
+const inp=$('pmAddEmail');if(inp)setTimeout(()=>inp.focus(),100);
+}
+function _submitAddEmail(){
+const e=$('pmAddEmail');const c=$('pmAddConsent');
+const email=e?e.value.trim().toLowerCase():'';
+const consent=c?!!c.checked:false;
+if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showModal('📧','מייל לא תקין','אנא הזינו כתובת מייל תקינה.','הבנתי');return}
+if(!consent){showModal('☑️','נדרש אישור','אנא סמנו את הסכמתכם לקבל תזכורות.','הבנתי');return}
+_saveEmailToCloud(G.userName,email,consent);
+G.cloudEmail=email;G.cloudEmailConsent=consent;
+const ov=$('emailPromptOverlay');if(ov)ov.remove();
+showAchievement('✅','המייל נשמר','נשלח לך תזכורות אם תיעדר 24+ שעות');
+}
+function _requestApproval(name,email,consent){
 const btn=document.querySelector('.btn-go');
 if(btn){btn.disabled=true;btn.textContent='⏳ שולח בקשה...'}
-fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'requestApproval',userName:name}),headers:{'Content-Type':'text/plain'}})
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'requestApproval',userName:name,email:email||'',emailConsent:!!consent}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json())
 .then(d=>{
   if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}
@@ -4121,7 +4171,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:_pending
     if(status==='approved'||status===''){
       if(_pendingPollTimer){clearInterval(_pendingPollTimer);_pendingPollTimer=null}
       $('pendingView').classList.add('hid');
-      _tryLogin(_pendingName);
+      _tryLogin(_pendingName,_pendingEmail,_pendingConsent);
       return;
     }
   }
@@ -6046,6 +6096,11 @@ h+='<div class="adm-stat" style="border-color:rgba(0,201,167,.4);background:rgba
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'core\')"><div class="as-val">'+completedAll+'</div><div class="as-lbl">סיימו ליבה</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'rated\')"><div class="as-val" style="font-size:1.6rem">'+avgSat+' '+satStars+'</div><div class="as-lbl">שביעות רצון ('+ratedUsers.length+')</div></div>';
 if(pendingUsers.length>0){h+='<div class="adm-stat" style="border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.08)"><div class="as-val" style="color:var(--g)">'+pendingUsers.length+'</div><div class="as-lbl" style="color:var(--g)">ממתינים לאישור</div></div>';}
+// Email/Reminders KPIs
+const usersWithEmail=approvedUsers.filter(u=>String(u.email||'')&&String(u.emailConsent||'')==='true').length;
+const remindedActive=approvedUsers.filter(u=>(parseInt(u.reminderCount)||0)>0).length;
+h+='<div class="adm-stat" style="border-color:rgba(108,99,255,.4);background:rgba(108,99,255,.08)"><div class="as-val" style="color:var(--p)">📧 '+usersWithEmail+'</div><div class="as-lbl">מנויים למייל</div></div>';
+h+='<div class="adm-stat" style="border-color:rgba(255,193,7,.4);background:rgba(255,193,7,.08)"><div class="as-val" style="color:#FFC107">🔔 '+remindedActive+'</div><div class="as-lbl">בלולאת תזכורות</div></div>';
 h+='</div>';
 
 // Time metrics section
@@ -6136,7 +6191,7 @@ const sorted=[...users].sort((a,b)=>{
   if(va<vb)return -1*_admSort.dir;if(va>vb)return 1*_admSort.dir;return 0;
 });
 const arrow=_admSort.dir===1?' ▲':' ▼';
-const cols=[{k:'userName',l:'שם'},{k:'score',l:'ניקוד'},{k:'stagesCount',l:'שלבים'},{k:'title',l:'דרגה'},{k:'streak',l:'סטריק'},{k:'lastLogin',l:'כניסה אחרונה'},{k:'firstUse',l:'הרשמה'},{k:'_act',l:''}];
+const cols=[{k:'userName',l:'שם'},{k:'email',l:'מייל'},{k:'score',l:'ניקוד'},{k:'stagesCount',l:'שלבים'},{k:'title',l:'דרגה'},{k:'streak',l:'סטריק'},{k:'lastLogin',l:'כניסה אחרונה'},{k:'reminderCount',l:'תזכורות'},{k:'firstUse',l:'הרשמה'},{k:'_act',l:''}];
 
 let t='<table class="adm-tbl"><thead><tr>';
 cols.forEach(c=>{
@@ -6145,17 +6200,33 @@ cols.forEach(c=>{
 });
 t+='</tr></thead><tbody>';
 
-if(sorted.length===0){t+='<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--t2)">לא נמצאו משתמשים</td></tr>'}
+if(sorted.length===0){t+='<tr><td colspan="10" style="text-align:center;padding:2rem;color:var(--t2)">לא נמצאו משתמשים</td></tr>'}
 sorted.forEach((u,i)=>{
   const n=esc(u.userName||'').replace(/'/g,"\\'");
   const _la=parseInt(u.lastActivity)||0;const _isOnline=_la>0&&(Date.now()-_la)<120000;
+  const _email=String(u.email||'');
+  const _consent=String(u.emailConsent||'')==='true';
+  const _rc=parseInt(u.reminderCount)||0;
+  let _emailCell='';
+  if(!_email){_emailCell='<span style="color:var(--t2);font-size:.7rem">—</span>'}
+  else{
+    const _icon=_consent?'<span title="מסכים לקבל מיילים">📧</span>':'<span title="ביטל הסכמה" style="opacity:.5">🚫</span>';
+    _emailCell=_icon+' <span style="font-size:.7rem;direction:ltr;display:inline-block;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle">'+esc(_email)+'</span>';
+  }
+  let _rcCell='—';
+  if(_rc>0){
+    const _label=_rc===1?'24h':_rc===2?'48h':'שבועי×'+(_rc-2);
+    _rcCell='<span style="background:rgba(255,193,7,0.15);color:#FFC107;padding:2px 6px;border-radius:8px;font-size:.7rem">'+_rc+' ('+_label+')</span>';
+  }
   t+='<tr style="cursor:pointer" onclick="showUserDetail(\''+n+'\')">';
   t+='<td style="font-weight:600;color:var(--t1)">'+(_isOnline?'<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#00C9A7;box-shadow:0 0 6px rgba(0,201,167,.7);margin-left:6px" title="מחובר עכשיו"></span>':'')+esc(u.userName)+'</td>';
+  t+='<td>'+_emailCell+'</td>';
   t+='<td>'+(parseInt(u.score)||0)+'</td>';
   t+='<td>'+(parseInt(u.stagesCount)||0)+'/51</td>';
   t+='<td style="font-size:.76rem">'+esc(u.title||'—')+'</td>';
   t+='<td>'+(parseInt(u.streak)>0?'🔥'+u.streak:'—')+'</td>';
   t+='<td style="font-size:.74rem">'+esc(u.lastLogin||'—')+'</td>';
+  t+='<td>'+_rcCell+'</td>';
   t+='<td style="font-size:.74rem">'+esc(u.firstUse||'—')+'</td>';
   t+='<td><button class="adm-del" onclick="event.stopPropagation();admDelete(\''+n+'\')">🗑️</button></td>';
   t+='</tr>';
@@ -6164,6 +6235,35 @@ t+='</tbody></table>';
 return t;
 }
 
+function _admLoadEmailLog(userName){
+  if(!DB_URL||!userName)return;
+  const safeId='emLog_'+esc(userName).replace(/'/g,"\\'");
+  const el=document.getElementById(safeId);
+  if(!el)return;
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getEmailLog',userName:userName}),headers:{'Content-Type':'text/plain'}})
+  .then(r=>r.json()).then(d=>{
+    const target=document.getElementById(safeId);if(!target)return;
+    if(!d.success||!d.log||d.log.length===0){
+      target.innerHTML='<div style="color:var(--t2);font-size:.75rem">📭 לא נשלחו מיילים</div>';
+      return;
+    }
+    let html='<div style="margin-top:.4rem"><div style="font-size:.78rem;color:var(--p);font-weight:600;margin-bottom:.4rem;text-align:right">📬 היסטוריית מיילים ('+d.log.length+')</div>';
+    html+='<div style="max-height:180px;overflow-y:auto;text-align:right">';
+    d.log.forEach(function(entry){
+      const typeIcon=entry.type==='welcome'?'⚓':'🔔';
+      const typeLabel=entry.type==='welcome'?'ברוך הבא':'תזכורת '+(entry.stage===1?'24h':entry.stage===2?'48h':'שבועית');
+      const returned=entry.clickedReturn?'<span style="background:rgba(0,201,167,.15);color:#00C9A7;padding:1px 6px;border-radius:6px;font-size:.65rem;margin-right:.3rem">✓ חזר '+esc(entry.clickedReturn)+'</span>':'<span style="background:rgba(255,101,132,.1);color:#FF6584;padding:1px 6px;border-radius:6px;font-size:.65rem;margin-right:.3rem">⏳ לא חזר עדיין</span>';
+      html+='<div style="padding:.4rem .6rem;margin-bottom:.3rem;background:rgba(15,14,23,.4);border-radius:8px;border-right:2px solid var(--p)">';
+      html+='<div style="display:flex;justify-content:space-between;align-items:center;font-size:.75rem"><span><strong>'+typeIcon+' '+typeLabel+'</strong></span><span style="color:var(--t2);font-size:.7rem">'+esc(entry.timestamp)+'</span></div>';
+      html+='<div style="margin-top:.2rem">'+returned+'</div>';
+      html+='</div>';
+    });
+    html+='</div></div>';
+    target.innerHTML=html;
+  }).catch(()=>{
+    const t=document.getElementById(safeId);if(t)t.innerHTML='<div style="color:var(--s);font-size:.7rem">⚠ שגיאה בטעינה</div>';
+  });
+}
 function admSortBy(col){
 if(_admSort.col===col){_admSort.dir*=-1}else{_admSort={col:col,dir:-1}}
 const w=$('admTableWrap');if(w)w.innerHTML=buildAdmTable(_admUsers);
@@ -6211,6 +6311,34 @@ h+='<div class="am-stat"><span class="am-k">דרגה</span><span class="am-v">'+
 h+='<div class="am-stat"><span class="am-k">רצף</span><span class="am-v">'+(parseInt(u.streak)>0?'🔥 '+u.streak+' ימים':'—')+'</span></div>';
 h+='<div class="am-stat"><span class="am-k">כניסה אחרונה</span><span class="am-v">'+esc(u.lastLogin||'—')+'</span></div>';
 h+='<div class="am-stat"><span class="am-k">הרשמה</span><span class="am-v">'+esc(u.firstUse||'—')+'</span></div>';
+
+// === Email & Reminders block ===
+const uEmail=String(u.email||'');
+const uConsent=String(u.emailConsent||'')==='true';
+const uRC=parseInt(u.reminderCount)||0;
+const uLRS=parseInt(u.lastReminderSent)||0;
+h+='<div style="margin-top:1rem;background:rgba(108,99,255,0.06);border-radius:12px;padding:.7rem .9rem;border:1px solid rgba(108,99,255,0.15)">';
+h+='<strong style="color:var(--p);font-size:.9rem;display:block;margin-bottom:.4rem">📧 מייל ותזכורות</strong>';
+if(uEmail){
+  const consentBadge=uConsent
+    ?'<span style="background:rgba(0,201,167,.15);color:#00C9A7;padding:2px 8px;border-radius:8px;font-size:.7rem">✓ הסכים</span>'
+    :'<span style="background:rgba(255,101,132,.15);color:#FF6584;padding:2px 8px;border-radius:8px;font-size:.7rem">✗ ביטל הסכמה</span>';
+  h+='<div class="am-stat"><span class="am-k">כתובת</span><span class="am-v" style="direction:ltr;font-family:monospace;font-size:.78rem">'+esc(uEmail)+'</span></div>';
+  h+='<div class="am-stat"><span class="am-k">סטטוס הסכמה</span><span class="am-v">'+consentBadge+'</span></div>';
+}else{
+  h+='<div class="am-stat"><span class="am-k">כתובת</span><span class="am-v" style="color:var(--t2);font-size:.78rem">לא הוזן</span></div>';
+}
+const stageLabel=uRC===0?'לא נשלחו':uRC===1?'תזכורת 1 (24h)':uRC===2?'תזכורת 2 (48h)':'שבועיות (×'+(uRC-2)+')';
+h+='<div class="am-stat"><span class="am-k">תזכורות שנשלחו</span><span class="am-v">'+(uRC>0?'<span style="background:rgba(255,193,7,.15);color:#FFC107;padding:2px 8px;border-radius:8px;font-size:.7rem">'+uRC+' · '+stageLabel+'</span>':'—')+'</span></div>';
+if(uLRS>0){
+  const lrsDate=new Date(uLRS);
+  const lrsStr=lrsDate.toLocaleString('he-IL',{timeZone:'Asia/Jerusalem',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  h+='<div class="am-stat"><span class="am-k">תזכורת אחרונה</span><span class="am-v" style="font-size:.78rem">'+esc(lrsStr)+'</span></div>';
+}
+h+='<div id="emLog_'+esc(u.userName).replace(/'/g,"\\'")+'" style="margin-top:.6rem;font-size:.75rem;color:var(--t2);text-align:center">⏳ טוען היסטוריית מיילים...</div>';
+h+='</div>';
+// Trigger email log fetch (lazy)
+setTimeout(function(){_admLoadEmailLog(u.userName)},50);
 
 // Session time stats
 h+='<div class="am-stat"><span class="am-k">סשן אחרון</span><span class="am-v">'+(lastSessDur>0?fmtDuration(lastSessDur):'—')+'</span></div>';
