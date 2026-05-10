@@ -6956,15 +6956,31 @@ function _admLoadEmailLog(userName){
       target.innerHTML='<div style="color:var(--t2);font-size:.75rem">📭 לא נשלחו מיילים</div>';
       return;
     }
+    // Surface "user removed email" right in the address row (most recent removal)
+    try{
+      const removals=d.log.filter(function(e){return e.type==='email_removed'});
+      if(removals.length>0){
+        const last=removals[0];
+        const stEl=document.getElementById('emStatus_'+esc(userName).replace(/'/g,"\\'"));
+        if(stEl&&stEl.textContent==='לא הוזן'){
+          stEl.innerHTML='<span style="background:rgba(255,101,132,.12);color:#FF6584;padding:2px 8px;border-radius:8px;font-size:.7rem">🗑️ המשתמש הסיר '+esc(last.timestamp)+'</span>';
+        }
+      }
+    }catch(e){}
     let html='<div style="margin-top:.4rem"><div style="font-size:.78rem;color:var(--p);font-weight:600;margin-bottom:.4rem;text-align:right">📬 היסטוריית מיילים ('+d.log.length+')</div>';
     html+='<div style="max-height:180px;overflow-y:auto;text-align:right">';
     d.log.forEach(function(entry){
-      const typeIcon=entry.type==='welcome'?'⚓':'🔔';
-      const typeLabel=entry.type==='welcome'?'ברוך הבא':'תזכורת '+(entry.stage===1?'24h':entry.stage===2?'48h':'שבועית');
-      const returned=entry.clickedReturn?'<span style="background:rgba(0,201,167,.15);color:#00C9A7;padding:1px 6px;border-radius:6px;font-size:.65rem;margin-right:.3rem">✓ חזר '+esc(entry.clickedReturn)+'</span>':'<span style="background:rgba(255,101,132,.1);color:#FF6584;padding:1px 6px;border-radius:6px;font-size:.65rem;margin-right:.3rem">⏳ לא חזר עדיין</span>';
-      html+='<div style="padding:.4rem .6rem;margin-bottom:.3rem;background:rgba(15,14,23,.4);border-radius:8px;border-right:2px solid var(--p)">';
+      let typeIcon,typeLabel,borderCol;
+      if(entry.type==='email_removed'){typeIcon='🗑️';typeLabel='המשתמש הסיר את המייל';borderCol='#FF6584';}
+      else if(entry.type==='welcome'){typeIcon='⚓';typeLabel='ברוך הבא';borderCol='var(--p)';}
+      else{typeIcon='🔔';typeLabel='תזכורת '+(entry.stage===1?'24h':entry.stage===2?'48h':'שבועית');borderCol='var(--p)';}
+      const isRemoval=entry.type==='email_removed';
+      const detailLine=isRemoval
+        ?(entry.email?'<span style="background:rgba(255,101,132,.1);color:#FF6584;padding:1px 6px;border-radius:6px;font-size:.65rem;margin-right:.3rem;direction:ltr;display:inline-block">'+esc(entry.email)+'</span>':'')
+        :(entry.clickedReturn?'<span style="background:rgba(0,201,167,.15);color:#00C9A7;padding:1px 6px;border-radius:6px;font-size:.65rem;margin-right:.3rem">✓ חזר '+esc(entry.clickedReturn)+'</span>':'<span style="background:rgba(255,101,132,.1);color:#FF6584;padding:1px 6px;border-radius:6px;font-size:.65rem;margin-right:.3rem">⏳ לא חזר עדיין</span>');
+      html+='<div style="padding:.4rem .6rem;margin-bottom:.3rem;background:rgba(15,14,23,.4);border-radius:8px;border-right:2px solid '+borderCol+'">';
       html+='<div style="display:flex;justify-content:space-between;align-items:center;font-size:.75rem"><span><strong>'+typeIcon+' '+typeLabel+'</strong></span><span style="color:var(--t2);font-size:.7rem">'+esc(entry.timestamp)+'</span></div>';
-      html+='<div style="margin-top:.2rem">'+returned+'</div>';
+      html+='<div style="margin-top:.2rem">'+detailLine+'</div>';
       html+='</div>';
     });
     html+='</div></div>';
@@ -7041,7 +7057,7 @@ if(uEmail){
   h+='<div class="am-stat"><span class="am-k">סטטוס אימות מייל</span><span class="am-v">'+verifyBadge+'</span></div>';
   h+='<div class="am-stat"><span class="am-k">סטטוס הסכמה</span><span class="am-v">'+consentBadge+'</span></div>';
 }else{
-  h+='<div class="am-stat"><span class="am-k">כתובת</span><span class="am-v" style="color:var(--t2);font-size:.78rem">לא הוזן</span></div>';
+  h+='<div class="am-stat"><span class="am-k">כתובת</span><span class="am-v" style="color:var(--t2);font-size:.78rem" id="emStatus_'+esc(u.userName).replace(/'/g,"\\'")+'">לא הוזן</span></div>';
 }
 const stageLabel=uRC===0?'לא נשלחו':uRC===1?'תזכורת 1 (24h)':uRC===2?'תזכורת 2 (48h)':'שבועיות (×'+(uRC-2)+')';
 h+='<div class="am-stat"><span class="am-k">תזכורות שנשלחו</span><span class="am-v">'+(uRC>0?'<span style="background:rgba(255,193,7,.15);color:#FFC107;padding:2px 8px;border-radius:8px;font-size:.7rem">'+uRC+' · '+stageLabel+'</span>':'—')+'</span></div>';
