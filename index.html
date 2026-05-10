@@ -4036,6 +4036,8 @@ let _pendingPollTimer=null;
 let _pendingName='';
 let _pendingEmail='';
 let _pendingConsent=false;
+let _pendingMode='admin';// 'verify' = waiting for email click, 'admin' = waiting for admin approval
+let _emailPromptTimers=[];// for smart popup cadence (5/15/45 min)
 function _tryLogin(name,email,consent){
 email=email||'';consent=!!consent;
 const btn=document.querySelector('.btn-go');
@@ -4046,8 +4048,21 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
   if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}
   if(d.success&&d.data){
     const status=String(d.data.status||'');
-    if(status==='pending'){
-      _showPendingScreen(name);return;
+    const storedEmail=String(d.data.email||'').toLowerCase();
+    const emailVerified=String(d.data.emailVerified||'')==='true';
+    // Security: existing user typed an email that doesn't match the stored one — reject
+    if(storedEmail && email && storedEmail!==email){
+      showModal('🔒','המייל לא תואם','שם המשתמש הזה כבר רשום עם כתובת מייל אחרת. נא להזין את כתובת המייל שאיתה נרשמת במקור, או לבחור שם משתמש אחר.','הבנתי');
+      const emEl=$('emailInput');if(emEl){emEl.focus();emEl.select()}
+      return;
+    }
+    if(status==='pending_email'){
+      _pendingName=name;_pendingEmail=storedEmail||email;_pendingConsent=consent;
+      _showPendingScreen(name,'verify');return;
+    }
+    if(status==='pending_admin'||status==='pending'){
+      _pendingName=name;_pendingEmail=storedEmail||email;_pendingConsent=consent;
+      _showPendingScreen(name,'admin');return;
     }
     // Existing approved user — load their cloud data
     // Detect if this is a brand new user (zero activity on server)
@@ -4074,25 +4089,28 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
     if(parseInt(d.data.satisfaction)>0)G.satisfactionRating=parseInt(d.data.satisfaction);
     if(d.data.adminMessage&&d.data.adminMessage.trim()){if(d.data.adminMessage!==G.adminMessage){G.adminMessage=d.data.adminMessage;G.adminMessageRead=false}}else{G.adminMessage='';G.adminMessageRead=true}
     // Cache email status for popup logic
-    G.cloudEmail=String(d.data.email||'');
+    G.cloudEmail=storedEmail;
     G.cloudEmailConsent=String(d.data.emailConsent||'')==='true';
-    // If existing user typed a NEW email and we don't have one stored — save it
+    G.cloudEmailVerified=emailVerified;
+    // If existing user typed a NEW email and we don't have one stored — save it (will trigger verification)
     if(email && !G.cloudEmail){
       _saveEmailToCloud(name,email,consent);
-      G.cloudEmail=email;G.cloudEmailConsent=consent;
+      G.cloudEmail=email;G.cloudEmailConsent=consent;G.cloudEmailVerified=false;
     }
     G.s=true;if(!G.firstUse)G.firstUse=Date.now();updateStreak();sv();updateLeaderboard();mp();
     logActivity('login',isNewUser?'first':'return');
     if(isNewUser){showAchievement('👋','ברוך הבא!',name)}else{showAchievement('👋','ברוך שובך!',name)}
     updateAdminMsgFab();
-    // Existing user without email on file — prompt them (once per session, can decline)
-    if(!G.cloudEmail && !sessionStorage.getItem('pmEmailAsked')){
-      sessionStorage.setItem('pmEmailAsked','1');
-      setTimeout(_promptAddEmail,2500);
+    // Smart popup cadence runs until the email is VERIFIED.
+    // - No email on file → "add email" popup variant
+    // - Email on file but unverified → "verify your email" popup variant (with resend)
+    // - Verified → no popups at all
+    if(!G.cloudEmailVerified){
+      _startEmailPromptCadence();
     }
   }else{
     // New user — require email + consent
-    if(!email){showModal('📧','נדרש מייל לרישום','כדי להירשם לקורס נא להזין כתובת מייל. נשתמש בה רק לתזכורות אם לא תיכנסו זמן רב.','הבנתי');const btn=document.querySelector('.btn-go');if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}const emEl=$('emailInput');if(emEl)emEl.focus();return}
+    if(!email){showModal('📧','נדרש מייל לרישום','כדי להירשם לקורס נא להזין כתובת מייל. נשלח קישור אימות, ולאחר אישור מנהל המערכת תוכלו להתחיל.','הבנתי');const btn=document.querySelector('.btn-go');if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}const emEl=$('emailInput');if(emEl)emEl.focus();return}
     if(!consent){showModal('☑️','נדרש אישור','כדי להירשם נא לסמן את הסכמתכם לקבל תזכורות במייל. תוכלו לבטל בכל עת.','הבנתי');const btn=document.querySelector('.btn-go');if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}return}
     _pendingEmail=email;_pendingConsent=consent;
     _requestApproval(name,email,consent);
@@ -4114,13 +4132,59 @@ if(!DB_URL||!name||!email)return;
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'setEmail',userName:name,email:email,emailConsent:!!consent}),headers:{'Content-Type':'text/plain'}}).catch(()=>{});
 }
 function _promptAddEmail(){
-if(!G.userName||G.cloudEmail)return;
+if(!G.userName)return;
+// HARD STOP: if the email is already VERIFIED — never show the popup again.
+if(G.cloudEmailVerified){_clearEmailPromptCadence();return;}
+// Don't show if popup is already on screen
+if($('emailPromptOverlay'))return;
 const ov=document.createElement('div');
 ov.className='daily-modal';ov.id='emailPromptOverlay';
+if(G.cloudEmail){
+  // Variant B: email on file but not yet verified — nudge to click the link / resend.
+  const masked=String(G.cloudEmail).replace(/(.{2}).*(@.*)/,'$1•••$2');
+  ov.innerHTML='<div class="daily-modal-box" style="text-align:center;max-width:440px;direction:rtl"><div style="font-size:3rem;margin-bottom:.5rem">📬</div><h3 style="font-size:1.2rem;margin:0 0 .6rem;color:var(--t1)">אמת את כתובת המייל שלך</h3><p style="color:var(--t2);font-size:.9rem;line-height:1.6;margin:0 0 .6rem">שלחנו קישור אימות לכתובת:<br><strong style="color:var(--t1);direction:ltr;display:inline-block">'+masked+'</strong></p><p style="color:var(--t2);font-size:.85rem;line-height:1.5;margin:0 0 1rem">לחצו על הקישור שבמייל כדי לאמת. אם המייל לא הגיע, בדקו את תיקיית הספאם או שלחו שוב.</p><div style="display:flex;gap:.5rem;margin-top:1.1rem;justify-content:center;flex-wrap:wrap"><button class="bs" onclick="document.getElementById(\'emailPromptOverlay\').remove()">סגור</button><button class="bp" onclick="_resendVerifyFromPopup()">📤 שלח שוב</button></div></div>';
+}else{
+  // Variant A: no email on file — collect email + send verification.
+  ov.innerHTML='<div class="daily-modal-box" style="text-align:center;max-width:420px;direction:rtl"><div style="font-size:3rem;margin-bottom:.5rem">📧</div><h3 style="font-size:1.2rem;margin:0 0 .6rem;color:var(--t1)">הוסף מייל לתזכורות</h3><p style="color:var(--t2);font-size:.9rem;line-height:1.6;margin:0 0 1rem">נשלח לך תזכורת ידידותית אם תיעדר/י 24+ שעות. תידרש אימות חד-פעמי בלחיצה על קישור במייל. תוכל/י להסיר את עצמך בכל עת.</p><input id="pmAddEmail" type="email" placeholder="example@gmail.com" style="width:100%;padding:.7rem;border-radius:10px;border:2px solid rgba(108,99,255,.3);background:rgba(15,14,23,.8);color:var(--tx);font-family:inherit;direction:ltr;text-align:center;font-size:1rem" maxlength="80"><label style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--t2);cursor:pointer;margin-top:.8rem;justify-content:center"><input id="pmAddConsent" type="checkbox" checked style="width:18px;height:18px;accent-color:var(--p)">מסכים/ה לקבל תזכורות</label><div style="display:flex;gap:.5rem;margin-top:1.1rem;justify-content:center"><button class="bs" onclick="document.getElementById(\'emailPromptOverlay\').remove()">דלג</button><button class="bp" onclick="_submitAddEmail()">שמור ושלח אימות</button></div></div>';
+}
 ov.onclick=function(e){if(e.target===ov){ov.remove()}};
-ov.innerHTML='<div class="daily-modal-box" style="text-align:center;max-width:420px;direction:rtl"><div style="font-size:3rem;margin-bottom:.5rem">📧</div><h3 style="font-size:1.2rem;margin:0 0 .6rem;color:var(--t1)">הוסף מייל לתזכורות</h3><p style="color:var(--t2);font-size:.9rem;line-height:1.6;margin:0 0 1rem">נשלח לך תזכורת ידידותית אם תיעדר/י 24+ שעות. תוכל/י להסיר את עצמך בכל עת מהמייל.</p><input id="pmAddEmail" type="email" placeholder="example@gmail.com" style="width:100%;padding:.7rem;border-radius:10px;border:2px solid rgba(108,99,255,.3);background:rgba(15,14,23,.8);color:var(--tx);font-family:inherit;direction:ltr;text-align:center;font-size:1rem" maxlength="80"><label style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--t2);cursor:pointer;margin-top:.8rem;justify-content:center"><input id="pmAddConsent" type="checkbox" checked style="width:18px;height:18px;accent-color:var(--p)">מסכים/ה לקבל תזכורות</label><div style="display:flex;gap:.5rem;margin-top:1.1rem;justify-content:center"><button class="bs" onclick="document.getElementById(\'emailPromptOverlay\').remove()">דלג</button><button class="bp" onclick="_submitAddEmail()">שמור מייל</button></div></div>';
 document.body.appendChild(ov);
 const inp=$('pmAddEmail');if(inp)setTimeout(()=>inp.focus(),100);
+}
+function _resendVerifyFromPopup(){
+const ov=$('emailPromptOverlay');if(ov)ov.remove();
+_resendVerify();
+}
+// Smart cadence: prompt at 30s, 5min, 15min, 45min — then stop until next session.
+// Stops only after email is VERIFIED. Before verification, popup keeps reminding the user
+// (either "add email" or "click the verification link / resend" depending on state).
+function _startEmailPromptCadence(){
+_clearEmailPromptCadence();
+if(!G.userName)return;
+if(G.cloudEmailVerified)return;// already verified — never start nagging
+_emailPromptTimers.push(setTimeout(_maybePromptEmail,30000));      // 30 sec
+_emailPromptTimers.push(setTimeout(_maybePromptEmail,5*60000));    // 5 min
+_emailPromptTimers.push(setTimeout(_maybePromptEmail,15*60000));   // 15 min
+_emailPromptTimers.push(setTimeout(_maybePromptEmail,45*60000));   // 45 min
+}
+function _clearEmailPromptCadence(){
+_emailPromptTimers.forEach(t=>clearTimeout(t));_emailPromptTimers=[];
+}
+function _maybePromptEmail(){
+if(!G.userName)return;
+if(G.cloudEmailVerified){_clearEmailPromptCadence();return;}// verified — stop
+// Refresh cloud state — user may have verified in another tab / clicked the email link
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:G.userName}),headers:{'Content-Type':'text/plain'}})
+.then(r=>r.json()).then(d=>{
+  if(d.success&&d.data){
+    G.cloudEmail=String(d.data.email||'');
+    G.cloudEmailVerified=String(d.data.emailVerified||'')==='true';
+    if(G.cloudEmailVerified){_clearEmailPromptCadence();return;}
+    _promptAddEmail();
+  }else{
+    _promptAddEmail();
+  }
+}).catch(()=>{_promptAddEmail()});
 }
 function _submitAddEmail(){
 const e=$('pmAddEmail');const c=$('pmAddConsent');
@@ -4128,10 +4192,33 @@ const email=e?e.value.trim().toLowerCase():'';
 const consent=c?!!c.checked:false;
 if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showModal('📧','מייל לא תקין','אנא הזינו כתובת מייל תקינה.','הבנתי');return}
 if(!consent){showModal('☑️','נדרש אישור','אנא סמנו את הסכמתכם לקבל תזכורות.','הבנתי');return}
-_saveEmailToCloud(G.userName,email,consent);
-G.cloudEmail=email;G.cloudEmailConsent=consent;
-const ov=$('emailPromptOverlay');if(ov)ov.remove();
-showAchievement('✅','המייל נשמר','נשלח לך תזכורות אם תיעדר 24+ שעות');
+// requestApproval will save the email + send verification mail (and handles email_mismatch)
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'requestApproval',userName:G.userName,email:email,emailConsent:!!consent}),headers:{'Content-Type':'text/plain'}})
+.then(r=>r.json()).then(d=>{
+  if(d.success===false && d.error==='email_mismatch'){
+    showModal('🔒','מייל לא תואם',d.message||'שם משתמש זה כבר רשום עם כתובת מייל אחרת.','הבנתי');
+    return;
+  }
+  G.cloudEmail=email;G.cloudEmailConsent=consent;G.cloudEmailVerified=false;
+  // Email filled but NOT verified yet — cadence continues with the "verify your email" variant.
+  // It will stop automatically once the user clicks the verification link.
+  const ov=$('emailPromptOverlay');if(ov)ov.remove();
+  showAchievement('✉️','נשלח מייל אימות','בדוק את תיבת הדואר ולחץ על קישור האימות. עד אז נזכיר לך מפעם לפעם.');
+}).catch(()=>{
+  showModal('📴','שגיאת חיבור','לא הצלחנו לשמור את המייל. נסה שוב מאוחר יותר.','הבנתי');
+});
+}
+function _resendVerify(){
+if(!G.userName){showModal('⚠️','לא ניתן','יש להיכנס לחשבון תחילה.','הבנתי');return}
+if(G.cloudEmailVerified){showModal('✅','כבר מאומת','המייל שלך כבר אומת — אין צורך לשלוח שוב.','הבנתי');return}
+if(!G.cloudEmail){showModal('📧','אין מייל','אין מייל רשום בחשבון. השתמש בכפתור "הוסף" כדי להזין אחד.','הבנתי');return}
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'resendVerification',userName:G.userName}),headers:{'Content-Type':'text/plain'}})
+.then(r=>r.json()).then(d=>{
+  if(d.success){showAchievement('✉️','המייל נשלח','בדוק את תיבת הדואר שלך');return}
+  if(d.error==='throttled'){showModal('⏳','המתן רגע',d.message||'נא להמתין דקה לפני שליחה נוספת.','הבנתי');return}
+  if(d.error==='already_verified'){G.cloudEmailVerified=true;_clearEmailPromptCadence();showModal('✅','כבר מאומת','המייל שלך כבר אומת — אין צורך לשלוח שוב.','הבנתי');return}
+  showModal('⚠️','שגיאה',d.error||'לא הצלחנו לשלוח. נסה שוב.','הבנתי');
+}).catch(()=>{showModal('📴','שגיאת חיבור','לא הצלחנו לשלוח. נסה שוב מאוחר יותר.','הבנתי');});
 }
 function _requestApproval(name,email,consent){
 const btn=document.querySelector('.btn-go');
@@ -4140,29 +4227,84 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'requestApproval',userNa
 .then(r=>r.json())
 .then(d=>{
   if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}
+  if(d.success===false && d.error==='email_mismatch'){
+    showModal('🔒','מייל לא תואם',d.message||'שם המשתמש הזה כבר רשום עם כתובת מייל אחרת.','הבנתי');
+    return;
+  }
+  if(d.success===false && d.error==='email_required'){
+    showModal('📧','נדרש מייל לרישום',d.message||'נדרש מייל לרישום משתמש חדש.','הבנתי');
+    return;
+  }
   if(d.success&&d.status==='approved'){
     // Already approved (edge case)
     _tryLogin(name);return;
   }
-  _showPendingScreen(name);
+  // New flow: server returns 'pending_email' for new users; existing legacy users may return 'pending_admin'
+  const mode=(d.status==='pending_admin')?'admin':'verify';
+  _showPendingScreen(name,mode);
 })
 .catch(()=>{
   if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}
   showModal('📴','שגיאת חיבור','לא ניתן לשלוח בקשת הרשמה. נסו שוב מאוחר יותר.','הבנתי');
 });
 }
-function _showPendingScreen(name){
+function _showPendingScreen(name,mode){
 _pendingName=name;
+_pendingMode=(mode==='verify')?'verify':'admin';
 $('ws').classList.add('hid');$('mv').classList.add('hid');$('sv').classList.add('hid');$('hd').classList.add('hid');$('pb').classList.add('hid');
 $('pendingView').classList.remove('hid');
+// Swap title + subtitle based on mode
+const titleEl=document.querySelector('#pendingView .pending-title');
+const subEl=document.querySelector('#pendingView .pending-sub');
+const animEl=document.querySelector('#pendingView .pending-anim');
+const hintEl=document.querySelector('#pendingView .pending-hint');
+if(_pendingMode==='verify'){
+  if(animEl)animEl.textContent='✉️';
+  if(titleEl)titleEl.textContent='בדוק את המייל שלך!';
+  if(subEl)subEl.innerHTML='שלחנו קישור אימות לכתובת שלך.<br>לחץ/י על הקישור כדי להמשיך 📩';
+  if(hintEl)hintEl.textContent='ברגע שתאמת/י, נעבור אוטומטית לאישור מנהל המערכת';
+}else{
+  if(animEl)animEl.textContent='⏳';
+  if(titleEl)titleEl.textContent='הבקשה שלך התקבלה!';
+  if(subEl)subEl.innerHTML='מנהל המערכת יאשר את הגישה שלך בקרוב.<br>בינתיים... תהנו! 😺🐒';
+  if(hintEl)hintEl.textContent='העמוד בודק אישור אוטומטית כל 15 שניות';
+}
+// Add "send again" button in verify mode
+let resendBtn=$('pendingResendBtn');
+if(_pendingMode==='verify'){
+  if(!resendBtn){
+    const refreshBtn=document.querySelector('#pendingView .pending-refresh');
+    if(refreshBtn){
+      resendBtn=document.createElement('button');
+      resendBtn.id='pendingResendBtn';
+      resendBtn.className='bs pending-refresh';
+      resendBtn.style.cssText='margin:.4rem .25rem';
+      resendBtn.textContent='📤 שלח מייל אימות שוב';
+      resendBtn.onclick=_pendingResendFromScreen;
+      refreshBtn.parentNode.insertBefore(resendBtn,refreshBtn);
+    }
+  }else{resendBtn.style.display=''}
+}else{
+  if(resendBtn)resendBtn.style.display='none';
+}
 window.scrollTo(0,0);
 if(_pendingPollTimer)clearInterval(_pendingPollTimer);
 _pendingPollTimer=setInterval(_checkApproval,15000);
 }
+function _pendingResendFromScreen(){
+if(!_pendingName)return;
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'resendVerification',userName:_pendingName}),headers:{'Content-Type':'text/plain'}})
+.then(r=>r.json()).then(d=>{
+  if(d.success){showAchievement('✉️','נשלח מייל חדש','בדוק את תיבת הדואר שלך');return}
+  if(d.error==='throttled'){showModal('⏳','המתן רגע',d.message||'נא להמתין דקה לפני שליחה נוספת.','הבנתי');return}
+  if(d.error==='already_verified'){_checkApproval();return}
+  showModal('⚠️','שגיאה',d.error||'לא הצלחנו לשלוח. נסה שוב.','הבנתי');
+}).catch(()=>{showModal('📴','שגיאת חיבור','לא הצלחנו לשלוח. נסה שוב מאוחר יותר.','הבנתי');});
+}
 function _checkApproval(){
 if(!_pendingName)return;
 const st=$('pendingStatus');
-if(st)st.innerHTML='<div class="pending-dot" style="background:var(--p)"></div><span>בודק אישור...</span>';
+if(st)st.innerHTML='<div class="pending-dot" style="background:var(--p)"></div><span>בודק...</span>';
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:_pendingName}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json())
 .then(d=>{
@@ -4174,8 +4316,20 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:_pending
       _tryLogin(_pendingName,_pendingEmail,_pendingConsent);
       return;
     }
+    // Transition pending_email → pending_admin: user clicked the verification link
+    if(_pendingMode==='verify' && (status==='pending_admin'||status==='pending')){
+      _showPendingScreen(_pendingName,'admin');
+      showAchievement('✅','המייל אומת!','הבקשה הועברה לאישור מנהל');
+      return;
+    }
   }
-  if(st)st.innerHTML='<div class="pending-dot"></div><span>ממתין לאישור...</span>';
+  if(st){
+    if(_pendingMode==='verify'){
+      st.innerHTML='<div class="pending-dot"></div><span>ממתין לאימות מייל...</span>';
+    }else{
+      st.innerHTML='<div class="pending-dot"></div><span>ממתין לאישור...</span>';
+    }
+  }
 })
 .catch(()=>{
   if(st)st.innerHTML='<div class="pending-dot" style="background:var(--s)"></div><span>שגיאת חיבור - ממשיך לנסות...</span>';
@@ -5098,6 +5252,21 @@ function renderProfile(){
   h+='<div class="pv-card"><h3>סטטיסטיקות כלליות</h3>';
   const titleInfo=getTitle();
   if(titleInfo){h+='<div style="text-align:center;margin-bottom:1rem"><div class="title-badge '+titleInfo.cls+'" style="display:inline-flex;font-size:1rem;padding:.4rem 1rem">'+titleInfo.icon+' '+titleInfo.name+'</div></div>'}
+  h+='<div class="pv-stat"><div class="pv-icon">👤</div><div class="pv-label">שם משתמש</div><div class="pv-val" style="font-size:1rem">'+esc(G.userName||'—')+'</div></div>';
+  // Email display block
+  const _myEmail=String(G.cloudEmail||'');
+  const _myVerified=G.cloudEmailVerified===true||String(G.cloudEmailVerified||'')==='true';
+  if(_myEmail){
+    const _vBadge=_myVerified
+      ?'<span style="background:rgba(0,201,167,.15);color:#00C9A7;padding:2px 8px;border-radius:8px;font-size:.7rem;margin-right:.4rem">✓ מאומת</span>'
+      :'<span style="background:rgba(255,193,7,.15);color:#FFC107;padding:2px 8px;border-radius:8px;font-size:.7rem;margin-right:.4rem">⏳ ממתין לוולידציה</span>';
+    h+='<div class="pv-stat"><div class="pv-icon">📧</div><div class="pv-label">המייל שלי</div><div class="pv-val" style="font-size:.85rem;direction:ltr;display:flex;align-items:center;justify-content:flex-end;gap:.3rem"><span>'+esc(_myEmail)+'</span></div></div>';
+    h+='<div style="text-align:center;margin:-.3rem 0 .5rem">'+_vBadge;
+    if(!_myVerified){h+='<button class="bs" style="font-size:.7rem;padding:.2rem .6rem;margin-right:.4rem" onclick="_resendVerify()">📤 שלח שוב</button>'}
+    h+='</div>';
+  }else{
+    h+='<div class="pv-stat"><div class="pv-icon">📧</div><div class="pv-label">המייל שלי</div><div class="pv-val" style="font-size:.85rem;color:var(--t2)">לא הוזן <button class="bs" style="font-size:.7rem;padding:.2rem .6rem;margin-right:.4rem" onclick="_promptAddEmail()">+ הוסף</button></div></div>';
+  }
   h+='<div class="pv-stat"><div class="pv-icon">📈</div><div class="pv-label">אחוז השלמה</div><div class="pv-val">'+pctComplete+'%</div></div>';
   h+='<div class="pv-stat"><div class="pv-icon">⭐</div><div class="pv-label">ניקוד כולל</div><div class="pv-val">'+totalScore+' / '+maxPossible+'</div></div>';
   h+='<div class="pv-stat"><div class="pv-icon">🏆</div><div class="pv-label">שלבים שהושלמו</div><div class="pv-val">'+doneCount+' / '+totalStages+'</div></div>';
@@ -6099,8 +6268,8 @@ if(pendingUsers.length>0){h+='<div class="adm-stat" style="border-color:rgba(255
 // Email/Reminders KPIs
 const usersWithEmail=approvedUsers.filter(u=>String(u.email||'')&&String(u.emailConsent||'')==='true').length;
 const remindedActive=approvedUsers.filter(u=>(parseInt(u.reminderCount)||0)>0).length;
-h+='<div class="adm-stat" style="border-color:rgba(108,99,255,.4);background:rgba(108,99,255,.08)"><div class="as-val" style="color:var(--p)">📧 '+usersWithEmail+'</div><div class="as-lbl">מנויים למייל</div></div>';
-h+='<div class="adm-stat" style="border-color:rgba(255,193,7,.4);background:rgba(255,193,7,.08)"><div class="as-val" style="color:#FFC107">🔔 '+remindedActive+'</div><div class="as-lbl">בלולאת תזכורות</div></div>';
+h+='<div class="adm-stat" style="border-color:rgba(108,99,255,.4);background:rgba(108,99,255,.08)" title="משתמשים מאושרים שמילאו מייל והסכימו לקבל תזכורות (גם אם עדיין לא אומת)"><div class="as-val" style="color:var(--p)">📧 '+usersWithEmail+'</div><div class="as-lbl">מנויים למייל</div></div>';
+h+='<div class="adm-stat" style="border-color:rgba(255,193,7,.4);background:rgba(255,193,7,.08)" title="משתמשים שקיבלו לפחות תזכורת אחת ועדיין לא חזרו לאפליקציה. ברגע שיכנסו - המונה מתאפס."><div class="as-val" style="color:#FFC107">🔔 '+remindedActive+'</div><div class="as-lbl">בתהליך תזכורות פעיל</div></div>';
 h+='</div>';
 
 // Time metrics section
@@ -6178,9 +6347,73 @@ h+='<div style="display:flex;gap:.5rem"><input id="newNotifyEmail" type="email" 
 h+='<button class="bs" style="font-size:.8rem;white-space:nowrap" onclick="admAddNotifyEmail()">➕ הוסף</button></div>';
 h+='</div>';
 
+// Reminder timing config + test send
+h+='<div style="margin-top:1.2rem;padding:1.2rem;border-radius:16px;border:2px solid rgba(255,193,7,.2);background:rgba(255,193,7,.04)">';
+h+='<h3 style="margin:0 0 .4rem;font-size:1.1rem;text-align:center">⏰ הגדרות תזכורות מייל</h3>';
+h+='<p style="color:var(--t2);font-size:.78rem;text-align:center;margin-bottom:.8rem">קצב שליחת התזכורות למשתמשים שלא נכנסו זמן רב</p>';
+h+='<div id="reminderConfigBox" style="text-align:center;color:var(--t2);font-size:.85rem;padding:.5rem">⏳ טוען...</div>';
+h+='<div style="margin-top:.8rem;display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center">';
+h+='<button class="bs" style="font-size:.8rem;background:rgba(255,193,7,.1);color:#FFC107;border-color:rgba(255,193,7,.3)" onclick="admSendTestReminder(1)">🧪 שלח בדיקה - תזכורת 24h</button>';
+h+='<button class="bs" style="font-size:.8rem;background:rgba(255,193,7,.1);color:#FFC107;border-color:rgba(255,193,7,.3)" onclick="admSendTestReminder(2)">🧪 שלח בדיקה - 48h</button>';
+h+='<button class="bs" style="font-size:.8rem;background:rgba(255,193,7,.1);color:#FFC107;border-color:rgba(255,193,7,.3)" onclick="admSendTestReminder(3)">🧪 שלח בדיקה - שבועית</button>';
+h+='</div>';
+h+='<p style="color:var(--t2);font-size:.7rem;text-align:center;margin:.6rem 0 0">🧪 = מייל בדיקה ישלח לכל הכתובות ברשימת ההתראות למעלה</p>';
+h+='</div>';
+
 h+='</div>';
 $('adv').innerHTML=h;
 admLoadNotifyEmails();
+admLoadReminderConfig();
+}
+
+let _reminderCfg=null;
+function admLoadReminderConfig(){
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getReminderConfig'}),headers:{'Content-Type':'text/plain'}})
+.then(r=>r.json()).then(d=>{
+  if(d.success&&d.config){_reminderCfg=d.config;_renderReminderConfig()}
+}).catch(()=>{const el=$('reminderConfigBox');if(el)el.innerHTML='<span style="color:var(--s)">שגיאה בטעינת הגדרות. ודאו שה-GAS עודכן.</span>'});
+}
+function _renderReminderConfig(){
+const el=$('reminderConfigBox');if(!el||!_reminderCfg)return;
+const c=_reminderCfg;
+let h='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.5rem;text-align:right">';
+h+='<div><label style="font-size:.75rem;color:var(--t2);display:block;margin-bottom:.2rem">תזכורת 1 (שעות)</label><input id="rcF" type="number" min="1" max="168" value="'+c.firstHours+'" style="width:100%;padding:.4rem;border-radius:8px;border:1px solid rgba(108,99,255,.3);background:rgba(15,14,23,.8);color:var(--t1);font-family:inherit;text-align:center"></div>';
+h+='<div><label style="font-size:.75rem;color:var(--t2);display:block;margin-bottom:.2rem">תזכורת 2 (שעות)</label><input id="rcS" type="number" min="1" max="336" value="'+c.secondHours+'" style="width:100%;padding:.4rem;border-radius:8px;border:1px solid rgba(108,99,255,.3);background:rgba(15,14,23,.8);color:var(--t1);font-family:inherit;text-align:center"></div>';
+h+='<div><label style="font-size:.75rem;color:var(--t2);display:block;margin-bottom:.2rem">חוזרות (ימים)</label><input id="rcW" type="number" min="1" max="30" value="'+c.weeklyDays+'" style="width:100%;padding:.4rem;border-radius:8px;border:1px solid rgba(108,99,255,.3);background:rgba(15,14,23,.8);color:var(--t1);font-family:inherit;text-align:center"></div>';
+h+='<div><label style="font-size:.75rem;color:var(--t2);display:block;margin-bottom:.2rem">שעת שליחה יומית (0-23)</label><input id="rcH" type="number" min="0" max="23" value="'+c.triggerHour+'" style="width:100%;padding:.4rem;border-radius:8px;border:1px solid rgba(108,99,255,.3);background:rgba(15,14,23,.8);color:var(--t1);font-family:inherit;text-align:center"></div>';
+h+='<div><label style="font-size:.75rem;color:var(--t2);display:block;margin-bottom:.2rem">מקס\' מיילים לריצה</label><input id="rcM" type="number" min="1" max="200" value="'+c.maxPerRun+'" style="width:100%;padding:.4rem;border-radius:8px;border:1px solid rgba(108,99,255,.3);background:rgba(15,14,23,.8);color:var(--t1);font-family:inherit;text-align:center"></div>';
+h+='</div>';
+h+='<div style="text-align:center;margin-top:.7rem"><button class="bp" style="font-size:.82rem;padding:.4rem 1.2rem" onclick="admSaveReminderConfig()">💾 שמור הגדרות</button> <span id="rcSt" style="font-size:.75rem;color:var(--t2);margin-right:.5rem"></span></div>';
+el.innerHTML=h;
+}
+function admSaveReminderConfig(){
+const f=parseInt($('rcF').value),s=parseInt($('rcS').value),w=parseInt($('rcW').value),h=parseInt($('rcH').value),m=parseInt($('rcM').value);
+const st=$('rcSt');if(st){st.textContent='שומר...';st.style.color='var(--t2)'}
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'setReminderConfig',firstHours:f,secondHours:s,weeklyDays:w,triggerHour:h,maxPerRun:m}),headers:{'Content-Type':'text/plain'}})
+.then(r=>r.json()).then(d=>{
+  if(d.success){_reminderCfg=d.config;if(st){st.textContent='✓ נשמר';st.style.color='var(--a)';setTimeout(()=>{st.textContent=''},3000)}}
+  else{if(st){st.textContent='⚠ '+(d.error||'שגיאה');st.style.color='var(--s)'}}
+}).catch(()=>{if(st){st.textContent='📴 שגיאת חיבור';st.style.color='var(--s)'}});
+}
+function admSendTestReminder(stage){
+const lbl=stage===1?'24h':stage===2?'48h':'שבועית';
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'sendTestReminder',stage:stage}),headers:{'Content-Type':'text/plain'}})
+.then(r=>r.json()).then(d=>{
+  if(d.success){showAchievement('🧪','מייל בדיקה נשלח','('+lbl+') ל-'+(d.sentTo||[]).length+' כתובות')}
+  else{showModal('⚠️','שגיאה',d.error||'לא ניתן לשלוח. ודאו שיש מיילים ברשימה.','הבנתי')}
+}).catch(()=>{showModal('📴','שגיאת חיבור','לא הצלחנו לשלוח בדיקה.','הבנתי')});
+}
+function admSendManualReminder(name,btn){
+if(btn){btn.disabled=true;btn.textContent='⏳ שולח...'}
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'sendManualReminder',userName:name}),headers:{'Content-Type':'text/plain'}})
+.then(r=>r.json()).then(d=>{
+  if(btn){btn.disabled=false;btn.textContent='📤 שלח תזכורת עכשיו'}
+  if(d.success){showAchievement('✅','תזכורת נשלחה','שלב '+(d.stage||'?')+' ל-'+name);_admLoadEmailLog(name)}
+  else{
+    const errMap={no_email:'אין מייל רשום',no_consent:'המשתמש ביטל הסכמה לתזכורות',not_approved:'המשתמש לא במצב מאושר'};
+    showModal('⚠️','שגיאה',errMap[d.error]||d.error||'לא ניתן לשלוח.','הבנתי');
+  }
+}).catch(()=>{if(btn){btn.disabled=false;btn.textContent='📤 שלח תזכורת עכשיו'}showModal('📴','שגיאת חיבור','לא הצלחנו לשלוח.','הבנתי');});
 }
 
 function buildAdmTable(users){
@@ -6315,15 +6548,21 @@ h+='<div class="am-stat"><span class="am-k">הרשמה</span><span class="am-v">
 // === Email & Reminders block ===
 const uEmail=String(u.email||'');
 const uConsent=String(u.emailConsent||'')==='true';
+const uVerified=String(u.emailVerified||'')==='true';
 const uRC=parseInt(u.reminderCount)||0;
 const uLRS=parseInt(u.lastReminderSent)||0;
+const uStatus=String(u.status||'');
 h+='<div style="margin-top:1rem;background:rgba(108,99,255,0.06);border-radius:12px;padding:.7rem .9rem;border:1px solid rgba(108,99,255,0.15)">';
 h+='<strong style="color:var(--p);font-size:.9rem;display:block;margin-bottom:.4rem">📧 מייל ותזכורות</strong>';
 if(uEmail){
   const consentBadge=uConsent
     ?'<span style="background:rgba(0,201,167,.15);color:#00C9A7;padding:2px 8px;border-radius:8px;font-size:.7rem">✓ הסכים</span>'
     :'<span style="background:rgba(255,101,132,.15);color:#FF6584;padding:2px 8px;border-radius:8px;font-size:.7rem">✗ ביטל הסכמה</span>';
+  const verifyBadge=uVerified
+    ?'<span style="background:rgba(0,201,167,.15);color:#00C9A7;padding:2px 8px;border-radius:8px;font-size:.7rem">✓ מאומת</span>'
+    :'<span style="background:rgba(255,193,7,.15);color:#FFC107;padding:2px 8px;border-radius:8px;font-size:.7rem">⏳ לא אומת</span>';
   h+='<div class="am-stat"><span class="am-k">כתובת</span><span class="am-v" style="direction:ltr;font-family:monospace;font-size:.78rem">'+esc(uEmail)+'</span></div>';
+  h+='<div class="am-stat"><span class="am-k">סטטוס אימות מייל</span><span class="am-v">'+verifyBadge+'</span></div>';
   h+='<div class="am-stat"><span class="am-k">סטטוס הסכמה</span><span class="am-v">'+consentBadge+'</span></div>';
 }else{
   h+='<div class="am-stat"><span class="am-k">כתובת</span><span class="am-v" style="color:var(--t2);font-size:.78rem">לא הוזן</span></div>';
@@ -6334,6 +6573,13 @@ if(uLRS>0){
   const lrsDate=new Date(uLRS);
   const lrsStr=lrsDate.toLocaleString('he-IL',{timeZone:'Asia/Jerusalem',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
   h+='<div class="am-stat"><span class="am-k">תזכורת אחרונה</span><span class="am-v" style="font-size:.78rem">'+esc(lrsStr)+'</span></div>';
+}
+// Manual send button — only enabled when sendable
+if(uEmail&&uConsent&&uStatus==='approved'){
+  h+='<div style="text-align:center;margin-top:.5rem"><button class="bp" style="font-size:.78rem;padding:.4rem 1rem;background:linear-gradient(135deg,#FFC107,#FF8F00)" onclick="admSendManualReminder(\''+eName+'\',this)">📤 שלח תזכורת עכשיו</button></div>';
+}else if(uEmail){
+  const reason=!uConsent?'(המשתמש ביטל הסכמה)':(uStatus!=='approved'?'(משתמש לא מאושר)':'');
+  h+='<div style="text-align:center;margin-top:.5rem;color:var(--t2);font-size:.72rem">לא ניתן לשלוח תזכורת ידנית '+reason+'</div>';
 }
 h+='<div id="emLog_'+esc(u.userName).replace(/'/g,"\\'")+'" style="margin-top:.6rem;font-size:.75rem;color:var(--t2);text-align:center">⏳ טוען היסטוריית מיילים...</div>';
 h+='</div>';
