@@ -4438,6 +4438,17 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
       _startEmailPromptCadence();
     }
   }else{
+    // Cloud says user not found. Two cases:
+    //  (a) brand-new registration
+    //  (b) admin deleted this user — local state may still claim G.s=true with old scores
+    // Either way, wipe leftover per-user state so they can't sneak back in via cloud sync.
+    if(G.userName===name && (G.s || G.ts>0 || (G.done&&G.done.size>0))){
+      try{localStorage.removeItem(LS);localStorage.removeItem('pm_session_token_'+name)}catch(e){}
+      G.s=false;G.ts=0;G.streak=0;G.done=new Set();G.qa={};G.sc={};G.wrongQ={};
+      G.stageTime={};G.activityLog=[];G.sessions=[];G.miHistory=[];G.weeklyDone=[];
+      G._achShown=[];G.interviewUnlocked=false;G.adminMessage='';G.adminMessageRead=true;
+      G.titleShown2=false;G.titleShown9=false;G.titleShown15=false;G.titleShownAll=false;
+    }
     // New user — require email + consent
     if(!email){showModal('📧','נדרש מייל לרישום','כדי להירשם לקורס נא להזין כתובת מייל. נשלח קישור אימות, ולאחר אישור מנהל המערכת תוכלו להתחיל.','הבנתי');const btn=document.querySelector('.btn-go');if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}const emEl=$('emailInput');if(emEl)emEl.focus();return}
     if(!consent){showModal('☑️','נדרש אישור','כדי להירשם נא לסמן את הסכמתכם לקבל תזכורות במייל. תוכלו לבטל בכל עת.','הבנתי');const btn=document.querySelector('.btn-go');if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}return}
@@ -6224,11 +6235,45 @@ function _doSync(){
       _showSync('☁️')
     }else if(d.sessionMismatch){
       _showSync('🔒')
+    }else if(d.userDeleted){
+      _showSync('🚫');_handleAccountDeleted();
     }else{
       _showSync('⚠️')
     }
   })
   .catch(()=>{_showSync('📴')});
+}
+
+// Called when server reports the user no longer exists (admin deleted them).
+// Wipes local state and forces re-registration via welcome screen.
+let _acctDeletedHandled=false;
+function _handleAccountDeleted(){
+  if(_acctDeletedHandled)return;_acctDeletedHandled=true;
+  const deletedName=G.userName||'';
+  try{stopTabTimer()}catch(e){}
+  try{endSessionTimer()}catch(e){}
+  try{_clearEmailPromptCadence&&_clearEmailPromptCadence()}catch(e){}
+  // Wipe per-user localStorage
+  try{
+    localStorage.removeItem(LS);
+    if(deletedName){
+      localStorage.removeItem('pm_session_token_'+deletedName);
+      localStorage.removeItem('pm_last_user');
+    }
+  }catch(e){}
+  // Reset in-memory state
+  G.s=false;G.userName='';G.ts=0;G.streak=0;G.lastDay=null;G.firstUse=null;
+  G.done=new Set();G.qa={};G.sc={};G.wrongQ={};G._pu={};G._seenSec={};G._tabVisits={};
+  G.stageTime={};G.activityLog=[];G.adminMessage='';G.adminMessageRead=true;
+  G.interviewUnlocked=false;G.satisfactionRating=0;G.lastStageVisited=null;
+  G.miHistory=[];G.weeklyDone=[];G._achShown=[];G.sessions=[];
+  G.titleShown2=false;G.titleShown9=false;G.titleShown15=false;G.titleShownAll=false;
+  // Show notice + bounce back to welcome
+  try{goHome()}catch(e){}
+  const ov=document.createElement('div');
+  ov.className='modal-overlay';ov.id='_acctDeletedModal';
+  ov.innerHTML='<div class="modal-box" style="text-align:center;max-width:460px;direction:rtl"><div style="font-size:3rem;margin-bottom:.5rem">⚠️</div><h2 style="margin:.3rem 0;font-size:1.3rem">החשבון לא קיים יותר</h2><p style="color:var(--t2);font-size:.95rem;line-height:1.6;margin:.6rem 0 1rem">החשבון <strong>'+esc(deletedName||'שלך')+'</strong> נמחק על ידי מנהל המערכת.<br>הנתונים המקומיים נוקו. כדי להמשיך בקורס תצטרכו להירשם מחדש.</p><button class="bp" onclick="document.getElementById(\'_acctDeletedModal\').remove();_acctDeletedHandled=false">הירשם מחדש</button></div>';
+  document.body.appendChild(ov);
 }
 
 function _showSync(icon){
@@ -6349,6 +6394,9 @@ function checkCloudUnlocks(){
     if(d.success&&d.data){
       if(d.data.interviewUnlocked==='true'){G.interviewUnlocked=true;sv();updateChatFabLock()}
       if(d.data.adminMessage&&d.data.adminMessage.trim()){if(d.data.adminMessage!==G.adminMessage){G.adminMessage=d.data.adminMessage;G.adminMessageRead=false;sv();updateAdminMsgFab()}}
+    }else if(d && d.success===false && /not found/i.test(String(d.error||''))){
+      // Admin deleted this account — force re-registration
+      _handleAccountDeleted();
     }
   }).catch(()=>{});
 }
