@@ -4416,7 +4416,9 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
       G.cloudEmail=email;G.cloudEmailConsent=consent;G.cloudEmailVerified=false;
     }
     G.s=true;if(!G.firstUse)G.firstUse=Date.now();updateStreak();sv();updateLeaderboard();mp();
-    logActivity('login',isNewUser?'first':'return');
+    const _dev=detectDevice();
+    G.lastDevice=_dev;
+    logActivity('login',(isNewUser?'first':'return')+' · '+deviceLabel(_dev));
     if(isNewUser){showAchievement('👋','ברוך הבא!',name)}else{showAchievement('👋','ברוך שובך!',name)}
     updateAdminMsgFab();
     // Smart popup cadence runs until the email is VERIFIED.
@@ -6198,7 +6200,8 @@ function _doSync(){
       return _st?(G.lastStageVisited+': '+_st.t):String(G.lastStageVisited);
     })(),
     sessionStart:G.sessionStart||0,
-    sessionToken:G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||''
+    sessionToken:G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||'',
+    lastDevice:JSON.stringify(G.lastDevice||detectDevice())
   };
   fetch(DB_URL,{method:'POST',body:JSON.stringify(payload),headers:{'Content-Type':'text/plain'}})
   .then(r=>r.json())
@@ -6370,6 +6373,39 @@ const MAX_TAB_SEC=1800;
 const INACTIVITY_MS=10*60*1000;
 let _lastActivityTime=Date.now();
 
+// ========== DEVICE DETECTION ==========
+function detectDevice(){
+  const ua=navigator.userAgent||'';
+  const uaLower=ua.toLowerCase();
+  // Tablet check first (some tablets match both mobile and tablet patterns)
+  const isTablet=/ipad|tablet|playbook|silk|(android(?!.*mobile))/i.test(ua)
+    ||(navigator.maxTouchPoints>1&&/macintosh/i.test(ua));// iPadOS reports as Mac
+  const isMobile=!isTablet&&/iphone|ipod|android.*mobile|windows phone|blackberry|opera mini|iemobile|mobile/i.test(uaLower);
+  let kind='desktop';
+  if(isTablet)kind='tablet';
+  else if(isMobile)kind='mobile';
+  // OS detection
+  let os='other';
+  if(/iphone|ipad|ipod/i.test(ua))os='iOS';
+  else if(/android/i.test(ua))os='Android';
+  else if(/windows/i.test(ua))os='Windows';
+  else if(/mac/i.test(ua))os='macOS';
+  else if(/linux/i.test(ua))os='Linux';
+  // Browser detection (rough)
+  let br='browser';
+  if(/edg\//i.test(ua))br='Edge';
+  else if(/chrome\//i.test(ua)&&!/edg\//i.test(ua))br='Chrome';
+  else if(/firefox\//i.test(ua))br='Firefox';
+  else if(/safari\//i.test(ua)&&!/chrome\//i.test(ua))br='Safari';
+  return {kind:kind,os:os,br:br};
+}
+function deviceIcon(kind){return kind==='mobile'?'📱':kind==='tablet'?'📱':'💻'}
+function deviceLabel(dev){
+  if(!dev)return '';
+  const k=dev.kind==='mobile'?'מובייל':dev.kind==='tablet'?'טאבלט':'מחשב';
+  return deviceIcon(dev.kind)+' '+k+(dev.os&&dev.os!=='other'?' · '+dev.os:'')+(dev.br&&dev.br!=='browser'?' · '+dev.br:'');
+}
+
 function startSessionTimer(){
   G.sessionStart=Date.now();_lastActivityTime=Date.now();
   // First-of-the-day bonus - skips day 1, starts from day 2
@@ -6391,7 +6427,8 @@ function endSessionTimer(){
     G.sessions.push(dur);
     if(G.sessions.length>50)G.sessions=G.sessions.slice(-50);// Keep last 50
     const _mins=Math.floor(dur/60);const _secs=dur%60;
-    logActivity('endSession',_mins+'ד\' '+_secs+'ש\'');
+    const _dev2=G.lastDevice||detectDevice();
+    logActivity('endSession',_mins+'ד\' '+_secs+'ש\' · '+deviceLabel(_dev2));
     sv();
   }
   G.sessionStart=null;
@@ -7072,6 +7109,14 @@ if(uIsDeactivated){
   h+='<div style="background:rgba(0,201,167,.1);border-radius:10px;padding:.5rem .8rem;margin-bottom:.8rem;text-align:center;font-size:.82rem;color:var(--a);font-weight:600">🟢 מחובר עכשיו'+(_liveDur>0?' · סשן נוכחי: '+fmtDuration(_liveDur):'')+'</div>';
 }
 if(uLastStageVisited){h+='<div class="am-stat"><span class="am-k">שלב אחרון שנכח בו</span><span class="am-v">'+(uLastStageVisited.ic||'')+' שלב '+uLastStageVisited.id+': '+esc(uLastStageVisited.t)+'</span></div>'}
+// Last device — parse from cloud field
+let _uDev=null;
+try{if(u.lastDevice)_uDev=JSON.parse(u.lastDevice)}catch(e){}
+if(_uDev&&_uDev.kind){
+  const _devKindHe=_uDev.kind==='mobile'?'מובייל':_uDev.kind==='tablet'?'טאבלט':'מחשב';
+  const _devIc=_uDev.kind==='mobile'?'📱':_uDev.kind==='tablet'?'📱':'💻';
+  h+='<div class="am-stat"><span class="am-k">מכשיר אחרון</span><span class="am-v">'+_devIc+' '+_devKindHe+(_uDev.os&&_uDev.os!=='other'?' · '+esc(_uDev.os):'')+(_uDev.br&&_uDev.br!=='browser'?' · '+esc(_uDev.br):'')+'</span></div>';
+}
 
 h+='<div style="background:rgba(108,99,255,.1);border-radius:12px;padding:.8rem;margin-bottom:1rem;text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--p)">'+pct+'%</div><div style="font-size:.8rem;color:var(--t2)">התקדמות כללית</div><div style="background:rgba(255,255,255,.1);border-radius:6px;height:8px;margin-top:.5rem;overflow:hidden"><div style="background:var(--gr1);height:100%;width:'+pct+'%;border-radius:6px;transition:width .5s"></div></div></div>';
 
