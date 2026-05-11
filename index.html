@@ -4512,7 +4512,6 @@ function _doRemoveEmail(){
 const ov=$('removeEmailOverlay');if(ov)ov.remove();
 if(!G.userName||!DB_URL)return;
 const tok=G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||'';
-if(!tok){showModal('⚠️','חסר אסימון','לא נמצא אסימון פעיל. נסה/י לרענן את הדף ולהיכנס מחדש.','הבנתי');return}
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'removeEmail',userName:G.userName,sessionToken:tok}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json()).then(d=>{
   if(d.success){
