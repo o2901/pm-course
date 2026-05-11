@@ -6670,7 +6670,7 @@ const activeMonth=approvedUsers.filter(u=>_isThisMonth({lastLogin:u.lastLogin}))
 const activeToday=todayUsers.length;
 // Online now: users active in last 2 minutes (via heartbeat)
 const _nowTs=Date.now();
-const onlineUsersList=approvedUsers.filter(u=>{const la=parseInt(u.lastActivity)||0;return la>0&&(_nowTs-la)<120000});
+const onlineUsersList=approvedUsers.filter(u=>{if(String(u.status||'')==='deactivated')return false;const la=parseInt(u.lastActivity)||0;return la>0&&(_nowTs-la)<120000});
 const onlineNow=onlineUsersList.length;
 // Aggregate stage-time data — ONLY from users active today (to avoid inflated historical data)
 const _stageData={};const _allL=[],_allC=[],_allQ=[],_allTotal=[];
@@ -6923,7 +6923,9 @@ t+='</tr></thead><tbody>';
 if(sorted.length===0){t+='<tr><td colspan="10" style="text-align:center;padding:2rem;color:var(--t2)">לא נמצאו משתמשים</td></tr>'}
 sorted.forEach((u,i)=>{
   const n=esc(u.userName||'').replace(/'/g,"\\'");
-  const _la=parseInt(u.lastActivity)||0;const _isOnline=_la>0&&(Date.now()-_la)<120000;
+  const _la=parseInt(u.lastActivity)||0;
+  const _isDeactivated=String(u.status||'')==='deactivated';
+  const _isOnline=!_isDeactivated && _la>0 && (Date.now()-_la)<120000;
   const _email=String(u.email||'');
   const _consent=String(u.emailConsent||'')==='true';
   const _rc=parseInt(u.reminderCount)||0;
@@ -6938,8 +6940,9 @@ sorted.forEach((u,i)=>{
     const _label=_rc===1?'24h':_rc===2?'48h':'שבועי×'+(_rc-2);
     _rcCell='<span style="background:rgba(255,193,7,0.15);color:#FFC107;padding:2px 6px;border-radius:8px;font-size:.7rem">'+_rc+' ('+_label+')</span>';
   }
-  t+='<tr style="cursor:pointer" onclick="showUserDetail(\''+n+'\')">';
-  t+='<td style="font-weight:600;color:var(--t1)">'+(_isOnline?'<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#00C9A7;box-shadow:0 0 6px rgba(0,201,167,.7);margin-left:6px" title="מחובר עכשיו"></span>':'')+esc(u.userName)+'</td>';
+  const _deactBadge=_isDeactivated?' <span style="background:rgba(255,101,132,.15);color:#FF6584;padding:1px 7px;border-radius:8px;font-size:.65rem;margin-right:.3rem;font-weight:700" title="המשתמש ביטל את החשבון">🚫 מבוטל</span>':'';
+  t+='<tr style="cursor:pointer;'+(_isDeactivated?'opacity:.55':'')+'" onclick="showUserDetail(\''+n+'\')">';
+  t+='<td style="font-weight:600;color:var(--t1)">'+(_isOnline?'<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#00C9A7;box-shadow:0 0 6px rgba(0,201,167,.7);margin-left:6px" title="מחובר עכשיו"></span>':'')+esc(u.userName)+_deactBadge+'</td>';
   t+='<td>'+_emailCell+'</td>';
   t+='<td>'+(parseInt(u.score)||0)+'</td>';
   t+='<td>'+(parseInt(u.stagesCount)||0)+'/51</td>';
@@ -7026,13 +7029,17 @@ try{stageTimeObj=JSON.parse(u.stageTimeJSON||'{}')}catch(e){}
 let activityLog=[];
 try{activityLog=JSON.parse(u.activityLogJSON||'[]')}catch(e){}
 const uLastActivity=parseInt(u.lastActivity)||0;
-const uIsOnline=uLastActivity>0&&(Date.now()-uLastActivity)<120000;
+const uIsDeactivated=String(u.status||'')==='deactivated';
+const uIsOnline=!uIsDeactivated && uLastActivity>0 && (Date.now()-uLastActivity)<120000;
 const uLastStageVisited=u.lastStageVisited?S.find(s=>s.id===parseInt(u.lastStageVisited)):null;
 
 let h='<div class="adm-modal-overlay" onclick="if(event.target===this)this.remove()">';
 h+='<div class="adm-modal">';
-h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem"><h3>'+(uIsOnline?'<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#00C9A7;box-shadow:0 0 8px rgba(0,201,167,.7);margin-left:6px" title="מחובר עכשיו"></span>':'')+'👤 '+esc(u.userName)+'</h3><span style="cursor:pointer;font-size:1.3rem;color:var(--t2)" onclick="this.closest(\'.adm-modal-overlay\').remove()">✕</span></div>';
-if(uIsOnline){
+const _hdrDot=uIsDeactivated?'<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#FF6584;box-shadow:0 0 8px rgba(255,101,132,.7);margin-left:6px" title="חשבון מבוטל"></span>':(uIsOnline?'<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#00C9A7;box-shadow:0 0 8px rgba(0,201,167,.7);margin-left:6px" title="מחובר עכשיו"></span>':'');
+h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem"><h3>'+_hdrDot+'👤 '+esc(u.userName)+'</h3><span style="cursor:pointer;font-size:1.3rem;color:var(--t2)" onclick="this.closest(\'.adm-modal-overlay\').remove()">✕</span></div>';
+if(uIsDeactivated){
+  h+='<div style="background:rgba(255,101,132,.12);border:1px solid rgba(255,101,132,.35);border-radius:10px;padding:.6rem .9rem;margin-bottom:.8rem;text-align:center;font-size:.85rem;color:#FF6584;font-weight:700">🚫 המשתמש ביטל את החשבון — חסום מכניסה מחודשת</div>';
+}else if(uIsOnline){
   const _ss=parseInt(u.sessionStart)||0;
   const _liveDur=_ss>0?Math.round((Date.now()-_ss)/1000):0;
   h+='<div style="background:rgba(0,201,167,.1);border-radius:10px;padding:.5rem .8rem;margin-bottom:.8rem;text-align:center;font-size:.82rem;color:var(--a);font-weight:600">🟢 מחובר עכשיו'+(_liveDur>0?' · סשן נוכחי: '+fmtDuration(_liveDur):'')+'</div>';
