@@ -667,6 +667,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 .adm-modal .am-stat .am-k{color:var(--t2)}.adm-modal .am-stat .am-v{color:var(--t1);font-weight:600}
 .adm-stage-chip{display:inline-block;padding:.2rem .5rem;margin:.15rem;border-radius:8px;font-size:.72rem;font-weight:600;background:rgba(0,201,167,.12);color:var(--a);border:1px solid rgba(0,201,167,.25)}
 .adm-stage-chip.not-done{background:rgba(255,255,255,.04);color:var(--t2);border-color:rgba(255,255,255,.08);opacity:.5}
+.adm-stage-chip.started{background:rgba(255,193,7,.15);color:#FFC107;border-color:rgba(255,193,7,.35);opacity:1}
 .adm-section-group{margin-bottom:.8rem}
 .adm-section-group .asg-title{font-size:.78rem;font-weight:700;color:var(--p);margin-bottom:.3rem;padding-bottom:.2rem;border-bottom:1px solid rgba(108,99,255,.12)}
 .adm-section-group .asg-prog{font-size:.68rem;color:var(--t2);font-weight:400;margin-right:.4rem}
@@ -7114,18 +7115,50 @@ if(uSatNote){h+='<div class="am-stat"><span class="am-k">הערת משתמש</sp
 h+='<div class="am-stat"><span class="am-k">שביעות רצון</span><span class="am-v" style="color:var(--t2)">טרם דירג</span></div>';
 }
 
+// Derive "started but not completed" stages from multiple signals:
+//   1) Activity log openStage/switchTab/answer events (recent activity)
+//   2) stageTimeJSON keys (time spent per stage_tab)
+//   3) lastStageVisited
+const startedSet=new Set();
+activityLog.forEach(act=>{
+  if(!act||!act.a||!act.d)return;
+  if(act.a==='openStage'){
+    const m=String(act.d).match(/^(\d+)/);
+    if(m)startedSet.add(parseInt(m[1]));
+  }else if(act.a==='switchTab'||act.a==='answer'||act.a==='completeStage'){
+    const m=String(act.d).match(/שלב\s*(\d+)/);
+    if(m)startedSet.add(parseInt(m[1]));
+  }
+});
+Object.keys(stageTimeObj).forEach(k=>{
+  const sid=parseInt(String(k).split('_')[0]);
+  if(sid>0)startedSet.add(sid);
+});
+if(u.lastStageVisited){
+  const _lsv=parseInt(u.lastStageVisited);
+  if(_lsv>0)startedSet.add(_lsv);
+}
+// Exclude completed (so "started" = touched but not finished)
+stages.forEach(id=>startedSet.delete(id));
+
 // Stages grouped by section
 h+='<div style="margin-top:1rem"><strong style="color:var(--p);font-size:.9rem">שלבים לפי נושא:</strong>';
+h+='<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin:.4rem 0 .6rem;font-size:.7rem;color:var(--t2)"><span><span class="adm-stage-chip" style="margin:0;padding:.1rem .4rem">✓</span> הושלם</span><span><span class="adm-stage-chip started" style="margin:0;padding:.1rem .4rem">◐</span> התחיל</span><span><span class="adm-stage-chip not-done" style="margin:0;padding:.1rem .4rem">○</span> לא נגע</span></div>';
 const secOrder=['טרום הבסיס','בסיסי','ביניים','מתקדם','מתקדם מאוד','התמחות','בונוס מיוחד','בונוס - ספר'];
 const _secEmojis2={'טרום הבסיס':'🧭','בסיסי':'🎯','ביניים':'⚡','מתקדם':'🚀','מתקדם מאוד':'🔥','התמחות':'🎓','בונוס מיוחד':'🌟','בונוס - ספר':'📚'};
 secOrder.forEach(sec=>{
   const secStages=S.filter(s=>s.tg===sec).sort((a,b)=>a.id-b.id);
   if(secStages.length===0)return;
   const secDone=secStages.filter(s=>stages.includes(s.id)).length;
-  h+='<div class="adm-section-group"><div class="asg-title">'+(_secEmojis2[sec]||'')+' '+sec+' <span class="asg-prog">'+secDone+'/'+secStages.length+'</span></div>';
+  const secStarted=secStages.filter(s=>startedSet.has(s.id)).length;
+  const progLabel=secDone+'/'+secStages.length+(secStarted>0?' <span style="color:#FFC107;font-weight:600">·'+secStarted+' בתהליך</span>':'');
+  h+='<div class="adm-section-group"><div class="asg-title">'+(_secEmojis2[sec]||'')+' '+sec+' <span class="asg-prog">'+progLabel+'</span></div>';
   secStages.forEach(s=>{
     const done=stages.includes(s.id);
-    h+='<span class="adm-stage-chip'+(done?'':' not-done')+'">'+(s.ic||'')+' '+s.id+': '+esc(s.t)+'</span>';
+    const started=!done&&startedSet.has(s.id);
+    const cls=done?'':(started?' started':' not-done');
+    const prefix=done?'✓ ':(started?'◐ ':'');
+    h+='<span class="adm-stage-chip'+cls+'">'+prefix+(s.ic||'')+' '+s.id+': '+esc(s.t)+'</span>';
   });
   h+='</div>';
 });
