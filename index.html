@@ -4380,6 +4380,29 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
     if(d.data.lastDay)G.lastDay=d.data.lastDay;
     const cloudStages=cloudStagesList.split(',').filter(Boolean).map(Number);
     cloudStages.forEach(id=>G.done.add(id));
+    // Merge stageTime from cloud — take MAX per key so we never lose recorded time
+    // (prevents new-device sync from overwriting historical quiz/case time)
+    try{
+      const cloudST=JSON.parse(d.data.stageTimeJSON||'{}');
+      if(!G.stageTime)G.stageTime={};
+      Object.keys(cloudST).forEach(k=>{
+        const cv=parseInt(cloudST[k])||0;
+        const lv=parseInt(G.stageTime[k])||0;
+        if(cv>lv)G.stageTime[k]=cv;
+      });
+    }catch(e){}
+    // Merge activityLog from cloud — dedupe by timestamp, keep last 100
+    try{
+      const cloudAL=JSON.parse(d.data.activityLogJSON||'[]');
+      if(!G.activityLog)G.activityLog=[];
+      const seen={};
+      G.activityLog.forEach(e=>{if(e&&e.t)seen[e.t+'|'+e.a]=true});
+      cloudAL.forEach(e=>{
+        if(e&&e.t&&!seen[e.t+'|'+e.a]){G.activityLog.push(e);seen[e.t+'|'+e.a]=true}
+      });
+      G.activityLog.sort((a,b)=>(a.t||0)-(b.t||0));
+      if(G.activityLog.length>100)G.activityLog=G.activityLog.slice(-100);
+    }catch(e){}
     if(d.data.interviewUnlocked==='true')G.interviewUnlocked=true;
     if(parseInt(d.data.satisfaction)>0)G.satisfactionRating=parseInt(d.data.satisfaction);
     if(d.data.adminMessage&&d.data.adminMessage.trim()){if(d.data.adminMessage!==G.adminMessage){G.adminMessage=d.data.adminMessage;G.adminMessageRead=false}}else{G.adminMessage='';G.adminMessageRead=true}
