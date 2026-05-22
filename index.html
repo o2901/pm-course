@@ -6951,9 +6951,6 @@ const avgScoreDaily=activeToday>0?Math.round(todayUsers.reduce((a,u)=>a+(parseIn
 // True daily-delta metrics: count completeStage / answer events that actually happened TODAY
 let stagesDoneToday=0,answersToday=0;
 approvedUsers.forEach(u=>{try{JSON.parse(u.activityLogJSON||'[]').forEach(e=>{if(e&&e.t&&_isTodayMs(e.t)){if(e.a==='completeStage')stagesDoneToday++;else if(e.a==='answer')answersToday++;}})}catch(e){}});
-// Stable per-user averages across ALL approved users (denominator = whole user base, not the volatile "active today" slice)
-const avgStagesPerUser=approvedUsers.length>0?(approvedUsers.reduce((a,u)=>a+(parseInt(u.stagesCount)||0),0)/approvedUsers.length).toFixed(1):'—';
-const avgScorePerUser=approvedUsers.length>0?Math.round(approvedUsers.reduce((a,u)=>a+(parseInt(u.score)||0),0)/approvedUsers.length):'—';
 const completedAll=approvedUsers.filter(u=>(parseInt(u.stagesCount)||0)>=23).length;
 const ratedUsers=approvedUsers.filter(u=>parseInt(u.satisfaction)>0);
 const avgSat=ratedUsers.length>0?(ratedUsers.reduce((a,u)=>a+(parseInt(u.satisfaction)||0),0)/ratedUsers.length).toFixed(1):'—';
@@ -6993,8 +6990,8 @@ h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'all\')
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'today\')"><div class="as-val">'+activeToday+'</div><div class="as-lbl">פעילים היום</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'month\')"><div class="as-val">'+activeMonth+'</div><div class="as-lbl">פעילים החודש</div></div>';
 h+='<div class="adm-stat" title="כמה שלבים הושלמו בפועל היום (קריאה+קייס+מבחן). נספר מיומן הפעילות של כל המשתמשים — מדד פעילות יומי אמיתי."><div class="as-val">'+stagesDoneToday+'</div><div class="as-lbl">שלבים שהושלמו היום</div></div>';
-h+='<div class="adm-stat" title="כמה שלבים בממוצע צבר משתמש לאורך כל השימוש. חישוב: סך השלבים של כל המשתמשים המאושרים ('+approvedUsers.length+') חלקי מספרם. מדד התקדמות יציב, לא תלוי מי נכנס היום."><div class="as-val">'+avgStagesPerUser+'</div><div class="as-lbl">שלבים ממוצע למשתמש</div></div>';
-h+='<div class="adm-stat" title="כמה נקודות בממוצע צבר משתמש לאורך כל השימוש. חישוב: סך הניקוד של כל המשתמשים המאושרים ('+approvedUsers.length+') חלקי מספרם."><div class="as-val">'+avgScorePerUser+'</div><div class="as-lbl">ניקוד ממוצע למשתמש</div></div>';
+h+='<div class="adm-stat" title="ממוצע סך השלבים שצברו (לכל החיים) המשתמשים שנכנסו היום בלבד. חישוב: סך השלבים שלהם חלקי '+activeToday+' (מספר מי שנכנס היום). מבוסס רק על מי שהיה פעיל היום, ולכן משתנה לפי מי שנכנס."><div class="as-val">'+avgStagesDaily+'</div><div class="as-lbl">שלבים ממוצע · נכנסו היום ('+activeToday+')</div></div>';
+h+='<div class="adm-stat" title="ממוצע סך הניקוד שצברו (לכל החיים) המשתמשים שנכנסו היום בלבד. חישוב: סך הניקוד שלהם חלקי '+activeToday+' (מספר מי שנכנס היום). מבוסס רק על מי שהיה פעיל היום, ולכן משתנה לפי מי שנכנס."><div class="as-val">'+avgScoreDaily+'</div><div class="as-lbl">ניקוד ממוצע · נכנסו היום ('+activeToday+')</div></div>';
 h+='<div class="adm-stat" style="border-color:rgba(0,201,167,.4);background:rgba(0,201,167,.08)"><div class="as-val" style="color:var(--a)">🟢 '+onlineNow+'</div><div class="as-lbl" style="color:var(--a)">מחוברים עכשיו</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'core\')"><div class="as-val">'+completedAll+'</div><div class="as-lbl">סיימו ליבה</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'rated\')"><div class="as-val" style="font-size:1.6rem">'+avgSat+' '+satStars+'</div><div class="as-lbl">שביעות רצון ('+ratedUsers.length+')</div></div>';
