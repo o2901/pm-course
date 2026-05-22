@@ -4390,7 +4390,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
     const isNewUser=cloudScore===0&&!cloudStagesList&&cloudStreak===0;
     // CRITICAL: Clear per-user state if (a) different user or (b) new user with leftover data
     if((G.userName && G.userName!==name) || isNewUser){
-      G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G._pu={};G._seenSec={};G._tabVisits={};
+      G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G.satSkips=[];G._pu={};G._seenSec={};G._tabVisits={};
       G.done=new Set();G.miHistory=[];G.weeklyDone=[];G._achShown=[];
       G.titleShown2=false;G.titleShown9=false;G.titleShown15=false;G.titleShownAll=false;
       G.interviewUnlocked=false;G.stageTime={};G.satisfactionRating=0;
@@ -4437,6 +4437,14 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
         G.quizAttempts[sid].sort((a,b)=>(a.t||0)-(b.t||0));
         if(G.quizAttempts[sid].length>20)G.quizAttempts[sid]=G.quizAttempts[sid].slice(-20);
       });
+    }catch(e){}
+    // Merge satisfaction-skip log from cloud (#sat) — dedupe by timestamp
+    try{
+      const cloudSk=JSON.parse(d.data.satSkipsJSON||'[]');
+      if(!G.satSkips)G.satSkips=[];
+      const seenSk={};G.satSkips.forEach(x=>{if(x&&x.t)seenSk[x.t]=true});
+      cloudSk.forEach(x=>{if(x&&x.t&&!seenSk[x.t]){G.satSkips.push(x);seenSk[x.t]=true}});
+      G.satSkips.sort((a,b)=>(a.t||0)-(b.t||0));
     }catch(e){}
     if(d.data.interviewUnlocked==='true')G.interviewUnlocked=true;
     if(parseInt(d.data.satisfaction)>0)G.satisfactionRating=parseInt(d.data.satisfaction);
@@ -4486,7 +4494,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
   if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}
   // Clear per-user state if different user logging in offline
   if(G.userName && G.userName!==name){
-    G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G._pu={};G._seenSec={};G._tabVisits={};
+    G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G.satSkips=[];G._pu={};G._seenSec={};G._tabVisits={};
     G.done=new Set();G.miHistory=[];G.weeklyDone=[];G._achShown=[];
     G.interviewUnlocked=false;G.stageTime={};G.ts=0;G.streak=0;
   }
@@ -5442,6 +5450,7 @@ function tryCompleteStage(sid,showHint){
   cf();uh();
   setTimeout(()=>checkTitleCeremony(),800);setTimeout(()=>checkSectionAchievements(sid),1200);setTimeout(()=>maybeShowReflection(sid),1800);
   sv();
+  try{maybeShowSatisfaction()}catch(e){}
   return true;
 }
 function rr(sid){delete G.qa[sid];if(G._pu)delete G._pu[sid];S.find(x=>x.id===sid).q.forEach((_,i)=>{delete _shuffleCache[sid+'_'+i]});sv();rq(S.find(x=>x.id===sid))}
@@ -6202,6 +6211,11 @@ if(parts.length>=3){const day=parseInt(parts[0]),mon=parseInt(parts[1])-1,yr=par
 if(!isNaN(day)&&!isNaN(mon)&&!isNaN(yr)){const now=new Date();return day===now.getDate()&&mon===now.getMonth()&&yr===now.getFullYear()}}
 return false;
 }
+// Reliable activity checks based on lastActivity (absolute ms, timezone-proof) instead of
+// parsing the localized lastLogin string. ms===0 means "never truly active" (e.g. pending_email).
+function _isTodayMs(ms){if(!ms)return false;const d=new Date(ms),n=new Date();return d.getDate()===n.getDate()&&d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear()}
+function _isThisMonthMs(ms){if(!ms)return false;const d=new Date(ms),n=new Date();return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear()}
+function _idleLabel(ms){if(!ms)return '';const diff=Date.now()-ms;const h=diff/3600000;if(h<1)return 'פעיל ממש עכשיו';if(h<24)return 'לפני '+Math.round(h)+' שע\'';const days=Math.floor(h/24);return 'לפני '+days+' '+(days===1?'יום':'ימים')}
 function renderLeaderboard(){const lb=getLeaderboard().filter(_isThisMonth);const lbv=$('lbv');const monthNames=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];const curMonth=monthNames[new Date().getMonth()]+' '+new Date().getFullYear();let h='<div style="max-width:700px;margin:0 auto;padding:1rem">';
 h+='<button class="bbtn" onclick="hideLeaderboard()">→ חזרה</button>';
 h+='<h2 style="text-align:center;font-size:2rem;margin:.5rem 0">🏆 טבלת מובילים</h2>';
@@ -6315,7 +6329,8 @@ function _doSync(){
     sessionStart:G.sessionStart||0,
     sessionToken:G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||'',
     lastDevice:JSON.stringify(G.lastDevice||detectDevice()),
-    quizAttemptsJSON:JSON.stringify(G.quizAttempts||{})
+    quizAttemptsJSON:JSON.stringify(G.quizAttempts||{}),
+    satSkipsJSON:JSON.stringify(G.satSkips||[])
   };
   fetch(DB_URL,{method:'POST',body:JSON.stringify(payload),headers:{'Content-Type':'text/plain'}})
   .then(r=>r.json())
@@ -6357,7 +6372,7 @@ function _handleAccountDeleted(){
   }catch(e){}
   // Reset in-memory state
   G.s=false;G.userName='';G.ts=0;G.streak=0;G.lastDay=null;G.firstUse=null;
-  G.done=new Set();G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G._pu={};G._seenSec={};G._tabVisits={};
+  G.done=new Set();G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G.satSkips=[];G._pu={};G._seenSec={};G._tabVisits={};
   G.stageTime={};G.activityLog=[];G.adminMessage='';G.adminMessageRead=true;
   G.interviewUnlocked=false;G.satisfactionRating=0;G.lastStageVisited=null;
   G.miHistory=[];G.weeklyDone=[];G._achShown=[];G.sessions=[];
@@ -6659,21 +6674,23 @@ document.addEventListener('visibilitychange',()=>{
 // ========== SATISFACTION SURVEY ==========
 var _satCheckInterval=null;
 var _satLastShownTime=0;
-function startSatisfactionTimer(){
-  if(_satCheckInterval)return;
-  // If user already submitted a rating, never show again
+function startSatisfactionTimer(){/* trigger is now achievement-based — see maybeShowSatisfaction() */}
+// Satisfaction survey trigger (achievement-based, per product spec):
+//   • First prompt once the user has completed >=3 stages (at a stage-completion moment).
+//   • If they skip ("אח"כ"), re-prompt every 2 further stage-completions.
+//   • Repeats until they actually rate; once rated it never shows again.
+function _satNextThreshold(){
+  if(G.satSkips&&G.satSkips.length){return (parseInt(G.satSkips[G.satSkips.length-1].st)||0)+2}
+  return 3;
+}
+function maybeShowSatisfaction(){
   if(G.satisfactionRating>0)return;
-  _satCheckInterval=setInterval(function(){
-    if(!G.sessionStart||G.satisfactionRating>0)return;
-    // Don't show again if popup was shown less than 20 min ago
-    if(_satLastShownTime&&(Date.now()-_satLastShownTime)<20*60*1000)return;
-    var elapsed=(Date.now()-G.sessionStart)/1000/60;// minutes
-    if(elapsed>=20){_showSatIfReady()}
-  },30000);// check every 30 sec
+  if((G.done?G.done.size:0)<_satNextThreshold())return;
+  setTimeout(function(){_showSatIfReady()},2200);
 }
 function _showSatIfReady(){
   if(G.satisfactionRating>0)return;// Already rated - never show
-  if(document.getElementById('satOverlay'))return;// Already open
+  if(document.querySelector('.daily-modal'))return;// another modal open — retry on next achievement
   _satLastShownTime=Date.now();
   _showSatPopup();
 }
@@ -6696,7 +6713,7 @@ function _showSatPopup(){
     '<textarea id="satNote" maxlength="100" placeholder="הערות נוספות (אופציונלי, עד 100 תווים)..." oninput="_satSanitizeNote(this)" style="width:100%;min-height:60px;border-radius:10px;border:1px solid rgba(108,99,255,.3);background:rgba(255,255,255,.05);color:var(--t1);padding:.6rem;font-family:Heebo;font-size:.85rem;resize:vertical;margin-bottom:.2rem"></textarea>'+
     '<div id="satCharCount" style="font-size:.7rem;color:var(--t2);text-align:left;margin-bottom:.6rem">0/100</div>'+
     '<div style="display:flex;gap:.6rem;justify-content:center">'+
-    '<button class="bs" onclick="document.getElementById(\'satOverlay\').remove()">אח"כ</button>'+
+    '<button class="bs" onclick="_satSkip()">אח"כ</button>'+
     '<button class="bp" id="satSendBtn" disabled onclick="_satSubmit()">שלח דירוג</button>'+
     '</div>'+
     '</div>';
@@ -6716,6 +6733,13 @@ function _satClick(v){
   stars.forEach(function(s){var sv=parseInt(s.getAttribute('data-v'));s.textContent=sv<=v?'★':'☆';s.style.color=sv<=v?'#ffd700':'var(--t2)'});
   var lbl=document.getElementById('satLabel');if(lbl)lbl.textContent=_satLabels[v]||'';
   var btn=document.getElementById('satSendBtn');if(btn)btn.disabled=false;
+}
+function _satSkip(){
+  if(!G.satSkips)G.satSkips=[];
+  G.satSkips.push({t:Date.now(),st:(G.done?G.done.size:0)});
+  try{sv()}catch(e){}
+  try{if(typeof _doSync==='function')_doSync()}catch(e){}
+  var ol=document.getElementById('satOverlay');if(ol)ol.remove();
 }
 function _satSubmit(){
   if(_satVal<1)return;
@@ -6880,8 +6904,9 @@ const total=users.length;
 const pendingUsers=users.filter(u=>{const s=String(u.status||'');return s==='pending'||s==='pending_admin'});
 const pendingEmailUsers=users.filter(u=>String(u.status||'')==='pending_email');
 const approvedUsers=users.filter(u=>{const s=String(u.status||'');return s!=='pending'&&s!=='pending_admin'&&s!=='pending_email'});
-const todayUsers=approvedUsers.filter(u=>_isToday(u.lastLogin));
-const activeMonth=approvedUsers.filter(u=>_isThisMonth({lastLogin:u.lastLogin})).length;
+// Use lastActivity (absolute ms) — reliable & timezone-proof — not the localized lastLogin string
+const todayUsers=approvedUsers.filter(u=>_isTodayMs(parseInt(u.lastActivity)||0));
+const activeMonth=approvedUsers.filter(u=>_isThisMonthMs(parseInt(u.lastActivity)||0)).length;
 const activeToday=todayUsers.length;
 // Online now: users active in last 2 minutes (via heartbeat)
 const _nowTs=Date.now();
@@ -6923,6 +6948,9 @@ const avgSessionToday=_avg(_todaySess);
 const _getStage=sid=>S.find(s=>s.id===sid);
 const avgStagesDaily=activeToday>0?(todayUsers.reduce((a,u)=>a+(parseInt(u.stagesCount)||0),0)/activeToday).toFixed(1):'—';
 const avgScoreDaily=activeToday>0?Math.round(todayUsers.reduce((a,u)=>a+(parseInt(u.score)||0),0)/activeToday):'—';
+// True daily-delta metrics: count completeStage / answer events that actually happened TODAY
+let stagesDoneToday=0,answersToday=0;
+approvedUsers.forEach(u=>{try{JSON.parse(u.activityLogJSON||'[]').forEach(e=>{if(e&&e.t&&_isTodayMs(e.t)){if(e.a==='completeStage')stagesDoneToday++;else if(e.a==='answer')answersToday++;}})}catch(e){}});
 const completedAll=approvedUsers.filter(u=>(parseInt(u.stagesCount)||0)>=23).length;
 const ratedUsers=approvedUsers.filter(u=>parseInt(u.satisfaction)>0);
 const avgSat=ratedUsers.length>0?(ratedUsers.reduce((a,u)=>a+(parseInt(u.satisfaction)||0),0)/ratedUsers.length).toFixed(1):'—';
@@ -6961,8 +6989,9 @@ h+='<div class="adm-stats">';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'all\')"><div class="as-val">'+approvedUsers.length+'</div><div class="as-lbl">סה"כ משתמשים</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'today\')"><div class="as-val">'+activeToday+'</div><div class="as-lbl">פעילים היום</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'month\')"><div class="as-val">'+activeMonth+'</div><div class="as-lbl">פעילים החודש</div></div>';
-h+='<div class="adm-stat"><div class="as-val">'+avgStagesDaily+'</div><div class="as-lbl">ממוצע שלבים יומי</div></div>';
-h+='<div class="adm-stat"><div class="as-val">'+avgScoreDaily+'</div><div class="as-lbl">ניקוד ממוצע יומי</div></div>';
+h+='<div class="adm-stat" title="שלבים שהושלמו בפועל היום (לפי יומן הפעילות)"><div class="as-val">'+stagesDoneToday+'</div><div class="as-lbl">שלבים שהושלמו היום</div></div>';
+h+='<div class="adm-stat" title="ממוצע השלבים המצטבר של המשתמשים שהיו פעילים היום"><div class="as-val">'+avgStagesDaily+'</div><div class="as-lbl">שלבים ממוצע / פעיל היום</div></div>';
+h+='<div class="adm-stat" title="ממוצע הניקוד המצטבר של המשתמשים שהיו פעילים היום"><div class="as-val">'+avgScoreDaily+'</div><div class="as-lbl">ניקוד ממוצע / פעיל היום</div></div>';
 h+='<div class="adm-stat" style="border-color:rgba(0,201,167,.4);background:rgba(0,201,167,.08)"><div class="as-val" style="color:var(--a)">🟢 '+onlineNow+'</div><div class="as-lbl" style="color:var(--a)">מחוברים עכשיו</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'core\')"><div class="as-val">'+completedAll+'</div><div class="as-lbl">סיימו ליבה</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'rated\')"><div class="as-val" style="font-size:1.6rem">'+avgSat+' '+satStars+'</div><div class="as-lbl">שביעות רצון ('+ratedUsers.length+')</div></div>';
@@ -7278,6 +7307,8 @@ h+='<div class="am-stat"><span class="am-k">שלבים</span><span class="am-v">
 h+='<div class="am-stat"><span class="am-k">דרגה</span><span class="am-v">'+esc(u.title||'—')+'</span></div>';
 h+='<div class="am-stat"><span class="am-k">רצף</span><span class="am-v">'+(parseInt(u.streak)>0?'🔥 '+u.streak+' ימים':'—')+'</span></div>';
 h+='<div class="am-stat"><span class="am-k">כניסה אחרונה</span><span class="am-v">'+esc(u.lastLogin||'—')+'</span></div>';
+const _laMs=parseInt(u.lastActivity)||0;
+h+='<div class="am-stat"><span class="am-k">נראה לאחרונה</span><span class="am-v">'+(_laMs?esc(_idleLabel(_laMs)):'—')+'</span></div>';
 h+='<div class="am-stat"><span class="am-k">הרשמה</span><span class="am-v">'+esc(u.firstUse||'—')+'</span></div>';
 
 // === Email & Reminders block ===
@@ -7326,14 +7357,20 @@ h+='<div class="am-stat"><span class="am-k">סשן אחרון</span><span class=
 // Average only shown for users with 2+ sessions (avgSessDur===0 = insufficient data)
 h+='<div class="am-stat"><span class="am-k">ממוצע סשן</span><span class="am-v" title="ממוצע מחושב רק לאחר 2+ סשנים">'+(avgSessDur>0?fmtDuration(avgSessDur):'<span style="color:var(--t2);font-size:.78rem">— (נדרשים 2+ סשנים)</span>')+'</span></div>';
 
-// Satisfaction rating
+// Satisfaction rating + skip tracking
 var uSat=parseInt(u.satisfaction)||0;
 var uSatNote=u.satisfactionNote||'';
+var uSatSkips=[];try{uSatSkips=JSON.parse(u.satSkipsJSON||'[]')}catch(e){}
 if(uSat>0){
 h+='<div class="am-stat"><span class="am-k">שביעות רצון</span><span class="am-v" style="color:#ffd700">'+'★'.repeat(uSat)+'☆'.repeat(5-uSat)+' ('+uSat+'/5)</span></div>';
 if(uSatNote){h+='<div class="am-stat"><span class="am-k">הערת משתמש</span><span class="am-v" style="font-size:.78rem;max-width:250px;word-break:break-word">💬 '+esc(uSatNote)+'</span></div>'}
+if(uSatSkips.length){h+='<div class="am-stat"><span class="am-k">דילג לפני הדירוג</span><span class="am-v" style="color:var(--t2)">'+uSatSkips.length+' פעמים</span></div>'}
+}else if(uSatSkips.length){
+var _skTimes=uSatSkips.map(function(x){return _fmtChipDate(x.t)}).join(' · ');
+h+='<div class="am-stat"><span class="am-k">שביעות רצון</span><span class="am-v" style="color:#FF6584">⏭️ דילג '+uSatSkips.length+' פעמים · טרם דירג</span></div>';
+h+='<div class="am-stat"><span class="am-k">זמני דילוג</span><span class="am-v" style="font-size:.72rem;color:var(--t2);max-width:250px;word-break:break-word">'+esc(_skTimes)+'</span></div>';
 }else{
-h+='<div class="am-stat"><span class="am-k">שביעות רצון</span><span class="am-v" style="color:var(--t2)">טרם דירג</span></div>';
+h+='<div class="am-stat"><span class="am-k">שביעות רצון</span><span class="am-v" style="color:var(--t2)">'+((parseInt(u.stagesCount)||0)>=3?'טרם דירג (לא דילג)':'טרם הגיע לסף (3 שלבים)')+'</span></div>';
 }
 
 // Derive "started but not completed" stages from multiple signals:
