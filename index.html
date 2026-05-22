@@ -4143,7 +4143,7 @@ q:[{q:"מי המחבר של ״Negotiating Your Salary״?",o:["Chris Voss","Jack 
 
 // ============ GAME ENGINE ============
 let G={s:false,v:'w',st:null,tab:'l',sc:{},done:new Set(),ts:0,qa:{},streak:0,lastDay:null,titleShown2:false,titleShown9:false,titleShown15:false,titleShownAll:false,wrongQ:{},miHistory:[],weeklyDone:[],darkMode:false,firstUse:null,userName:'',_achShown:[],interviewUnlocked:false,adminMessage:'',adminMessageRead:false,sessionStart:null,sessions:[],stageTime:{},satisfactionRating:0,activityLog:[],lastStageVisited:null,combo:0,maxCombo:0,goldenQuestions:{},streakFreezes:1,lastFreezeWeek:null,reflections:{}};
-function logActivity(action,details){if(!G.activityLog)G.activityLog=[];G.activityLog.push({t:Date.now(),a:action,d:details||''});if(G.activityLog.length>100)G.activityLog=G.activityLog.slice(-100);try{sv()}catch(e){}}
+function logActivity(action,details,points){if(!G.activityLog)G.activityLog=[];const _ev={t:Date.now(),a:action,d:details||''};if(points)_ev.p=points;G.activityLog.push(_ev);if(G.activityLog.length>100)G.activityLog=G.activityLog.slice(-100);try{sv()}catch(e){}}
 const LS='pmV7';
 function ti(el){const myTp=el.nextElementSibling;document.querySelectorAll('.tp.show').forEach(t=>{if(t===myTp)return;if(t.contains(el))return;t.classList.remove('show')});myTp.classList.toggle('show');if(myTp.classList.contains('show')){const r=el.getBoundingClientRect();const tw=320;let left=r.left+r.width/2-tw/2;if(left<10)left=10;if(left+tw>window.innerWidth-10)left=window.innerWidth-tw-10;let top=r.top-10;myTp.style.left=left+'px';myTp.style.bottom=(window.innerHeight-top)+'px';myTp.style.top='auto'}}
 document.addEventListener('click',e=>{if(!e.target.classList.contains('ib')&&!e.target.closest('.tp')){document.querySelectorAll('.tp.show').forEach(t=>t.classList.remove('show'))}});
@@ -5443,7 +5443,7 @@ function tryCompleteStage(sid,showHint){
     return false;
   }
   G.done.add(sid);
-  logActivity('completeStage','שלב '+sid+' הושלם (קריאה+קייס+מבחן)');
+  logActivity('completeStage','שלב '+sid+' הושלם · '+(G.sc[sid]||0)+' נק\'',(G.sc[sid]||0));
   playSfx('complete');
   const _today=new Date().toDateString();if(!G._dailyDone)G._dailyDone={};G._dailyDone[_today]=(G._dailyDone[_today]||0)+1;
   if(G._dailyDone[_today]===1){G.ts+=20;setTimeout(()=>showAchievement('🎯','יעד יומי הושלם!','+20 נק׳ · המשך לעוד שלב!'),1400)}
@@ -6946,11 +6946,12 @@ const _todaySess=todayUsers.map(u=>parseInt(u.lastSessionDur)||0).filter(d=>d>0&
 const avgSessionToday=_avg(_todaySess);
 // Helper to get stage info
 const _getStage=sid=>S.find(s=>s.id===sid);
-const avgStagesDaily=activeToday>0?(todayUsers.reduce((a,u)=>a+(parseInt(u.stagesCount)||0),0)/activeToday).toFixed(1):'—';
-const avgScoreDaily=activeToday>0?Math.round(todayUsers.reduce((a,u)=>a+(parseInt(u.score)||0),0)/activeToday):'—';
 // True daily-delta metrics: count completeStage / answer events that actually happened TODAY
-let stagesDoneToday=0,answersToday=0;
-approvedUsers.forEach(u=>{try{JSON.parse(u.activityLogJSON||'[]').forEach(e=>{if(e&&e.t&&_isTodayMs(e.t)){if(e.a==='completeStage')stagesDoneToday++;else if(e.a==='answer')answersToday++;}})}catch(e){}});
+let stagesDoneToday=0,answersToday=0,pointsToday=0;
+approvedUsers.forEach(u=>{try{JSON.parse(u.activityLogJSON||'[]').forEach(e=>{if(e&&e.t&&_isTodayMs(e.t)){if(e.a==='completeStage'){stagesDoneToday++;pointsToday+=parseInt(e.p)||0}else if(e.a==='answer')answersToday++;}})}catch(e){}});
+// Period-based daily averages per user active today — reflect what was EARNED today (not lifetime totals)
+const avgStagesActiveToday=activeToday>0?(stagesDoneToday/activeToday).toFixed(1):'—';
+const avgPointsActiveToday=activeToday>0?Math.round(pointsToday/activeToday):'—';
 const completedAll=approvedUsers.filter(u=>(parseInt(u.stagesCount)||0)>=23).length;
 const ratedUsers=approvedUsers.filter(u=>parseInt(u.satisfaction)>0);
 const avgSat=ratedUsers.length>0?(ratedUsers.reduce((a,u)=>a+(parseInt(u.satisfaction)||0),0)/ratedUsers.length).toFixed(1):'—';
@@ -6990,8 +6991,8 @@ h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'all\')
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'today\')"><div class="as-val">'+activeToday+'</div><div class="as-lbl">פעילים היום</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'month\')"><div class="as-val">'+activeMonth+'</div><div class="as-lbl">פעילים החודש</div></div>';
 h+='<div class="adm-stat" title="כמה שלבים הושלמו בפועל היום (קריאה+קייס+מבחן). נספר מיומן הפעילות של כל המשתמשים — מדד פעילות יומי אמיתי."><div class="as-val">'+stagesDoneToday+'</div><div class="as-lbl">שלבים שהושלמו היום</div></div>';
-h+='<div class="adm-stat" title="ממוצע סך השלבים שצברו (לכל החיים) המשתמשים שנכנסו היום בלבד. חישוב: סך השלבים שלהם חלקי '+activeToday+' (מספר מי שנכנס היום). מבוסס רק על מי שהיה פעיל היום, ולכן משתנה לפי מי שנכנס."><div class="as-val">'+avgStagesDaily+'</div><div class="as-lbl">שלבים ממוצע · נכנסו היום ('+activeToday+')</div></div>';
-h+='<div class="adm-stat" title="ממוצע סך הניקוד שצברו (לכל החיים) המשתמשים שנכנסו היום בלבד. חישוב: סך הניקוד שלהם חלקי '+activeToday+' (מספר מי שנכנס היום). מבוסס רק על מי שהיה פעיל היום, ולכן משתנה לפי מי שנכנס."><div class="as-val">'+avgScoreDaily+'</div><div class="as-lbl">ניקוד ממוצע · נכנסו היום ('+activeToday+')</div></div>';
+h+='<div class="adm-stat" title="ממוצע השלבים שהושלמו היום לכל משתמש שנכנס היום. חישוב: '+stagesDoneToday+' שלבים שהושלמו היום חלקי '+activeToday+' שנכנסו היום. משקף פעילות של היום בלבד — לא צבירה היסטורית."><div class="as-val">'+avgStagesActiveToday+'</div><div class="as-lbl">ממוצע שלבים לפעיל היום</div></div>';
+h+='<div class="adm-stat" title="ממוצע הנקודות שנצברו היום לכל משתמש שנכנס היום. חישוב: '+pointsToday+' נק\' שנצברו היום חלקי '+activeToday+' שנכנסו היום. משקף ניקוד של היום בלבד (מתועד מסיומי שלבים מהיום, לא הניקוד המצטבר)."><div class="as-val">'+avgPointsActiveToday+'</div><div class="as-lbl">ממוצע נק׳ לפעיל היום</div></div>';
 h+='<div class="adm-stat" style="border-color:rgba(0,201,167,.4);background:rgba(0,201,167,.08)"><div class="as-val" style="color:var(--a)">🟢 '+onlineNow+'</div><div class="as-lbl" style="color:var(--a)">מחוברים עכשיו</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'core\')"><div class="as-val">'+completedAll+'</div><div class="as-lbl">סיימו ליבה</div></div>';
 h+='<div class="adm-stat" style="cursor:pointer" onclick="admStatFilter(\'rated\')"><div class="as-val" style="font-size:1.6rem">'+avgSat+' '+satStars+'</div><div class="as-lbl">שביעות רצון ('+ratedUsers.length+')</div></div>';
