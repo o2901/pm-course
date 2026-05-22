@@ -4390,7 +4390,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
     const isNewUser=cloudScore===0&&!cloudStagesList&&cloudStreak===0;
     // CRITICAL: Clear per-user state if (a) different user or (b) new user with leftover data
     if((G.userName && G.userName!==name) || isNewUser){
-      G.qa={};G.sc={};G.wrongQ={};G._pu={};G._seenSec={};G._tabVisits={};
+      G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G._pu={};G._seenSec={};G._tabVisits={};
       G.done=new Set();G.miHistory=[];G.weeklyDone=[];G._achShown=[];
       G.titleShown2=false;G.titleShown9=false;G.titleShown15=false;G.titleShownAll=false;
       G.interviewUnlocked=false;G.stageTime={};G.satisfactionRating=0;
@@ -4425,6 +4425,18 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
       });
       G.activityLog.sort((a,b)=>(a.t||0)-(b.t||0));
       if(G.activityLog.length>100)G.activityLog=G.activityLog.slice(-100);
+    }catch(e){}
+    // Merge quizAttempts from cloud (#21) — dedupe per stage by timestamp, cap 20/stage
+    try{
+      const cloudQA=JSON.parse(d.data.quizAttemptsJSON||'{}');
+      if(!G.quizAttempts)G.quizAttempts={};
+      Object.keys(cloudQA).forEach(sid=>{
+        if(!G.quizAttempts[sid])G.quizAttempts[sid]=[];
+        const seenT={};G.quizAttempts[sid].forEach(a=>{if(a&&a.t)seenT[a.t]=true});
+        (cloudQA[sid]||[]).forEach(a=>{if(a&&a.t&&!seenT[a.t]){G.quizAttempts[sid].push(a);seenT[a.t]=true}});
+        G.quizAttempts[sid].sort((a,b)=>(a.t||0)-(b.t||0));
+        if(G.quizAttempts[sid].length>20)G.quizAttempts[sid]=G.quizAttempts[sid].slice(-20);
+      });
     }catch(e){}
     if(d.data.interviewUnlocked==='true')G.interviewUnlocked=true;
     if(parseInt(d.data.satisfaction)>0)G.satisfactionRating=parseInt(d.data.satisfaction);
@@ -4474,7 +4486,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
   if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}
   // Clear per-user state if different user logging in offline
   if(G.userName && G.userName!==name){
-    G.qa={};G.sc={};G.wrongQ={};G._pu={};G._seenSec={};G._tabVisits={};
+    G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G._pu={};G._seenSec={};G._tabVisits={};
     G.done=new Set();G.miHistory=[];G.weeklyDone=[];G._achShown=[];
     G.interviewUnlocked=false;G.stageTime={};G.ts=0;G.streak=0;
   }
@@ -5393,7 +5405,13 @@ if(_s&&sel!==_s.q[qi].c){trackWrongAnswer(sid,qi)}else if(_s){trackCorrectAnswer
 // Speed bonus: if quiz completed < 20 sec/question average
 const _qStart=G._quizStart&&G._quizStart[sid];
 if(_qStart){const _dur=(Date.now()-_qStart)/1000;const _perQ=_dur/s.q.length;if(_perQ<20&&ok===s.q.length){sc+=15;setTimeout(()=>showAchievement('⚡','בונוס מהירות!','+15 נקודות · ענית מהר ובדיוק'),600)}}
-const prev=G.sc[sid]||0;if(sc>prev){G.ts=G.ts-prev+sc;G.sc[sid]=sc}if(!G._quizPassed)G._quizPassed={};G._quizPassed[sid]=true;updateStreak();uh();if(ok/s.q.length>=.8)cf();showHook();tryCompleteStage(sid,true);}sv();rq(s)}
+const prev=G.sc[sid]||0;if(sc>prev){G.ts=G.ts-prev+sc;G.sc[sid]=sc}if(!G._quizPassed)G._quizPassed={};G._quizPassed[sid]=true;
+// #21: record this quiz attempt (count + which questions were wrong) for admin monitoring
+if(!G.quizAttempts)G.quizAttempts={};if(!G.quizAttempts[sid])G.quizAttempts[sid]=[];
+const _wrongIdx=[];s.q.forEach((q,i)=>{if(G.qa[sid][i]!==q.c)_wrongIdx.push(i)});
+G.quizAttempts[sid].push({t:Date.now(),ok:ok,total:s.q.length,wrong:_wrongIdx});
+if(G.quizAttempts[sid].length>20)G.quizAttempts[sid]=G.quizAttempts[sid].slice(-20);
+updateStreak();uh();if(ok/s.q.length>=.8)cf();showHook();tryCompleteStage(sid,true);}sv();rq(s)}
 // A stage is "completed" (G.done) only when ALL parts were engaged: every reading
 // section was seen, the case tab was visited, AND all quiz questions were answered.
 // Points are still awarded for the quiz regardless. Called from the quiz, the reading
@@ -6296,7 +6314,8 @@ function _doSync(){
     })(),
     sessionStart:G.sessionStart||0,
     sessionToken:G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||'',
-    lastDevice:JSON.stringify(G.lastDevice||detectDevice())
+    lastDevice:JSON.stringify(G.lastDevice||detectDevice()),
+    quizAttemptsJSON:JSON.stringify(G.quizAttempts||{})
   };
   fetch(DB_URL,{method:'POST',body:JSON.stringify(payload),headers:{'Content-Type':'text/plain'}})
   .then(r=>r.json())
@@ -6338,7 +6357,7 @@ function _handleAccountDeleted(){
   }catch(e){}
   // Reset in-memory state
   G.s=false;G.userName='';G.ts=0;G.streak=0;G.lastDay=null;G.firstUse=null;
-  G.done=new Set();G.qa={};G.sc={};G.wrongQ={};G._pu={};G._seenSec={};G._tabVisits={};
+  G.done=new Set();G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G._pu={};G._seenSec={};G._tabVisits={};
   G.stageTime={};G.activityLog=[];G.adminMessage='';G.adminMessageRead=true;
   G.interviewUnlocked=false;G.satisfactionRating=0;G.lastStageVisited=null;
   G.miHistory=[];G.weeklyDone=[];G._achShown=[];G.sessions=[];
@@ -7224,6 +7243,8 @@ let stageTimeObj={};
 try{stageTimeObj=JSON.parse(u.stageTimeJSON||'{}')}catch(e){}
 let activityLog=[];
 try{activityLog=JSON.parse(u.activityLogJSON||'[]')}catch(e){}
+let quizAttempts={};
+try{quizAttempts=JSON.parse(u.quizAttemptsJSON||'{}')}catch(e){}
 const uLastActivity=parseInt(u.lastActivity)||0;
 const uIsDeactivated=String(u.status||'')==='deactivated';
 const uIsOnline=!uIsDeactivated && uLastActivity>0 && (Date.now()-uLastActivity)<120000;
@@ -7417,6 +7438,33 @@ secOrder.forEach(sec=>{
   h+='</div>';
 });
 h+='</div>';
+
+// #21: Quiz attempts & mistakes insight
+const qaKeys=Object.keys(quizAttempts).filter(k=>(quizAttempts[k]||[]).length>0);
+if(qaKeys.length){
+  let totalAttempts=0,retakeStages=0;const failCount={};
+  qaKeys.forEach(sid=>{const arr=quizAttempts[sid]||[];totalAttempts+=arr.length;if(arr.length>1)retakeStages++;arr.forEach(at=>{(at.wrong||[]).forEach(qi=>{const k=sid+'_'+qi;failCount[k]=(failCount[k]||0)+1})})});
+  h+='<div style="margin-top:1.2rem"><strong style="color:var(--p);font-size:.9rem">📝 ניסיונות מבחן וטעויות</strong>';
+  h+='<div style="font-size:.78rem;color:var(--t2);margin:.3rem 0 .6rem">סה״כ '+totalAttempts+' ניסיונות ב-'+qaKeys.length+' שלבים · '+retakeStages+' שלבים נעשו יותר מפעם אחת</div>';
+  qaKeys.map(Number).sort((a,b)=>a-b).forEach(sid=>{
+    const s=S.find(x=>x.id===sid);if(!s)return;const arr=quizAttempts[sid]||[];
+    const scores=arr.map(a=>a.ok+'/'+a.total).join(' → ');
+    const lastWrong=(arr[arr.length-1].wrong||[]);
+    h+='<div class="adm-section-group" style="margin-bottom:.5rem"><div class="asg-title">'+(s.ic||'')+' שלב '+sid+': '+esc(s.t)+' <span class="asg-prog">'+arr.length+' ניסיונות</span></div>';
+    h+='<div style="font-size:.8rem;color:var(--t2);padding:.15rem .4rem">ציונים: <strong style="color:var(--t1)">'+scores+'</strong></div>';
+    if(lastWrong.length){
+      h+='<div style="font-size:.78rem;color:var(--s);padding:.15rem .4rem">טעה בניסיון האחרון ב-'+lastWrong.length+' שאלות: '+lastWrong.map(qi=>'<span title="'+esc(((s.q[qi]&&s.q[qi].q)||'').slice(0,140))+'" style="cursor:help;border-bottom:1px dotted">ש'+(qi+1)+'</span>').join(', ')+'</div>';
+    }else{
+      h+='<div style="font-size:.78rem;color:var(--a);padding:.15rem .4rem">✓ הניסיון האחרון ללא טעויות</div>';
+    }
+    h+='</div>';
+  });
+  const topFail=Object.keys(failCount).filter(k=>failCount[k]>=2).sort((a,b)=>failCount[b]-failCount[a]).slice(0,3);
+  if(topFail.length){
+    h+='<div style="background:rgba(255,193,7,.1);border:1px solid rgba(255,193,7,.3);border-radius:10px;padding:.5rem .8rem;margin-top:.4rem;font-size:.78rem;color:var(--t1)">💡 <strong>תובנה:</strong> השאלות שהכשילו הכי הרבה: '+topFail.map(k=>{const sid=parseInt(k.split('_')[0]),qi=parseInt(k.split('_')[1]);return 'שלב '+sid+' ש'+(qi+1)+' ('+failCount[k]+'×)'}).join(', ')+'</div>';
+  }
+  h+='</div>';
+}
 
 // Per-stage time breakdown
 const stKeys=Object.keys(stageTimeObj);
