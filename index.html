@@ -7764,7 +7764,7 @@ function admSendMsg(name){
       const u=_admUsers.find(x=>x.userName===name);
       if(u)u.adminMessage=msg;
       box.value='';// Clear textarea - the message has been sent
-      _admMsgStatus('✅ הודעה נשלחה ונשמרה!','var(--a)',4000);
+      _admMsgStatus(d.emailed?'✅ הודעה נשלחה · המשתמש קיבל גם התראת מייל':'✅ הודעה נשלחה ונשמרה (ללא מייל — למשתמש אין מייל/הסכמה)','var(--a)',4500);
       // Update the "currently saved" display in real-time
       const cur=$('admMsgCurrent');
       const eMsg=esc(msg);
