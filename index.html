@@ -7442,9 +7442,10 @@ stages.forEach(id=>startedSet.delete(id));
 // Expose stageHistory globally so the per-stage modal can access it
 window._admStageHistory=stageHistory;
 window._admUserNameForHist=u.userName;
-// Stages credited manually by an admin (detected from the 'adminCredit' notes in the activity log)
-const adminCreditedStages=new Set();
-activityLog.forEach(e=>{if(e&&e.a==='adminCredit'){const m=String(e.d||'').match(/שלב\s*(\d+)/);if(m)adminCreditedStages.add(parseInt(m[1]))}});
+// Stages credited manually by an admin (from activity-log notes). A later 'adminUncredit' cancels an earlier credit.
+const _adminStageState={};
+[...activityLog].sort((a,b)=>(a.t||0)-(b.t||0)).forEach(e=>{if(!e)return;const m=String(e.d||'').match(/שלב\s*(\d+)/);if(!m)return;const _sid=parseInt(m[1]);if(e.a==='adminCredit')_adminStageState[_sid]=true;else if(e.a==='adminUncredit')_adminStageState[_sid]=false;});
+const adminCreditedStages=new Set(Object.keys(_adminStageState).filter(k=>_adminStageState[k]).map(Number));
 // Compact date for chip display
 function _fmtChipDate(ts){
   if(!ts)return '';
@@ -7541,8 +7542,8 @@ if(activityLog.length>0){
   const _shown=Math.min(10,activityLog.length);
   h+='<div style="margin-top:1rem"><strong style="color:var(--p);font-size:.9rem">📊 יומן פעילות (10 אחרונות מתוך '+activityLog.length+'):</strong>';
   h+='<div style="max-height:480px;overflow-y:auto;margin-top:.5rem;border-radius:10px;background:rgba(108,99,255,.05);padding:.5rem">';
-  const actIcons={login:'🚪',openStage:'📖',switchTab:'🔀',answer:'✍️',completeStage:'🏆',openGlossary:'📚',openProfile:'👤',readAdminMsg:'💬',duelAccept:'⚔️',duelDecline:'🚫',endSession:'⏱️',adminCredit:'🛡️'};
-  const actNames={login:'התחברות',openStage:'פתח שלב',switchTab:'מעבר טאב',answer:'תשובה',completeStage:'סיים שלב',openGlossary:'פתח מילון',openProfile:'פרופיל',readAdminMsg:'קרא הודעה',duelAccept:'קיבל דו-קרב',duelDecline:'דחה דו-קרב',endSession:'סיים סשן',adminCredit:'זיכוי ע״י מנהל'};
+  const actIcons={login:'🚪',openStage:'📖',switchTab:'🔀',answer:'✍️',completeStage:'🏆',openGlossary:'📚',openProfile:'👤',readAdminMsg:'💬',duelAccept:'⚔️',duelDecline:'🚫',endSession:'⏱️',adminCredit:'🛡️',adminUncredit:'↩️'};
+  const actNames={login:'התחברות',openStage:'פתח שלב',switchTab:'מעבר טאב',answer:'תשובה',completeStage:'סיים שלב',openGlossary:'פתח מילון',openProfile:'פרופיל',readAdminMsg:'קרא הודעה',duelAccept:'קיבל דו-קרב',duelDecline:'דחה דו-קרב',endSession:'סיים סשן',adminCredit:'זיכוי ע״י מנהל',adminUncredit:'ביטול זיכוי ע״י מנהל'};
   [...activityLog].reverse().slice(0,10).forEach(act=>{
     const tm=new Date(act.t);const tStr=tm.toLocaleString('he-IL',{timeZone:'Asia/Jerusalem'});
     h+='<div style="font-size:.75rem;padding:.3rem .4rem;border-bottom:1px solid rgba(108,99,255,.08);display:flex;gap:.5rem;align-items:center">';
@@ -7576,6 +7577,19 @@ h+='<button class="bp" style="font-size:.78rem;padding:.42rem .8rem;white-space:
 h+='</div>';
 h+='<div style="font-size:.7rem;color:var(--t2);margin-top:.3rem">ℹ️ תתווסף הערה אוטומטית ביומן הפעילות שהשלב סומן ע״י מנהל.</div>';
 h+='<div id="admCreditStatus" style="margin-top:.4rem;padding:.4rem .7rem;border-radius:8px;font-size:.8rem;font-weight:600;display:none;text-align:center"></div>';
+// Un-credit — remove a completed stage (cancel a manual credit or fix an error)
+if(stages.length){
+  h+='<div style="margin-top:.6rem;padding-top:.5rem;border-top:1px dashed rgba(255,255,255,.08)">';
+  h+='<label style="font-size:.82rem;color:var(--t2);display:block;margin-bottom:.3rem">↩️ ביטול זיכוי / הסרת השלמה</label>';
+  h+='<div style="display:flex;gap:.4rem;align-items:center;flex-wrap:wrap">';
+  h+='<select id="admUncreditSelect" style="flex:1;min-width:180px;background:var(--card);color:var(--t1);border:1px solid rgba(255,152,0,.3);border-radius:8px;padding:.42rem;font-family:Heebo;font-size:.82rem">';
+  sortStages(S).filter(st=>stages.includes(st.id)).forEach(st=>{const cr=adminCreditedStages.has(st.id);h+='<option value="'+st.id+'">'+(cr?'🛡️ ':'✓ ')+'שלב '+st.id+': '+esc(st.t)+(cr?' (זוכה ע״י מנהל)':'')+'</option>';});
+  h+='</select>';
+  h+='<button class="bs" style="font-size:.78rem;padding:.42rem .8rem;white-space:nowrap;color:#ff9800;border-color:rgba(255,152,0,.4)" id="admUncreditBtn" onclick="admUncreditStage(\''+eName+'\')">↩️ בטל</button>';
+  h+='</div>';
+  h+='<div id="admUncreditStatus" style="margin-top:.4rem;padding:.4rem .7rem;border-radius:8px;font-size:.8rem;font-weight:600;display:none;text-align:center"></div>';
+  h+='</div>';
+}
 h+='</div>';
 
 // Admin message
@@ -7693,6 +7707,34 @@ function admCreditStage(name){
       setStatus('❌ שגיאה: '+(d.error||'נסה שוב')+' — ודאו שה-Apps Script עודכן','var(--s)');
     }
   }).catch(()=>{if(btn){btn.disabled=false;btn.textContent='✅ סמן כהושלם'}setStatus('📴 שגיאת חיבור','var(--s)')});
+}
+function admUncreditStage(name){
+  const sel=document.getElementById('admUncreditSelect');
+  const btn=document.getElementById('admUncreditBtn');
+  const status=document.getElementById('admUncreditStatus');
+  if(!sel||sel.value==='')return;
+  const stageId=parseInt(sel.value);
+  if(isNaN(stageId))return;
+  const st=S.find(s=>s.id===stageId);
+  if(!confirm('להסיר את "שלב '+stageId+': '+(st?st.t:'')+'" מהשלבים שהושלמו עבור '+name+'?\n\nתתווסף הערה ביומן הפעילות שהזיכוי בוטל.'))return;
+  function setStatus(msg,color){if(!status)return;status.style.display='block';status.style.background=color==='var(--a)'?'rgba(0,201,167,.15)':(color==='var(--s)'?'rgba(255,101,132,.15)':'rgba(108,99,255,.1)');status.style.color=color;status.textContent=msg}
+  if(btn){btn.disabled=true;btn.textContent='⏳'}
+  setStatus('מבטל זיכוי...','var(--t2)');
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'adminUncreditStage',userName:name,stageId:stageId,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+  .then(r=>r.json()).then(d=>{
+    if(d.success){
+      const u=_admUsers.find(x=>x.userName===name);
+      if(u){
+        u.stagesList=d.stagesList;u.stagesCount=String(d.stagesCount);
+        if(d.removed){try{const lg=JSON.parse(u.activityLogJSON||'[]');lg.push({t:Date.now(),a:'adminUncredit',d:'שלב '+stageId+' — זיכוי בוטל ע"י מנהל'});u.activityLogJSON=JSON.stringify(lg)}catch(e){}}
+      }
+      setStatus(d.removed?'↩️ שלב '+stageId+' הוסר · נוספה הערה':'ℹ️ השלב לא היה מסומן','var(--a)');
+      setTimeout(()=>{document.querySelectorAll('.adm-modal-overlay').forEach(o=>o.remove());showUserDetail(name)},1000);
+    }else{
+      if(btn){btn.disabled=false;btn.textContent='↩️ בטל'}
+      setStatus('❌ שגיאה: '+(d.error||'נסה שוב')+' — ודאו שה-Apps Script עודכן','var(--s)');
+    }
+  }).catch(()=>{if(btn){btn.disabled=false;btn.textContent='↩️ בטל'}setStatus('📴 שגיאת חיבור','var(--s)')});
 }
 
 function _admMsgStatus(txt,color,duration){
