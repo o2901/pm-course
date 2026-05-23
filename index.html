@@ -7442,6 +7442,9 @@ stages.forEach(id=>startedSet.delete(id));
 // Expose stageHistory globally so the per-stage modal can access it
 window._admStageHistory=stageHistory;
 window._admUserNameForHist=u.userName;
+// Stages credited manually by an admin (detected from the 'adminCredit' notes in the activity log)
+const adminCreditedStages=new Set();
+activityLog.forEach(e=>{if(e&&e.a==='adminCredit'){const m=String(e.d||'').match(/שלב\s*(\d+)/);if(m)adminCreditedStages.add(parseInt(m[1]))}});
 // Compact date for chip display
 function _fmtChipDate(ts){
   if(!ts)return '';
@@ -7477,7 +7480,9 @@ secOrder.forEach(sec=>{
     }
     const onClick=clickable?' onclick="showStageHistory('+s.id+')" style="cursor:pointer"':'';
     const title=clickable?' title="לחץ להיסטוריה מלאה"':'';
-    h+='<span class="adm-stage-chip'+cls+'"'+onClick+title+'>'+prefix+(s.ic||'')+' '+s.id+': '+esc(s.t)+extra+'</span>';
+    const credited=adminCreditedStages.has(s.id);
+    const credBadge=credited?'<span class="chip-meta" style="color:var(--g)" title="סומן כהושלם ע״י מנהל">🛡️ זוכה ע״י מנהל</span>':'';
+    h+='<span class="adm-stage-chip'+cls+'"'+onClick+title+'>'+prefix+(s.ic||'')+' '+s.id+': '+esc(s.t)+extra+credBadge+'</span>';
   });
   h+='</div>';
 });
@@ -7536,8 +7541,8 @@ if(activityLog.length>0){
   const _shown=Math.min(10,activityLog.length);
   h+='<div style="margin-top:1rem"><strong style="color:var(--p);font-size:.9rem">📊 יומן פעילות (10 אחרונות מתוך '+activityLog.length+'):</strong>';
   h+='<div style="max-height:480px;overflow-y:auto;margin-top:.5rem;border-radius:10px;background:rgba(108,99,255,.05);padding:.5rem">';
-  const actIcons={login:'🚪',openStage:'📖',switchTab:'🔀',answer:'✍️',completeStage:'🏆',openGlossary:'📚',openProfile:'👤',readAdminMsg:'💬',duelAccept:'⚔️',duelDecline:'🚫',endSession:'⏱️'};
-  const actNames={login:'התחברות',openStage:'פתח שלב',switchTab:'מעבר טאב',answer:'תשובה',completeStage:'סיים שלב',openGlossary:'פתח מילון',openProfile:'פרופיל',readAdminMsg:'קרא הודעה',duelAccept:'קיבל דו-קרב',duelDecline:'דחה דו-קרב',endSession:'סיים סשן'};
+  const actIcons={login:'🚪',openStage:'📖',switchTab:'🔀',answer:'✍️',completeStage:'🏆',openGlossary:'📚',openProfile:'👤',readAdminMsg:'💬',duelAccept:'⚔️',duelDecline:'🚫',endSession:'⏱️',adminCredit:'🛡️'};
+  const actNames={login:'התחברות',openStage:'פתח שלב',switchTab:'מעבר טאב',answer:'תשובה',completeStage:'סיים שלב',openGlossary:'פתח מילון',openProfile:'פרופיל',readAdminMsg:'קרא הודעה',duelAccept:'קיבל דו-קרב',duelDecline:'דחה דו-קרב',endSession:'סיים סשן',adminCredit:'זיכוי ע״י מנהל'};
   [...activityLog].reverse().slice(0,10).forEach(act=>{
     const tm=new Date(act.t);const tStr=tm.toLocaleString('he-IL',{timeZone:'Asia/Jerusalem'});
     h+='<div style="font-size:.75rem;padding:.3rem .4rem;border-bottom:1px solid rgba(108,99,255,.08);display:flex;gap:.5rem;align-items:center">';
@@ -7558,6 +7563,20 @@ h+='<h4>🔧 פעולות מנהל</h4>';
 const isUnlocked=String(u.interviewUnlocked||'')==='true';
 h+='<div class="adm-ctrl-row"><label>🔓 פתיחת שלב 24 - בסוף השירות הצבאי</label>';
 h+='<label class="adm-toggle"><input type="checkbox" '+(isUnlocked?'checked':'')+' onchange="admToggleInterview(\''+eName+'\',this.checked)"><span class="slider"></span></label></div>';
+
+// Manual stage credit — mark a stage as completed for the user (e.g. bug remediation)
+h+='<div style="margin-top:.7rem;padding-top:.7rem;border-top:1px solid rgba(108,99,255,.12)">';
+h+='<label style="font-size:.82rem;color:var(--t2);display:block;margin-bottom:.3rem">✅ זיכוי שלב ידני — סימון שלב כהושלם עבור המשתמש</label>';
+h+='<div style="display:flex;gap:.4rem;align-items:center;flex-wrap:wrap">';
+h+='<select id="admCreditSelect" style="flex:1;min-width:180px;background:var(--card);color:var(--t1);border:1px solid rgba(108,99,255,.3);border-radius:8px;padding:.42rem;font-family:Heebo;font-size:.82rem">';
+const _doneSet=new Set(stages);
+sortStages(S.filter(x=>x.tg!=='בונוס - ספר')).forEach(st=>{const isD=_doneSet.has(st.id);h+='<option value="'+st.id+'"'+(isD?' disabled':'')+'>'+(isD?'✓ ':'')+'שלב '+st.id+': '+esc(st.t)+(isD?' (הושלם)':'')+'</option>';});
+h+='</select>';
+h+='<button class="bp" style="font-size:.78rem;padding:.42rem .8rem;white-space:nowrap" id="admCreditBtn" onclick="admCreditStage(\''+eName+'\')">✅ סמן כהושלם</button>';
+h+='</div>';
+h+='<div style="font-size:.7rem;color:var(--t2);margin-top:.3rem">ℹ️ תתווסף הערה אוטומטית ביומן הפעילות שהשלב סומן ע״י מנהל.</div>';
+h+='<div id="admCreditStatus" style="margin-top:.4rem;padding:.4rem .7rem;border-radius:8px;font-size:.8rem;font-weight:600;display:none;text-align:center"></div>';
+h+='</div>';
 
 // Admin message
 h+='<div style="margin-top:.6rem">';
@@ -7646,6 +7665,34 @@ function admToggleInterview(name,unlock){
       _admMsgStatus(unlock?'✅ שלב 24 נפתח עבור '+name:'🔒 שלב 24 ננעל עבור '+name,'var(--a)',4000);
     }else{_admMsgStatus('❌ שגיאה: '+(d.error||'לא ניתן לעדכן'),'var(--s)',5000)}
   }).catch(()=>{_admMsgStatus('📴 שגיאת חיבור - ודאו שה-Apps Script עודכן','var(--s)',5000)});
+}
+function admCreditStage(name){
+  const sel=document.getElementById('admCreditSelect');
+  const btn=document.getElementById('admCreditBtn');
+  const status=document.getElementById('admCreditStatus');
+  if(!sel||sel.value==='')return;
+  const stageId=parseInt(sel.value);
+  if(isNaN(stageId))return;
+  const st=S.find(s=>s.id===stageId);
+  if(!confirm('לסמן את "שלב '+stageId+': '+(st?st.t:'')+'" כהושלם עבור '+name+'?\n\nתתווסף הערה אוטומטית ביומן הפעילות שהשלב סומן ע"י מנהל.'))return;
+  function setStatus(msg,color){if(!status)return;status.style.display='block';status.style.background=color==='var(--a)'?'rgba(0,201,167,.15)':(color==='var(--s)'?'rgba(255,101,132,.15)':'rgba(108,99,255,.1)');status.style.color=color;status.textContent=msg}
+  if(btn){btn.disabled=true;btn.textContent='⏳'}
+  setStatus('מזכה שלב...','var(--t2)');
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'adminCompleteStage',userName:name,stageId:stageId,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+  .then(r=>r.json()).then(d=>{
+    if(d.success){
+      const u=_admUsers.find(x=>x.userName===name);
+      if(u){
+        u.stagesList=d.stagesList;u.stagesCount=String(d.stagesCount);
+        if(!d.alreadyDone){try{const lg=JSON.parse(u.activityLogJSON||'[]');lg.push({t:Date.now(),a:'adminCredit',d:'שלב '+stageId+' — סומן כהושלם ע"י מנהל'});u.activityLogJSON=JSON.stringify(lg)}catch(e){}}
+      }
+      setStatus(d.alreadyDone?'ℹ️ השלב כבר היה מסומן כהושלם':'✅ שלב '+stageId+' סומן כהושלם · נוספה הערה','var(--a)');
+      setTimeout(()=>{document.querySelectorAll('.adm-modal-overlay').forEach(o=>o.remove());showUserDetail(name)},1000);
+    }else{
+      if(btn){btn.disabled=false;btn.textContent='✅ סמן כהושלם'}
+      setStatus('❌ שגיאה: '+(d.error||'נסה שוב')+' — ודאו שה-Apps Script עודכן','var(--s)');
+    }
+  }).catch(()=>{if(btn){btn.disabled=false;btn.textContent='✅ סמן כהושלם'}setStatus('📴 שגיאת חיבור','var(--s)')});
 }
 
 function _admMsgStatus(txt,color,duration){
