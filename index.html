@@ -4161,6 +4161,7 @@ function updateStreak(){const today=new Date().toDateString();if(G.lastDay!==tod
     setTimeout(()=>showAchievement('🧊','הקפאת רצף!','הסטריק נשמר למרות שדילגת יום'),1500);
   }
   else if(G.lastDay){G.streak=1}else{if(!G.streak)G.streak=1}
+  if(!G.maxStreak||G.streak>G.maxStreak)G.maxStreak=G.streak;
   G.lastDay=today;sv()}}
 
 // Title system
@@ -4392,12 +4393,14 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
       G.done=new Set();G.miHistory=[];G.weeklyDone=[];G._achShown=[];
       G.titleShown2=false;G.titleShown9=false;G.titleShown15=false;G.titleShownAll=false;
       G.interviewUnlocked=false;G.stageTime={};G.satisfactionRating=0;
-      G.adminMessage='';G.adminMessageRead=false;G.streak=0;G.ts=0;G.firstUse=null;
+      G.adminMessage='';G.adminMessageRead=false;G.streak=0;G.maxStreak=0;G.ts=0;G.firstUse=null;
       G.activityLog=[];G.lastStageVisited=null;
     }
     G.userName=name;
     G.ts=cloudScore;
     G.streak=cloudStreak;
+    // Keep the all-time peak streak for the certificate (so it never "resets" between sessions)
+    G.maxStreak=Math.max(parseInt(G.maxStreak)||0,parseInt(cloudStreak)||0,parseInt(G.streak)||0,parseInt(d.data.maxStreak)||0);
     if(d.data.lastDay)G.lastDay=d.data.lastDay;
     const cloudStages=cloudStagesList.split(',').filter(Boolean).map(Number);
     cloudStages.forEach(id=>G.done.add(id));
@@ -6165,14 +6168,13 @@ body{font-family:'Heebo',sans-serif;background:#f5f5f7;display:flex;align-items:
 <div class="cert-stats">
 <div class="cert-stat"><div class="cs-val">${score}</div><div class="cs-label">נקודות</div></div>
 <div class="cert-stat"><div class="cs-val">${stagesCompleted}</div><div class="cs-label">שלבים הושלמו</div></div>
-<div class="cert-stat"><div class="cs-val">${G.streak||0}</div><div class="cs-label">ימי רצף</div></div>
+<div class="cert-stat"><div class="cs-val">${Math.max(G.maxStreak||0,G.streak||0)}</div><div class="cs-label">ימי רצף</div></div>
 </div>
 <div class="cert-date">תאריך: ${dateStr}</div>
 </div>
 <div class="cert-footer">
 <div class="cert-sig"><svg width="150" height="40" viewBox="0 0 150 40"><path d="M10 30 Q20 5 35 20 T60 15 Q70 10 80 22 T100 18 Q110 25 120 15 L135 20" fill="none" stroke="#1d1d1f" stroke-width="2" stroke-linecap="round"/><path d="M25 32 Q40 28 55 35 Q65 38 75 32" fill="none" stroke="#1d1d1f" stroke-width="1.5" stroke-linecap="round"/></svg><div class="sig-line"></div><div class="sig-label">עומרי דזבלי, יוצר הקורס</div></div>
 <div class="cert-logo">Product Master ⚓</div>
-<div class="cert-sig"><svg width="150" height="40" viewBox="0 0 150 40"><path d="M15 28 Q25 8 40 18 Q55 28 65 12 Q75 5 85 20 Q95 30 105 15 L120 22" fill="none" stroke="#1d1d1f" stroke-width="2" stroke-linecap="round"/><path d="M70 30 L110 30" fill="none" stroke="#1d1d1f" stroke-width="1.2" stroke-linecap="round"/><circle cx="125" cy="25" r="6" fill="none" stroke="#6C63FF" stroke-width="1.5"/><text x="122" y="29" font-size="8" font-weight="bold" fill="#6C63FF">מ</text></svg><div class="sig-line"></div><div class="sig-label">ענף מערכות מידע</div></div>
 </div>
 </div>
 <div class="no-print"><button onclick="window.print()">🖨️ הדפסה / שמירה כ-PDF</button></div>
@@ -6338,6 +6340,7 @@ function _doSync(){
     stagesList:[...G.done].join(','),
     title:t?t.icon+' '+t.name:'',
     streak:G.streak,
+    maxStreak:Math.max(parseInt(G.maxStreak)||0,parseInt(G.streak)||0),
     lastDay:G.lastDay||'',
     firstUse:G.firstUse?new Date(G.firstUse).toLocaleDateString('he-IL'):'',
     lastSessionDur:lastSess,
@@ -6396,7 +6399,7 @@ function _handleAccountDeleted(){
     }
   }catch(e){}
   // Reset in-memory state
-  G.s=false;G.userName='';G.ts=0;G.streak=0;G.lastDay=null;G.firstUse=null;
+  G.s=false;G.userName='';G.ts=0;G.streak=0;G.maxStreak=0;G.lastDay=null;G.firstUse=null;
   G.done=new Set();G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G.satSkips=[];G._pu={};G._seenSec={};G._tabVisits={};
   G.stageTime={};G.activityLog=[];G.adminMessage='';G.adminMessageRead=true;
   G.interviewUnlocked=false;G.satisfactionRating=0;G.lastStageVisited=null;
