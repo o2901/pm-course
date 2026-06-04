@@ -6021,7 +6021,8 @@ function renderProfile(){
 
   let h='<div class="pv-wrap">';
   h+='<button class="bbtn" onclick="hideProfile()">→ חזרה למפה</button>';
-  h+='<h2 style="text-align:center;font-size:2rem;font-weight:800;margin-bottom:1.5rem">📊 הפרופיל שלי</h2>';
+  h+='<h2 style="text-align:center;font-size:2rem;font-weight:800;margin-bottom:.5rem">📊 הפרופיל שלי</h2>';
+  h+='<div style="text-align:center;margin-bottom:1.3rem">'+_versionBadgeHtml()+'</div>';
 
   // Main stats card
   h+='<div class="pv-card"><h3>סטטיסטיקות כלליות</h3>';
@@ -6735,6 +6736,18 @@ function _maybeShowUpdateBanner(latest){
     '<span onclick="this.parentElement.remove()" style="cursor:pointer;font-size:1.1rem;opacity:.85;padding:0 .25rem" title="סגור">✕</span>';
   bar.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:99999;display:flex;align-items:center;gap:.7rem;padding:.6rem .9rem;background:linear-gradient(135deg,#6C63FF,#8a7bff);color:#fff;font-family:Heebo;font-size:.86rem;box-shadow:0 -4px 20px rgba(0,0,0,.35);direction:rtl';
   document.body.appendChild(bar);
+  try{_refreshProfileVersionBadge()}catch(e){} // flip the profile badge live if it's open
+}
+// Profile version badge: "up to date ✓" normally, "update available — refresh" once a newer build is detected.
+function _versionBadgeHtml(){
+  if(_updateBannerShown){
+    return '<span id="profileVersionBadge" onclick="location.reload()" title="רעננו לקבלת הגרסה האחרונה" style="display:inline-flex;align-items:center;gap:.35rem;cursor:pointer;font-size:.8rem;color:#fff;background:linear-gradient(135deg,#6C63FF,#8a7bff);padding:.28rem .8rem;border-radius:20px;font-weight:700">🚀 עדכון זמין — רעננו</span>';
+  }
+  return '<span id="profileVersionBadge" style="display:inline-flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--t2);background:rgba(108,99,255,.08);padding:.28rem .8rem;border-radius:20px">גרסה '+APP_VERSION+' · <span style="color:var(--a);font-weight:700">מעודכן ✓</span></span>';
+}
+function _refreshProfileVersionBadge(){
+  const el=$('profileVersionBadge');if(!el)return;
+  const wrap=el.parentElement;if(wrap)wrap.innerHTML=_versionBadgeHtml();
 }
 // Automatic detection: re-fetch our own deployed file (cache-busted) and compare its APP_VERSION to ours.
 function _checkForNewVersion(){
@@ -6772,14 +6785,20 @@ function checkCloudUnlocks(){
 function updateChatFabLock(){/* no-op - interview FAB is always open */}
 
 // ========== FEATURE 2: ADMIN MESSAGE FAB ==========
+// Per-device guard: remember the exact message text already acknowledged on this device, so the
+// same message (e.g. a broadcast) can never re-surface even if G's read-flag gets reset on reload.
+function _msgReadKey(){return 'pm_msgread_'+(G.userName||'')}
+function _lastReadMsg(){try{return localStorage.getItem(_msgReadKey())||''}catch(e){return ''}}
 function updateAdminMsgFab(){
   const fab=$('adminMsgFab');if(!fab)return;
-  if(G.adminMessage&&G.adminMessage.trim()&&!G.adminMessageRead){fab.classList.remove('hid')}
+  if(G.adminMessage&&G.adminMessage.trim()&&!G.adminMessageRead&&G.adminMessage!==_lastReadMsg()){fab.classList.remove('hid')}
   else{fab.classList.add('hid')}
 }
 function showAdminMessage(){
   if(!G.adminMessage)return;
-  G.adminMessageRead=true;sv();updateAdminMsgFab();
+  G.adminMessageRead=true;sv();
+  try{localStorage.setItem(_msgReadKey(),G.adminMessage)}catch(e){}
+  updateAdminMsgFab();
   logActivity('readAdminMsg',G.adminMessage.substring(0,50));
   showModal('💬','הודעה מהמנהל',esc(G.adminMessage),'הבנתי');
 }
@@ -7374,6 +7393,13 @@ h+='<div style="display:flex;gap:.5rem"><input id="newNotifyEmail" type="email" 
 h+='<button class="bs" style="font-size:.8rem;white-space:nowrap" onclick="admAddNotifyEmail()">➕ הוסף</button></div>';
 h+='</div>';
 
+// Broadcast message to ALL users (shown once per user, even on old builds)
+h+='<div style="margin-top:1.2rem;padding:1.2rem;border-radius:16px;border:2px solid rgba(0,200,150,.28);background:rgba(0,200,150,.05)">';
+h+='<h3 style="margin:0 0 .4rem;font-size:1.1rem;text-align:center">📢 הודעת שידור לכל המשתמשים</h3>';
+h+='<p style="color:var(--t2);font-size:.78rem;text-align:center;margin-bottom:.8rem">ההודעה תופיע פעם אחת לכל משתמש (כולל מי שכבר מחובר כרגע). לביטול — נקו את הטקסט ולחצו "נקה שידור".</p>';
+h+='<div id="broadcastBox" style="text-align:center;color:var(--t2);font-size:.85rem;padding:.5rem">⏳ טוען...</div>';
+h+='</div>';
+
 // Reminder timing config + test send
 h+='<div style="margin-top:1.2rem;padding:1.2rem;border-radius:16px;border:2px solid rgba(255,193,7,.2);background:rgba(255,193,7,.04)">';
 h+='<h3 style="margin:0 0 .4rem;font-size:1.1rem;text-align:center">⏰ הגדרות תזכורות מייל</h3>';
@@ -7397,8 +7423,39 @@ let _reminderCfg=null;
 function admLoadReminderConfig(){
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getReminderConfig',adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json()).then(d=>{
-  if(d.success&&d.config){_reminderCfg=d.config;_renderReminderConfig()}
-}).catch(()=>{const el=$('reminderConfigBox');if(el)el.innerHTML='<span style="color:var(--s)">שגיאה בטעינת הגדרות. ודאו שה-GAS עודכן.</span>'});
+  if(d.success&&d.config){_reminderCfg=d.config;_renderReminderConfig();_renderBroadcast(d.config.broadcast||'')}
+}).catch(()=>{const el=$('reminderConfigBox');if(el)el.innerHTML='<span style="color:var(--s)">שגיאה בטעינת הגדרות. ודאו שה-GAS עודכן.</span>';const eb=$('broadcastBox');if(eb)eb.innerHTML='<span style="color:var(--s)">שגיאה בטעינה. ודאו שה-GAS עודכן.</span>'});
+}
+// ===== Broadcast message to all users =====
+function _renderBroadcast(cur){
+const el=$('broadcastBox');if(!el)return;
+cur=cur||'';
+let h='<textarea id="bcMsg" maxlength="500" rows="3" placeholder="כתבו כאן הודעה שתופיע פעם אחת לכל המשתמשים..." style="width:100%;padding:.6rem;border-radius:10px;border:1px solid rgba(0,200,150,.3);background:rgba(15,14,23,.8);color:var(--t1);font-family:inherit;font-size:.9rem;text-align:right;resize:vertical;box-sizing:border-box">'+esc(cur)+'</textarea>';
+h+='<div style="margin-top:.6rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;align-items:center">';
+h+='<button class="bp" style="font-size:.82rem;padding:.4rem 1.2rem" onclick="admSaveBroadcast()">📢 שלח לכולם</button>';
+h+='<button class="bs" style="font-size:.82rem;padding:.4rem 1.2rem" onclick="admClearBroadcast()">🗑️ נקה שידור</button>';
+h+='<span id="bcSt" style="font-size:.75rem;color:var(--t2)"></span>';
+h+='</div>';
+if(cur.trim()){h+='<p style="color:#00c896;font-size:.74rem;text-align:center;margin:.5rem 0 0;font-weight:700">● שידור פעיל כרגע</p>'}
+el.innerHTML=h;
+}
+function admSaveBroadcast(){
+const ta=$('bcMsg');if(!ta)return;
+const msg=ta.value.trim();
+const st=$('bcSt');if(st){st.textContent='שולח...';st.style.color='var(--t2)'}
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'setBroadcast',message:msg,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+.then(r=>r.json()).then(d=>{
+  if(d.success){if(st){st.textContent='✓ נשלח לכולם';st.style.color='var(--a)';setTimeout(()=>{st.textContent=''},3000)}_renderBroadcast(msg)}
+  else{if(st){st.textContent='⚠ '+(d.error||'שגיאה');st.style.color='var(--s)'}}
+}).catch(()=>{if(st){st.textContent='📴 שגיאת חיבור';st.style.color='var(--s)'}});
+}
+function admClearBroadcast(){
+const st=$('bcSt');if(st){st.textContent='מנקה...';st.style.color='var(--t2)'}
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'setBroadcast',message:'',adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+.then(r=>r.json()).then(d=>{
+  if(d.success){const ta=$('bcMsg');if(ta)ta.value='';if(st){st.textContent='✓ השידור בוטל';st.style.color='var(--a)';setTimeout(()=>{st.textContent=''},3000)}_renderBroadcast('')}
+  else{if(st){st.textContent='⚠ '+(d.error||'שגיאה');st.style.color='var(--s)'}}
+}).catch(()=>{if(st){st.textContent='📴 שגיאת חיבור';st.style.color='var(--s)'}});
 }
 function _renderReminderConfig(){
 const el=$('reminderConfigBox');if(!el||!_reminderCfg)return;
