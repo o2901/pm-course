@@ -7685,6 +7685,7 @@ h+='<div class="am-stat"><span class="am-k">כניסה אחרונה</span><span 
 const _laMs=parseInt(u.lastActivity)||0;
 h+='<div class="am-stat"><span class="am-k">נראה לאחרונה</span><span class="am-v">'+(_laMs?esc(_idleLabel(_laMs)):'—')+'</span></div>';
 h+='<div class="am-stat"><span class="am-k">הרשמה</span><span class="am-v">'+esc(u.firstUse||'—')+'</span></div>';
+h+='<div class="am-stat"><span class="am-k">גרסת אפליקציה</span><span class="am-v">'+_admVersionCell(u.appVersion)+'</span></div>';
 
 // === Email & Reminders block ===
 const uEmail=String(u.email||'');
