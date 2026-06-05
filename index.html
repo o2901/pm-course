@@ -811,8 +811,8 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 <div class="ws-box" style="animation:fiu .8s ease .2s both">
 <div class="ws-box-title">🎮 מה יש במשחק?</div>
 <div class="ws-stats">
-<div class="ws-stat"><div class="ws-stat-val">51</div><div class="ws-stat-lbl">שלבים</div></div>
-<div class="ws-stat"><div class="ws-stat-val">760+</div><div class="ws-stat-lbl">שאלות</div></div>
+<div class="ws-stat"><div class="ws-stat-val">52</div><div class="ws-stat-lbl">שלבים</div></div>
+<div class="ws-stat"><div class="ws-stat-val">800+</div><div class="ws-stat-lbl">שאלות</div></div>
 <div class="ws-stat"><div class="ws-stat-val">26</div><div class="ws-stat-lbl">ספרי בונוס</div></div>
 </div>
 <div class="ws-features">
@@ -4387,9 +4387,17 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),h
       showModal('🚫','החשבון בוטל','חשבון זה בוטל. אם זו טעות — פנו למנהל המערכת לחיבור מחדש.','הבנתי');
       return;
     }
-    // Security: existing user typed an email that doesn't match the stored one — reject
-    if(storedEmail && email && storedEmail!==email){
-      showModal('🔒','המייל לא תואם','שם המשתמש הזה כבר רשום עם כתובת מייל אחרת. נא להזין את כתובת המייל שאיתה נרשמת במקור, או לבחור שם משתמש אחר.','הבנתי');
+    // Security: an existing user that has an email on file MUST re-enter that exact email to
+    // log in. Empty OR mismatching → reject. (The previous guard also required `email` to be
+    // truthy, so leaving the field blank slipped through and let anyone open an existing
+    // account by username alone.) Users with NO stored email (legacy/no-email) stay exempt so
+    // they are not locked out.
+    if(storedEmail && storedEmail!==email){
+      if(!email){
+        showModal('📧','נדרש מייל לכניסה','שם המשתמש הזה רשום עם כתובת מייל. כדי להיכנס יש להזין את כתובת המייל שאיתה נרשמת.','הבנתי');
+      }else{
+        showModal('🔒','המייל לא תואם','שם המשתמש הזה כבר רשום עם כתובת מייל אחרת. נא להזין את כתובת המייל שאיתה נרשמת במקור, או לבחור שם משתמש אחר.','הבנתי');
+      }
       const emEl=$('emailInput');if(emEl){emEl.focus();emEl.select()}
       return;
     }
@@ -6553,7 +6561,7 @@ const DB_URL=_isLocalDev?'':'https://script.google.com/macros/s/AKfycbyE76CPv2Y5
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.1.0';
+const APP_VERSION='1.1.1';
 // Compare two dotted-numeric versions. Returns -1 if a<b, 0 if equal, 1 if a>b.
 // Segment-wise numeric so 1.10.0 > 1.9.0 (no zero-padding needed). Also orders the legacy
 // YYYY.MM.DD date strings consistently (they're still stored for users who haven't refreshed).
