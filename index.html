@@ -4374,10 +4374,21 @@ function _tryLogin(name,email,consent){
 email=email||'';consent=!!consent;
 const btn=document.querySelector('.btn-go');
 if(btn){btn.disabled=true;btn.textContent='⏳ בודק...'}
-fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name}),headers:{'Content-Type':'text/plain'}})
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,email:email,sessionToken:(localStorage.getItem('pm_session_token_'+name)||'')}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json())
 .then(d=>{
   if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}
+  // Server identity gate (1.1.2): the account exists but the request didn't prove ownership
+  // (no matching email AND no valid session token). Mirror the client guard's messaging below.
+  if(d&&d.success===false&&(d.error==='email_required'||d.error==='email_mismatch')){
+    if(d.error==='email_required'||!email){
+      showModal('📧','נדרש מייל לכניסה','שם המשתמש הזה רשום עם כתובת מייל. כדי להיכנס יש להזין את כתובת המייל שאיתה נרשמת.','הבנתי');
+    }else{
+      showModal('🔒','המייל לא תואם','שם המשתמש הזה כבר רשום עם כתובת מייל אחרת. נא להזין את כתובת המייל שאיתה נרשמת במקור, או לבחור שם משתמש אחר.','הבנתי');
+    }
+    const emEl=$('emailInput');if(emEl){emEl.focus();emEl.select()}
+    return;
+  }
   if(d.success&&d.data){
     const status=String(d.data.status||'');
     const storedEmail=String(d.data.email||'').toLowerCase();
@@ -4580,7 +4591,7 @@ function _maybePromptEmail(){
 if(!G.userName)return;
 if(G.cloudEmailVerified){_clearEmailPromptCadence();return;}// verified — stop
 // Refresh cloud state — user may have verified in another tab / clicked the email link
-fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:G.userName}),headers:{'Content-Type':'text/plain'}})
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:G.userName,email:(G.cloudEmail||''),sessionToken:(G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||'')}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json()).then(d=>{
   if(d.success&&d.data){
     G.cloudEmail=String(d.data.email||'');
@@ -4744,7 +4755,7 @@ function _checkApproval(){
 if(!_pendingName)return;
 const st=$('pendingStatus');
 if(st)st.innerHTML='<div class="pending-dot" style="background:var(--p)"></div><span>בודק...</span>';
-fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:_pendingName}),headers:{'Content-Type':'text/plain'}})
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:_pendingName,email:_pendingEmail,sessionToken:(localStorage.getItem('pm_session_token_'+_pendingName)||'')}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json())
 .then(d=>{
   if(d.success&&d.data){
@@ -6561,7 +6572,7 @@ const DB_URL=_isLocalDev?'':'https://script.google.com/macros/s/AKfycbyE76CPv2Y5
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.1.1';
+const APP_VERSION='1.1.2';
 // Compare two dotted-numeric versions. Returns -1 if a<b, 0 if equal, 1 if a>b.
 // Segment-wise numeric so 1.10.0 > 1.9.0 (no zero-padding needed). Also orders the legacy
 // YYYY.MM.DD date strings consistently (they're still stored for users who haven't refreshed).
@@ -6835,7 +6846,7 @@ function _checkForNewVersion(){
 // ========== FEATURE: CHECK CLOUD UNLOCKS ON LOGIN ==========
 function checkCloudUnlocks(){
   if(!DB_URL||!G.userName||G.userName==='אנונימי')return;
-  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:G.userName}),headers:{'Content-Type':'text/plain'}})
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:G.userName,email:(G.cloudEmail||''),sessionToken:(G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||'')}),headers:{'Content-Type':'text/plain'}})
   .then(r=>r.json())
   .then(d=>{
     if(d.success&&d.data){
