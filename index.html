@@ -4382,11 +4382,14 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
   // (no matching email AND no valid session token). Mirror the client guard's messaging below.
   if(d&&d.success===false&&(d.error==='email_required'||d.error==='email_mismatch')){
     if(d.error==='email_required'||!email){
-      showModal('📧','נדרש מייל לכניסה','שם המשתמש הזה רשום עם כתובת מייל. כדי להיכנס יש להזין את כתובת המייל שאיתה נרשמת.','הבנתי');
+      showModal('📧','נדרשת כתובת מייל','כדי להיכנס לחשבון יש להזין את כתובת המייל שלך.','הבנתי');
+      const emEl=$('emailInput');if(emEl){emEl.focus();emEl.select()}
     }else{
-      showModal('🔒','המייל לא תואם','שם המשתמש הזה כבר רשום עם כתובת מייל אחרת. נא להזין את כתובת המייל שאיתה נרשמת במקור, או לבחור שם משתמש אחר.','הבנתי');
+      // A different email on an existing username = a name collision (two people, same name).
+      // Don't expose that an email differs — just tell them the username is already taken.
+      showModal('🚫','שם המשתמש כבר תפוס','שם המשתמש הזה כבר בשימוש. נא לבחור שם משתמש אחר כדי להמשיך.','הבנתי');
+      const nmEl=$('nameInput');if(nmEl){nmEl.focus();nmEl.select()}
     }
-    const emEl=$('emailInput');if(emEl){emEl.focus();emEl.select()}
     return;
   }
   if(d.success&&d.data){
@@ -4405,11 +4408,13 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
     // they are not locked out.
     if(storedEmail && storedEmail!==email){
       if(!email){
-        showModal('📧','נדרש מייל לכניסה','שם המשתמש הזה רשום עם כתובת מייל. כדי להיכנס יש להזין את כתובת המייל שאיתה נרשמת.','הבנתי');
+        showModal('📧','נדרשת כתובת מייל','כדי להיכנס לחשבון יש להזין את כתובת המייל שלך.','הבנתי');
+        const emEl=$('emailInput');if(emEl){emEl.focus();emEl.select()}
       }else{
-        showModal('🔒','המייל לא תואם','שם המשתמש הזה כבר רשום עם כתובת מייל אחרת. נא להזין את כתובת המייל שאיתה נרשמת במקור, או לבחור שם משתמש אחר.','הבנתי');
+        // Different email on an existing username = a same-name collision — surface it as "taken".
+        showModal('🚫','שם המשתמש כבר תפוס','שם המשתמש הזה כבר בשימוש. נא לבחור שם משתמש אחר כדי להמשיך.','הבנתי');
+        const nmEl=$('nameInput');if(nmEl){nmEl.focus();nmEl.select()}
       }
-      const emEl=$('emailInput');if(emEl){emEl.focus();emEl.select()}
       return;
     }
     if(status==='pending_email'){
@@ -4678,11 +4683,14 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'requestApproval',userNa
 .then(d=>{
   if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}
   if(d.success===false && d.error==='email_mismatch'){
-    showModal('🔒','מייל לא תואם',d.message||'שם המשתמש הזה כבר רשום עם כתובת מייל אחרת.','הבנתי');
+    // Same-name collision: this username already belongs to someone else (registered with a
+    // different email). Don't expose the email detail — just tell them the name is taken.
+    showModal('🚫','שם המשתמש כבר תפוס','שם המשתמש הזה כבר בשימוש. נא לבחור שם משתמש אחר כדי להמשיך.','הבנתי');
+    const nmEl=$('nameInput');if(nmEl){nmEl.focus();nmEl.select()}
     return;
   }
   if(d.success===false && d.error==='email_required'){
-    showModal('📧','נדרש מייל לרישום',d.message||'נדרש מייל לרישום משתמש חדש.','הבנתי');
+    showModal('📧','נדרשת כתובת מייל','כדי להירשם לקורס יש להזין כתובת מייל.','הבנתי');
     return;
   }
   if(d.success&&d.status==='approved'){
@@ -6572,7 +6580,7 @@ const DB_URL=_isLocalDev?'':'https://script.google.com/macros/s/AKfycbyE76CPv2Y5
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.1.2';
+const APP_VERSION='1.1.3';
 // Compare two dotted-numeric versions. Returns -1 if a<b, 0 if equal, 1 if a>b.
 // Segment-wise numeric so 1.10.0 > 1.9.0 (no zero-padding needed). Also orders the legacy
 // YYYY.MM.DD date strings consistently (they're still stored for users who haven't refreshed).
