@@ -4122,6 +4122,14 @@ q:[{q:"מי המחבר של ״Negotiating Your Salary״?",o:["Chris Voss","Jack 
 // ============ GAME ENGINE ============
 let G={s:false,v:'w',st:null,tab:'l',sc:{},done:new Set(),ts:0,qa:{},streak:0,lastDay:null,titleShown2:false,titleShown9:false,titleShown15:false,titleShownAll:false,wrongQ:{},miHistory:[],weeklyDone:[],darkMode:false,firstUse:null,userName:'',_achShown:[],interviewUnlocked:false,adminMessage:'',adminMessageRead:false,sessionStart:null,sessions:[],stageTime:{},satisfactionRating:0,activityLog:[],lastStageVisited:null,combo:0,maxCombo:0,goldenQuestions:{},streakFreezes:1,lastFreezeWeek:null,reflections:{}};
 function logActivity(action,details,points){if(!G.activityLog)G.activityLog=[];const _ev={t:Date.now(),a:action,d:details||''};if(points)_ev.p=points;G.activityLog.push(_ev);if(G.activityLog.length>100)G.activityLog=G.activityLog.slice(-100);try{sv()}catch(e){}}
+// Phase 2 — floating-feature analytics. Fire-and-forget event to a durable cloud Events sheet
+// (separate from the lossy last-50 activityLog). No-op in local dev (DB_URL empty) or before login.
+function trackEvent(feat,act,meta){
+  try{
+    if(!DB_URL||!G||!G.userName||G.userName==='אנונימי')return;
+    fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'trackEvent',userName:G.userName,feat:feat||'',act:act||'',meta:meta!=null?String(meta):''}),headers:{'Content-Type':'text/plain'},keepalive:true}).catch(function(){});
+  }catch(e){}
+}
 const LS='pmV7';
 function ti(el){const myTp=el.nextElementSibling;document.querySelectorAll('.tp.show').forEach(t=>{if(t===myTp)return;if(t.contains(el))return;t.classList.remove('show')});myTp.classList.toggle('show');if(myTp.classList.contains('show')){const r=el.getBoundingClientRect();const tw=320;let left=r.left+r.width/2-tw/2;if(left<10)left=10;if(left+tw>window.innerWidth-10)left=window.innerWidth-tw-10;let top=r.top-10;myTp.style.left=left+'px';myTp.style.bottom=(window.innerHeight-top)+'px';myTp.style.top='auto'}}
 document.addEventListener('click',e=>{if(!e.target.classList.contains('ib')&&!e.target.closest('.tp')){document.querySelectorAll('.tp.show').forEach(t=>t.classList.remove('show'))}});
@@ -4849,14 +4857,16 @@ const s=S.find(x=>x.id===currentId);if(!s)return;
 const doneCount=S.filter(x=>x.tg!=='בונוס - ספר'&&x.tg!=='בונוס מיוחד').filter(x=>G.done.has(x.id)).length;
 const totalCore=S.filter(x=>x.tg!=='בונוס - ספר'&&x.tg!=='בונוס מיוחד').length;
 el.innerHTML='<div class="continue-hero" onclick="ss('+s.id+')"><div class="ch-icon">'+s.ic+'</div><div class="ch-body"><div class="ch-label">▶ המשך המסע שלך ('+doneCount+'/'+totalCore+')</div><div class="ch-title">שלב '+s.id+': '+s.t+'</div><div class="ch-sub">'+s.d+'</div></div><div class="ch-arrow">←</div></div>'+
-'<div style="display:flex;gap:.5rem;justify-content:center;margin-top:.6rem;flex-wrap:wrap"><button class="bs" style="font-size:.8rem;padding:.4rem .9rem" onclick="goToRandomStage()">🎲 שלב אקראי</button>'+(G.lastStageVisited&&G.lastStageVisited!==s.id?'<button class="bs" style="font-size:.8rem;padding:.4rem .9rem" onclick="ss('+G.lastStageVisited+')">↩ חזור לאחרון שביקרתי</button>':'')+'</div>'}
+'<div style="display:flex;gap:.5rem;justify-content:center;margin-top:.6rem;flex-wrap:wrap"><button class="bs" style="font-size:.8rem;padding:.4rem .9rem" onclick="goToRandomStage()">🎲 שלב אקראי</button>'+(G.lastStageVisited&&G.lastStageVisited!==s.id?'<button class="bs" style="font-size:.8rem;padding:.4rem .9rem" onclick="goToLastVisited()">↩ חזור לאחרון שביקרתי</button>':'')+'</div>'}
 function goToRandomStage(){
+  trackEvent('random','go');
   const unfinished=S.filter(s=>!G.done.has(s.id)&&s.tg!=='בונוס - ספר'&&!(s.id===25&&!G.interviewUnlocked));
   if(unfinished.length===0){showAchievement('🏆','סיימת הכל!','אין שלבים חדשים - חזור על שלב כדי לשפר ציון');return}
   const random=unfinished[Math.floor(Math.random()*unfinished.length)];
   showAchievement('🎲','שלב אקראי!',random.ic+' שלב '+random.id+': '+random.t);
   setTimeout(()=>ss(random.id),900);
 }
+function goToLastVisited(){trackEvent('lastVisited','go');if(G.lastStageVisited)ss(G.lastStageVisited);}
 function renderMapRank(){const el=$('map-rank');if(!el)return;el.innerHTML=''}
 function updateDailyFab(){const fab=$('dailyFab');if(!fab)return;const day=getDayNumber();const done=G.weeklyDone&&G.weeklyDone.includes(day);fab.classList.toggle('has-new',!done);const dot=fab.querySelector('.fab-dot');if(dot)dot.style.display=done?'none':'block'}
 
@@ -5758,6 +5768,7 @@ completed.forEach(s=>{s.q.forEach((q,i)=>{pool.push({...q,stageId:s.id,stageName
 // Shuffle and take 10
 for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}
 _miQuestions=pool.slice(0,10);_miAnswers={};_miCurrent=0;_miSec=0;
+trackEvent('interview','open');
 G.v='mi';
 $('mv').classList.add('hid');$('sv').classList.add('hid');
 const miv=$('miv');miv.classList.remove('hid');
@@ -5779,6 +5790,7 @@ const pct=Math.round(ok/_miQuestions.length*100);
 const timeStr=fmtTimer(_miSec);
 const msg=pct===100?'🏆 מושלם! מוכן/ה לכל ראיון!':pct>=80?'🌟 מצוין! ביצוע מרשים!':pct>=60?'👍 טוב! יש מקום לשיפור.':'📚 כדאי לחזור על החומר.';
 G.miHistory.push({date:new Date().toISOString(),score:pct,time:_miSec,correct:ok,total:_miQuestions.length});sv();
+trackEvent('interview','complete',pct+'%');
 const miv=$('miv');
 let h=`<button class="bbtn" onclick="exitMI()">→ חזרה למפה</button>`;
 h+=`<div class="mi-result"><h2>🎤 סיכום בחינה רב תחומית</h2><div class="sc">${pct}%</div><div style="color:var(--t2);margin:.5rem 0">${ok}/${_miQuestions.length} נכונות | ⏱ ${timeStr}</div><div style="margin:1rem 0">${msg}</div>`;
@@ -5811,6 +5823,7 @@ keys.forEach(key=>{const info=G.wrongQ[key];const s=S.find(x=>x.id===info.stage)
 if(questions.length===0){G.wrongQ={};sv();showModal('✅','הכל נקי!','אין שאלות לחזרה - כל הטעויות תוקנו!','סגור');return}
 // Shuffle
 for(let i=questions.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[questions[i],questions[j]]=[questions[j],questions[i]]}
+trackEvent('spacedRep','open',questions.length+'q');
 _srQuestions=questions;_srAnswers={};_srShuffle={};
 G.v='sr';
 $('mv').classList.add('hid');$('sv').classList.add('hid');
@@ -6331,6 +6344,7 @@ function toggleDailyChallenge(){
   const el=$('dailyModal');
   if(el.classList.contains('hid')){
     el.classList.remove('hid');
+    trackEvent('daily','open');
     el.innerHTML='<div class="daily-modal" onclick="if(event.target===this)toggleDailyChallenge()"><div class="daily-modal-box">'+el._content+'<div style="text-align:center;margin-top:1rem"><button class="bs" onclick="toggleDailyChallenge()">סגור</button></div></div></div>';
   }else{
     el.classList.add('hid');el.innerHTML='';
@@ -6343,6 +6357,7 @@ function answerWeekly(sel){
   const qi=day%WEEKLY_QUESTIONS.length;
   const q=WEEKLY_QUESTIONS[qi];
   G._weeklyAns={wk:day,sel:sel};
+  trackEvent('daily',sel===q.c?'answer_correct':'answer_wrong');
   if(sel===q.c){
     if(!G.weeklyDone)G.weeklyDone=[];
     G.weeklyDone.push(day);
@@ -6369,6 +6384,7 @@ function updateCertFab(){const fab=$('certFab');if(!fab)return;if(PM_IDS.every(i
 function generateCert(){
   if(document.getElementById('certOverlay'))return;
   if(!PM_IDS.every(i=>G.done.has(i))){const done=PM_IDS.filter(i=>G.done.has(i)).length;showModal('🏆','תעודת סיום נעולה',`סיימו את <strong>כל שלבי הליבה</strong> כדי לקבל תעודת סיום.<br>השלמתם: <strong>${done}/${PM_IDS.length}</strong> שלבים`,'חזרה ללמידה');return}
+  trackEvent('cert','open');
   const score=G.ts;
   const title=getTitle();
   const dateStr=new Date().toLocaleDateString('he-IL',{timeZone:'Asia/Jerusalem',year:'numeric',month:'long',day:'numeric'});
@@ -6584,7 +6600,7 @@ const DB_URL=_isLocalDev?'':'https://script.google.com/macros/s/AKfycbyE76CPv2Y5
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.1.4';
+const APP_VERSION='1.2.0';
 // Compare two dotted-numeric versions. Returns -1 if a<b, 0 if equal, 1 if a>b.
 // Segment-wise numeric so 1.10.0 > 1.9.0 (no zero-padding needed). Also orders the legacy
 // YYYY.MM.DD date strings consistently (they're still stored for users who haven't refreshed).
@@ -6890,6 +6906,7 @@ function showAdminMessage(){
   try{localStorage.setItem(_msgReadKey(),G.adminMessage)}catch(e){}
   updateAdminMsgFab();
   logActivity('readAdminMsg',G.adminMessage.substring(0,50));
+  trackEvent('adminMsg','open');
   showModal('💬','הודעה מהמנהל',esc(G.adminMessage),'הבנתי');
 }
 
@@ -7166,6 +7183,7 @@ mp=function(){_origMpSat();if(G.satisfactionRating>0)return;if(_satLastShownTime
 
 // ========== FEATURE 5: BUG REPORT ==========
 function showBugReport(){
+  trackEvent('bug','open');
   const _tabNames={l:'קריאה',c:'קייס סטאדי',q:'מבחן'};
   const ctx=G.v==='s'?('שלב '+G.st+', '+(_tabNames[G.tab]||G.tab)):(G.v==='m'?'מפה':G.v==='mi'?'בחינה רב תחומית':G.v==='sr'?'חזרה על טעויות':'מסך ראשי');
   const overlay=document.createElement('div');
@@ -7188,6 +7206,7 @@ function submitBugReport(ctx){
   const report=text.value.trim();
   const overlay=document.querySelector('.bug-modal');
   if(overlay)overlay.remove();
+  trackEvent('bug','submit');
   fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'reportBug',userName:G.userName||'אנונימי',report:report,context:ctx+' · v'+APP_VERSION}),headers:{'Content-Type':'text/plain'}})
   .then(r=>r.json())
   .then(d=>{
@@ -7212,6 +7231,44 @@ function admFetch(body){
 }
 let _admUsers=[];
 let _admSort={col:'score',dir:-1};
+
+// ===== Phase 2: floating-feature analytics (admin side) =====
+var _admAnalytics=null;
+const FLOAT_FEATURES=['daily','duel','spacedRep','interview','adminMsg','cert','bug'];
+// Navigation buttons in the continue-hero (not floating, but tracked per user request).
+const NAV_FEATURES=['random','lastVisited'];
+const TRACKED_FEATURES=FLOAT_FEATURES.concat(NAV_FEATURES);
+const FEAT_META={
+  daily:{ic:'🎯',name:'השאלה היומית',col:'#FFC107'},
+  duel:{ic:'⚔️',name:'דו-קרב',col:'#FF6584'},
+  spacedRep:{ic:'🔄',name:'חזרה על טעויות',col:'#00C9A7'},
+  interview:{ic:'🎤',name:'בחינה רב תחומית',col:'#6C63FF'},
+  adminMsg:{ic:'💬',name:'הודעה מהמנהל',col:'#FFD700'},
+  cert:{ic:'📜',name:'תעודת סיום',col:'#4CAF50'},
+  bug:{ic:'🐛',name:'דיווח באג',col:'#FF9800'},
+  random:{ic:'🎲',name:'שלב אקראי',col:'#9C27B0'},
+  lastVisited:{ic:'↩',name:'חזרה לאחרון',col:'#607D8B'}
+};
+const FEAT_ACT_NAMES={open:'נפתח',answer_correct:'תשובה נכונה',answer_wrong:'תשובה שגויה',challenge_simple:'אתגר פשוט נשלח',challenge_wager:'אתגר הימור נשלח',accept:'אתגר התקבל',decline:'אתגר נדחה',complete:'הושלמה',submit:'נשלח',go:'ניווט'};
+// Asia/Jerusalem 'yyyy-MM-dd' (matches server-stamped event dates) so client today/month buckets align.
+function _jerDateStr(ms){try{return new Date(ms||Date.now()).toLocaleDateString('en-CA',{timeZone:'Asia/Jerusalem'})}catch(e){return ''}}
+// Roll byDate {date:{feature:count}} into today / this-month / all-time per-feature totals.
+function _analyticsFeatureCounts(){
+  const byDate=(_admAnalytics&&_admAnalytics.byDate)||{};
+  const today={},month={},total={};
+  const todayStr=_jerDateStr(Date.now());
+  const monthPrefix=todayStr.slice(0,7);
+  Object.keys(byDate).forEach(function(date){
+    const feats=byDate[date]||{};
+    Object.keys(feats).forEach(function(f){
+      const c=feats[f]||0;
+      total[f]=(total[f]||0)+c;
+      if(date===todayStr)today[f]=(today[f]||0)+c;
+      if(String(date).slice(0,7)===monthPrefix)month[f]=(month[f]||0)+c;
+    });
+  });
+  return {today:today,month:month,total:total};
+}
 
 function showAdmin(){
 $('ws').classList.add('hid');$('mv').classList.add('hid');$('sv').classList.add('hid');$('miv').classList.add('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');$('lbv').classList.add('hid');$('pendingView').classList.add('hid');$('duelView').classList.add('hid');
@@ -7259,6 +7316,9 @@ $('adv').innerHTML='<div class="adm-wrap" style="text-align:center;padding:4rem"
 // Fetch bug count in parallel
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getBugReports',adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json()).then(d=>{if(d.success&&d.data)_admBugCount=d.data.filter(b=>b.resolved!=='resolved').length;renderAdminDashboard()}).catch(()=>{});
+// Fetch floating-feature analytics in parallel (Phase 2)
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getAnalytics',adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+.then(r=>r.json()).then(d=>{if(d.success&&d.data){_admAnalytics=d.data;renderAdminDashboard()}}).catch(()=>{});
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'admin',adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json())
 .then(d=>{
@@ -7438,6 +7498,28 @@ if(shortStage!==null||longStage!==null){
     h+='</div>';
   }
   h+='</div>';
+}
+h+='</div>';
+
+// === Floating-feature usage (Phase 2 analytics) ===
+h+='<div style="margin-bottom:1.2rem">';
+h+='<h3 style="font-size:1rem;color:var(--p);margin:0 0 .7rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">🎈 שימוש בפיצ׳רים וכפתורים <span style="font-size:.72rem;color:var(--t2);font-weight:500">(המספר הגדול = היום · למטה = החודש)</span>';
+h+='<button class="bs" style="font-size:.72rem;padding:.25rem .7rem;margin-right:auto;background:rgba(108,99,255,.1);color:var(--p);border-color:rgba(108,99,255,.3)" onclick="admShowDataResearch()">📊 מחקר נתונים מלא →</button></h3>';
+if(!_admAnalytics){
+  h+='<div style="text-align:center;padding:1.2rem;color:var(--t2);font-size:.82rem;background:rgba(108,99,255,.05);border-radius:12px">⏳ טוען נתוני שימוש... <span style="font-size:.72rem">(אם לא נטען — ודאו שבוצע Deploy מחדש ל-Google Apps Script)</span></div>';
+}else{
+  const _fc=_analyticsFeatureCounts();
+  h+='<div class="adm-stats">';
+  TRACKED_FEATURES.forEach(function(f){
+    const m=FEAT_META[f];const td=_fc.today[f]||0;const mo=_fc.month[f]||0;const tot=_fc.total[f]||0;
+    h+='<div class="adm-stat" style="cursor:pointer" onclick="admShowDataResearch()" title="'+m.name+' — היום: '+td+' · החודש: '+mo+' · מאז ומתמיד: '+tot+'">';
+    h+='<div class="as-val" style="font-size:1.5rem">'+m.ic+' '+td+'</div>';
+    h+='<div class="as-lbl">'+m.name+'</div>';
+    h+='<div style="font-size:.66rem;color:var(--t2);margin-top:.25rem">החודש: <strong style="color:var(--t1)">'+mo+'</strong> · סה״כ: '+tot+'</div>';
+    h+='</div>';
+  });
+  h+='</div>';
+  h+='<div style="font-size:.7rem;color:var(--t2);margin-top:.4rem">📈 סך הכל '+(_admAnalytics.totalEvents||0)+' אירועים מתועדים · לחצו על פיצ׳ר לפירוט מלא</div>';
 }
 h+='</div>';
 
@@ -8017,6 +8099,21 @@ if(activityLog.length>0){
   h+='</div></div>';
 }
 
+// Floating-feature usage (durable, from the Events sheet — Phase 2)
+if(_admAnalytics&&_admAnalytics.perUser){
+  const _pu=_admAnalytics.perUser[u.userName]||{};
+  const _puKeys=TRACKED_FEATURES.filter(function(f){return _pu[f]});
+  h+='<div style="margin-top:1rem"><strong style="color:var(--p);font-size:.9rem">🎈 שימוש בפיצ׳רים וכפתורים:</strong>';
+  if(_puKeys.length){
+    h+='<div class="adm-time-grid" style="margin-top:.5rem">';
+    _puKeys.forEach(function(f){const m=FEAT_META[f];h+='<div class="adm-time-cell"><div class="atc-label">'+m.ic+' '+m.name+'</div><div class="atc-val">'+_pu[f]+'</div></div>';});
+    h+='</div>';
+  }else{
+    h+='<div style="margin-top:.4rem;font-size:.8rem;color:var(--t2)">— עדיין לא השתמש/ה בפיצ׳רים ובכפתורים</div>';
+  }
+  h+='</div>';
+}
+
 // Admin controls: Interview unlock + Admin message
 h+='<div class="adm-ctrl-section">';
 h+='<h4>🔧 פעולות מנהל</h4>';
@@ -8271,6 +8368,126 @@ function _admBackToUsers(){
   else{loadAdminData()}
 }
 
+// ===== Phase 2: "מחקר נתונים" — floating-feature data research sub-view =====
+function admShowDataResearch(){
+  if(!_admAnalytics){
+    $('adv').innerHTML='<div class="adm-wrap" style="text-align:center;padding:4rem"><div style="font-size:2.5rem;margin-bottom:.5rem">⏳</div><p style="color:var(--t2)">טוען נתוני מחקר...</p></div>';
+    fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getAnalytics',adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+    .then(r=>r.json()).then(d=>{
+      if(d.success&&d.data){_admAnalytics=d.data;_renderDataResearch()}
+      else{$('adv').innerHTML='<div class="adm-wrap"><div style="text-align:center;padding:3rem"><p style="font-size:2rem">📊</p><p style="color:var(--t2);margin-bottom:.5rem">אין נתוני מחקר עדיין</p><p style="color:var(--s);font-size:.78rem">'+esc(d.error||'')+'</p><p style="color:var(--t2);font-size:.78rem;margin-top:1rem">⚠️ ודאו שעשיתם Deploy מחדש ל-Google Apps Script עם הקוד המעודכן</p></div><div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(108,99,255,.15)"><button class="bp" style="width:100%" onclick="_admBackToUsers()">→ חזרה לפאנל ניהול</button></div></div>'}
+    })
+    .catch(e=>{$('adv').innerHTML='<div class="adm-wrap"><div style="text-align:center;padding:3rem"><p style="font-size:2rem">📴</p><p style="color:var(--s)">שגיאת חיבור</p><p style="color:var(--t2);font-size:.78rem">'+esc(e.message||'')+'</p></div><div style="margin-top:1.5rem"><button class="bp" style="width:100%" onclick="_admBackToUsers()">→ חזרה לפאנל ניהול</button></div></div>'});
+    return;
+  }
+  _renderDataResearch();
+}
+function _renderDataResearch(){
+  const A=_admAnalytics||{};
+  const perFeature=A.perFeature||{};
+  const subActions=A.subActions||{};
+  const subMeta=A.subMeta||{};
+  const perUser=A.perUser||{};
+  const byDate=A.byDate||{};
+  const fc=_analyticsFeatureCounts();
+  let h='<div class="adm-wrap">';
+  h+='<button class="bbtn" onclick="_admBackToUsers()">→ חזרה לפאנל ניהול</button>';
+  h+='<h2 style="font-size:1.4rem;margin:.3rem 0 .3rem;text-align:center">📊 מחקר נתונים — פיצ׳רים וכפתורים</h2>';
+  const genStr=A.generatedAt?new Date(A.generatedAt).toLocaleString('he-IL',{timeZone:'Asia/Jerusalem'}):'';
+  h+='<p style="text-align:center;color:var(--t2);font-size:.76rem;margin:0 0 1.2rem">סך '+(A.totalEvents||0)+' אירועים · עודכן: '+esc(genStr)+' <button class="bs" style="font-size:.7rem;padding:.2rem .6rem;margin-right:.4rem" onclick="_admAnalytics=null;admShowDataResearch()">🔄 רענן</button></p>';
+
+  if(!A.totalEvents){
+    h+='<div style="text-align:center;padding:3rem 1rem"><p style="font-size:2.5rem;margin-bottom:.5rem">🌱</p><p style="color:var(--t2);font-size:1rem">עדיין לא נאספו אירועי שימוש</p><p style="color:var(--t2);font-size:.8rem;margin-top:.4rem">ברגע שמשתמשים יתחילו להשתמש בפיצ׳רים ובכפתורים — הנתונים יופיעו כאן.</p></div>';
+    h+='</div>';$('adv').innerHTML=h;return;
+  }
+
+  // === Section A: total usage per feature (horizontal bars) ===
+  const featSorted=TRACKED_FEATURES.slice().filter(function(f){return perFeature[f]}).sort(function(a,b){return (perFeature[b]||0)-(perFeature[a]||0)});
+  const maxFeat=Math.max.apply(null,featSorted.map(function(f){return perFeature[f]||0}).concat([1]));
+  h+='<div style="background:rgba(108,99,255,.05);border:1px solid rgba(108,99,255,.15);border-radius:16px;padding:1rem 1.1rem;margin-bottom:1.1rem">';
+  h+='<h3 style="font-size:1rem;color:var(--p);margin:0 0 .8rem">🏆 שימוש כולל לפי פיצ׳ר</h3>';
+  featSorted.forEach(function(f){
+    const m=FEAT_META[f];const c=perFeature[f]||0;const pct=Math.round(c/maxFeat*100);
+    h+='<div style="margin-bottom:.7rem">';
+    h+='<div style="display:flex;justify-content:space-between;align-items:center;font-size:.82rem;margin-bottom:.25rem"><span style="font-weight:600;color:var(--t1)">'+m.ic+' '+m.name+'</span><span style="color:var(--t2)">'+c+' <span style="font-size:.68rem">(היום '+(fc.today[f]||0)+' · החודש '+(fc.month[f]||0)+')</span></span></div>';
+    h+='<div style="background:rgba(255,255,255,.06);border-radius:8px;height:14px;overflow:hidden"><div style="background:'+m.col+';height:100%;width:'+pct+'%;border-radius:8px;transition:width .5s;box-shadow:0 0 10px '+m.col+'66"></div></div>';
+    h+='</div>';
+  });
+  h+='</div>';
+
+  // === Section B: sub-action breakdown per feature ===
+  h+='<div style="background:rgba(108,99,255,.05);border:1px solid rgba(108,99,255,.15);border-radius:16px;padding:1rem 1.1rem;margin-bottom:1.1rem">';
+  h+='<h3 style="font-size:1rem;color:var(--p);margin:0 0 .8rem">🔍 פילוח תת-פעולות</h3>';
+  let _anySub=false;
+  featSorted.forEach(function(f){
+    const sa=subActions[f];if(!sa)return;const acts=Object.keys(sa);if(!acts.length)return;_anySub=true;
+    const m=FEAT_META[f];
+    h+='<div style="margin-bottom:.7rem;padding-bottom:.6rem;border-bottom:1px dashed rgba(255,255,255,.08)">';
+    h+='<div style="font-size:.85rem;font-weight:700;color:var(--t1);margin-bottom:.4rem">'+m.ic+' '+m.name+'</div>';
+    h+='<div style="display:flex;flex-wrap:wrap;gap:.4rem">';
+    acts.sort(function(a,b){return sa[b]-sa[a]}).forEach(function(act){
+      const nm=FEAT_ACT_NAMES[act]||act;
+      h+='<span style="background:rgba(108,99,255,.12);border:1px solid rgba(108,99,255,.25);border-radius:20px;padding:.2rem .7rem;font-size:.76rem;color:var(--t1)">'+esc(nm)+': <strong style="color:'+m.col+'">'+sa[act]+'</strong></span>';
+    });
+    h+='</div>';
+    // meta drilldown (e.g. duel configs, interview scores)
+    const sm=subMeta[f];
+    if(sm){const metas=Object.keys(sm).sort(function(a,b){return sm[b]-sm[a]}).slice(0,8);
+      if(metas.length){h+='<div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem">';
+        metas.forEach(function(mt){h+='<span style="background:rgba(255,255,255,.04);border-radius:6px;padding:.15rem .5rem;font-size:.7rem;color:var(--t2)">'+esc(mt)+' ×'+sm[mt]+'</span>';});
+        h+='</div>';}
+    }
+    h+='</div>';
+  });
+  if(!_anySub)h+='<div style="color:var(--t2);font-size:.8rem">— אין עדיין תת-פעולות מתועדות</div>';
+  h+='</div>';
+
+  // === Section C: top users by floating-feature usage ===
+  const userTotals=Object.keys(perUser).map(function(u){const fv=perUser[u]||{};let s=0;Object.keys(fv).forEach(function(f){s+=fv[f]||0});return {u:u,total:s,fv:fv}}).filter(function(x){return x.total>0}).sort(function(a,b){return b.total-a.total}).slice(0,10);
+  if(userTotals.length){
+    h+='<div style="background:rgba(108,99,255,.05);border:1px solid rgba(108,99,255,.15);border-radius:16px;padding:1rem 1.1rem;margin-bottom:1.1rem">';
+    h+='<h3 style="font-size:1rem;color:var(--p);margin:0 0 .8rem">👑 משתמשים מובילים בשימוש בפיצ׳רים</h3>';
+    const maxU=userTotals[0].total||1;
+    userTotals.forEach(function(x,i){
+      const en=esc(x.u).replace(/'/g,"\\'");
+      const topF=TRACKED_FEATURES.filter(function(f){return x.fv[f]}).sort(function(a,b){return x.fv[b]-x.fv[a]}).slice(0,3).map(function(f){return FEAT_META[f].ic+x.fv[f]}).join(' ');
+      h+='<div onclick="showUserDetail(\''+en+'\')" style="cursor:pointer;display:flex;align-items:center;gap:.6rem;padding:.4rem .3rem;border-bottom:1px solid rgba(108,99,255,.08)">';
+      h+='<span style="font-size:.8rem;color:var(--t2);min-width:1.4rem">'+(i+1)+'.</span>';
+      h+='<span style="font-weight:600;color:var(--t1);font-size:.85rem;min-width:90px;flex:1">'+esc(x.u)+'</span>';
+      h+='<span style="font-size:.72rem;color:var(--t2)">'+topF+'</span>';
+      h+='<div style="flex:1;max-width:120px;background:rgba(255,255,255,.06);border-radius:6px;height:10px;overflow:hidden"><div style="background:var(--gr1);height:100%;width:'+Math.round(x.total/maxU*100)+'%"></div></div>';
+      h+='<strong style="color:var(--p);font-size:.85rem;min-width:2rem;text-align:left">'+x.total+'</strong>';
+      h+='</div>';
+    });
+    h+='</div>';
+  }
+
+  // === Section D: daily activity (last 14 active days) — precursor to Phase 3 graph ===
+  const dates=Object.keys(byDate).sort().reverse().slice(0,14).reverse();
+  if(dates.length){
+    const dayTotals=dates.map(function(d){const fv=byDate[d]||{};let s=0;Object.keys(fv).forEach(function(f){s+=fv[f]||0});return s});
+    const maxD=Math.max.apply(null,dayTotals.concat([1]));
+    h+='<div style="background:rgba(108,99,255,.05);border:1px solid rgba(108,99,255,.15);border-radius:16px;padding:1rem 1.1rem;margin-bottom:1.1rem">';
+    h+='<h3 style="font-size:1rem;color:var(--p);margin:0 0 .3rem">📅 פעילות יומית (14 ימים אחרונים עם פעילות)</h3>';
+    h+='<p style="font-size:.7rem;color:var(--t2);margin:0 0 .8rem">תצוגה מקדימה — גרף מלא לאורך זמן יגיע בשלב הבא</p>';
+    h+='<div style="display:flex;align-items:flex-end;gap:.3rem;height:120px;overflow-x:auto;padding-bottom:.3rem">';
+    dates.forEach(function(d,i){
+      const tot=dayTotals[i];const hpct=Math.round(tot/maxD*100);
+      const dlabel=d.slice(8)+'/'+d.slice(5,7);
+      h+='<div style="display:flex;flex-direction:column;align-items:center;gap:.2rem;min-width:30px;flex:1">';
+      h+='<span style="font-size:.62rem;color:var(--t1);font-weight:700">'+tot+'</span>';
+      h+='<div title="'+d+': '+tot+' אירועים" style="width:100%;max-width:26px;background:linear-gradient(to top,var(--p),var(--gr1));border-radius:5px 5px 0 0;height:'+Math.max(hpct,3)+'%;min-height:3px;transition:height .5s"></div>';
+      h+='<span style="font-size:.58rem;color:var(--t2);white-space:nowrap">'+dlabel+'</span>';
+      h+='</div>';
+    });
+    h+='</div></div>';
+  }
+
+  h+='<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(108,99,255,.15)"><button class="bp" style="width:100%" onclick="_admBackToUsers()">→ חזרה לפאנל ניהול</button></div>';
+  h+='</div>';
+  $('adv').innerHTML=h;
+}
+
 let _notifyEmails=[];
 function admLoadNotifyEmails(){
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getNotifyEmails',adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
@@ -8474,7 +8691,7 @@ function _updateDuelFab(){
 function _toggleDuelPanel(){
   _duelPanelOpen=!_duelPanelOpen;
   $('duelPanel').classList.toggle('open',_duelPanelOpen);
-  if(_duelPanelOpen)_loadOnlineUsers();
+  if(_duelPanelOpen){trackEvent('duel','open');_loadOnlineUsers()}
 }
 function _loadOnlineUsers(){
   const body=$('duelPanelBody');
@@ -8555,6 +8772,7 @@ function _sendChallenge(opponentName){
   const questions=_pickDuelQuestions(qCount);
   if(questions.length<qCount){showAchievement('❌','אין מספיק שאלות','');return}
   el.innerHTML='<div class="duel-config-box" style="text-align:center"><div class="duel-waiting-anim">⚔️</div><p style="color:var(--t2)">שולח אתגר...</p></div>';
+  trackEvent('duel',mode==='wager'?'challenge_wager':'challenge_simple',qCount+'q'+(mode==='wager'?'·'+wager+'נק':''));
   _duelPost('createDuel',{challenger:G.userName,opponent:opponentName,questionCount:qCount,mode:mode,wagerAmount:wager,questionsJSON:JSON.stringify(questions)}).then(d=>{
     if(d.success){
       _duelId=d.duelId;
@@ -8611,6 +8829,7 @@ function _showDuelNotif(duel){
 function _respondToDuel(duelId,accept){
   $('duelNotif').classList.remove('show');
   logActivity(accept?'duelAccept':'duelDecline','');
+  trackEvent('duel',accept?'accept':'decline');
   if(accept){_duelId=duelId;_stopPendingDuelCheck()}
   _duelPost('respondDuel',{duelId:duelId,accept:accept}).then(d=>{
     if(d.success&&accept){
