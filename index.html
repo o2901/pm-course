@@ -4442,8 +4442,18 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
     const cloudScore=parseInt(d.data.score)||0;
     const cloudStagesList=String(d.data.stagesList||'');
     const cloudStreak=parseInt(d.data.streak)||0;
-    const isNewUser=cloudScore===0&&!cloudStagesList&&cloudStreak===0;
-    // CRITICAL: Clear per-user state if (a) different user or (b) new user with leftover data
+    // DATA-LOSS GUARD: a cloud row can come back BLANK (a stale/old backend, a transient read, or a
+    // row that was previously wrongly zeroed). If THIS device still holds real progress for the SAME
+    // user, treat the local copy as the source of truth and re-sync it UP — never wipe it, and never
+    // downgrade score/streak to the blank cloud values. This both blocks the wipe→empty-save deletion
+    // loop AND self-heals any account that was already zeroed (next login restores it from the device).
+    const _sameUser=(G.userName===name);
+    const _localHasProgress=_sameUser&&(((G.done&&G.done.size>0))||(parseInt(G.ts)||0)>0||(parseInt(G.streak)||0)>0);
+    const _cloudBlank=cloudScore===0&&!cloudStagesList&&cloudStreak===0;
+    const isNewUser=_cloudBlank&&!_localHasProgress;
+    const _recoverLocal=_cloudBlank&&_localHasProgress;
+    G._cloudVerified=true;// a load succeeded → empty-save guard in _doSync may proceed
+    // CRITICAL: Clear per-user state if (a) different user or (b) genuinely new user with leftover data
     if((G.userName && G.userName!==name) || isNewUser){
       G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G.satSkips=[];G._pu={};G._seenSec={};G._tabVisits={};
       G.done=new Set();G.miHistory=[];G.weeklyDone=[];G._achShown=[];
@@ -4453,8 +4463,9 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
       G.activityLog=[];G.lastStageVisited=null;
     }
     G.userName=name;
-    G.ts=cloudScore;
-    G.streak=cloudStreak;
+    // Never let a blank cloud read lower an existing local score/streak (cross-device safety + self-heal).
+    G.ts=_recoverLocal?Math.max(parseInt(G.ts)||0,cloudScore):cloudScore;
+    G.streak=_recoverLocal?Math.max(parseInt(G.streak)||0,cloudStreak):cloudStreak;
     // Keep the all-time peak streak for the certificate (so it never "resets" between sessions)
     G.maxStreak=Math.max(parseInt(G.maxStreak)||0,parseInt(cloudStreak)||0,parseInt(G.streak)||0,parseInt(d.data.maxStreak)||0);
     if(d.data.lastDay)G.lastDay=d.data.lastDay;
@@ -4532,11 +4543,17 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
       _startEmailPromptCadence();
     }
   }else{
-    // Cloud says user not found. Two cases:
-    //  (a) brand-new registration
-    //  (b) admin deleted this user — local state may still claim G.s=true with old scores
-    // Either way, wipe leftover per-user state so they can't sneak back in via cloud sync.
-    if(G.userName===name && (G.s || G.ts>0 || (G.done&&G.done.size>0))){
+    // Cloud returned no usable data. Distinguish a REAL "account gone" from a transient hiccup:
+    //  - Only an explicit "User not found" means admin-deleted (or brand-new) → safe to wipe leftovers.
+    //  - ANY other failure (busy/network/old-backend/unknown-action) must NOT wipe local progress;
+    //    we keep the local copy and ask the user to retry. (Wiping on a server blip was a data-loss path.)
+    const _notFound=d&&d.success===false&&/not\s*found/i.test(String(d.error||''));
+    if(!_notFound && d && d.success===false){
+      showModal('📴','שגיאת שרת זמנית','אירעה שגיאה זמנית בתקשורת עם השרת. ההתקדמות שלך שמורה במכשיר — נסו שוב בעוד רגע.','הבנתי');
+      return;
+    }
+    // Account genuinely gone (admin-deleted) — wipe leftover per-user state so it can't sneak back via sync.
+    if(_notFound && G.userName===name && (G.s || G.ts>0 || (G.done&&G.done.size>0))){
       try{localStorage.removeItem(LS);localStorage.removeItem('pm_session_token_'+name)}catch(e){}
       G.s=false;G.ts=0;G.streak=0;G.done=new Set();G.qa={};G.sc={};G.wrongQ={};
       G.stageTime={};G.activityLog=[];G.sessions=[];G.miHistory=[];G.weeklyDone=[];
@@ -6600,7 +6617,7 @@ const DB_URL=_isLocalDev?'':'https://script.google.com/macros/s/AKfycbyE76CPv2Y5
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.3.0';
+const APP_VERSION='1.3.1';
 // Compare two dotted-numeric versions. Returns -1 if a<b, 0 if equal, 1 if a>b.
 // Segment-wise numeric so 1.10.0 > 1.9.0 (no zero-padding needed). Also orders the legacy
 // YYYY.MM.DD date strings consistently (they're still stored for users who haven't refreshed).
@@ -6627,6 +6644,10 @@ function syncToCloud(){
 }
 
 function _doSync(){
+  // DATA-LOSS GUARD (defense in depth, alongside the server-side guard): never push an EMPTY progress
+  // state up to the cloud unless a successful load has confirmed this user really is empty. Stops a
+  // stray save fired before/around login (or after a transient wipe) from zeroing a populated row.
+  if((!G.done||G.done.size===0)&&!(parseInt(G.ts)||0)&&!G._cloudVerified)return;
   const t=getTitle();
   const lastSess=G.sessions&&G.sessions.length>0?G.sessions[G.sessions.length-1]:0;
   // Average is meaningful only with 2+ sessions. For 0 or 1 session, send 0 (admin shows "—").
