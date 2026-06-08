@@ -731,6 +731,9 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 .bug-fab:hover{transform:scale(1.1);box-shadow:0 8px 30px rgba(255,101,132,.55)}
 @keyframes bugFabPulse{0%,100%{box-shadow:0 6px 24px rgba(255,101,132,.3)}50%{box-shadow:0 6px 30px rgba(255,101,132,.6)}}
 @media(max-width:600px){.bug-fab{width:50px;height:50px;font-size:1.3rem;bottom:1.2rem;right:1.2rem}}
+.glossary-fab{position:fixed;bottom:5rem;right:1.5rem;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,rgba(0,188,212,.93),rgba(0,150,180,.93));color:#fff;border:none;font-size:1.35rem;cursor:pointer;z-index:180;box-shadow:0 4px 20px rgba(0,188,212,.35);transition:.3s;display:flex;align-items:center;justify-content:center}
+.glossary-fab:hover{transform:scale(1.1);box-shadow:0 8px 28px rgba(0,188,212,.5)}
+@media(max-width:600px){.glossary-fab{width:48px;height:48px;font-size:1.2rem;bottom:4.4rem;right:1.2rem}}
 /* Reserved */
 /* Admin unlock/msg controls */
 .adm-ctrl-section{margin-top:1rem;padding:1rem;background:rgba(108,99,255,.06);border-radius:12px;border:1px solid rgba(108,99,255,.12)}
@@ -997,6 +1000,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 <button class="chat-fab hid" id="chatFab" onclick="startMockInterview()" title="בחינה רב תחומית - תרגלו שאלות מקצועיות!">🎤</button>
 <button class="admin-msg-fab hid" id="adminMsgFab" onclick="showAdminMessage()" title="הודעה מהמנהל">💬</button>
 <button class="cert-fab hid" id="certFab" onclick="generateCert()" title="תעודת סיום">📜</button>
+<button class="glossary-fab hid" id="glossaryFab" onclick="showGlossary()" title="מילון מונחים">📖</button>
 <button class="bug-fab hid" id="bugFab" onclick="showBugReport()" title="דיווח על תקלה או הצעה">🐛</button>
 <div class="chat-panel hid" id="chatPanel">
 <div class="chat-hdr"><h4>🤖 עוזר חכם</h4><button class="chat-close" onclick="toggleChat()">✕</button></div>
@@ -5112,14 +5116,14 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:_pending
   }
   if(st){
     if(_pendingMode==='verify'){
-      st.innerHTML='<div class="pending-dot"></div><span>ממתין לאימות מייל...</span>';
+      st.innerHTML='<div class="pending-dot"></div><span>'+(_enLang()?'Waiting for email verification...':'ממתין לאימות מייל...')+'</span>';
     }else{
-      st.innerHTML='<div class="pending-dot"></div><span>ממתין לאישור...</span>';
+      st.innerHTML='<div class="pending-dot"></div><span>'+(_enLang()?'Waiting for approval...':'ממתין לאישור...')+'</span>';
     }
   }
 })
 .catch(()=>{
-  if(st)st.innerHTML='<div class="pending-dot" style="background:var(--s)"></div><span>שגיאת חיבור - ממשיך לנסות...</span>';
+  if(st)st.innerHTML='<div class="pending-dot" style="background:var(--s)"></div><span>'+(_enLang()?'Connection error - still trying...':'שגיאת חיבור - ממשיך לנסות...')+'</span>';
 });
 }
 function _pendingBack(){
@@ -5143,9 +5147,9 @@ function renderDailyGoal(){
   const done=G._dailyDone[today]||0;
   const pct=Math.min(100,Math.round(done/goal*100));
   if(done>=goal){
-    el.innerHTML='<div style="background:linear-gradient(135deg,rgba(0,201,167,.15),rgba(108,99,255,.08));border:1px solid rgba(0,201,167,.3);border-radius:14px;padding:.65rem 1rem;margin:.4rem auto 1rem;max-width:500px;text-align:center"><div style="font-size:.85rem;color:var(--a);font-weight:700">✅ סיימת את היעד היומי! המשך לשיפור</div></div>';
+    el.innerHTML='<div style="background:linear-gradient(135deg,rgba(0,201,167,.15),rgba(108,99,255,.08));border:1px solid rgba(0,201,167,.3);border-radius:14px;padding:.65rem 1rem;margin:.4rem auto 1rem;max-width:500px;text-align:center"><div style="font-size:.85rem;color:var(--a);font-weight:700">'+(_enLang()?'✅ Daily goal complete! Keep improving':'✅ סיימת את היעד היומי! המשך לשיפור')+'</div></div>';
   }else{
-    el.innerHTML='<div style="background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,101,132,.05));border:1px solid rgba(255,215,0,.2);border-radius:14px;padding:.65rem 1rem;margin:.4rem auto 1rem;max-width:500px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem"><span style="font-size:.85rem;font-weight:700;color:var(--g)">🎯 יעד היום: השלם שלב אחד</span><span style="font-size:.75rem;color:var(--t2)">'+done+'/'+goal+'</span></div><div style="background:rgba(255,255,255,.05);height:6px;border-radius:3px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,#FFD700,#f59e0b);width:'+pct+'%;transition:width .5s"></div></div></div>';
+    el.innerHTML='<div style="background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,101,132,.05));border:1px solid rgba(255,215,0,.2);border-radius:14px;padding:.65rem 1rem;margin:.4rem auto 1rem;max-width:500px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem"><span style="font-size:.85rem;font-weight:700;color:var(--g)">'+(_enLang()?'🎯 Daily goal: complete one stage':'🎯 יעד היום: השלם שלב אחד')+'</span><span style="font-size:.75rem;color:var(--t2)">'+done+'/'+goal+'</span></div><div style="background:rgba(255,255,255,.05);height:6px;border-radius:3px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,#FFD700,#f59e0b);width:'+pct+'%;transition:width .5s"></div></div></div>';
   }
   el.style.display='block';
 }
@@ -5160,8 +5164,8 @@ function renderSocialTicker(){
     // Top performer today
     const todayUsers=d.data.filter(u=>{const ll=String(u.lastLogin||'');return ll.includes(todayStr)&&u.name!==G.userName});
     let msg='';
-    if(activeToday>=2){msg='👥 <strong>'+activeToday+' משתמשים</strong> פעילים היום במערכת';
-      if(todayUsers.length>0){const top=todayUsers[0];msg+=' · 🔥 '+esc(top.name)+' מוביל היום עם '+top.score+' נק\''}
+    if(activeToday>=2){msg=_enLang()?('👥 <strong>'+activeToday+' users</strong> active today'):('👥 <strong>'+activeToday+' משתמשים</strong> פעילים היום במערכת');
+      if(todayUsers.length>0){const top=todayUsers[0];msg+=_enLang()?(' · 🔥 '+esc(top.name)+' leads today with '+top.score+' pts'):(' · 🔥 '+esc(top.name)+' מוביל היום עם '+top.score+' נק\'')}
     }
     el.innerHTML=msg;el.style.display='block';
   }).catch(()=>{el.style.display='none'});
@@ -5174,7 +5178,7 @@ const s=S.find(x=>x.id===currentId);if(!s)return;
 const doneCount=S.filter(x=>x.tg!=='בונוס - ספר'&&x.tg!=='בונוס מיוחד').filter(x=>G.done.has(x.id)).length;
 const totalCore=S.filter(x=>x.tg!=='בונוס - ספר'&&x.tg!=='בונוס מיוחד').length;
 el.innerHTML='<div class="continue-hero" onclick="ss('+s.id+')"><div class="ch-icon">'+s.ic+'</div><div class="ch-body"><div class="ch-label">'+_t('▶ המשך המסע שלך')+' ('+doneCount+'/'+totalCore+')</div><div class="ch-title">'+_t('שלב')+' '+s.id+': '+s.t+'</div><div class="ch-sub">'+s.d+'</div></div><div class="ch-arrow">'+(G.lang==='en'?'→':'←')+'</div></div>'+
-'<div style="display:flex;gap:.5rem;justify-content:center;margin-top:.6rem;flex-wrap:wrap"><button class="bs" style="font-size:.8rem;padding:.4rem .9rem" onclick="goToRandomStage()">🎲 שלב אקראי</button>'+(G.lastStageVisited&&G.lastStageVisited!==s.id?'<button class="bs" style="font-size:.8rem;padding:.4rem .9rem" onclick="goToLastVisited()">↩ חזור לאחרון שביקרתי</button>':'')+'</div>'}
+'<div style="display:flex;gap:.5rem;justify-content:center;margin-top:.6rem;flex-wrap:wrap"><button class="bs" style="font-size:.8rem;padding:.4rem .9rem" onclick="goToRandomStage()">'+_t('🎲 שלב אקראי')+'</button>'+(G.lastStageVisited&&G.lastStageVisited!==s.id?'<button class="bs" style="font-size:.8rem;padding:.4rem .9rem" onclick="goToLastVisited()">'+_t('↩ חזור לאחרון שביקרתי')+'</button>':'')+'</div>'}
 function goToRandomStage(){
   trackEvent('random','go');
   const unfinished=S.filter(s=>!G.done.has(s.id)&&s.tg!=='בונוס - ספר'&&!(s.id===25&&!G.interviewUnlocked));
@@ -5419,10 +5423,10 @@ tb.innerHTML=tbH;
 const hu=$('hdr-user');if(hu){hu.textContent=G.userName?'👤 '+G.userName:''}
 // New header buttons
 const hdrStats=document.querySelector('.hdr-stats');
-if(hdrStats && !$('btn-glossary')){
+if(hdrStats && !$('btn-profile')){
   const btnWrap=document.createElement('div');
   btnWrap.style.cssText='display:flex;gap:.3rem;align-items:center';
-  btnWrap.innerHTML='<button id="btn-lang" class="hdr-btn" onclick="toggleLanguage()" title="English / עברית">🌐</button><button id="btn-glossary" class="hdr-btn" onclick="showGlossary()" title="מילון מונחים">📖</button><button id="btn-profile" class="hdr-btn" onclick="showProfile()" title="הפרופיל שלי">📊</button><button id="btn-sound" class="hdr-btn" onclick="toggleSound()" title="צלילים">'+(G.soundOff?'🔇':'🔊')+'</button><button id="btn-theme" class="hdr-btn" onclick="toggleTheme()" title="מצב בהיר/כהה">'+(document.body.classList.contains('light')?'☀️':'🌙')+'</button>';
+  btnWrap.innerHTML='<button id="btn-profile" class="hdr-btn" onclick="showProfile()" title="הפרופיל שלי">📊</button><button id="btn-theme" class="hdr-btn" onclick="toggleTheme()" title="מצב בהיר/כהה">'+(document.body.classList.contains('light')?'☀️':'🌙')+'</button>';
   hdrStats.insertBefore(btnWrap,hdrStats.firstChild);
 }
 if($('btn-theme')){$('btn-theme').textContent=document.body.classList.contains('light')?'☀️':'🌙'}
@@ -5430,7 +5434,7 @@ if($('btn-theme')){$('btn-theme').textContent=document.body.classList.contains('
 const stb=$('stb'),stv=$('stv');if(G.streak>=2){stb.style.display='flex';stv.textContent=G.streak}else{stb.style.display='none'}
 // Map subtitle with context
 const ms=$('map-sub');if(ms){const t2=getTitle();if(t2&&t2.cls==='allstar'){ms.textContent=_t('סיימת את כל 52 השלבים! אין מעליך! 👑')}else if(t2&&t2.cls==='senior'){ms.textContent=_t('סיימת את כל השלבים הנדרשים! חזרו לרענן או לשפר ציונים 🎉')}else if(t2&&t2.cls==='naval'){ms.textContent=_t('עוד')+' '+(23-pc())+' '+_t('שלבים מתקדמים לדרגת מוסמך! 🎖️')}else if(t2&&t2.cls==='student'){ms.textContent=_t('עוד')+' '+(9-pc())+' '+_t('שלבים לדרגת בהסמכה! ⚓')}else{ms.textContent=_t('בחרו שלב - אפשר להתחיל מכל מקום ולחזור מתי שרוצים')}}}
-function renderMilestone(){const lb=$('mlb');if(!lb)return;const d=pc();const t=getTitle();if(t&&t.cls==='senior'){lb.innerHTML=`<div class="milestone-bar"><div class="mb-text">🎖️ <strong>מנהל מוצר ימי מוסמך</strong> - השלמת את כל 23 השלבים הנדרשים! 🎉</div><div class="mb-progress"><div class="mb-fill" style="width:100%"></div></div></div>`}else if(t&&t.cls==='naval'){const pct=Math.round(d/23*100);lb.innerHTML=`<div class="milestone-bar"><div class="mb-text">⚓ <strong>מנהל מוצר ימי בהסמכה</strong> | עוד ${23-d} שלבים לדרגת מוסמך</div><div class="mb-progress"><div class="mb-fill" style="width:${pct}%"></div></div></div>`}else if(t&&t.cls==='student'){const pct=Math.round(d/9*100);const left=9-d;lb.innerHTML=`<div class="milestone-bar"><div class="mb-text">🎓 <strong>סטודנט לניהול מוצר ימי</strong> | עוד ${left} שלבים לדרגת בהסמכה</div><div class="mb-progress"><div class="mb-fill" style="width:${pct}%"></div></div></div>`}else{lb.innerHTML=`<div class="milestone-bar"><div class="mb-text">🏅 סיימו את <strong>שלב 2</strong> לדרגת <strong>סטודנט לניהול מוצר ימי 🎓</strong></div><div class="mb-progress"><div class="mb-fill" style="width:0%"></div></div></div>`}}
+function renderMilestone(){const lb=$('mlb');if(!lb)return;const d=pc();const t=getTitle();const en=_enLang();if(t&&t.cls==='senior'){lb.innerHTML=en?`<div class="milestone-bar"><div class="mb-text">🎖️ <strong>Certified Naval Product Manager</strong> - you completed all 23 required stages! 🎉</div><div class="mb-progress"><div class="mb-fill" style="width:100%"></div></div></div>`:`<div class="milestone-bar"><div class="mb-text">🎖️ <strong>מנהל מוצר ימי מוסמך</strong> - השלמת את כל 23 השלבים הנדרשים! 🎉</div><div class="mb-progress"><div class="mb-fill" style="width:100%"></div></div></div>`}else if(t&&t.cls==='naval'){const pct=Math.round(d/23*100);lb.innerHTML=en?`<div class="milestone-bar"><div class="mb-text">⚓ <strong>Naval Product Manager in Certification</strong> | ${23-d} more stages to Certified</div><div class="mb-progress"><div class="mb-fill" style="width:${pct}%"></div></div></div>`:`<div class="milestone-bar"><div class="mb-text">⚓ <strong>מנהל מוצר ימי בהסמכה</strong> | עוד ${23-d} שלבים לדרגת מוסמך</div><div class="mb-progress"><div class="mb-fill" style="width:${pct}%"></div></div></div>`}else if(t&&t.cls==='student'){const pct=Math.round(d/9*100);const left=9-d;lb.innerHTML=en?`<div class="milestone-bar"><div class="mb-text">🎓 <strong>Naval Product Management Student</strong> | ${left} more stages to In-Certification</div><div class="mb-progress"><div class="mb-fill" style="width:${pct}%"></div></div></div>`:`<div class="milestone-bar"><div class="mb-text">🎓 <strong>סטודנט לניהול מוצר ימי</strong> | עוד ${left} שלבים לדרגת בהסמכה</div><div class="mb-progress"><div class="mb-fill" style="width:${pct}%"></div></div></div>`}else{lb.innerHTML=en?`<div class="milestone-bar"><div class="mb-text">🏅 Complete <strong>Stage 2</strong> to reach <strong>Naval Product Management Student 🎓</strong></div><div class="mb-progress"><div class="mb-fill" style="width:0%"></div></div></div>`:`<div class="milestone-bar"><div class="mb-text">🏅 סיימו את <strong>שלב 2</strong> לדרגת <strong>סטודנט לניהול מוצר ימי 🎓</strong></div><div class="mb-progress"><div class="mb-fill" style="width:0%"></div></div></div>`}}
 function rg(){
 const g=$('sg');g.innerHTML='';
 const _secEmojis={'טרום הבסיס':'🧭','בסיסי':'🎯','ביניים':'⚡','מתקדם':'🚀','מתקדם מאוד':'🔥','התמחות':'🎓','בונוס מיוחד':'🌟','בונוס - ספר':'📚'};
@@ -5615,7 +5619,7 @@ function _addTableHints(root){
     if(w.scrollWidth-w.clientWidth>8){
       const hint=document.createElement('div');
       hint.className='tbl-scroll-hint';
-      hint.textContent='↔ ניתן לגלול את הטבלה הצידה';
+      hint.textContent=_enLang()?'↔ You can scroll the table sideways':'↔ ניתן לגלול את הטבלה הצידה';
       if(w.parentNode)w.parentNode.insertBefore(hint,w);
       w.dataset.hinted='1';
     }
@@ -6105,7 +6109,7 @@ ma.innerHTML=h;updateSrFab()}
 let _miTimer=null,_miSec=0,_miQuestions=[],_miAnswers={},_miCurrent=0;
 function startMockInterview(){
 const completed=S.filter(s=>G.done.has(s.id));
-if(completed.length<3){showModal('🎤','בחינה רב תחומית נעולה',`סיימו לפחות <strong>3 שלבים</strong> כדי לפתוח את הבחינה הרב תחומית.<br>השלמתם עד כה: <strong>${completed.length}/3</strong>`,'חזרה ללמידה');return}
+if(completed.length<3){showModal('🎤','בחינה רב תחומית נעולה',_enLang()?`Complete at least <strong>3 stages</strong> to unlock the cross-disciplinary exam.<br>Completed so far: <strong>${completed.length}/3</strong>`:`סיימו לפחות <strong>3 שלבים</strong> כדי לפתוח את הבחינה הרב תחומית.<br>השלמתם עד כה: <strong>${completed.length}/3</strong>`,_enLang()?'Back to learning':'חזרה ללמידה');return}
 // Pick 10 random questions from completed stages
 let pool=[];
 completed.forEach(s=>{s.q.forEach((q,i)=>{pool.push({...q,stageId:s.id,stageName:s.t,qIdx:i})})});
@@ -6206,7 +6210,7 @@ h+=`<div style="margin-top:1.5rem"><button class="bp" onclick="exitSR()">למפ�
 miv.innerHTML=h;_i18nDynamic(miv)}
 function exitSR(){$('miv').classList.add('hid');mp()}
 
-function showAbout(){$('ws').classList.add('hid');$('ab').classList.remove('hid');window.scrollTo(0,0)}
+function showAbout(){trackEvent('about','open');$('ws').classList.add('hid');$('ab').classList.remove('hid');window.scrollTo(0,0)}
 function hideAbout(){$('ab').classList.add('hid');$('ws').classList.remove('hid');window.scrollTo(0,0)}
 
 
@@ -6454,7 +6458,15 @@ function renderProfile(){
   let h='<div class="pv-wrap">';
   h+='<button class="bbtn" onclick="hideProfile()">→ חזרה למפה</button>';
   h+='<h2 style="text-align:center;font-size:2rem;font-weight:800;margin-bottom:.5rem">📊 הפרופיל שלי</h2>';
-  h+='<div style="text-align:center;margin-bottom:1.3rem">'+_versionBadgeHtml()+'</div>';
+  h+='<div style="text-align:center;margin-bottom:.7rem">'+_versionBadgeHtml()+'</div>';
+  // ===== Preferences strip (language + sound) — moved here from the header =====
+  h+='<div style="display:flex;gap:.6rem;justify-content:center;align-items:center;margin:0 0 1.4rem;flex-wrap:wrap">';
+  h+='<div style="display:flex;gap:.25rem;background:rgba(108,99,255,.1);border-radius:12px;padding:.25rem">';
+  h+='<button class="bs" style="font-size:.78rem;padding:.35rem .8rem;border-radius:9px;border:1px solid '+(!_enLang()?'var(--p)':'transparent')+';'+(!_enLang()?'background:var(--p);color:#fff':'background:transparent')+'" onclick="applyLanguage(\'he\');showProfile()"><b style="opacity:.7">עב</b> עברית</button>';
+  h+='<button class="bs" style="font-size:.78rem;padding:.35rem .8rem;border-radius:9px;border:1px solid '+(_enLang()?'var(--p)':'transparent')+';'+(_enLang()?'background:var(--p);color:#fff':'background:transparent')+'" onclick="applyLanguage(\'en\');showProfile()"><b style="opacity:.7">EN</b> English</button>';
+  h+='</div>';
+  h+='<button class="bs" style="font-size:.82rem;padding:.45rem 1rem" onclick="toggleSound();showProfile()" title="'+_t('צלילים')+'">'+(G.soundOff?('🔇 '+_t('צלילים כבויים')):('🔊 '+_t('צלילים פעילים')))+'</button>';
+  h+='</div>';
 
   // Main stats card
   h+='<div class="pv-card"><h3>סטטיסטיקות כלליות</h3>';
@@ -6949,7 +6961,7 @@ const DB_URL=_isLocalDev?'':'https://script.google.com/macros/s/AKfycbyE76CPv2Y5
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.4.1';
+const APP_VERSION='1.4.2';
 // Compare two dotted-numeric versions. Returns -1 if a<b, 0 if equal, 1 if a>b.
 // Segment-wise numeric so 1.10.0 > 1.9.0 (no zero-padding needed). Also orders the legacy
 // YYYY.MM.DD date strings consistently (they're still stored for users who haven't refreshed).
@@ -7172,9 +7184,9 @@ function chatSearch(query){
 }
 // Show training FAB + daily FAB when in map or stage view
 const _origMp2=mp;
-mp=function(){_origMp2();$('chatFab').classList.remove('hid');$('dailyFab').classList.remove('hid');$('bugFab').classList.remove('hid');updateSrFab();updateChatFabLock();updateAdminMsgFab();updateCertFab()};
+mp=function(){_origMp2();$('chatFab').classList.remove('hid');$('dailyFab').classList.remove('hid');$('bugFab').classList.remove('hid');if($('glossaryFab'))$('glossaryFab').classList.remove('hid');updateSrFab();updateChatFabLock();updateAdminMsgFab();updateCertFab()};
 const _origGoHome2=goHome;
-goHome=function(){_origGoHome2();$('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');$('srFab').classList.add('hid');$('adminMsgFab').classList.add('hid');$('certFab').classList.add('hid');$('bugFab').classList.add('hid');const dm=$('dailyModal');if(dm&&!dm.classList.contains('hid')){dm.classList.add('hid');dm.innerHTML=''}};
+goHome=function(){_origGoHome2();$('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');$('srFab').classList.add('hid');$('adminMsgFab').classList.add('hid');$('certFab').classList.add('hid');$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');const dm=$('dailyModal');if(dm&&!dm.classList.contains('hid')){dm.classList.add('hid');dm.innerHTML=''}};
 
 // ========== FEATURE: NEW-VERSION REFRESH PROMPT ==========
 // The app is a single-file SPA that's opened once and left open. Without this, a user who never
@@ -7191,10 +7203,10 @@ function _maybeShowUpdateBanner(latest){
   var bar=document.createElement('div');
   bar.id='updateBanner';
   bar.innerHTML='<span style="font-size:1.05rem">🚀</span>'+
-    '<span style="flex:1;min-width:0">גרסה חדשה זמינה! רעננו כדי לקבל את העדכונים האחרונים.</span>'+
-    '<button onclick="location.reload()" style="background:#fff;color:#6C63FF;border:0;border-radius:8px;padding:.35rem .85rem;font-family:Heebo;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap">רענן עכשיו</button>'+
-    '<span onclick="this.parentElement.remove()" style="cursor:pointer;font-size:1.1rem;opacity:.85;padding:0 .25rem" title="סגור">✕</span>';
-  bar.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:99999;display:flex;align-items:center;gap:.7rem;padding:.6rem .9rem;background:linear-gradient(135deg,#6C63FF,#8a7bff);color:#fff;font-family:Heebo;font-size:.86rem;box-shadow:0 -4px 20px rgba(0,0,0,.35);direction:rtl';
+    '<span style="flex:1;min-width:0">'+(_enLang()?'A new version is available! Refresh to get the latest updates.':'גרסה חדשה זמינה! רעננו כדי לקבל את העדכונים האחרונים.')+'</span>'+
+    '<button onclick="location.reload()" style="background:#fff;color:#6C63FF;border:0;border-radius:8px;padding:.35rem .85rem;font-family:Heebo;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap">'+(_enLang()?'Refresh now':'רענן עכשיו')+'</button>'+
+    '<span onclick="this.parentElement.remove()" style="cursor:pointer;font-size:1.1rem;opacity:.85;padding:0 .25rem" title="'+(_enLang()?'Close':'סגור')+'">✕</span>';
+  bar.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:99999;display:flex;align-items:center;gap:.7rem;padding:.6rem .9rem;background:linear-gradient(135deg,#6C63FF,#8a7bff);color:#fff;font-family:Heebo;font-size:.86rem;box-shadow:0 -4px 20px rgba(0,0,0,.35);direction:'+(_enLang()?'ltr':'rtl')+'';
   document.body.appendChild(bar);
   try{_refreshProfileVersionBadge()}catch(e){} // flip the profile badge live if it's open
 }
@@ -7409,7 +7421,7 @@ setInterval(()=>{if(G.userName&&G.s)checkCloudUnlocks()},60000);
 // Auto-detect a freshly deployed build — covers users who keep the tab open across a deploy, or who
 // opened a stale cached page. One check ~20s after load, then every 30 min (~0.5 MB gzipped per check).
 setTimeout(_checkForNewVersion,20000);
-setInterval(_checkForNewVersion,30*60*1000);
+setTimeout(_checkForNewVersion,60*1000);setInterval(_checkForNewVersion,30*60*1000);
 
 // beforeunload / pagehide - end session reliably (sendBeacon survives unload; pagehide is the
 // dependable signal on mobile Safari, where beforeunload often doesn't fire).
@@ -7592,7 +7604,7 @@ const FLOAT_FEATURES=['daily','duel','spacedRep','interview','adminMsg','cert','
 // Navigation buttons in the continue-hero (not floating, but tracked per user request).
 const NAV_FEATURES=['random','lastVisited'];
 // Other tracked interactions that aren't float/nav buttons.
-const OTHER_FEATURES=['language','glossary','theme','sound','leaderboard','profile'];// 🌐 lang switch + first-run popup + glossary/theme/sound/leaderboard/profile header buttons
+const OTHER_FEATURES=['language','glossary','theme','sound','leaderboard','profile','about'];// 🌐 lang switch + first-run popup + glossary/theme/sound/leaderboard/profile header buttons
 const TRACKED_FEATURES=FLOAT_FEATURES.concat(NAV_FEATURES).concat(OTHER_FEATURES);
 const FEAT_META={
   daily:{ic:'🎯',name:'השאלה היומית',col:'#FFC107'},
@@ -7609,7 +7621,8 @@ const FEAT_META={
   theme:{ic:'🌙',name:'מצב כהה/בהיר',col:'#7E57C2'},
   sound:{ic:'🔊',name:'צלילים',col:'#EF5350'},
   leaderboard:{ic:'🏆',name:'טבלת מובילים',col:'#FFB300'},
-  profile:{ic:'👤',name:'פרופיל',col:'#66BB6A'}
+  profile:{ic:'👤',name:'פרופיל',col:'#66BB6A'},
+  about:{ic:'👨‍💻',name:'על היוצר',col:'#26A69A'}
 };
 const FEAT_ACT_NAMES={open:'נפתח',answer_correct:'תשובה נכונה',answer_wrong:'תשובה שגויה',challenge_simple:'אתגר פשוט נשלח',challenge_wager:'אתגר הימור נשלח',accept:'אתגר התקבל',decline:'אתגר נדחה',complete:'הושלמה',submit:'נשלח',go:'ניווט',switch_en:'מעבר לאנגלית',switch_he:'מעבר לעברית',toggle:'הפעלה/כיבוי'};
 // Asia/Jerusalem 'yyyy-MM-dd' (matches server-stamped event dates) so client today/month buckets align.
@@ -7637,7 +7650,7 @@ $('ws').classList.add('hid');$('mv').classList.add('hid');$('sv').classList.add(
 $('adv').classList.remove('hid');$('hd').classList.remove('hid');$('pb').classList.remove('hid');
 // Show admin indicator instead of user data in header
 const tb=$('tb');if(tb)tb.innerHTML='<div style="font-size:.7rem;color:var(--a);white-space:nowrap">🔧 מנהל מערכת</div>';
-$('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');$('srFab').classList.add('hid');$('adminMsgFab').classList.add('hid');$('certFab').classList.add('hid');$('duelFab').classList.add('hid');$('bugFab').classList.add('hid');
+$('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');$('srFab').classList.add('hid');$('adminMsgFab').classList.add('hid');$('certFab').classList.add('hid');$('duelFab').classList.add('hid');$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');
 renderAdminGate();window.scrollTo(0,0);
 }
 
@@ -9287,7 +9300,7 @@ function _enterDuelGame(duelData){
   _duelQIdx=0;_duelMyScore=0;_duelId=duelData.duelId;
   ['ws','mv','sv','hd','pb','ib','miv','glv','pv','lbv','pendingView'].forEach(v=>{if($(v))$(v).classList.add('hid')});
   $('duelFab').classList.add('hid');$('srFab').classList.add('hid');$('dailyFab').classList.add('hid');$('chatFab').classList.add('hid');
-  if($('adminMsgFab'))$('adminMsgFab').classList.add('hid');if($('certFab'))$('certFab').classList.add('hid');if($('bugFab'))$('bugFab').classList.add('hid');
+  if($('adminMsgFab'))$('adminMsgFab').classList.add('hid');if($('certFab'))$('certFab').classList.add('hid');if($('bugFab'))$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');
   $('duelView').classList.remove('hid');
   _duelPost('duelReady',{duelId:_duelId,userName:G.userName}).then(d=>{
     if(d.success&&d.bothReady){_startDuelRound()}
