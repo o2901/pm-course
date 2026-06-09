@@ -4452,6 +4452,7 @@ function _i18nDynamic(root){if(G.lang!=='en')return;try{_i18nWalk(root||document
 function _initI18nObserver(){if(window._i18nObs||!document.body)return;try{window._i18nObs=new MutationObserver(function(muts){if(G.lang!=='en')return;for(var i=0;i<muts.length;i++){var an=muts[i].addedNodes;for(var j=0;j<an.length;j++)_i18nWalk(an[j]);}});window._i18nObs.observe(document.body,{childList:true,subtree:true});}catch(e){}}
 /* =================== end i18n ENGINE =================== */
 ld();
+var _abOrigHTML='';try{var _ab0=document.getElementById('ab');if(_ab0)_abOrigHTML=_ab0.innerHTML;}catch(e){}
 applyLanguage(G.lang||'he',{boot:1});
 try{_initI18nObserver()}catch(e){}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){try{_initI18nObserver()}catch(e){}try{_langPopup()}catch(e){}});else{try{_langPopup()}catch(e){}}
@@ -6210,7 +6211,7 @@ h+=`<div style="margin-top:1.5rem"><button class="bp" onclick="exitSR()">למפ�
 miv.innerHTML=h;_i18nDynamic(miv)}
 function exitSR(){$('miv').classList.add('hid');mp()}
 
-function showAbout(){trackEvent('about','open');$('ws').classList.add('hid');$('ab').classList.remove('hid');window.scrollTo(0,0)}
+function showAbout(){trackEvent('about','open');var ab=$('ab');if(ab&&_abOrigHTML){ab.innerHTML=_abOrigHTML;if(_enLang()){try{_i18nDynamic(ab)}catch(e){}}}$('ws').classList.add('hid');ab.classList.remove('hid');window.scrollTo(0,0)}
 function hideAbout(){$('ab').classList.add('hid');$('ws').classList.remove('hid');window.scrollTo(0,0)}
 
 
@@ -6970,7 +6971,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.5.1';
+const APP_VERSION='1.5.2';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -7217,7 +7218,7 @@ goHome=function(){_origGoHome2();$('chatFab').classList.add('hid');$('dailyFab')
 // the one this client loaded (string compare on the YYYY.MM.DD version), we surface a gentle, dismissible
 // banner inviting a refresh. No server, sheet, or manual step. State is saved continuously, so reloading
 // loses nothing — we never auto-reload mid-activity.
-var _updateBannerShown=false;
+var _updateBannerShown=false;var _lastVerCheck=0;
 function _maybeShowUpdateBanner(latest){
   if(_updateBannerShown)return;
   if(!latest||cmpVersion(latest,APP_VERSION)<=0)return;// fetched build is not newer than ours
@@ -7247,6 +7248,7 @@ function _refreshProfileVersionBadge(){
 function _checkForNewVersion(){
   if(_isLocalDev||_isStaging)return;   // no update prompts on local preview or the staging host
   if(_updateBannerShown)return;     // already prompting for a refresh
+  var _n=Date.now();if(_n-_lastVerCheck<45000)return;_lastVerCheck=_n;  // throttle network checks to once/45s
   try{
     fetch(location.pathname+'?_v='+Date.now(),{cache:'no-store'})
       .then(function(r){return r.ok?r.text():null})
@@ -7444,6 +7446,7 @@ setInterval(()=>{if(G.userName&&G.s)checkCloudUnlocks()},60000);
 // opened a stale cached page. One check ~20s after load, then every 30 min (~0.5 MB gzipped per check).
 setTimeout(_checkForNewVersion,20000);
 setTimeout(_checkForNewVersion,60*1000);setInterval(_checkForNewVersion,30*60*1000);
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')_checkForNewVersion();});
 
 // beforeunload / pagehide - end session reliably (sendBeacon survives unload; pagehide is the
 // dependable signal on mobile Safari, where beforeunload often doesn't fire).
