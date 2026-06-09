@@ -5155,7 +5155,7 @@ function renderDailyGoal(){
 }
 function renderSocialTicker(){
   const el=$('social-ticker');if(!el||!DB_URL||!G.userName)return;
-  fetch(DB_URL+'?action=leaderboard').then(r=>r.json()).then(d=>{
+  fetch(DB_URL+'&action=leaderboard').then(r=>r.json()).then(d=>{
     if(!d.success||!d.data)return;
     // Today's active count (leaderboard returns top 50 with lastLogin)
     const today=new Date();const todayStr=today.toLocaleDateString('he-IL',{timeZone:'Asia/Jerusalem'});
@@ -6952,7 +6952,16 @@ goHome=function(){$('lbv').classList.add('hid');_origGoHome()};
 // הוראות: אחרי שתעקוב אחרי ההוראות בקובץ google-apps-script.gs,
 // החלף את ה-URL הבא ב-URL שקיבלת מה-Deploy:
 const _isLocalDev=location.hostname==='localhost'||location.hostname==='127.0.0.1';
-const DB_URL=_isLocalDev?'':'https://script.google.com/macros/s/AKfycbyE76CPv2Y5GuE3kmiBsA2QUUyVeoaxFOdNKwz_4-UCKaCl75yNidoEwSDNO5SIouFmaQ/exec';
+// Staging = any Vercel *preview* host. Branch deployments always contain the "-git-" segment
+// (e.g. pm-course-git-staging-<scope>.vercel.app). Production (pm-course-beta.vercel.app or a
+// future custom domain) and localhost never contain "-git-", so they stay 'prod'/dev. A POSITIVE
+// match on "-git-" guarantees we never mis-tag a real production host as staging.
+const _isStaging=!_isLocalDev && /-git-/i.test(location.hostname);
+const _envSrc=_isStaging?'staging':'prod';
+const _DB_BASE='https://script.google.com/macros/s/AKfycbyE76CPv2Y5GuE3kmiBsA2QUUyVeoaxFOdNKwz_4-UCKaCl75yNidoEwSDNO5SIouFmaQ/exec';
+// Every request carries ?src=<env> so the backend can tag/filter staging writes (keeps prod
+// analytics clean). localhost stays '' so the existing !DB_URL guards short-circuit all writes.
+const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 
 // ========== APP VERSION ==========
 // Semantic versioning: MAJOR.MINOR.PATCH.
@@ -6961,7 +6970,20 @@ const DB_URL=_isLocalDev?'':'https://script.google.com/macros/s/AKfycbyE76CPv2Y5
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.4.2';
+const APP_VERSION='1.5.0';
+// === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
+function _mountStagingBadge(){
+  if(!_isStaging||document.getElementById('stagingBadge'))return;
+  var b=document.createElement('div');
+  b.id='stagingBadge';b.setAttribute('aria-hidden','true');
+  b.textContent='🧪 סביבת בדיקות · STAGING · v'+APP_VERSION;
+  b.style.cssText='position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:2147483647;'
+   +'background:#b45309;color:#fff;font:800 12px/1.45 system-ui,-apple-system,Segoe UI,Arial,sans-serif;'
+   +'letter-spacing:.4px;padding:3px 14px;border-radius:0 0 10px 10px;border-bottom:2px solid #fbbf24;'
+   +'box-shadow:0 2px 6px rgba(0,0,0,.35);pointer-events:none;white-space:nowrap;direction:ltr;';
+  document.body.appendChild(b);
+}
+if(_isStaging){if(document.body)_mountStagingBadge();else document.addEventListener('DOMContentLoaded',_mountStagingBadge);}
 // Compare two dotted-numeric versions. Returns -1 if a<b, 0 if equal, 1 if a>b.
 // Segment-wise numeric so 1.10.0 > 1.9.0 (no zero-padding needed). Also orders the legacy
 // YYYY.MM.DD date strings consistently (they're still stored for users who haven't refreshed).
@@ -7094,7 +7116,7 @@ function _showSync(icon){
 
 function loadCloudLeaderboard(){
   if(!DB_URL)return;
-  fetch(DB_URL+'?action=leaderboard')
+  fetch(DB_URL+'&action=leaderboard')
   .then(r=>r.json())
   .then(d=>{
     if(d.success&&d.data){
@@ -7223,7 +7245,7 @@ function _refreshProfileVersionBadge(){
 }
 // Automatic detection: re-fetch our own deployed file (cache-busted) and compare its APP_VERSION to ours.
 function _checkForNewVersion(){
-  if(_isLocalDev)return;            // nothing to detect on a local preview
+  if(_isLocalDev||_isStaging)return;   // no update prompts on local preview or the staging host
   if(_updateBannerShown)return;     // already prompting for a refresh
   try{
     fetch(location.pathname+'?_v='+Date.now(),{cache:'no-store'})
@@ -7703,7 +7725,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'admin',adminToken:_admT
 .catch(()=>_admFallbackLeaderboard());
 }
 function _admFallbackLeaderboard(){
-fetch(DB_URL+'?action=leaderboard')
+fetch(DB_URL+'&action=leaderboard')
 .then(r=>r.json())
 .then(d=>{
   if(d.success&&d.data){_admUsers=d.data.map(u=>({userName:u.name,score:u.score,stagesCount:u.stages,stagesList:'',title:u.title,lastLogin:u.lastLogin||'',streak:u.streak,firstUse:''}));renderAdminDashboard()}
