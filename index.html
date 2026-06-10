@@ -5942,6 +5942,34 @@ function pfVideo(stageId,topicIdx){
     +'</div></div>';
   document.body.appendChild(ov);
 }
+// === Stage opener videos (NotebookLM overviews) ===
+// STAGE_INTRO['<stageId>_<lang>'] = video URL. Self-hosted .mp4 (deploy/av/intro/...) renders an
+// inline <video>; Drive/YouTube links render an embed iframe. The card sits at the TOP of the
+// stage's theory tab — watch first, then read. Monitored as video/intro_play.
+var STAGE_INTRO={'2_he':'av/intro/stage-02-he.mp4'};
+function enhanceIntroVideo(){
+  var tc=document.getElementById('tc');if(!tc)return;
+  if(tc.querySelector('.stage-intro-card'))return;
+  var key=G.st+'_'+(_enLang()?'en':'he');
+  var url=STAGE_INTRO[key];if(!url)return;
+  var first=tc.querySelector('.csec[data-idx]');if(!first)return;
+  var card=document.createElement('div');card.className='stage-intro-card';
+  card.style.cssText='background:linear-gradient(135deg,rgba(108,99,255,.14),rgba(0,201,167,.08));border:2px solid rgba(108,99,255,.35);border-radius:18px;padding:1rem 1.1rem;margin-bottom:1.3rem;animation:fiu .4s';
+  var head=document.createElement('div');head.style.cssText='display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem';
+  head.innerHTML='<span style="font-size:1.3rem">🎬</span><strong style="font-size:1rem">'+(_enLang()?'Stage opener — watch before you dive in':'פתיח השלב — צפו לפני שצוללים פנימה')+'</strong>';
+  card.appendChild(head);
+  var wrap=document.createElement('div');wrap.style.cssText='border-radius:12px;overflow:hidden;background:#000';
+  if(/\.mp4($|\?)/i.test(url)){
+    var v=document.createElement('video');v.controls=true;v.preload='metadata';v.style.cssText='width:100%;display:block;max-height:400px';v.src=url;
+    var tracked=false;v.addEventListener('play',function(){if(!tracked){tracked=true;trackEvent('video','intro_play',G.st);}});
+    wrap.appendChild(v);
+  }else{
+    var f=document.createElement('iframe');f.src=_videoEmbed(url);f.allowFullscreen=true;f.style.cssText='width:100%;aspect-ratio:16/9;border:0;display:block';
+    wrap.appendChild(f);
+  }
+  card.appendChild(wrap);
+  first.parentNode.insertBefore(card,first);
+}
 // === Option B: AUTO video — a narrated slideshow built from the chapter's own text + the TTS
 // engine (voice/rate prefs respected, bilingual for free). Piloted per-chapter via AUTO_VIDEO_PILOT;
 // a real VIDEO_MAP entry always wins over the auto version.
@@ -6207,7 +6235,7 @@ if(i<total-1){const msg=_lEncour()[i%_lEncour().length];sections+=`<div class="s
 const insight=_lInsight(s.id);
 if(insight)sections+=`<div class="learn-insight"><strong>${insight}</strong></div>`;
 if(allRead){sections+=`<div class="learn-cta"><div class="lc-trophy">🏆</div><p><strong>${_t('מעולה!')}</strong> ${_t('סיימת לקרוא את כל')} ${total} ${_t('הנושאים! עכשיו בואו נראה את זה בפעולה.')}</p><button class="bp" onclick="st('c')">${_t('לקייס סטאדי')} &larr;</button></div>`}else{sections+=`<div class="learn-cta"><p>${_t('✅ סיימת את החלק התיאורטי? עכשיו בואו נראה את זה בפעולה.')}</p><button class="bp" onclick="st('c')">${_t('לקייס סטאדי')} &larr;</button></div>`}
-c.innerHTML=h+sections;try{enhanceLearnVisuals(s.id);if(s.id===0)applyStage0InlinePortraits();enhanceAccordion();enhanceNarration();enhanceVideos();}catch(e){}_wrapBidi(c);initSecObserver()}else if(G.tab==='c'){const caseTeasers={0:'ברוכים הבאים! הכל מתחיל כאן - הכירו את המערכת ואת האנשים שילוו אתכם.',1:'מבנה זרוע הים מקרוב - שייטות, מספנים, מפת״ח ועוד.',2:'מיכל מתחילה את דרכה כמנהלת מוצר ב-TaskFlow. מה ילמד אותה היום הראשון?',3:'מיכל צריכה להגדיר את תפקידה. אבל מה בדיוק עושים כל היום?',4:'המשתמשים מתלוננים - אבל האם הם באמת יודעים מה כואב להם?',5:'המתחרים תופסים נתח שוק. איך מיכל תזהה את היתרון התחרותי?',6:'צריך חזון חדש למוצר. אבל מה ההבדל בין חלום לאסטרטגיה?',7:'100 בקשות פיצ\'רים, זמן ל-3. איך מחליטים?',8:'הצוות עובד קשה אבל לא מספיק. אולי הבעיה היא בתהליך?',9:'המפתחים לא מבינים מה לבנות. אולי הבעיה בדרישות?',10:'יש רעיון מגניב, אבל האם מישהו באמת צריך את זה?',11:'ההרגשה אומרת דבר אחד, הנתונים אומרים אחר. למי מאמינים?',12:'המשתמשים מבולבלים מהממשק. איך מתקנים בלי לשבור הכל?',13:'המוצר מוכן, אבל איך משיקים בלי לפספס?',14:'יש משתמשים חדשים, אבל הם נוטשים מהר מדי.',15:'כולם רוצים משהו אחר. איך מנהלים את כולם בלי סמכות?',16:'הדירקטוריון רוצה AI ב-TaskFlow. אבל AI למה? ובאיזה מחיר?',17:'מיכל בצד השני של השולחן - עכשיו היא המראיינת.',18:'מיכל נכנסת לעולם הביטחוני - חוקים חדשים, שפה חדשה, אתגרים חדשים.',19:'TaskFlow בונה מכשיר פיזי - וכל טעות עולה פי 100.'};const _CT=_enLang()?caseTeasersEN:caseTeasers;const teaser=_CT[s.id]||'';// Next stage teaser
+c.innerHTML=h+sections;try{enhanceLearnVisuals(s.id);if(s.id===0)applyStage0InlinePortraits();enhanceAccordion();enhanceNarration();enhanceVideos();enhanceIntroVideo();}catch(e){}_wrapBidi(c);initSecObserver()}else if(G.tab==='c'){const caseTeasers={0:'ברוכים הבאים! הכל מתחיל כאן - הכירו את המערכת ואת האנשים שילוו אתכם.',1:'מבנה זרוע הים מקרוב - שייטות, מספנים, מפת״ח ועוד.',2:'מיכל מתחילה את דרכה כמנהלת מוצר ב-TaskFlow. מה ילמד אותה היום הראשון?',3:'מיכל צריכה להגדיר את תפקידה. אבל מה בדיוק עושים כל היום?',4:'המשתמשים מתלוננים - אבל האם הם באמת יודעים מה כואב להם?',5:'המתחרים תופסים נתח שוק. איך מיכל תזהה את היתרון התחרותי?',6:'צריך חזון חדש למוצר. אבל מה ההבדל בין חלום לאסטרטגיה?',7:'100 בקשות פיצ\'רים, זמן ל-3. איך מחליטים?',8:'הצוות עובד קשה אבל לא מספיק. אולי הבעיה היא בתהליך?',9:'המפתחים לא מבינים מה לבנות. אולי הבעיה בדרישות?',10:'יש רעיון מגניב, אבל האם מישהו באמת צריך את זה?',11:'ההרגשה אומרת דבר אחד, הנתונים אומרים אחר. למי מאמינים?',12:'המשתמשים מבולבלים מהממשק. איך מתקנים בלי לשבור הכל?',13:'המוצר מוכן, אבל איך משיקים בלי לפספס?',14:'יש משתמשים חדשים, אבל הם נוטשים מהר מדי.',15:'כולם רוצים משהו אחר. איך מנהלים את כולם בלי סמכות?',16:'הדירקטוריון רוצה AI ב-TaskFlow. אבל AI למה? ובאיזה מחיר?',17:'מיכל בצד השני של השולחן - עכשיו היא המראיינת.',18:'מיכל נכנסת לעולם הביטחוני - חוקים חדשים, שפה חדשה, אתגרים חדשים.',19:'TaskFlow בונה מכשיר פיזי - וכל טעות עולה פי 100.'};const _CT=_enLang()?caseTeasersEN:caseTeasers;const teaser=_CT[s.id]||'';// Next stage teaser
 const _sortedAll=sortStages(S.filter(x=>x.tg!=='בונוס - ספר'));
 const _myIdx=_sortedAll.findIndex(x=>x.id===s.id);
 const _next=_myIdx>=0&&_myIdx<_sortedAll.length-1?_sortedAll[_myIdx+1]:null;
@@ -7331,7 +7359,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.13';
+const APP_VERSION='1.6.14';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -8047,7 +8075,7 @@ const FEAT_META={
   narration:{ic:'🗣️',name:'הקראה',col:'#8D6E63'},
   video:{ic:'🎬',name:'סרטוני פרקים',col:'#FF6584'}
 };
-const FEAT_ACT_NAMES={open:'נפתח',answer_correct:'תשובה נכונה',answer_wrong:'תשובה שגויה',challenge_simple:'אתגר פשוט נשלח',challenge_wager:'אתגר הימור נשלח',accept:'אתגר התקבל',decline:'אתגר נדחה',complete:'הושלמה',submit:'נשלח',go:'ניווט',switch_en:'מעבר לאנגלית',switch_he:'מעבר לעברית',toggle:'הפעלה/כיבוי',play:'הופעל',stop:'נעצר',rate:'שינוי מהירות הקראה',voice:'בחירת קול מקריא',version_check:'בדיקת עדכון גרסה'};
+const FEAT_ACT_NAMES={open:'נפתח',answer_correct:'תשובה נכונה',answer_wrong:'תשובה שגויה',challenge_simple:'אתגר פשוט נשלח',challenge_wager:'אתגר הימור נשלח',accept:'אתגר התקבל',decline:'אתגר נדחה',complete:'הושלמה',submit:'נשלח',go:'ניווט',switch_en:'מעבר לאנגלית',switch_he:'מעבר לעברית',toggle:'הפעלה/כיבוי',play:'הופעל',stop:'נעצר',rate:'שינוי מהירות הקראה',voice:'בחירת קול מקריא',version_check:'בדיקת עדכון גרסה',intro_play:'ניגון פתיח שלב',play_auto:'ניגון סרטון אוטומטי'};
 // Asia/Jerusalem 'yyyy-MM-dd' (matches server-stamped event dates) so client today/month buckets align.
 function _jerDateStr(ms){try{return new Date(ms||Date.now()).toLocaleDateString('en-CA',{timeZone:'Asia/Jerusalem'})}catch(e){return ''}}
 // Roll byDate {date:{feature:count}} into today / this-month / all-time per-feature totals.
