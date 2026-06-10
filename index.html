@@ -5946,7 +5946,7 @@ function pfVideo(stageId,topicIdx){
 // STAGE_INTRO['<stageId>_<lang>'] = video URL. Self-hosted .mp4 (deploy/av/intro/...) renders an
 // inline <video>; Drive/YouTube links render an embed iframe. The card sits at the TOP of the
 // stage's theory tab — watch first, then read. Monitored as video/intro_play.
-var STAGE_INTRO={'2_he':'av/intro/stage-02-he.mp4'};
+var STAGE_INTRO={'2_en':'av/intro/stage-02-en.mp4'};
 function enhanceIntroVideo(){
   var tc=document.getElementById('tc');if(!tc)return;
   if(tc.querySelector('.stage-intro-card'))return;
@@ -7359,7 +7359,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.14';
+const APP_VERSION='1.6.15';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
