@@ -7145,7 +7145,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.6';
+const APP_VERSION='1.6.7';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -7412,7 +7412,7 @@ function _versionBadgeHtml(){
   if(_updateBannerShown){
     return '<span id="profileVersionBadge" onclick="location.reload()" title="'+(_enLang()?'Refresh to get the latest version':'רעננו לקבלת הגרסה האחרונה')+'" style="display:inline-flex;align-items:center;gap:.35rem;cursor:pointer;font-size:.8rem;color:#fff;background:linear-gradient(135deg,#6C63FF,#8a7bff);padding:.28rem .8rem;border-radius:20px;font-weight:700">'+(_enLang()?'🚀 Update available — refresh':'🚀 עדכון זמין — רעננו')+'</span>';
   }
-  return '<span id="profileVersionBadge" style="display:inline-flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--t2);background:rgba(108,99,255,.08);padding:.28rem .8rem;border-radius:20px">'+(_enLang()?'Version ':'גרסה ')+APP_VERSION+' · <span style="color:var(--a);font-weight:700">'+(_enLang()?'Up to Date ✓':'מעודכן ✓')+'</span> <span onclick="manualVersionCheck()" title="'+(_enLang()?'Check for updates now':'בדקו עדכונים עכשיו')+'" style="cursor:pointer;opacity:.8">🔄</span></span>';
+  return '<span id="profileVersionBadge" style="display:inline-flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--t2);background:rgba(108,99,255,.08);padding:.28rem .8rem;border-radius:20px">'+(_enLang()?'Version ':'גרסה ')+APP_VERSION+' · <span style="color:var(--a);font-weight:700">'+(_enLang()?'Up to Date ✓':'מעודכן ✓')+'</span></span>';
 }
 function _refreshProfileVersionBadge(){
   const el=$('profileVersionBadge');if(!el)return;
@@ -7636,6 +7636,26 @@ setTimeout(_checkForNewVersion,60*1000);setInterval(_checkForNewVersion,30*60*10
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')_checkForNewVersion();});
 window.addEventListener('focus',function(){_checkForNewVersion();});
 window.addEventListener('pageshow',function(e){if(e&&e.persisted)_checkForNewVersion(true);}); // bfcache restore = possibly days-old page
+// Lightweight live-deploy watcher: the full file is ~4MB, so instead of re-downloading it we send a
+// tiny HEAD request every 3 minutes (visible tabs only) and compare the deployment fingerprint
+// (ETag/Last-Modified/Content-Length). A change = a new build went live -> one full check -> banner.
+// This is what makes the banner reach users who are INSIDE the app, without them leaving/returning.
+var _verFp=null;
+function _verPollTick(force){
+  if((_isLocalDev&&!force)||_updateBannerShown)return;
+  if(!force&&document.visibilityState!=='visible')return;
+  try{
+    fetch(location.pathname+'?_vh='+Date.now(),{method:'HEAD',cache:'no-store'}).then(function(r){
+      if(!r||!r.ok)return;
+      var fp=(r.headers.get('etag')||'')+'|'+(r.headers.get('last-modified')||'')+'|'+(r.headers.get('content-length')||'');
+      if(fp==='||')return;                 // host exposes no usable headers — never false-alarm
+      if(_verFp===null){_verFp=fp;return;} // first sample = baseline
+      if(fp!==_verFp){_verFp=fp;_checkForNewVersion(true);}
+    }).catch(function(){});
+  }catch(e){}
+}
+setTimeout(_verPollTick,45*1000);
+setInterval(_verPollTick,3*60*1000);
 window.addEventListener('resize',function(){try{_syncInfoBarTop();}catch(e){}});
 
 // beforeunload / pagehide - end session reliably (sendBeacon survives unload; pagehide is the
