@@ -5823,11 +5823,28 @@ function _narrPickVoice(){
   try{vs=(speechSynthesis.getVoices()||[]).filter(function(v){return (v.lang||'').toLowerCase().indexOf(want)===0});}catch(e){}
   if(!vs.length)return null;
   var pref=en?(G.narrVoiceEn||''):(G.narrVoiceHe||'');
-  if(pref){for(var i=0;i<vs.length;i++)if(vs[i].name===pref)return vs[i];}
+  if(pref){var all=[];try{all=speechSynthesis.getVoices()||[];}catch(e){}for(var i=0;i<all.length;i++)if(all[i].name===pref)return all[i];}
   var rank=en?['samantha','siri','google us english','natural','google']:['carmit','siri','google','natural'];
   for(var r=0;r<rank.length;r++){for(var j=0;j<vs.length;j++){if((vs[j].name||'').toLowerCase().indexOf(rank[r])>=0)return vs[j];}}
   return vs[0];
 }
+function _narrEsc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+// Voice dropdown: ALL device voices — current-language group first, then every other language.
+// Browsers load the voice list ASYNC (empty on first call) → a voiceschanged listener refreshes
+// the open dropdown the moment the list arrives, so it never stays stuck on one option.
+function _narrVoiceOptionsHtml(){
+  var en=_enLang(),want=en?'en':'he',cur=en?(G.narrVoiceEn||''):(G.narrVoiceHe||''),vs=[];
+  try{vs=speechSynthesis.getVoices()||[];}catch(e){}
+  var mine=vs.filter(function(v){return (v.lang||'').toLowerCase().indexOf(want)===0});
+  var rest=vs.filter(function(v){return (v.lang||'').toLowerCase().indexOf(want)!==0});
+  var h='<option value=""'+(cur?'':' selected')+'>'+(en?'⭐ Auto (recommended — the Siri-like voice on mobile)':'⭐ אוטומטי (מומלץ — קול סירי בנייד)')+'</option>';
+  function opt(v){return '<option value="'+_narrEsc(v.name)+'"'+(v.name===cur?' selected':'')+'>'+_narrEsc(v.name)+' · '+_narrEsc(v.lang||'')+'</option>';}
+  if(mine.length)h+='<optgroup label="'+(en?'English voices':'קולות בעברית')+'">'+mine.map(opt).join('')+'</optgroup>';
+  if(rest.length)h+='<optgroup label="'+(en?'Other languages':'שפות נוספות')+'">'+rest.map(opt).join('')+'</optgroup>';
+  return h;
+}
+try{speechSynthesis.addEventListener('voiceschanged',function(){var sel=document.getElementById('narrVoiceSel');if(sel)sel.innerHTML=_narrVoiceOptionsHtml();});}catch(e){}
+try{speechSynthesis.getVoices();}catch(e){} // kick the async voice-list load early
 function setNarrRate(r){G.narrRate=r;try{sv()}catch(e){}trackEvent('narration','rate',r);try{showProfile()}catch(e){}}
 function setNarrVoice(name){if(_enLang())G.narrVoiceEn=name||'';else G.narrVoiceHe=name||'';try{sv()}catch(e){}trackEvent('narration','voice',name||'auto');}
 function _narrNext(){
@@ -6609,12 +6626,8 @@ function renderProfile(){
     h+='<div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;justify-content:center;margin-top:.55rem;width:100%">';
     h+='<span style="font-size:.78rem;color:var(--t2);font-weight:600">🗣️ '+(_enLang()?'Narration:':'הקראה:')+'</span>';
     [0.8,1,1.25,1.5].forEach(function(r){var on=(G.narrRate||1)===r;h+='<button class="bs" style="font-size:.72rem;padding:.28rem .55rem;border-radius:9px;border:1px solid '+(on?'var(--p)':'transparent')+';'+(on?'background:var(--p);color:#fff':'background:transparent')+'" onclick="setNarrRate('+r+')" title="'+(_enLang()?'Narration speed':'מהירות הקראה')+'">'+r+'×</button>';});
-    var _vWant=_enLang()?'en':'he',_vList=[];
-    try{_vList=(speechSynthesis.getVoices()||[]).filter(function(v){return (v.lang||'').toLowerCase().indexOf(_vWant)===0});}catch(e){}
-    var _vCur=_enLang()?(G.narrVoiceEn||''):(G.narrVoiceHe||'');
-    h+='<select onchange="setNarrVoice(this.value)" title="'+(_enLang()?'Narrator voice':'הקול המקריא')+'" style="font-size:.72rem;padding:.28rem .5rem;border-radius:9px;background:var(--card);color:var(--t1);border:1px solid rgba(108,99,255,.35);max-width:175px">';
-    h+='<option value=""'+(_vCur?'':' selected')+'>'+(_enLang()?'Auto voice (recommended)':'קול אוטומטי (מומלץ)')+'</option>';
-    _vList.forEach(function(v){h+='<option value="'+v.name.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')+'"'+(v.name===_vCur?' selected':'')+'>'+v.name.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</option>';});
+    h+='<select id="narrVoiceSel" onchange="setNarrVoice(this.value)" title="'+(_enLang()?'Narrator voice':'הקול המקריא')+'" style="font-size:.72rem;padding:.28rem .5rem;border-radius:9px;background:var(--card);color:var(--t1);border:1px solid rgba(108,99,255,.35);max-width:185px">';
+    h+=_narrVoiceOptionsHtml();
     h+='</select>';
     h+='</div>';
   }
@@ -7121,7 +7134,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.2';
+const APP_VERSION='1.6.3';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
