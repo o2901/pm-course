@@ -5942,10 +5942,14 @@ function pfVideo(stageId,topicIdx){
 // engine (voice/rate prefs respected, bilingual for free). Piloted per-chapter via AUTO_VIDEO_PILOT;
 // a real VIDEO_MAP entry always wins over the auto version.
 var AUTO_VIDEO_PILOT={'2_1':1,'2_2':1,'2_3':1};
-var _av={on:false,i:0,slides:[],ov:null,u:null,tok:0};
+// Pre-recorded neural narration sets (Microsoft Avri/Hila), one MP3 per slide, hosted next to the
+// app at av/<stage>_<topic>_<lang>/<voice>-<i>.mp3. When a chapter+language has a set, the player
+// uses real audio (user-selectable voice + speed); otherwise it falls back to live device TTS.
+var AV_AUDIO={'2_1_he':{n:18}};
+var _av={on:false,i:0,slides:[],ov:null,u:null,tok:0,aud:null,player:null};
 // Neutralize the current utterance BEFORE cancel(): in Chrome, cancel() fires the canceled
 // utterance's onend/onerror — without this, every arrow click cascaded the deck to the end.
-function _avHush(){_av.tok++;if(_av.u){try{_av.u.onend=null;_av.u.onerror=null}catch(e){}_av.u=null;}try{speechSynthesis.cancel()}catch(e){}}
+function _avHush(){_av.tok++;if(_av.u){try{_av.u.onend=null;_av.u.onerror=null}catch(e){}_av.u=null;}if(_av.player){try{_av.player.onended=null;_av.player.onerror=null;_av.player.pause();}catch(e){}_av.player=null;}try{speechSynthesis.cancel()}catch(e){}}
 function _avStop(){_av.on=false;_avHush();}
 function _avClose(){_avStop();if(_av.ov){try{_av.ov.remove()}catch(e){}_av.ov=null;}}
 function _avRender(){
@@ -5967,26 +5971,52 @@ function _avRender(){
   if(bar)bar.style.width=Math.round(((_av.i+1)/_av.slides.length)*100)+'%';
   if(pp)pp.textContent=_av.on?'⏸':'▶';
 }
+function _avAdvance(myTok){
+  if(!_av.on||myTok!==_av.tok)return;
+  if(_av.i<_av.slides.length-1){_av.i++;_avRender();_avSpeak();}
+  else{_av.on=false;_avRender();}
+}
 function _avSpeak(){
   if(!_av.on)return;
   var sl=_av.slides[_av.i];if(sl==null){_avClose();return;}
   _avHush();
   var myTok=_av.tok;
+  if(_av.aud){
+    var a=new Audio('av/'+_av.aud+'/'+(G.avVoice==='hila'?'hila':'avri')+'-'+_av.i+'.mp3');
+    _av.player=a;
+    try{a.playbackRate=(G.narrRate&&G.narrRate>0)?G.narrRate:1;}catch(e){}
+    a.onended=function(){_avAdvance(myTok);};
+    a.onerror=function(){if(myTok!==_av.tok)return;_av.aud=null;_avSpeak();};   // missing file -> live TTS fallback
+    a.play().catch(function(){if(myTok===_av.tok){_av.aud=null;_avSpeak();}});
+    return;
+  }
   var u=new SpeechSynthesisUtterance(sl.t);
   _av.u=u;
   u.rate=(G.narrRate&&G.narrRate>0)?G.narrRate:1;
   var v=null;try{v=_narrPickVoice()}catch(e){}
   if(v){u.voice=v;u.lang=v.lang||(_enLang()?'en-US':'he-IL');}else{u.lang=_enLang()?'en-US':'he-IL';}
-  u.onend=function(){
-    if(!_av.on||myTok!==_av.tok)return;   // stale utterance (canceled/replaced) — ignore
-    if(_av.i<_av.slides.length-1){_av.i++;_avRender();_avSpeak();}
-    else{_av.on=false;_avRender();}
-  };
+  u.onend=function(){_avAdvance(myTok);};
   u.onerror=u.onend;
   // Chrome sometimes swallows speak() issued in the same tick as cancel() — defer slightly.
   setTimeout(function(){if(_av.on&&myTok===_av.tok){try{speechSynthesis.speak(u)}catch(e){_av.on=false;_avRender();}}},80);
 }
 function _avToggle(){if(_av.on){_av.on=false;_avHush();}else{_av.on=true;_avSpeak();}_avRender();}
+function _avSetRate(r){G.narrRate=r;try{sv()}catch(e){}trackEvent('video','rate',r);if(_av.player){try{_av.player.playbackRate=r}catch(e){}}else if(_av.on){_avSpeak();}_avRenderPrefs();}
+function _avSetVoice(v){G.avVoice=(v==='hila')?'hila':'avri';try{sv()}catch(e){}trackEvent('video','voice',G.avVoice);if(_av.on)_avSpeak();_avRenderPrefs();}
+function _avRenderPrefs(){
+  if(!_av.ov)return;var box=_av.ov.querySelector('#avPrefs');if(!box)return;
+  var h='';
+  function pill(on,onclick,label){return '<button class="bs" style="font-size:.7rem;padding:.22rem .6rem;border-radius:9px;border:1px solid '+(on?'var(--p)':'transparent')+';'+(on?'background:var(--p);color:#fff':'background:transparent')+'" onclick="'+onclick+'">'+label+'</button>';}
+  if(_av.aud){
+    h+='<span style="font-size:.7rem;color:var(--t2)">🎙️ '+(_enLang()?'Voice:':'קריין:')+'</span>';
+    h+=pill(G.avVoice!=='hila','_avSetVoice(\'avri\')',_enLang()?'Avri':'אברי');
+    h+=pill(G.avVoice==='hila','_avSetVoice(\'hila\')',_enLang()?'Hila':'הילה');
+    h+='<span style="width:.5rem"></span>';
+  }
+  h+='<span style="font-size:.7rem;color:var(--t2)">⏩ '+(_enLang()?'Speed:':'מהירות:')+'</span>';
+  [0.8,1,1.25,1.5].forEach(function(r){h+=pill((G.narrRate||1)===r,'_avSetRate('+r+')',r+'×');});
+  box.innerHTML=h;
+}
 function _avNav(d){_av.i=Math.max(0,Math.min(_av.slides.length-1,_av.i+d));_avRender();if(_av.on)_avSpeak();}
 function pfAutoVideo(stageId,topicIdx){
   var sec=document.querySelector('#tc .csec[data-idx="'+(topicIdx-1)+'"]');if(!sec)return;
@@ -5996,9 +6026,13 @@ function pfAutoVideo(stageId,topicIdx){
   try{title=title.replace(/[←-⇿⌀-➿⬀-⯿️\u{1F000}-\u{1FAFF}]/gu,' ').replace(/\s+/g,' ').trim();}catch(e){}
   var clone=sec.cloneNode(true);var h3c=clone.querySelector('h3');if(h3c&&h3c.parentNode)h3c.parentNode.removeChild(h3c);
   var txt=_narrText(clone);
+  // Protect intra-word dots (Monday.com, node.js) so the sentence splitter never cuts mid-word,
+  // then clean splitter artifacts (" · ." / "..") from each slide.
+  var prot=txt.replace(/([A-Za-z0-9֐-׿])\.([A-Za-z0-9])/g,'$1․$2');
   var chunks=[],re=/[^.!?\n]+[.!?\n]*/g,m,cur='';
-  while((m=re.exec(txt))){var sent=m[0];if((cur+sent).length>180&&cur){chunks.push(cur.trim());cur=sent;}else{cur+=sent;}}
+  while((m=re.exec(prot))){var sent=m[0];if((cur+sent).length>180&&cur){chunks.push(cur.trim());cur=sent;}else{cur+=sent;}}
   if(cur.trim())chunks.push(cur.trim());
+  chunks=chunks.map(function(c){return c.replace(/․/g,'.').replace(/\s*·\s*\./g,'.').replace(/\.\s*\.+/g,'.').replace(/\s{2,}/g,' ').trim();}).filter(function(c){return /[A-Za-z0-9֐-׿]/.test(c);});
   if(!chunks.length)return;
   _avClose();
   // Visuals: pull the chapter's own GIFs/heroes into the deck — first one on the title slide,
@@ -6009,6 +6043,8 @@ function pfAutoVideo(stageId,topicIdx){
   var rest=imgs.slice(1);
   var marks={};rest.forEach(function(_,k){marks[Math.max(1,Math.round((k+1)*chunks.length/(rest.length+1)))]=k;});
   chunks.forEach(function(c,ci){slides.push({t:c,img:(marks[ci+1]!=null)?rest[marks[ci+1]]:null});});
+  var audKey=stageId+'_'+topicIdx+'_'+(_enLang()?'en':'he');
+  _av.aud=AV_AUDIO[audKey]?audKey:null;
   _av.slides=slides;_av.emoji=emoji;_av.i=0;_av.on=true;
   var ov=document.createElement('div');ov.className='daily-modal';ov.onclick=function(e){if(e.target===ov)_avClose();};
   ov.innerHTML='<div class="daily-modal-box" style="max-width:760px;width:94vw;padding:1rem">'
@@ -6016,13 +6052,14 @@ function pfAutoVideo(stageId,topicIdx){
     +'<div style="background:linear-gradient(135deg,rgba(108,99,255,.18),rgba(0,201,167,.10));border:1px solid rgba(108,99,255,.3);border-radius:14px;min-height:240px;display:flex;align-items:center;justify-content:center;padding:1.4rem 1.6rem"><div id="avSlide" style="line-height:1.8;text-align:center;color:var(--t1)"></div></div>'
     +'<div style="background:rgba(255,255,255,.08);height:5px;border-radius:3px;overflow:hidden;margin:.8rem 0 .6rem"><div id="avBar" style="height:100%;width:0%;background:linear-gradient(90deg,#6C63FF,#00C9A7);transition:width .4s"></div></div>'
     +'<div style="display:flex;justify-content:center;align-items:center;gap:1rem">'
-    +'<button class="bs" style="font-size:1rem;padding:.3rem .8rem" onclick="_avNav('+(_enLang()?'-1':'1')+')">'+(_enLang()?'‹':'‹')+'</button>'
+    +'<button class="bs" style="font-size:1rem;padding:.3rem .8rem" title="'+(_enLang()?'Previous':'הקודם')+'" onclick="_avNav(-1)">‹</button>'
     +'<button class="bp" id="avPlay" style="font-size:1.05rem;padding:.35rem 1.1rem" onclick="_avToggle()">⏸</button>'
-    +'<button class="bs" style="font-size:1rem;padding:.3rem .8rem" onclick="_avNav('+(_enLang()?'1':'-1')+')">'+(_enLang()?'›':'›')+'</button>'
+    +'<button class="bs" style="font-size:1rem;padding:.3rem .8rem" title="'+(_enLang()?'Next':'הבא')+'" onclick="_avNav(1)">›</button>'
     +'<span id="avCount" style="font-size:.78rem;color:var(--t2);min-width:52px;text-align:center"></span>'
-    +'</div></div>';
+    +'</div>'
+    +'<div id="avPrefs" style="display:flex;justify-content:center;align-items:center;gap:.35rem;flex-wrap:wrap;margin-top:.6rem"></div></div>';
   document.body.appendChild(ov);_av.ov=ov;
-  _avRender();_avSpeak();
+  _avRender();_avRenderPrefs();_avSpeak();
 }
 function enhanceVideos(){
   var tc=document.getElementById('tc');if(!tc)return;
@@ -7283,7 +7320,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.10';
+const APP_VERSION='1.6.11';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
