@@ -4173,7 +4173,7 @@ function logActivity(action,details,points){if(!G.activityLog)G.activityLog=[];c
 function trackEvent(feat,act,meta){
   try{
     if(!DB_URL||!G||!G.userName||G.userName==='אנונימי')return;
-    fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'trackEvent',userName:G.userName,feat:feat||'',act:act||'',meta:meta!=null?String(meta):''}),headers:{'Content-Type':'text/plain'},keepalive:true}).catch(function(){});
+    fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'trackEvent',userName:G.userName,feat:feat||'',act:act||'',meta:meta!=null?String(meta):'',device:(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)?'mobile':'desktop'),appVersion:APP_VERSION}),headers:{'Content-Type':'text/plain'},keepalive:true}).catch(function(){});
   }catch(e){}
 }
 const LS='pmV7';
@@ -6979,7 +6979,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.5.4';
+const APP_VERSION='1.6.0';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -7922,14 +7922,14 @@ if(!_admAnalytics){
   h+='<div class="adm-stats">';
   TRACKED_FEATURES.forEach(function(f){
     const m=FEAT_META[f];const td=_fc.today[f]||0;const mo=_fc.month[f]||0;const tot=_pf[f]||_fc.total[f]||0;
-    h+='<div class="adm-stat" style="cursor:pointer" onclick="admShowDataResearch()" title="'+m.name+' — מאז ומתמיד: '+tot+' · החודש: '+mo+' · היום: '+td+'">';
+    h+='<div class="adm-stat" style="cursor:pointer" onclick="admShowFeatUsers(\''+f+'\')" title="'+m.name+' — לחצו לראות מי לחץ, כמה, מתי ומאיזה מכשיר">';
     h+='<div class="as-val" style="font-size:1.5rem">'+m.ic+' '+tot+'</div>';
     h+='<div class="as-lbl">'+m.name+'</div>';
     h+='<div style="font-size:.66rem;color:var(--t2);margin-top:.25rem">החודש: <strong style="color:var(--t1)">'+mo+'</strong> · היום: '+td+'</div>';
     h+='</div>';
   });
   h+='</div>';
-  h+='<div style="font-size:.7rem;color:var(--t2);margin-top:.4rem">📈 סך הכל '+(_admAnalytics.totalEvents||0)+' אירועים מתועדים · לחצו על פיצ׳ר לפירוט מלא</div>';
+  h+='<div style="font-size:.7rem;color:var(--t2);margin-top:.4rem">📈 סך הכל '+(_admAnalytics.totalEvents||0)+' אירועים מתועדים · לחצו על פיצ׳ר לראות מי לחץ, כמה, מתי ומאיזה מכשיר</div>';
 }
 h+='</div>';
 
@@ -8835,7 +8835,7 @@ function _renderDataResearch(){
   h+='<h3 style="font-size:1rem;color:var(--p);margin:0 0 .8rem">🏆 שימוש כולל לפי פיצ׳ר</h3>';
   featSorted.forEach(function(f){
     const m=FEAT_META[f];const c=perFeature[f]||0;const pct=Math.round(c/maxFeat*100);
-    h+='<div style="margin-bottom:.7rem">';
+    h+='<div style="margin-bottom:.7rem;cursor:pointer" onclick="admShowFeatUsers(\''+f+'\')" title="לחצו לראות מי לחץ, כמה, מתי ומאיזה מכשיר">';
     h+='<div style="display:flex;justify-content:space-between;align-items:center;font-size:.82rem;margin-bottom:.25rem"><span style="font-weight:600;color:var(--t1)">'+m.ic+' '+m.name+'</span><span style="color:var(--t2)">'+c+' <span style="font-size:.68rem">(היום '+(fc.today[f]||0)+' · החודש '+(fc.month[f]||0)+')</span></span></div>';
     h+='<div style="background:rgba(255,255,255,.06);border-radius:8px;height:14px;overflow:hidden"><div style="background:'+m.col+';height:100%;width:'+pct+'%;border-radius:8px;transition:width .5s;box-shadow:0 0 10px '+m.col+'66"></div></div>';
     h+='</div>';
@@ -9004,6 +9004,36 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'setNotifyEmails',emails
 .catch(()=>{showModal('⚠️','שגיאה','לא הצלחנו לשמור. נסו שוב.','הבנתי')})
 }
 
+// === Per-feature drill-down: who clicked, how many, when (Asia/Jerusalem), which device ===
+function admShowFeatUsers(f){
+  var m=FEAT_META[f]||{ic:'🔘',name:f,col:'#6C63FF'};
+  var A=_admAnalytics||{};
+  var fu=(A.featUsers&&A.featUsers[f])||null;
+  var rows=[];
+  if(fu){rows=Object.keys(fu).map(function(u){var x=fu[u]||{};return {u:u,n:x.n||0,t:x.t||0,mob:x.mob||0,desk:x.desk||0,v:x.v||'',vs:x.vs||null}});}
+  else if(A.perUser){Object.keys(A.perUser).forEach(function(u){var n=(A.perUser[u]||{})[f];if(n)rows.push({u:u,n:n,t:0,mob:0,desk:0,v:'',vs:null})});}
+  rows.sort(function(a,b){return b.n-a.n});
+  var h='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem"><h3 style="margin:0;font-size:1.05rem;color:'+m.col+'">'+m.ic+' '+esc(m.name)+' — מי לחץ?</h3><span style="cursor:pointer;font-size:1.2rem;color:var(--t2);padding:0 .3rem" onclick="this.closest(\'.daily-modal\').remove()">✕</span></div>';
+  if(!rows.length){
+    h+='<div style="color:var(--t2);font-size:.85rem;text-align:center;padding:1.5rem">אין עדיין לחיצות מתועדות לפיצ׳ר זה</div>';
+  }else{
+    h+='<div style="max-height:55vh;overflow:auto"><table style="width:100%;border-collapse:collapse;font-size:.8rem">';
+    h+='<tr style="color:var(--t2);text-align:right"><th style="padding:.3rem .4rem;text-align:right">משתמש</th><th style="text-align:center">לחיצות</th><th style="text-align:right">לחיצה אחרונה</th><th style="text-align:right">מכשיר</th><th style="text-align:right">גרסה</th></tr>';
+    rows.forEach(function(r){
+      var when=r.t?new Date(r.t).toLocaleString('he-IL',{timeZone:'Asia/Jerusalem',day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+      var dev=(r.mob||r.desk)?((r.mob?('📱 '+r.mob):'')+(r.mob&&r.desk?' · ':'')+(r.desk?('💻 '+r.desk):'')):'—';
+      var eU=esc(r.u).replace(/'/g,"\\'");
+      var vsTip=r.vs?Object.keys(r.vs).sort().map(function(k){return k+' ×'+r.vs[k]}).join(' · '):'';
+      var verCell=r.v?('<span title="'+esc(vsTip)+'" style="background:rgba(108,99,255,.12);border-radius:8px;padding:.1rem .45rem;font-size:.72rem">'+esc(r.v)+(r.vs&&Object.keys(r.vs).length>1?' +':'')+'</span>'):'—';
+      h+='<tr style="border-top:1px solid rgba(255,255,255,.06)"><td style="padding:.35rem .4rem;font-weight:600;cursor:pointer;color:var(--p)" title="פרטי משתמש" onclick="this.closest(\'.daily-modal\').remove();showUserDetail(\''+eU+'\')">'+esc(r.u)+'</td><td style="text-align:center;font-weight:700;color:'+m.col+'">'+r.n+'</td><td style="color:var(--t2)">'+when+'</td><td style="color:var(--t2);white-space:nowrap">'+dev+'</td><td style="color:var(--t2);white-space:nowrap">'+verCell+'</td></tr>';
+    });
+    h+='</table></div>';
+  }
+  if(!fu){h+='<div style="margin-top:.7rem;font-size:.7rem;color:#FFC107;background:rgba(255,193,7,.08);border-radius:8px;padding:.45rem .6rem">⚠️ עמודות "מתי", "מכשיר" ו"גרסה" יתמלאו מאירועים חדשים אחרי Deploy מחדש ל-Google Apps Script</div>';}
+  var ov=document.createElement('div');ov.className='daily-modal';ov.onclick=function(e){if(e.target===ov)ov.remove()};
+  ov.innerHTML='<div class="daily-modal-box" style="max-width:560px;text-align:right">'+h+'</div>';
+  document.body.appendChild(ov);
+}
 function admShowBugs(){
   $('adv').innerHTML='<div class="adm-wrap" style="text-align:center;padding:4rem"><div style="font-size:2.5rem;margin-bottom:.5rem">⏳</div><p style="color:var(--t2)">טוען דיווחי באגים...</p></div>';
   fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getBugReports',adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
@@ -9019,12 +9049,14 @@ function admShowBugs(){
 }
 
 function renderBugReports(reports){
+  window._admBugsCache=reports;
   const open=reports.filter(r=>r.resolved!=='resolved');
   const resolved=reports.filter(r=>r.resolved==='resolved');
   let h='<div class="adm-wrap">';
   h+='<h2 style="font-size:1.3rem;margin:0 0 1.2rem;text-align:center">🐛 דיווחי באגים</h2>';
   h+='<div style="display:flex;gap:.5rem;margin-bottom:1rem;justify-content:center"><button class="bp" style="font-size:.85rem;padding:.4rem 1rem" onclick="_bugTab=\'open\';admShowBugs()">🔴 פתוחים ('+open.length+')</button>';
   h+='<button class="bs" style="font-size:.85rem;padding:.4rem 1rem" onclick="_bugTab=\'resolved\';admShowBugs()">✅ טופלו ('+resolved.length+')</button></div>';
+  if((typeof _bugTab==='undefined'||_bugTab!=='resolved')&&open.length>0){h+='<div style="text-align:center;margin-bottom:1rem"><button class="bs" style="font-size:.78rem;padding:.35rem .9rem;border-color:rgba(0,201,167,.4);color:var(--a)" onclick="admResolveAllBugs()">✅ סמן את כל הפתוחים כטופלו ('+open.length+')</button></div>';}
   const view=(typeof _bugTab!=='undefined'&&_bugTab==='resolved')?resolved:open;
   if(view.length===0){h+='<div style="text-align:center;padding:3rem 1rem"><p style="font-size:2.5rem;margin-bottom:.5rem">🎉</p><p style="color:var(--t2);font-size:1rem">'+(_bugTab==='resolved'?'אין דיווחים מטופלים':'אין דיווחים פתוחים!')+'</p></div>'}
   view.forEach((r,idx)=>{
@@ -9048,6 +9080,23 @@ function renderBugReports(reports){
   $('adv').innerHTML=h;
 }
 let _bugTab='open';
+// One-click bulk: mark every open bug report as resolved (sequential, rowIndex stays stable on resolve).
+function admResolveAllBugs(){
+  var open=((window._admBugsCache)||[]).filter(function(r){return r.resolved!=='resolved'&&r.rowIndex});
+  if(!open.length)return;
+  var ov=document.createElement('div');ov.className='daily-modal';ov.onclick=function(e){if(e.target===ov)ov.remove()};
+  ov.innerHTML='<div class="daily-modal-box" style="text-align:center;max-width:420px"><div style="font-size:2.5rem;margin-bottom:.4rem">✅</div><h3 style="margin:0 0 .5rem;font-size:1.15rem">סימון מרוכז</h3><p style="color:var(--t2);font-size:.9rem;line-height:1.6;margin:0 0 1.1rem">לסמן את כל <strong>'+open.length+'</strong> הדיווחים הפתוחים כ"טופלו"?<br><span style="font-size:.75rem">(אפשר לבטל סימון פרטני דרך לשונית "טופלו" ← מחיקה בלבד; פעולה זו אינה מוחקת דיווחים)</span></p><div style="display:flex;gap:.7rem;justify-content:center"><button class="bs" onclick="this.closest(\'.daily-modal\').remove()">ביטול</button><button class="bp" id="_confirmResolveAll">סמן הכל</button></div></div>';
+  document.body.appendChild(ov);
+  document.getElementById('_confirmResolveAll').onclick=function(){
+    var btn=this;btn.disabled=true;
+    (function next(i){
+      if(i>=open.length){ov.remove();admShowBugs();return;}
+      btn.textContent='⏳ '+(i+1)+'/'+open.length;
+      fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'markBugResolved',rowIndex:open[i].rowIndex,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+      .then(function(r){return r.json()}).then(function(){next(i+1)}).catch(function(){next(i+1)});
+    })(0);
+  };
+}
 function admMarkBugResolved(rowIndex,btn){
   btn.disabled=true;btn.textContent='⏳';
   fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'markBugResolved',rowIndex:rowIndex,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
