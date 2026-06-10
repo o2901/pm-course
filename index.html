@@ -5815,11 +5815,27 @@ function _narrStop(){
   try{speechSynthesis.cancel()}catch(e){}
   if(_narr.btn){var b=_narr.btn;_narr.btn=null;try{b.classList.remove('on');b.innerHTML='🔊 '+(_enLang()?'Listen':'הקראה');}catch(e){}}
 }
+// Voice pick: user's saved choice (per language) if present on this device; otherwise a
+// "natural-first" ranking so the default matches the familiar mobile voice (Siri-like):
+// iPhone→Carmit/Samantha, Android→Google, Edge→Natural; fallback: first matching voice.
+function _narrPickVoice(){
+  var en=_enLang(),want=en?'en':'he',vs=[];
+  try{vs=(speechSynthesis.getVoices()||[]).filter(function(v){return (v.lang||'').toLowerCase().indexOf(want)===0});}catch(e){}
+  if(!vs.length)return null;
+  var pref=en?(G.narrVoiceEn||''):(G.narrVoiceHe||'');
+  if(pref){for(var i=0;i<vs.length;i++)if(vs[i].name===pref)return vs[i];}
+  var rank=en?['samantha','siri','google us english','natural','google']:['carmit','siri','google','natural'];
+  for(var r=0;r<rank.length;r++){for(var j=0;j<vs.length;j++){if((vs[j].name||'').toLowerCase().indexOf(rank[r])>=0)return vs[j];}}
+  return vs[0];
+}
+function setNarrRate(r){G.narrRate=r;try{sv()}catch(e){}trackEvent('narration','rate',r);try{showProfile()}catch(e){}}
+function setNarrVoice(name){if(_enLang())G.narrVoiceEn=name||'';else G.narrVoiceHe=name||'';try{sv()}catch(e){}trackEvent('narration','voice',name||'auto');}
 function _narrNext(){
   if(!_narr.active||_narr.i>=_narr.chunks.length){_narrStop();return;}
   var u=new SpeechSynthesisUtterance(_narr.chunks[_narr.i++]);
-  u.lang=_enLang()?'en-US':'he-IL';
-  try{var vs=speechSynthesis.getVoices()||[];var pre=_enLang()?'en':'he';for(var i=0;i<vs.length;i++){if((vs[i].lang||'').toLowerCase().indexOf(pre)===0){u.voice=vs[i];break;}}}catch(e){}
+  u.rate=(G.narrRate&&G.narrRate>0)?G.narrRate:1;
+  var v=null;try{v=_narrPickVoice();}catch(e){}
+  if(v){u.voice=v;u.lang=v.lang||(_enLang()?'en-US':'he-IL');}else{u.lang=_enLang()?'en-US':'he-IL';}
   u.onend=_narrNext;u.onerror=_narrNext;
   try{speechSynthesis.speak(u)}catch(e){_narrStop()}
 }
@@ -6588,6 +6604,20 @@ function renderProfile(){
   h+='<button class="bs" style="font-size:.78rem;padding:.35rem .8rem;border-radius:9px;border:1px solid '+(_enLang()?'var(--p)':'transparent')+';'+(_enLang()?'background:var(--p);color:#fff':'background:transparent')+'" onclick="applyLanguage(\'en\');showProfile()">English</button>';
   h+='</div>';
   h+='<button class="bs" style="font-size:.82rem;padding:.45rem 1rem" onclick="toggleSound();showProfile()" title="'+_t('צלילים')+'">'+(G.soundOff?('🔇 '+_t('צלילים כבויים')):('🔊 '+_t('צלילים פעילים')))+'</button>';
+  // Narration preferences (speed + voice) — user preference ⇒ persisted + monitored.
+  if(window.speechSynthesis){
+    h+='<div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;justify-content:center;margin-top:.55rem;width:100%">';
+    h+='<span style="font-size:.78rem;color:var(--t2);font-weight:600">🗣️ '+(_enLang()?'Narration:':'הקראה:')+'</span>';
+    [0.8,1,1.25,1.5].forEach(function(r){var on=(G.narrRate||1)===r;h+='<button class="bs" style="font-size:.72rem;padding:.28rem .55rem;border-radius:9px;border:1px solid '+(on?'var(--p)':'transparent')+';'+(on?'background:var(--p);color:#fff':'background:transparent')+'" onclick="setNarrRate('+r+')" title="'+(_enLang()?'Narration speed':'מהירות הקראה')+'">'+r+'×</button>';});
+    var _vWant=_enLang()?'en':'he',_vList=[];
+    try{_vList=(speechSynthesis.getVoices()||[]).filter(function(v){return (v.lang||'').toLowerCase().indexOf(_vWant)===0});}catch(e){}
+    var _vCur=_enLang()?(G.narrVoiceEn||''):(G.narrVoiceHe||'');
+    h+='<select onchange="setNarrVoice(this.value)" title="'+(_enLang()?'Narrator voice':'הקול המקריא')+'" style="font-size:.72rem;padding:.28rem .5rem;border-radius:9px;background:var(--card);color:var(--t1);border:1px solid rgba(108,99,255,.35);max-width:175px">';
+    h+='<option value=""'+(_vCur?'':' selected')+'>'+(_enLang()?'Auto voice (recommended)':'קול אוטומטי (מומלץ)')+'</option>';
+    _vList.forEach(function(v){h+='<option value="'+v.name.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')+'"'+(v.name===_vCur?' selected':'')+'>'+v.name.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</option>';});
+    h+='</select>';
+    h+='</div>';
+  }
   h+='</div>';
 
   // Main stats card
@@ -7091,7 +7121,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.1';
+const APP_VERSION='1.6.2';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -7771,7 +7801,7 @@ const FEAT_META={
   about:{ic:'👨‍💻',name:'על היוצר',col:'#26A69A'},
   narration:{ic:'🗣️',name:'הקראה',col:'#8D6E63'}
 };
-const FEAT_ACT_NAMES={open:'נפתח',answer_correct:'תשובה נכונה',answer_wrong:'תשובה שגויה',challenge_simple:'אתגר פשוט נשלח',challenge_wager:'אתגר הימור נשלח',accept:'אתגר התקבל',decline:'אתגר נדחה',complete:'הושלמה',submit:'נשלח',go:'ניווט',switch_en:'מעבר לאנגלית',switch_he:'מעבר לעברית',toggle:'הפעלה/כיבוי',play:'הופעל',stop:'נעצר'};
+const FEAT_ACT_NAMES={open:'נפתח',answer_correct:'תשובה נכונה',answer_wrong:'תשובה שגויה',challenge_simple:'אתגר פשוט נשלח',challenge_wager:'אתגר הימור נשלח',accept:'אתגר התקבל',decline:'אתגר נדחה',complete:'הושלמה',submit:'נשלח',go:'ניווט',switch_en:'מעבר לאנגלית',switch_he:'מעבר לעברית',toggle:'הפעלה/כיבוי',play:'הופעל',stop:'נעצר',rate:'שינוי מהירות הקראה',voice:'בחירת קול מקריא'};
 // Asia/Jerusalem 'yyyy-MM-dd' (matches server-stamped event dates) so client today/month buckets align.
 function _jerDateStr(ms){try{return new Date(ms||Date.now()).toLocaleDateString('en-CA',{timeZone:'Asia/Jerusalem'})}catch(e){return ''}}
 // Roll byDate {date:{feature:count}} into today / this-month / all-time per-feature totals.
