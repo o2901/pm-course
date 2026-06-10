@@ -52,14 +52,14 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--t1);min-hei
 .badge{display:flex;align-items:center;gap:.2rem;padding:.18rem .5rem;border-radius:14px;background:rgba(255,255,255,.06);font-size:.72rem;white-space:nowrap}
 .badge .v{font-weight:700;color:var(--g)}
 @media(max-width:600px){
-.hdr{padding:0;gap:0;flex-direction:column;align-items:stretch}
-.hdr>div:first-child{padding:.38rem .9rem;justify-content:space-between;width:100%;display:flex;align-items:center;gap:.5rem;background:linear-gradient(180deg,rgba(15,14,23,.98),rgba(15,14,23,.95))}
-.hdr-logo{font-size:1.02rem;font-weight:800;letter-spacing:-.3px}
-#hdr-user-group{flex-direction:column;gap:.15rem!important;align-items:center}
+.hdr{padding:.35rem .55rem;gap:.4rem;flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:space-between}
+.hdr>div:first-child{padding:0;justify-content:flex-start;width:auto;flex:0 1 auto;display:flex;align-items:center;gap:.35rem;background:none;min-width:0}
+.hdr-logo{font-size:.9rem;font-weight:800;letter-spacing:-.3px;white-space:nowrap}
+#hdr-user-group{display:none!important}
 #hdr-user{max-width:160px!important;font-size:.7rem!important;color:var(--t2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #tb .title-badge{font-size:.68rem!important;padding:.12rem .55rem!important;white-space:nowrap}
 .hdr-home{font-size:1.1rem;opacity:.8}
-.hdr-stats{padding:.3rem .7rem;justify-content:space-between;overflow:visible;flex-wrap:nowrap;width:100%;gap:.3rem;background:rgba(108,99,255,.06);border-top:1px solid rgba(108,99,255,.12);align-items:center}
+.hdr-stats{padding:0;justify-content:flex-end;overflow:visible;flex-wrap:nowrap;width:auto;flex:0 1 auto;gap:.28rem;background:none;border-top:none;align-items:center}
 .hdr-stats .badge,.hdr-stats .streak-badge{padding:.25rem .55rem;font-size:.72rem;gap:.2rem;flex-shrink:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.05)}
 .hdr-btn{font-size:1rem;padding:.2rem .35rem;flex-shrink:0;opacity:.85}
 .hdr-btn:hover{opacity:1}
@@ -731,9 +731,9 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 .bug-fab:hover{transform:scale(1.1);box-shadow:0 8px 30px rgba(255,101,132,.55)}
 @keyframes bugFabPulse{0%,100%{box-shadow:0 6px 24px rgba(255,101,132,.3)}50%{box-shadow:0 6px 30px rgba(255,101,132,.6)}}
 @media(max-width:600px){.bug-fab{width:50px;height:50px;font-size:1.3rem;bottom:1.2rem;right:1.2rem}}
-.glossary-fab{position:fixed;bottom:5.9rem;right:1.5rem;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,rgba(0,188,212,.93),rgba(0,150,180,.93));color:#fff;border:none;font-size:1.35rem;cursor:pointer;z-index:180;box-shadow:0 4px 20px rgba(0,188,212,.35);transition:.3s;display:flex;align-items:center;justify-content:center}
+.glossary-fab{position:fixed;bottom:5.25rem;right:1.5rem;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,rgba(0,188,212,.93),rgba(0,150,180,.93));color:#fff;border:none;font-size:1.35rem;cursor:pointer;z-index:180;box-shadow:0 4px 20px rgba(0,188,212,.35);transition:.3s;display:flex;align-items:center;justify-content:center}
 .glossary-fab:hover{transform:scale(1.1);box-shadow:0 8px 28px rgba(0,188,212,.5)}
-@media(max-width:600px){.glossary-fab{width:48px;height:48px;font-size:1.2rem;bottom:5.1rem;right:1.2rem}}
+@media(max-width:600px){.glossary-fab{width:48px;height:48px;font-size:1.2rem;bottom:4.6rem;right:1.2rem}}
 /* Reserved */
 /* Admin unlock/msg controls */
 .adm-ctrl-section{margin-top:1rem;padding:1rem;background:rgba(108,99,255,.06);border-radius:12px;border:1px solid rgba(108,99,255,.12)}
@@ -5863,12 +5863,17 @@ function pfAccToggle(btn){
         _updateReadProgress();
       }
     }
-    // CLOSE = keep the section's toggle visually anchored so collapsing doesn't throw the
-    // reader backward (the old scroll-to-heading was the reported "jump"). Capture the toggle
-    // position now and restore it after the collapse transition → no jump, reading place kept.
-    var _accAnchor = topToggle || sec.querySelector('.pf-acc-toggle') || sec;
-    var _accBeforeY = _accAnchor.getBoundingClientRect().top;
-    setTimeout(function(){ try{ window.scrollBy(0, _accAnchor.getBoundingClientRect().top - _accBeforeY); }catch(e){} }, 380);
+    // CLOSE (from the bottom "finished reading" button) = jump to the NEXT topic in this stage
+    // so the reader continues forward — not back to this heading. Falls back to staying if last.
+    var _secList = Array.prototype.slice.call((sec.closest('#tc')||document).querySelectorAll('.csec[data-idx]'));
+    var _ci = _secList.indexOf(sec);
+    var _nextSec = (_ci >= 0 && _ci < _secList.length - 1) ? _secList[_ci + 1] : null;
+    setTimeout(function(){ try{
+      var _t = _nextSec || sec;
+      var _ibE = $('ib'), _hdE = $('hd');
+      var _off = ((_hdE && !_hdE.classList.contains('hid')) ? _hdE.offsetHeight : 0) + ((_ibE && !_ibE.classList.contains('hid')) ? _ibE.offsetHeight : 0) + 14;
+      window.scrollTo({ top: Math.max(0, window.pageYOffset + _t.getBoundingClientRect().top - _off), behavior: 'smooth' });
+    }catch(e){} }, 400);
   }
 }
 // Mirror of the progress-bar updates from _markSeenByScroll, callable when an accordion opens.
@@ -6974,7 +6979,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.5.3';
+const APP_VERSION='1.5.4';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
