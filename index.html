@@ -305,6 +305,7 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--t1);min-hei
 .pf-narrate:hover{background:rgba(0,188,212,.16)}
 .pf-narrate.on{background:rgba(255,101,132,.12);border-color:rgba(255,101,132,.5);color:var(--s);animation:narrPulse 1.6s infinite}
 @keyframes narrPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,101,132,.25)}50%{box-shadow:0 0 0 6px rgba(255,101,132,0)}}
+@keyframes avFade{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:none}}
 .pf-inline-card{display:flex;gap:1rem;align-items:flex-start;margin:1.1rem 0;padding:.9rem 1rem;background:linear-gradient(135deg,rgba(108,99,255,.06),rgba(0,201,167,.04));border:1px solid rgba(108,99,255,.15);border-radius:14px}
 .pf-inline-av{flex-shrink:0;width:72px;height:72px;border-radius:50%;overflow:hidden;background:rgba(108,99,255,.08);display:flex;align-items:center;justify-content:center}
 .pf-inline-av svg{width:100%;height:100%;display:block}
@@ -5941,30 +5942,51 @@ function pfVideo(stageId,topicIdx){
 // engine (voice/rate prefs respected, bilingual for free). Piloted per-chapter via AUTO_VIDEO_PILOT;
 // a real VIDEO_MAP entry always wins over the auto version.
 var AUTO_VIDEO_PILOT={'2_1':1,'2_2':1,'2_3':1};
-var _av={on:false,i:0,slides:[],ov:null};
-function _avStop(){_av.on=false;try{speechSynthesis.cancel()}catch(e){}}
+var _av={on:false,i:0,slides:[],ov:null,u:null,tok:0};
+// Neutralize the current utterance BEFORE cancel(): in Chrome, cancel() fires the canceled
+// utterance's onend/onerror — without this, every arrow click cascaded the deck to the end.
+function _avHush(){_av.tok++;if(_av.u){try{_av.u.onend=null;_av.u.onerror=null}catch(e){}_av.u=null;}try{speechSynthesis.cancel()}catch(e){}}
+function _avStop(){_av.on=false;_avHush();}
 function _avClose(){_avStop();if(_av.ov){try{_av.ov.remove()}catch(e){}_av.ov=null;}}
 function _avRender(){
   if(!_av.ov)return;
   var slide=_av.ov.querySelector('#avSlide'),cnt=_av.ov.querySelector('#avCount'),bar=_av.ov.querySelector('#avBar'),pp=_av.ov.querySelector('#avPlay');
-  if(slide){slide.textContent=_av.slides[_av.i]||'';slide.style.direction=_enLang()?'ltr':'rtl';slide.style.fontSize=(_av.i===0?'1.5rem':'1.12rem');slide.style.fontWeight=(_av.i===0?'800':'500');}
+  var sl=_av.slides[_av.i]||{t:''};
+  if(slide){
+    slide.innerHTML='';
+    var wrap=document.createElement('div');
+    wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:.8rem;animation:avFade .45s ease';
+    if(sl.img){var im=document.createElement('img');im.src=sl.img;im.alt='';im.style.cssText='max-height:190px;max-width:92%;border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.4)';wrap.appendChild(im);}
+    else if(_av.i===0&&_av.emoji){var em=document.createElement('div');em.textContent=_av.emoji;em.style.cssText='font-size:3.2rem;line-height:1';wrap.appendChild(em);}
+    var tx=document.createElement('div');tx.textContent=sl.t;
+    tx.style.cssText='line-height:1.8;text-align:center;color:var(--t1);direction:'+(_enLang()?'ltr':'rtl')+';font-size:'+(_av.i===0?'1.5rem':'1.12rem')+';font-weight:'+(_av.i===0?'800':'500');
+    wrap.appendChild(tx);
+    slide.appendChild(wrap);
+  }
   if(cnt)cnt.textContent=(_av.i+1)+' / '+_av.slides.length;
   if(bar)bar.style.width=Math.round(((_av.i+1)/_av.slides.length)*100)+'%';
   if(pp)pp.textContent=_av.on?'⏸':'▶';
 }
 function _avSpeak(){
   if(!_av.on)return;
-  var txt=_av.slides[_av.i];if(txt==null){_avClose();return;}
-  try{speechSynthesis.cancel()}catch(e){}
-  var u=new SpeechSynthesisUtterance(txt);
+  var sl=_av.slides[_av.i];if(sl==null){_avClose();return;}
+  _avHush();
+  var myTok=_av.tok;
+  var u=new SpeechSynthesisUtterance(sl.t);
+  _av.u=u;
   u.rate=(G.narrRate&&G.narrRate>0)?G.narrRate:1;
   var v=null;try{v=_narrPickVoice()}catch(e){}
   if(v){u.voice=v;u.lang=v.lang||(_enLang()?'en-US':'he-IL');}else{u.lang=_enLang()?'en-US':'he-IL';}
-  u.onend=function(){if(!_av.on)return;if(_av.i<_av.slides.length-1){_av.i++;_avRender();_avSpeak();}else{_av.on=false;_avRender();}};
+  u.onend=function(){
+    if(!_av.on||myTok!==_av.tok)return;   // stale utterance (canceled/replaced) — ignore
+    if(_av.i<_av.slides.length-1){_av.i++;_avRender();_avSpeak();}
+    else{_av.on=false;_avRender();}
+  };
   u.onerror=u.onend;
-  try{speechSynthesis.speak(u)}catch(e){_avStop();_avRender();}
+  // Chrome sometimes swallows speak() issued in the same tick as cancel() — defer slightly.
+  setTimeout(function(){if(_av.on&&myTok===_av.tok){try{speechSynthesis.speak(u)}catch(e){_av.on=false;_avRender();}}},80);
 }
-function _avToggle(){if(_av.on){_av.on=false;try{speechSynthesis.cancel()}catch(e){}}else{_av.on=true;_avSpeak();}_avRender();}
+function _avToggle(){if(_av.on){_av.on=false;_avHush();}else{_av.on=true;_avSpeak();}_avRender();}
 function _avNav(d){_av.i=Math.max(0,Math.min(_av.slides.length-1,_av.i+d));_avRender();if(_av.on)_avSpeak();}
 function pfAutoVideo(stageId,topicIdx){
   var sec=document.querySelector('#tc .csec[data-idx="'+(topicIdx-1)+'"]');if(!sec)return;
@@ -5979,10 +6001,18 @@ function pfAutoVideo(stageId,topicIdx){
   if(cur.trim())chunks.push(cur.trim());
   if(!chunks.length)return;
   _avClose();
-  _av.slides=[title].concat(chunks);_av.i=0;_av.on=true;
+  // Visuals: pull the chapter's own GIFs/heroes into the deck — first one on the title slide,
+  // the rest spread evenly through the content slides.
+  var imgs=[];try{sec.querySelectorAll('.pf-breather img,.pf-hero img').forEach(function(im){if(im&&im.src)imgs.push(im.src)});}catch(e){}
+  var emoji='';try{var hm=(((sec.querySelector('h3')||{}).textContent)||'').match(/[\u{1F000}-\u{1FAFF}⌀-➿]/u);emoji=hm?hm[0]:'';}catch(e){}
+  var slides=[{t:title,img:imgs[0]||null}];
+  var rest=imgs.slice(1);
+  var marks={};rest.forEach(function(_,k){marks[Math.max(1,Math.round((k+1)*chunks.length/(rest.length+1)))]=k;});
+  chunks.forEach(function(c,ci){slides.push({t:c,img:(marks[ci+1]!=null)?rest[marks[ci+1]]:null});});
+  _av.slides=slides;_av.emoji=emoji;_av.i=0;_av.on=true;
   var ov=document.createElement('div');ov.className='daily-modal';ov.onclick=function(e){if(e.target===ov)_avClose();};
   ov.innerHTML='<div class="daily-modal-box" style="max-width:760px;width:94vw;padding:1rem">'
-    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem"><strong style="font-size:.95rem">🎬 '+(_enLang()?'Topic video (auto)':'סרטון הפרק (אוטו)')+'</strong><span style="cursor:pointer;font-size:1.2rem;color:var(--t2);padding:0 .3rem" onclick="_avClose()">✕</span></div>'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem"><strong style="font-size:.92rem;max-width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">🎬 '+title.replace(/</g,'&lt;')+'</strong><span style="cursor:pointer;font-size:1.2rem;color:var(--t2);padding:0 .3rem" onclick="_avClose()">✕</span></div>'
     +'<div style="background:linear-gradient(135deg,rgba(108,99,255,.18),rgba(0,201,167,.10));border:1px solid rgba(108,99,255,.3);border-radius:14px;min-height:240px;display:flex;align-items:center;justify-content:center;padding:1.4rem 1.6rem"><div id="avSlide" style="line-height:1.8;text-align:center;color:var(--t1)"></div></div>'
     +'<div style="background:rgba(255,255,255,.08);height:5px;border-radius:3px;overflow:hidden;margin:.8rem 0 .6rem"><div id="avBar" style="height:100%;width:0%;background:linear-gradient(90deg,#6C63FF,#00C9A7);transition:width .4s"></div></div>'
     +'<div style="display:flex;justify-content:center;align-items:center;gap:1rem">'
@@ -7253,7 +7283,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.9';
+const APP_VERSION='1.6.10';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
