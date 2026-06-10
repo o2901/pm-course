@@ -5870,6 +5870,12 @@ function _narrText(sec){
   var cl=sec.cloneNode(true);
   var kill=cl.querySelectorAll('button,.pf-narrate,.pf-acc-toggle,.pf-acc-close,.tp,.ib,script,style');
   for(var i=0;i<kill.length;i++)if(kill[i].parentNode)kill[i].parentNode.removeChild(kill[i]);
+  // textContent glues adjacent table cells / list items together ("שלבאסטרטגיה...") — inject
+  // separators so tables read as "cell · cell" and rows/items end like sentences.
+  var cells=cl.querySelectorAll('td,th');
+  for(var c1=0;c1<cells.length;c1++)try{cells[c1].appendChild(document.createTextNode(' · '))}catch(e){}
+  var blocks=cl.querySelectorAll('tr,li,p,h4,h5');
+  for(var b1=0;b1<blocks.length;b1++)try{blocks[b1].appendChild(document.createTextNode('. '))}catch(e){}
   // Strip emoji/symbols so the voice doesn't read them aloud ("check mark", "rocket", ...).
   var t=(cl.textContent||'');
   try{t=t.replace(/[←-⇿⌀-➿⬀-⯿️\u{1F000}-\u{1FAFF}]/gu,' ');}catch(e){}
@@ -5934,7 +5940,7 @@ function pfVideo(stageId,topicIdx){
 // === Option B: AUTO video — a narrated slideshow built from the chapter's own text + the TTS
 // engine (voice/rate prefs respected, bilingual for free). Piloted per-chapter via AUTO_VIDEO_PILOT;
 // a real VIDEO_MAP entry always wins over the auto version.
-var AUTO_VIDEO_PILOT={'2_1':1};
+var AUTO_VIDEO_PILOT={'2_1':1,'2_2':1,'2_3':1};
 var _av={on:false,i:0,slides:[],ov:null};
 function _avStop(){_av.on=false;try{speechSynthesis.cancel()}catch(e){}}
 function _avClose(){_avStop();if(_av.ov){try{_av.ov.remove()}catch(e){}_av.ov=null;}}
@@ -7247,7 +7253,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.8';
+const APP_VERSION='1.6.9';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
