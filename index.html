@@ -306,6 +306,14 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--t1);min-hei
 .pf-narrate.on{background:rgba(255,101,132,.12);border-color:rgba(255,101,132,.5);color:var(--s);animation:narrPulse 1.6s infinite}
 @keyframes narrPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,101,132,.25)}50%{box-shadow:0 0 0 6px rgba(255,101,132,0)}}
 @keyframes avFade{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:none}}
+@keyframes avDrift1{0%{transform:translate(-12%,-8%) scale(1)}50%{transform:translate(10%,6%) scale(1.25)}100%{transform:translate(-12%,-8%) scale(1)}}
+@keyframes avDrift2{0%{transform:translate(8%,10%) scale(1.15)}50%{transform:translate(-10%,-6%) scale(1)}100%{transform:translate(8%,10%) scale(1.15)}}
+@keyframes avDrift3{0%{transform:translate(6%,-10%) scale(1)}50%{transform:translate(-8%,8%) scale(1.2)}100%{transform:translate(6%,-10%) scale(1)}}
+.av-ambient{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none;opacity:.5}
+.av-ambient i{position:absolute;border-radius:50%;filter:blur(34px);mix-blend-mode:screen}
+.av-ambient i:nth-child(1){width:55%;height:55%;left:-8%;top:-12%;background:hsl(var(--avh,255),85%,60%);animation:avDrift1 13s ease-in-out infinite}
+.av-ambient i:nth-child(2){width:50%;height:50%;right:-10%;top:8%;background:hsl(calc(var(--avh,255) + 60),85%,58%);animation:avDrift2 17s ease-in-out infinite}
+.av-ambient i:nth-child(3){width:48%;height:48%;left:18%;bottom:-14%;background:hsl(calc(var(--avh,255) + 130),80%,62%);animation:avDrift3 15s ease-in-out infinite}
 .pf-inline-card{display:flex;gap:1rem;align-items:flex-start;margin:1.1rem 0;padding:.9rem 1rem;background:linear-gradient(135deg,rgba(108,99,255,.06),rgba(0,201,167,.04));border:1px solid rgba(108,99,255,.15);border-radius:14px}
 .pf-inline-av{flex-shrink:0;width:72px;height:72px;border-radius:50%;overflow:hidden;background:rgba(108,99,255,.08);display:flex;align-items:center;justify-content:center}
 .pf-inline-av svg{width:100%;height:100%;display:block}
@@ -5053,6 +5061,7 @@ function _avClose(){_avStop();if(_av.ov){try{_av.ov.remove()}catch(e){}_av.ov=nu
 function _avRender(){
   if(!_av.ov)return;
   var slide=_av.ov.querySelector('#avSlide'),cnt=_av.ov.querySelector('#avCount'),bar=_av.ov.querySelector('#avBar'),pp=_av.ov.querySelector('#avPlay');
+  var amb=_av.ov.querySelector('#avAmb');if(amb)amb.style.setProperty('--avh',((_av.i*43)%360));
   var sl=_av.slides[_av.i]||{t:''};
   if(slide){
     slide.innerHTML='';
@@ -5159,7 +5168,7 @@ function pfAutoVideo(stageId,topicIdx){
   var ov=document.createElement('div');ov.className='daily-modal';ov.onclick=function(e){if(e.target===ov)_avClose();};
   ov.innerHTML='<div class="daily-modal-box" style="max-width:760px;width:94vw;padding:1rem">'
     +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem"><strong style="font-size:.92rem;max-width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">🎬 '+title.replace(/</g,'&lt;')+'</strong><span style="cursor:pointer;font-size:1.2rem;color:var(--t2);padding:0 .3rem" onclick="_avClose()">✕</span></div>'
-    +'<div style="background:linear-gradient(135deg,rgba(108,99,255,.18),rgba(0,201,167,.10));border:1px solid rgba(108,99,255,.3);border-radius:14px;min-height:240px;display:flex;align-items:center;justify-content:center;padding:1.4rem 1.6rem"><div id="avSlide" style="line-height:1.8;text-align:center;color:var(--t1)"></div></div>'
+    +'<div style="position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(108,99,255,.18),rgba(0,201,167,.10));border:1px solid rgba(108,99,255,.3);border-radius:14px;min-height:240px;display:flex;align-items:center;justify-content:center;padding:1.4rem 1.6rem"><div class="av-ambient" id="avAmb"><i></i><i></i><i></i></div><div id="avSlide" style="position:relative;z-index:1;line-height:1.8;text-align:center;color:var(--t1)"></div></div>'
     +'<div style="background:rgba(255,255,255,.08);height:5px;border-radius:3px;overflow:hidden;margin:.8rem 0 .6rem"><div id="avBar" style="height:100%;width:0%;background:linear-gradient(90deg,#6C63FF,#00C9A7);transition:width .4s"></div></div>'
     +'<div style="display:flex;justify-content:center;align-items:center;gap:1rem">'
     +'<button class="bs" style="font-size:1rem;padding:.3rem .8rem" title="'+(_enLang()?'Previous':'הקודם')+'" onclick="_avNav(-1)">‹</button>'
@@ -6437,7 +6446,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.32';
+const APP_VERSION='1.6.33';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
