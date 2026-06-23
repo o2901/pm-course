@@ -5052,20 +5052,27 @@ var AV_AUDIO={'0_1_en':{n:10},'0_1_he':{n:7},'0_2_en':{n:12},'0_2_he':{n:9},'0_3
 // tagged with HE+EN keywords so the player can pick a clip whose THEME matches the slide's sentence;
 // shown ~once every 3-4 slides + on the opener & closer, never repeated within a single video.
 var AV_GIFS_POOL=[
- {u:"av/gifs/data-analytics.gif",kw:["נתונ","דאטה","מדד","אנליט","מטר","data","analyt","metric","measure","kpi","dashboard"]},
- {u:"av/gifs/bi-dashboard.gif",kw:["נתונ","דאטה","דאשבורד","מדד","ויזואל","bi","data","dashboard","kpi","chart","visual","metric"]},
- {u:"av/gifs/growth-sprout.gif",kw:["צמיח","גדיל","שימור","התפתח","growth","grow","retention","scale","develop"]},
- {u:"av/gifs/big-idea.gif",kw:["רעיון","תובנ","חדשנ","idea","insight","concept","discovery","innovat"]},
- {u:"av/gifs/idea-gears.gif",kw:["תהליך","מנגנון","מערכת","שיט","אג' יל","process","system","mechanism","agile","scrum","sprint","workflow"]},
- {u:"av/gifs/lightbulb.gif",kw:["רעיון","תובנ","הברק","idea","insight","aha"]},
- {u:"av/gifs/multitask.gif",kw:["ריבוי","משימ","תעדוף","ניהול","עומס","multitask","task","priorit","manage","backlog","juggle"]},
- {u:"av/gifs/jigsaw.gif",kw:["הרכב","חיבור","חלק","התאמ","build","assemble","piece","fit","integrat","compose"]},
- {u:"av/gifs/puzzle-solve.gif",kw:["בעי","פתרון","חשיב","אתגר","problem","solve","think","challenge","concept"]},
- {u:"av/gifs/integration-net.gif",kw:["מערכת","אינטגרצי","רשת","חיבור","טכנולוג","פלטפורמ","system","integrat","network","platform","tech","api","connect"]},
- {u:"av/gifs/working-team.gif",kw:["עבוד","ביצוע","פיתוח","צוות","work","build","execution","develop","deliver","team"]},
- {u:"av/gifs/team-game.gif",kw:["צוות","שיתוף","יחד","team","collab","together","cross"]},
+ {u:"av/gifs/data-analytics.gif",kw:["נתונ","דאטה","מדד","אנליט","data","analyt","metric","kpi","dashboard"]},
+ {u:"av/gifs/bi-dashboard.gif",kw:["נתונ","דאשבורד","מדד","ויזואל","bi","data","dashboard","kpi","chart"]},
+ {u:"av/gifs/growth-sprout.gif",kw:["צמיח","גדיל","שימור","growth","grow","retention","scale"]},
+ {u:"av/gifs/big-idea.gif",kw:["רעיון","תובנ","חדשנ","idea","insight","concept","innovat"]},
+ {u:"av/gifs/idea-gears.gif",kw:["תהליך","מנגנון","מערכת","process","system","agile","scrum","sprint","workflow"]},
+ {u:"av/gifs/lightbulb.gif",kw:["רעיון","תובנ","idea","insight","aha"]},
+ {u:"av/gifs/multitask.gif",kw:["ריבוי","משימ","ניהול","multitask","task","manage","juggle"]},
+ {u:"av/gifs/jigsaw.gif",kw:["הרכב","חיבור","חלק","build","assemble","piece","fit","integrat"]},
+ {u:"av/gifs/puzzle-solve.gif",kw:["בעי","פתרון","חשיב","problem","solve","think","challenge"]},
+ {u:"av/gifs/integration-net.gif",kw:["מערכת","אינטגרצי","רשת","חיבור","טכנולוג","system","integrat","network","platform","tech","api"]},
+ {u:"av/gifs/working-team.gif",kw:["עבוד","ביצוע","פיתוח","work","build","execution","develop","deliver"]},
+ {u:"av/gifs/team-game.gif",kw:["צוות","שיתוף","יחד","team","collab","together"]},
  {u:"av/gifs/teamwork-dream.gif",kw:["צוות","שיתוף","יחד","team","collab","together","dream"]},
- {u:"av/gifs/cowork.gif",kw:["צוות","שיתוף","משרד","עבוד","team","collab","office","cowork","workspace"]}
+ {u:"av/gifs/cowork.gif",kw:["צוות","משרד","עבוד","team","office","cowork","workspace"]},
+ {u:"av/gifs/prioritize-fun.gif",kw:["תעדוף","עדיפ","החלט","עומס","priorit","decision","overwhelm","focus","backlog"]},
+ {u:"av/gifs/classic-toon.gif",kw:["כיף","התרגש","חגיג","קלאסי","fun","excite","celebrate","classic","joy"]},
+ {u:"av/gifs/highfive.gif",kw:["הצלח","חגיג","ניצח","הישג","success","celebrate","win","achieve"]},
+ {u:"av/gifs/office-team.gif",kw:["צוות","פגיש","עבוד","דיון","team","meeting","work","office","discuss"]},
+ {u:"av/gifs/celebrate-fun.gif",kw:["חגיג","הצלח","השק","כיף","celebrate","success","launch","fun","party"]},
+ {u:"av/gifs/handshake.gif",kw:["שותפ","לקוח","עסק","משא ומתן","handshake","partner","stakeholder","customer","deal","negotiat"]},
+ {u:"av/gifs/busy-cat.gif",kw:["עומס","עסוק","לחץ","ריבוי","busy","overload","multitask","work","stress","deadline"]}
 ];
 var AV_GIFS={};
 // Per-stage GIF pools (owner spec 2026-06-23): each core stage gets its own 20-30 visually-vetted clips;
@@ -6474,7 +6481,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.39';
+const APP_VERSION='1.6.40';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
