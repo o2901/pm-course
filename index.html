@@ -5051,7 +5051,7 @@ var AV_AUDIO={'0_1_en':{n:10},'0_1_he':{n:7},'0_2_en':{n:12},'0_2_he':{n:9},'0_3
 // in the lessons (verified 200 image/gif, deduped against the lesson GIF set). AV_GIFS_POOL is the
 // shared default pool (cycled with a per-chapter rotation for variety); AV_GIFS[stage_topic] can
 // override with a topic-specific pool. The player shows one on every slide over the CSS ambient bg.
-var AV_GIFS_POOL=["https://media.tenor.com/0-2LyUXcO1YAAAAM/data-analytics-solutions-data-analytics-services.gif","https://media.tenor.com/TykNg8DCjwcAAAAM/data-visualization-services-data-analytics-and-visualization-services.gif","https://media.tenor.com/VkEyxbkfq6oAAAAM/learning-training.gif","https://media.tenor.com/yezgiWsi4HkAAAAM/data-is-the-key-to-growth-growth.gif","https://media.tenor.com/CIfLF_hzAGkAAAAM/strategy-is-fair-planning.gif","https://media.tenor.com/lYcuHpGCCZ4AAAAM/mission-plan-dbl.gif","https://media.tenor.com/dzhdoQvUmAcAAAAM/i-have-a-vision-fernanda-ramirez.gif","https://media.tenor.com/_EwvQmaXZOMAAAAM/big-idea-idea-moment.gif","https://media.tenor.com/_WiQuS13yZQAAAAM/for-the-future-planning.gif","https://media.tenor.com/c9YWXTKysAwAAAAM/ccivs-strategic-planning.gif","https://media.tenor.com/irmS14paE4EAAAAM/priorities-prioritize.gif","https://media.tenor.com/p4r3uutmMKMAAAAM/priority-priorities.gif","https://media.tenor.com/sxR9eGmh1kIAAAAM/digital-pratik-set-your-priorities.gif","https://media.tenor.com/I72EkOliA_YAAAAM/idea-gears.gif","https://media.tenor.com/ynzlum6SUCIAAAAM/light-lightbulb.gif","https://media.tenor.com/52WcdD56kksAAAAM/bulb-light-bulb.gif","https://media.tenor.com/L2JplXDNEmoAAAAM/think-idea.gif","https://media.tenor.com/pakzecn3_jgAAAAM/teamwork.gif","https://media.tenor.com/FApRE_u99tgAAAAM/teamwork-team-game.gif","https://media.tenor.com/qH2iafmdjHUAAAAM/teamwork-teamwork-makes-the-dream-work.gif","https://media.tenor.com/yjBMzQ0asPUAAAAM/high-five-caron.gif","https://media.tenor.com/CAsrTbM5t1sAAAAM/shake-hands-thank-you.gif","https://media.tenor.com/sCYb_lWzjTkAAAAM/celebrate-we-did-it.gif","https://media.tenor.com/CR0d8_pU6woAAAAM/high-five-celebrate.gif","https://media.tenor.com/rtvoz_mxToQAAAAM/busy-working.gif","https://media.tenor.com/hiXcspj5zWwAAAAM/typing-laptop.gif"];
+var AV_GIFS_POOL=[];
 var AV_GIFS={};
 var _av={on:false,i:0,slides:[],ov:null,u:null,tok:0,aud:null,player:null};
 // Neutralize the current utterance BEFORE cancel(): in Chrome, cancel() fires the canceled
@@ -6448,7 +6448,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.34';
+const APP_VERSION='1.6.35';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
