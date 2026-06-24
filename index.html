@@ -415,6 +415,9 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--t1);min-hei
 .title-badge.naval{background:linear-gradient(135deg,rgba(0,201,167,.15),rgba(108,99,255,.15));color:var(--a);border:1px solid rgba(0,201,167,.3)}
 .title-badge.senior{background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,101,132,.15));color:var(--g);border:1px solid rgba(255,215,0,.3)}
 .title-badge.allstar{background:linear-gradient(135deg,rgba(255,215,0,.2),rgba(108,99,255,.15));color:var(--g);border:1px solid rgba(255,215,0,.4);box-shadow:0 0 12px rgba(255,215,0,.15)}
+/* Navy-arm gating: .navy-only shows ONLY to navy-arm users (body.b-navy); .civ-only ONLY to civilians/pre-registration. Default (no b-navy, e.g. before login) = civilian, so navy content is hidden until a navy user logs in. */
+body:not(.b-navy) .navy-only{display:none!important}
+body.b-navy .civ-only{display:none!important}
 .streak-badge{display:flex;align-items:center;gap:.2rem;padding:.2rem .55rem;border-radius:16px;background:rgba(255,152,0,.1);font-size:.75rem;border:1px solid rgba(255,152,0,.2);white-space:nowrap}
 .streak-badge .v{font-weight:700;color:#FF9800}
 .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:center;justify-content:center;animation:fi .3s}
@@ -926,12 +929,16 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 <h2>👨‍💻 על עומרי דזבלי</h2>
 <div class="about-subtitle">Omri Degibly | יוצר מערכת Product Master ⚓</div>
 
-<div class="about-section">
+<div class="about-section civ-only">
+<h3>💼 רקע מקצועי</h3>
+<p>מנהל מוצר בכיר עם ניסיון עשיר בהובלת מוצרים ומערכות מורכבות — מאסטרטגיה ועד ביצוע. יוצר מערכת Product Master.</p>
+</div>
+<div class="about-section navy-only">
 <h3>⚓ רקע מקצועי</h3>
 <p>רס"ן במילואים בזרוע הים, בעל ניסיון עשיר בניהול מוצר בדגש על מערכות השליטה והמודיעין.</p>
 </div>
 
-<div class="about-section">
+<div class="about-section navy-only">
 <h3>🎖️ תפקידים בשירות הצבאי</h3>
 <ul class="about-roles">
 <li><span class="role-title">רע״ן צל מערכות מידע במילואים</span><br><span class="role-unit">יחידת מפת״ח, מספן ציוד, זרוע הים</span></li>
@@ -1031,7 +1038,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 const S=[
 // =============== STAGE 0 - INTRO ===============
 {id:0,t:"מבוא למסע",d:"מה תמצאו כאן, מה מצופה מכם, ואנשי המוצר הבכירים שתכירו לאורך הדרך",tg:"טרום הבסיס",tc:"tg0",ic:"🧭",
-th:[{t:"🧭 ברוכים הבאים למערכת",c:`<h4>מה יש פה?</h4><p>מערכת Product Master היא קורס אינטראקטיבי ומשחקי שמלמד את עולם ניהול המוצר מהבסיס ועד העומק. כל שלב כולל:</p><ul><li><strong>📚 לימוד תיאורטי</strong> - נושאים מוסברים בצורה ברורה, עם <strong>מונחים מקצועיים</strong> שאפשר ללחוץ עליהם לקבלת הסבר מעמיק. חפשו את סימן ה-<span style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:rgba(108,99,255,.25);color:var(--p);font-size:9px;font-weight:800">i</span> ליד מונחים באנגלית.</li><li><strong>📋 קייס סטאדי סיפורי</strong> - בכל שלב תלווה את <strong>מיכל</strong>, מנהלת מוצר חדשה בחברת <strong>Velox</strong> (סטארטאפ SaaS), שמתמודדת עם אתגרים אמיתיים בדרך. תוכלו ללמוד מהניסיון שלה.</li><li><strong>❓ מבחן</strong> - 10 שאלות שבודקות את ההבנה. אין ציון עובר - רק למידה. תמיד אפשר לחזור ולנסות שוב.</li></ul><h4>מערכת ההתקדמות</h4><ul><li><strong>⭐ נקודות</strong> - צוברים על כל שאלה נכונה (10 נק')</li><li><strong>🔥 רצף</strong> - נכנסים כל יום? הרצף עולה!</li><li><strong>🎓 דרגת סטודנט לניהול מוצר</strong> - סיימו שלב 2</li><li><strong>⚓ דרגת מנהל מוצר בהסמכה</strong> - סיימו שלבים 2-10</li><li><strong>🎖️ דרגת מנהל מוצר מוסמך</strong> - סיימו את כל 23 שלבי הליבה (2-24)</li></ul><div class="tbox"><p>💡 אפשר להתחיל מכל שלב שרוצים ולחזור מתי שרוצים. אין סדר חובה - אבל מומלץ להתחיל מההתחלה אם אתם חדשים בתחום.</p></div>`},{t:"📋 מה מצופה מכם",c:`<h4>הגישה הנכונה ללמידה</h4><p>הקורס הזה בנוי ככלי עבודה - לא רק קריאה פסיבית. כדי להפיק ממנו את המקסימום:</p><ul><li><strong>קראו את התיאוריה לעומק</strong> - אל תדלגו. כל סעיף בונה על הקודם. לחצו על מונחים מקצועיים (<span style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:rgba(108,99,255,.25);color:var(--p);font-size:9px;font-weight:800">i</span>) כדי להבין לעומק.</li><li><strong>חשבו על הקייס</strong> - לפני שקוראים את ההמשך, עצרו ושאלו את עצמכם: "מה הייתי עושה?" הלמידה הכי טובה היא אקטיבית.</li><li><strong>ענו על המבחן ברצינות</strong> - גם אם טעיתם, קראו את ההסבר. שם מסתתר הידע האמיתי.</li><li><strong>חזרו</strong> - מותר ומומלץ לחזור על שלבים. הפעם השנייה תמיד יותר עמוקה.</li></ul><div class="hbox"><p><strong>זכרו:</strong> אין ציון עובר, אין לחץ זמן, אין נכשלים. יש רק למידה. כל פעם שנכנסים - מתקדמים.</p></div><h4>מפת הדרך</h4><div class="tbl-wrap"><table><tr><th>שלבים</th><th>נושא</th><th>רמה</th></tr><tr><td>1</td><td>מבנה זרוע הים - הכרת הבית</td><td>טרום הבסיס</td></tr><tr><td>2-5</td><td>יסודות ניהול מוצר: מהו מוצר, תפקיד ה-PM, מחקר שוק, שוק תחרותי</td><td>בסיסי</td></tr><tr><td>6-10</td><td>אסטרטגיה וביצוע: חזון, תעדוף, אגיל, דרישות, גילוי מוצר</td><td>ביניים</td></tr><tr><td>11-15</td><td>עומק מקצועי: נתונים, UX, השקה, צמיחה, מנהיגות</td><td>מתקדם</td></tr><tr><td>16-18</td><td>ניהול ספרינט, בניית בקלוג וניהול גרסאות</td><td>מתקדם מאוד</td></tr><tr><td>19-24</td><td>AI, סביבה ביטחונית, מוצרי חומרה, גיימיפיקציה, ניהול ממשקי משתמש, ניהול ממשקים בין מערכות</td><td>התמחות</td></tr><tr><td>25</td><td>בסוף השירות - הכנה לראיונות ומעבר לתעשייה</td><td>בונוס מיוחד</td></tr></table></div>`},{t:"👥 אנשי מוצר בכירים שתפגשו",c:`<p>לאורך הקורס תיתקלו בתובנות, מסגרות, ושיטות של אנשי המוצר המשפיעים ביותר בעולם. הנה הכרות ראשונית:</p><h4>מרטי קגן (Marty Cagan)</h4><p>מייסד <span class="ltr">Silicon Valley Product Group (SVPG)</span>, מחבר הספרים <strong>"Inspired"</strong> ו-<strong>"Empowered"</strong> - שני הספרים המשפיעים ביותר על ניהול מוצר מודרני. עבד ב-HP, Netscape, eBay. כגן מלמד על <strong><span class="ti">Product Discovery<span class="ib" onclick="ti(this)">i</span><span class="tp"><strong>Product Discovery (גילוי מוצר)</strong> - תהליך שיטתי של חקירה: מה לבנות? למי? למה? כולל ראיונות משתמשים, ניסויים, ובדיקת השערות לפני שמתחילים לפתח.</span></span></strong>, <strong>צוותים מועצמים (Empowered Teams)</strong>, ו-<strong>Dual-Track Agile</strong>. תפגשו אותו בעיקר בשלבים 3, 6, 8 ו-16.</p><h4>לני רצ'יצקי (Lenny Rachitsky)</h4><p>מחבר הניוזלטר המוביל בעולם ניהול המוצר עם למעלה ממיליון מנויים. לשעבר PM ב-<span class="ltr">Airbnb</span>. רצ'יצקי מתמחה ב<strong>שימור (Retention)</strong>, <strong>צמיחה (Growth)</strong>, <strong><span class="ti">Product-Market Fit<span class="ib" onclick="ti(this)">i</span><span class="tp"><strong>Product-Market Fit (PMF)</strong> - ההתאמה בין המוצר לשוק. כשלמוצר שלך יש ביקוש אמיתי ומשתמשים חוזרים מעצמם - הגעת ל-PMF.</span></span></strong>, ו<strong>מנופי צמיחה</strong>. הוא מראיין כל שבוע את מנהלי המוצר הטובים בעולם. תפגשו אותו בעיקר בשלבים 6 ו-14.</p><h4>פיטר יאנג (Peter Yang)</h4><p>מחבר הניוזלטר והספר <strong>"Product Life"</strong> על ניהול מוצר. יאנג מדגיש את עקרון <strong>Outcome over Output</strong> (תוצאות מול תפוקות), <strong><span class="ti">Product Sense<span class="ib" onclick="ti(this)">i</span><span class="tp"><strong>Product Sense (חוש מוצרי)</strong> - היכולת האינטואיטיבית לזהות מה יעבוד למשתמשים. שילוב של ניסיון, אמפתיה, והבנה טכנית שעוזר ל-PM לקבל החלטות טובות.</span></span></strong>, ו-<strong>First Principles Thinking</strong> (חשיבה מעקרונות ראשונים). תפגשו אותו בשלבים 3, 6, ו-11.</p><h4>תרזה טורס (Teresa Torres)</h4><p>מחברת הספר <strong>"Continuous Discovery Habits"</strong> ומפתחת שיטת <strong>Opportunity Solution Tree</strong> - כלי ויזואלי שמחבר בין מטרות עסקיות לצרכי משתמשים ולפתרונות. טורס מלמדת איך לעשות Discovery בצורה שיטתית ומתמשכת, לא כאירוע חד-פעמי. תפגשו אותה בשלבים 4, 8 ו-10.</p><h4>אריק ריס (Eric Ries)</h4><p>מחבר <strong>"The Lean Startup"</strong> שחולל מהפכה באופן שבו סטארטאפים בונים מוצרים. ריס הגדיר את מושגי <strong>MVP</strong> (Minimum Viable Product), <strong>Build-Measure-Learn</strong>, ו-<strong>Pivot</strong>. תפגשו אותו בשלב 10.</p><h4>אנדרי קרפטי (Andrej Karpathy)</h4><p>ממייסדי <span class="ltr">OpenAI</span>, לשעבר ראש צוות AI ב-<span class="ltr">Tesla</span>. מרצה בסטנפורד ויוצר סדרת <span class="ltr">"Neural Networks: Zero to Hero"</span>. קרפטי מסביר את עולם ה-AI בצורה אינטואיטיבית: <strong>Software 2.0</strong>, <strong>מודלי שפה גדולים (LLMs)</strong>, <strong>Tokenization</strong>, ו-<strong>Prompt Engineering</strong>. תפגשו אותו בשלב 19.</p><div class="tbox"><p>💡 בנוסף תיתקלו בתובנות של: <strong>ריצ'רד רומלט (Richard Rumelt)</strong> על אסטרטגיה, <strong>מארק אנדריסן (Marc Andreessen)</strong> על Product-Market Fit, <strong>גיבסון בידל (Gibson Biddle)</strong> על מסגרת DHM, <strong>דייב מקלור (Dave McClure)</strong> על מדדי AARRR, <strong>שון אליס (Sean Ellis)</strong> על Growth Hacking, <strong>יעקב נילסן (Jakob Nielsen)</strong> על שימושיות, ועוד.</p></div>`}],
+th:[{t:"🧭 ברוכים הבאים למערכת",c:`<h4>מה יש פה?</h4><p>מערכת Product Master היא קורס אינטראקטיבי ומשחקי שמלמד את עולם ניהול המוצר מהבסיס ועד העומק. כל שלב כולל:</p><ul><li><strong>📚 לימוד תיאורטי</strong> - נושאים מוסברים בצורה ברורה, עם <strong>מונחים מקצועיים</strong> שאפשר ללחוץ עליהם לקבלת הסבר מעמיק. חפשו את סימן ה-<span style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:rgba(108,99,255,.25);color:var(--p);font-size:9px;font-weight:800">i</span> ליד מונחים באנגלית.</li><li><strong>📋 קייס סטאדי סיפורי</strong> - בכל שלב תלווה את <strong>מיכל</strong>, מנהלת מוצר חדשה בחברת <strong>Velox</strong> (סטארטאפ SaaS), שמתמודדת עם אתגרים אמיתיים בדרך. תוכלו ללמוד מהניסיון שלה.</li><li><strong>❓ מבחן</strong> - 10 שאלות שבודקות את ההבנה. אין ציון עובר - רק למידה. תמיד אפשר לחזור ולנסות שוב.</li></ul><h4>מערכת ההתקדמות</h4><ul><li><strong>⭐ נקודות</strong> - צוברים על כל שאלה נכונה (10 נק')</li><li><strong>🔥 רצף</strong> - נכנסים כל יום? הרצף עולה!</li><li><strong>🎓 דרגת סטודנט לניהול מוצר</strong> - סיימו שלב 2</li><li><strong>⚓ דרגת מנהל מוצר בהסמכה</strong> - סיימו שלבים 2-10</li><li><strong>🎖️ דרגת מנהל מוצר מוסמך</strong> - סיימו את כל 23 שלבי הליבה (2-24)</li></ul><div class="tbox"><p>💡 אפשר להתחיל מכל שלב שרוצים ולחזור מתי שרוצים. אין סדר חובה - אבל מומלץ להתחיל מההתחלה אם אתם חדשים בתחום.</p></div>`},{t:"📋 מה מצופה מכם",c:`<h4>הגישה הנכונה ללמידה</h4><p>הקורס הזה בנוי ככלי עבודה - לא רק קריאה פסיבית. כדי להפיק ממנו את המקסימום:</p><ul><li><strong>קראו את התיאוריה לעומק</strong> - אל תדלגו. כל סעיף בונה על הקודם. לחצו על מונחים מקצועיים (<span style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:rgba(108,99,255,.25);color:var(--p);font-size:9px;font-weight:800">i</span>) כדי להבין לעומק.</li><li><strong>חשבו על הקייס</strong> - לפני שקוראים את ההמשך, עצרו ושאלו את עצמכם: "מה הייתי עושה?" הלמידה הכי טובה היא אקטיבית.</li><li><strong>ענו על המבחן ברצינות</strong> - גם אם טעיתם, קראו את ההסבר. שם מסתתר הידע האמיתי.</li><li><strong>חזרו</strong> - מותר ומומלץ לחזור על שלבים. הפעם השנייה תמיד יותר עמוקה.</li></ul><div class="hbox"><p><strong>זכרו:</strong> אין ציון עובר, אין לחץ זמן, אין נכשלים. יש רק למידה. כל פעם שנכנסים - מתקדמים.</p></div><h4>מפת הדרך</h4><div class="tbl-wrap"><table><tr><th>שלבים</th><th>נושא</th><th>רמה</th></tr><tr class="navy-only"><td>1</td><td>מבנה זרוע הים - הכרת הבית</td><td>טרום הבסיס</td></tr><tr><td>2-5</td><td>יסודות ניהול מוצר: מהו מוצר, תפקיד ה-PM, מחקר שוק, שוק תחרותי</td><td>בסיסי</td></tr><tr><td>6-10</td><td>אסטרטגיה וביצוע: חזון, תעדוף, אגיל, דרישות, גילוי מוצר</td><td>ביניים</td></tr><tr><td>11-15</td><td>עומק מקצועי: נתונים, UX, השקה, צמיחה, מנהיגות</td><td>מתקדם</td></tr><tr><td>16-18</td><td>ניהול ספרינט, בניית בקלוג וניהול גרסאות</td><td>מתקדם מאוד</td></tr><tr><td>19-24</td><td>AI, סביבה ביטחונית, מוצרי חומרה, גיימיפיקציה, ניהול ממשקי משתמש, ניהול ממשקים בין מערכות</td><td>התמחות</td></tr><tr><td>25</td><td>בסוף השירות - הכנה לראיונות ומעבר לתעשייה</td><td>בונוס מיוחד</td></tr></table></div>`},{t:"👥 אנשי מוצר בכירים שתפגשו",c:`<p>לאורך הקורס תיתקלו בתובנות, מסגרות, ושיטות של אנשי המוצר המשפיעים ביותר בעולם. הנה הכרות ראשונית:</p><h4>מרטי קגן (Marty Cagan)</h4><p>מייסד <span class="ltr">Silicon Valley Product Group (SVPG)</span>, מחבר הספרים <strong>"Inspired"</strong> ו-<strong>"Empowered"</strong> - שני הספרים המשפיעים ביותר על ניהול מוצר מודרני. עבד ב-HP, Netscape, eBay. כגן מלמד על <strong><span class="ti">Product Discovery<span class="ib" onclick="ti(this)">i</span><span class="tp"><strong>Product Discovery (גילוי מוצר)</strong> - תהליך שיטתי של חקירה: מה לבנות? למי? למה? כולל ראיונות משתמשים, ניסויים, ובדיקת השערות לפני שמתחילים לפתח.</span></span></strong>, <strong>צוותים מועצמים (Empowered Teams)</strong>, ו-<strong>Dual-Track Agile</strong>. תפגשו אותו בעיקר בשלבים 3, 6, 8 ו-16.</p><h4>לני רצ'יצקי (Lenny Rachitsky)</h4><p>מחבר הניוזלטר המוביל בעולם ניהול המוצר עם למעלה ממיליון מנויים. לשעבר PM ב-<span class="ltr">Airbnb</span>. רצ'יצקי מתמחה ב<strong>שימור (Retention)</strong>, <strong>צמיחה (Growth)</strong>, <strong><span class="ti">Product-Market Fit<span class="ib" onclick="ti(this)">i</span><span class="tp"><strong>Product-Market Fit (PMF)</strong> - ההתאמה בין המוצר לשוק. כשלמוצר שלך יש ביקוש אמיתי ומשתמשים חוזרים מעצמם - הגעת ל-PMF.</span></span></strong>, ו<strong>מנופי צמיחה</strong>. הוא מראיין כל שבוע את מנהלי המוצר הטובים בעולם. תפגשו אותו בעיקר בשלבים 6 ו-14.</p><h4>פיטר יאנג (Peter Yang)</h4><p>מחבר הניוזלטר והספר <strong>"Product Life"</strong> על ניהול מוצר. יאנג מדגיש את עקרון <strong>Outcome over Output</strong> (תוצאות מול תפוקות), <strong><span class="ti">Product Sense<span class="ib" onclick="ti(this)">i</span><span class="tp"><strong>Product Sense (חוש מוצרי)</strong> - היכולת האינטואיטיבית לזהות מה יעבוד למשתמשים. שילוב של ניסיון, אמפתיה, והבנה טכנית שעוזר ל-PM לקבל החלטות טובות.</span></span></strong>, ו-<strong>First Principles Thinking</strong> (חשיבה מעקרונות ראשונים). תפגשו אותו בשלבים 3, 6, ו-11.</p><h4>תרזה טורס (Teresa Torres)</h4><p>מחברת הספר <strong>"Continuous Discovery Habits"</strong> ומפתחת שיטת <strong>Opportunity Solution Tree</strong> - כלי ויזואלי שמחבר בין מטרות עסקיות לצרכי משתמשים ולפתרונות. טורס מלמדת איך לעשות Discovery בצורה שיטתית ומתמשכת, לא כאירוע חד-פעמי. תפגשו אותה בשלבים 4, 8 ו-10.</p><h4>אריק ריס (Eric Ries)</h4><p>מחבר <strong>"The Lean Startup"</strong> שחולל מהפכה באופן שבו סטארטאפים בונים מוצרים. ריס הגדיר את מושגי <strong>MVP</strong> (Minimum Viable Product), <strong>Build-Measure-Learn</strong>, ו-<strong>Pivot</strong>. תפגשו אותו בשלב 10.</p><h4>אנדרי קרפטי (Andrej Karpathy)</h4><p>ממייסדי <span class="ltr">OpenAI</span>, לשעבר ראש צוות AI ב-<span class="ltr">Tesla</span>. מרצה בסטנפורד ויוצר סדרת <span class="ltr">"Neural Networks: Zero to Hero"</span>. קרפטי מסביר את עולם ה-AI בצורה אינטואיטיבית: <strong>Software 2.0</strong>, <strong>מודלי שפה גדולים (LLMs)</strong>, <strong>Tokenization</strong>, ו-<strong>Prompt Engineering</strong>. תפגשו אותו בשלב 19.</p><div class="tbox"><p>💡 בנוסף תיתקלו בתובנות של: <strong>ריצ'רד רומלט (Richard Rumelt)</strong> על אסטרטגיה, <strong>מארק אנדריסן (Marc Andreessen)</strong> על Product-Market Fit, <strong>גיבסון בידל (Gibson Biddle)</strong> על מסגרת DHM, <strong>דייב מקלור (Dave McClure)</strong> על מדדי AARRR, <strong>שון אליס (Sean Ellis)</strong> על Growth Hacking, <strong>יעקב נילסן (Jakob Nielsen)</strong> על שימושיות, ועוד.</p></div>`}],
 cs:{t:"ברוכים הבאים! הנה מה שמחכה לכם",c:`<p>לפני שמתחילים, כמה מילים על הדרך שלפניכם.</p><p>המערכת הזו נבנתה כדי להכין אתכם לעולם ניהול המוצר - עולם שמשלב <strong>חשיבה עסקית</strong>, <strong>הבנת משתמשים</strong>, <strong>טכנולוגיה</strong>, ו-<strong>מנהיגות</strong>. לא צריך ניסיון קודם - הכל מוסבר מהבסיס.</p><div class="hbox"><p><strong>מיכל</strong>, מנהלת מוצר חדשה בחברת <strong>Velox</strong>, תלווה אתכם לאורך כל הדרך. דרך הסיפור שלה - תלמדו איך ניהול מוצר נראה בפועל: ההצלחות, הכישלונות, והלקחים.</p></div><p>בכל שלב יש תיאוריה, סיפור, ומבחן. אפשר להתחיל מכל מקום, אבל מומלץ לעבור שלב אחרי שלב בפעם הראשונה.</p><div class="tbox"><p>💡 <strong>טיפ:</strong> אל תנסו ללמוד הכל בבת אחת. שלב אחד ביום = התקדמות עקבית שנותנת תוצאות.</p></div><p><strong>מוכנים? יאללה, עולים על הסיפון!</strong></p>`},
 q:[
 {q:"כמה שלבים יש במערכת Product Master?",o:["5 שלבים בסיסיים בלבד ללא חומרי העשרה נוספים","10 שלבים עיקריים עם תרגילי סיכום בסוף כל אחד","23 שלבי ליבה + בונוס מיוחד + 26 פרקי ספרים","100 שלבים מתקדמים המחולקים לרבעונים שנתיים"],c:2,e:"המערכת כוללת שלב מבוא (0), הכרת הבית (1), 23 שלבי ליבה (2-24), בונוס מיוחד (25), ו-26 פרקי ספרים - סה\"כ 52 שלבים. כל שלב כולל תיאוריה, קייס סטאדי ומבחן."},
@@ -3558,7 +3565,12 @@ const PM_IDS=[2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 const _secOrder={'טרום הבסיס':0,'בסיסי':1,'ביניים':2,'מתקדם':3,'מתקדם מאוד':4,'התמחות':5,'בונוס מיוחד':6,'בונוס - ספר':7};
 function sortStages(arr){return[...arr].sort((a,b)=>{const sa=_secOrder[a.tg]??99,sb=_secOrder[b.tg]??99;if(sa!==sb)return sa-sb;return a.id-b.id})}
 function pc(){return PM_IDS.filter(i=>G.done.has(i)).length}
-function getTitle(){const d=G.done;const has2to10=[2,3,4,5,6,7,8,9,10].every(i=>d.has(i));const hasAll=PM_IDS.every(i=>d.has(i));const hasEverything=S.every(st=>d.has(st.id));if(hasEverything)return{name:'סניור מוצר',cls:'allstar',icon:'👑'};if(hasAll)return{name:'מנהל מוצר מוסמך',cls:'senior',icon:'🎖️'};if(has2to10)return{name:'מנהל מוצר בהסמכה',cls:'naval',icon:'⚓'};if(d.has(2))return{name:'סטודנט לניהול מוצר',cls:'student',icon:'🎓'};return null}
+// ===== Navy-arm gating: navy-structure stage (id 1) is HIDDEN from civilian users (G.navyArm falsy). Internal ids stay intact. =====
+function _stageHidden(s){return !!(s&&s.id===1&&!G.navyArm);}
+function _totalVisible(){return S.filter(s=>!_stageHidden(s)).length;}
+function _dispNum(s){return s.id===0?1:s.id;}   // intro (id0) shows as "שלב 1" so the visible sequence is gapless
+function _noNum(s){return s.id===1;}            // navy stage: rendered as a number-less special card "⚓ מבנה זרוע הים"
+function getTitle(){const d=G.done;const has2to10=[2,3,4,5,6,7,8,9,10].every(i=>d.has(i));const hasAll=PM_IDS.every(i=>d.has(i));const hasEverything=S.every(st=>_stageHidden(st)||d.has(st.id));if(hasEverything)return{name:'סניור מוצר',cls:'allstar',icon:'👑'};if(hasAll)return{name:'מנהל מוצר מוסמך',cls:'senior',icon:'🎖️'};if(has2to10)return{name:'מנהל מוצר בהסמכה',cls:'naval',icon:'⚓'};if(d.has(2))return{name:'סטודנט לניהול מוצר',cls:'student',icon:'🎓'};return null}
 function checkTitleCeremony(){const t=getTitle();if(t&&t.cls==='allstar'&&!G.titleShownAll){G.titleShownAll=true;sv();showModal('👑','אגדה!','סניור מוצר',(_enLang()?'You completed all 52 stages — core and books! You are now a <strong>Senior Product Manager</strong> — the highest rank in the system. No one is above you! 👑🎉':'סיימת את כל 52 השלבים - ליבה וספרים! אתה עכשיו <strong>סניור מוצר</strong> - הדרגה הגבוהה ביותר במערכת. אין מעליך! 👑🎉'));cf();cf();cf()}else if(t&&t.cls==='senior'&&!G.titleShown15){G.titleShown15=true;sv();showModal('🎖️','כל הכבוד, מוסמך!','מנהל מוצר מוסמך',(_enLang()?'You completed the 23 required stages! You now hold the most comprehensive knowledge in product management. Your rank: <strong>Certified Product Manager</strong>. You have earned a celebration! 🎉':'סיימת את 23 השלבים הנדרשים! אתה עכשיו בעל הידע המקיף ביותר בניהול מוצר. הדרגה שלך: <strong>מנהל מוצר מוסמך</strong>. מגיע לך מבצע הוקרה! 🎉'));cf();cf()}else if(t&&t.cls==='naval'&&!G.titleShown9){G.titleShown9=true;sv();showModal('⚓','מזל טוב, מפקד!','מנהל מוצר בהסמכה',(_enLang()?'You completed the 9 foundational and intermediate stages! Your rank: <strong>Product Manager in Training</strong>. 14 more advanced stages and you become certified! 💪':'סיימת את 9 שלבי הבסיס והביניים! הדרגה שלך: <strong>מנהל מוצר בהסמכה</strong>. עוד 14 שלבים מתקדמים והופך למוסמך! 💪'));cf()}else if(t&&t.cls==='student'&&!G.titleShown2){G.titleShown2=true;sv();showModal('🎓','ברוכים הבאים!','סטודנט לניהול מוצר',(_enLang()?'You completed the first stage and earned the rank: <strong>Product Management Student</strong>. 8 more stages to the Product Manager in Training rank! 🚀':'סיימת את השלב הראשון וקיבלת את הדרגה: <strong>סטודנט לניהול מוצר</strong>. עוד 8 שלבים לדרגת מנהל מוצר בהסמכה! 🚀'));cf()}}
 
 // Modal system
@@ -3905,6 +3917,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
       G.satSkips.sort((a,b)=>(a.t||0)-(b.t||0));
     }catch(e){}
     if(d.data.interviewUnlocked==='true')G.interviewUnlocked=true;
+    G.navyArm=(String(d.data.navyArm)==='true');/* navy-arm flag (admin-set); absent ⇒ civilian (navy stage hidden) */
     if(parseInt(d.data.satisfaction)>0)G.satisfactionRating=parseInt(d.data.satisfaction);
     if(d.data.adminMessage&&d.data.adminMessage.trim()){if(d.data.adminMessage!==G.adminMessage){G.adminMessage=d.data.adminMessage;G.adminMessageRead=false}}else{G.adminMessage='';G.adminMessageRead=true}
     // Cache email status for popup logic
@@ -4264,7 +4277,7 @@ el.innerHTML='<div class="continue-hero" onclick="ss('+s.id+')"><div class="ch-i
 '<div style="display:flex;gap:.5rem;justify-content:center;margin-top:.6rem;flex-wrap:wrap"><button class="bs" style="font-size:.8rem;padding:.4rem .9rem" onclick="goToRandomStage()">'+_t('🎲 שלב אקראי')+'</button>'+(G.lastStageVisited&&G.lastStageVisited!==s.id?'<button class="bs" style="font-size:.8rem;padding:.4rem .9rem" onclick="goToLastVisited()">'+_t('↩ חזור לאחרון שביקרתי')+'</button>':'')+'</div>'}
 function goToRandomStage(){
   trackEvent('random','go');
-  const unfinished=S.filter(s=>!G.done.has(s.id)&&s.tg!=='בונוס - ספר'&&!(s.id===25&&!G.interviewUnlocked));
+  const unfinished=S.filter(s=>!G.done.has(s.id)&&s.tg!=='בונוס - ספר'&&!(s.id===25&&!G.interviewUnlocked)&&!_stageHidden(s));
   if(unfinished.length===0){showAchievement('🏆','סיימת הכל!','אין שלבים חדשים - חזור על שלב כדי לשפר ציון');return}
   const random=unfinished[Math.floor(Math.random()*unfinished.length)];
   showAchievement('🎲','שלב אקראי!',random.ic+(_enLang()?' Stage ':' שלב ')+random.id+': '+random.t);
@@ -4304,7 +4317,7 @@ function renderXPArea(){
 const el=$('xp-area');if(!el)return;
 const t=getTitle();
 const sorted=sortStages(S);
-const coreStages=sorted.filter(s=>s.tg!=='בונוס - ספר'&&s.tg!=='בונוס מיוחד');
+const coreStages=sorted.filter(s=>s.tg!=='בונוס - ספר'&&s.tg!=='בונוס מיוחד'&&!_stageHidden(s));
 const coreDone=coreStages.filter(s=>G.done.has(s.id)).length;
 const totalCore=coreStages.length;
 // Ring shows overall core progress
@@ -4316,7 +4329,7 @@ let nextRankText='';
 if(!t){nextRankText=_enLang()?'Finish stage 2 → <span class="xp-next-rank">Student 🎓</span>':'סיימו שלב 2 → <span class="xp-next-rank">סטודנט 🎓</span>'}
 else if(t.cls==='student'){const left=9-[2,3,4,5,6,7,8,9,10].filter(i=>G.done.has(i)).length;nextRankText=_enLang()?(left+' more stages → <span class="xp-next-rank">In Certification ⚓</span>'):('עוד '+left+' שלבים → <span class="xp-next-rank">בהסמכה ⚓</span>')}
 else if(t.cls==='naval'){nextRankText=_enLang()?((23-pc())+' more stages → <span class="xp-next-rank">Certified 🎖️</span>'):('עוד '+(23-pc())+' שלבים → <span class="xp-next-rank">מוסמך 🎖️</span>')}
-else if(t.cls==='senior'){const left=S.length-G.done.size;nextRankText=_enLang()?(left>0?(left+' more → <span class="xp-next-rank">Senior 👑</span>'):'Finish everything → <span class="xp-next-rank">Senior 👑</span>'):(left>0?'עוד '+left+' → <span class="xp-next-rank">סניור 👑</span>':'סיימו הכל → <span class="xp-next-rank">סניור 👑</span>')}
+else if(t.cls==='senior'){const left=_totalVisible()-G.done.size;nextRankText=_enLang()?(left>0?(left+' more → <span class="xp-next-rank">Senior 👑</span>'):'Finish everything → <span class="xp-next-rank">Senior 👑</span>'):(left>0?'עוד '+left+' → <span class="xp-next-rank">סניור 👑</span>':'סיימו הכל → <span class="xp-next-rank">סניור 👑</span>')}
 else if(t.cls==='allstar'){nextRankText=_enLang()?'<span class="xp-next-rank">🏆 Maximum rank!</span>':'<span class="xp-next-rank">🏆 הדרגה המקסימלית!</span>'}
 const curTitle=t?t.name:'מתחיל';
 // Streak info
@@ -4494,10 +4507,11 @@ sv();
 }
 
 function ss(id){
+if(id===1&&!G.navyArm){return}/* navy-structure stage hidden from civilians — never expose, even via direct call */
 if(id===25&&!G.interviewUnlocked){showModal('🔒','שלב נעול','שלב "בסוף השירות הצבאי" נעול כרגע.<br>פנו למנהל המערכת כדי לפתוח גישה.','הבנתי');return}
 G.v='s';G.st=id;G.tab='l';G.lastStageVisited=id;const _st=S.find(s=>s.id===id);logActivity('openStage',id+': '+(_st?_st.t:''));$('mv').classList.add('hid');$('sv').classList.remove('hid');$('ib').classList.remove('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');renderInfoBar();rs();window.scrollTo(0,0)}
 function $(id){return document.getElementById(id)}
-function uh(){$('ts').textContent=G.ts;$('cs').textContent=G.done.size;$('pf').style.width=(G.done.size/S.length*100)+'%';
+function uh(){$('ts').textContent=G.ts;$('cs').textContent=G.done.size;$('pf').style.width=(G.done.size/_totalVisible()*100)+'%';
 // Title badge + username in header
 const tb=$('tb');const t=getTitle();
 let tbH='';
@@ -4519,11 +4533,12 @@ const stb=$('stb'),stv=$('stv');if(G.streak>=2){stb.style.display='flex';stv.tex
 const ms=$('map-sub');if(ms){const t2=getTitle();if(t2&&t2.cls==='allstar'){ms.textContent=_t('סיימת את כל 52 השלבים! אין מעליך! 👑')}else if(t2&&t2.cls==='senior'){ms.textContent=_t('סיימת את כל השלבים הנדרשים! חזרו לרענן או לשפר ציונים 🎉')}else if(t2&&t2.cls==='naval'){ms.textContent=_t('עוד')+' '+(23-pc())+' '+_t('שלבים מתקדמים לדרגת מוסמך! 🎖️')}else if(t2&&t2.cls==='student'){ms.textContent=_t('עוד')+' '+(9-pc())+' '+_t('שלבים לדרגת בהסמכה! ⚓')}else{ms.textContent=_t('בחרו שלב - אפשר להתחיל מכל מקום ולחזור מתי שרוצים')}}}
 function renderMilestone(){const lb=$('mlb');if(!lb)return;const d=pc();const t=getTitle();const en=_enLang();if(t&&t.cls==='senior'){lb.innerHTML=en?`<div class="milestone-bar"><div class="mb-text">🎖️ <strong>Certified Product Manager</strong> - you completed all 23 required stages! 🎉</div><div class="mb-progress"><div class="mb-fill" style="width:100%"></div></div></div>`:`<div class="milestone-bar"><div class="mb-text">🎖️ <strong>מנהל מוצר מוסמך</strong> - השלמת את כל 23 השלבים הנדרשים! 🎉</div><div class="mb-progress"><div class="mb-fill" style="width:100%"></div></div></div>`}else if(t&&t.cls==='naval'){const pct=Math.round(d/23*100);lb.innerHTML=en?`<div class="milestone-bar"><div class="mb-text">⚓ <strong>Product Manager in Certification</strong> | ${23-d} more stages to Certified</div><div class="mb-progress"><div class="mb-fill" style="width:${pct}%"></div></div></div>`:`<div class="milestone-bar"><div class="mb-text">⚓ <strong>מנהל מוצר בהסמכה</strong> | עוד ${23-d} שלבים לדרגת מוסמך</div><div class="mb-progress"><div class="mb-fill" style="width:${pct}%"></div></div></div>`}else if(t&&t.cls==='student'){const pct=Math.round(d/9*100);const left=9-d;lb.innerHTML=en?`<div class="milestone-bar"><div class="mb-text">🎓 <strong>Product Management Student</strong> | ${left} more stages to In-Certification</div><div class="mb-progress"><div class="mb-fill" style="width:${pct}%"></div></div></div>`:`<div class="milestone-bar"><div class="mb-text">🎓 <strong>סטודנט לניהול מוצר</strong> | עוד ${left} שלבים לדרגת בהסמכה</div><div class="mb-progress"><div class="mb-fill" style="width:${pct}%"></div></div></div>`}else{lb.innerHTML=en?`<div class="milestone-bar"><div class="mb-text">🏅 Complete <strong>Stage 2</strong> to reach <strong>Product Management Student 🎓</strong></div><div class="mb-progress"><div class="mb-fill" style="width:0%"></div></div></div>`:`<div class="milestone-bar"><div class="mb-text">🏅 סיימו את <strong>שלב 2</strong> לדרגת <strong>סטודנט לניהול מוצר 🎓</strong></div><div class="mb-progress"><div class="mb-fill" style="width:0%"></div></div></div>`}}
 function rg(){
+document.body.classList.toggle('b-navy',!!G.navyArm);/* drives .navy-only visibility for civilians vs navy-arm */
 const g=$('sg');g.innerHTML='';
 const _secEmojis={'טרום הבסיס':'🧭','בסיסי':'🎯','ביניים':'⚡','מתקדם':'🚀','מתקדם מאוד':'🔥','התמחות':'🎓','בונוס מיוחד':'🌟','בונוס - ספר':'📚'};
 const _secNames={'בונוס - ספר':'📚 פרקי ספרים - בונוס'};
 const sorted=sortStages(S);
-const coreStages=sorted.filter(s=>s.tg!=='בונוס - ספר'&&s.tg!=='בונוס מיוחד');
+const coreStages=sorted.filter(s=>s.tg!=='בונוס - ספר'&&s.tg!=='בונוס מיוחד'&&!_stageHidden(s));
 const specialBonus=sorted.filter(s=>s.tg==='בונוס מיוחד');
 const bonusStages=sorted.filter(s=>s.tg==='בונוס - ספר');
 // Find current (first uncompleted core stage)
@@ -4558,7 +4573,7 @@ coreStages.forEach((s,idx)=>{
   n.className=cls;
   n.onclick=()=>ss(s.id);
   const milestoneLabel=isMilestone?(s.id===2?'🎓 '+_t('דרגה'):s.id===10?'⚓ '+_t('דרגה'):s.id===24?'🎖️ '+_t('התמחות'):'🎖️ '+_t('דרגה')):'';
-  n.innerHTML=`${isCurrent?'<div class="j-here">📍 '+_t('אתה כאן')+'</div>':''}<div class="j-ic">${s.ic}</div><div class="j-info"><div class="j-num">${_t('שלב')} ${s.id}${milestoneLabel?' | <span style="color:var(--g)">'+milestoneLabel+'</span>':''}</div><div class="j-title">${s.t}</div>${d?'<div class="j-score">✓ '+sc+'/'+(s.q.length*10)+' '+_t('נק\'')+( isPerfect?' ⭐':'')+'</div>':'<span class="j-tag '+s.tc+'">'+_grp(s.tg)+'</span>'}</div>`;
+  n.innerHTML=`${isCurrent?'<div class="j-here">📍 '+_t('אתה כאן')+'</div>':''}<div class="j-ic">${s.ic}</div><div class="j-info"><div class="j-num">${_noNum(s)?'⚓ '+_grp(s.tg):_t('שלב')+' '+_dispNum(s)+(milestoneLabel?' | <span style="color:var(--g)">'+milestoneLabel+'</span>':'')}</div><div class="j-title">${s.t}</div>${d?'<div class="j-score">✓ '+sc+'/'+(s.q.length*10)+' '+_t('נק\'')+( isPerfect?' ⭐':'')+'</div>':'<span class="j-tag '+s.tc+'">'+_grp(s.tg)+'</span>'}</div>`;
   j.appendChild(n);
 });
 g.appendChild(j);
@@ -5763,7 +5778,7 @@ const penaltyMsg=penaltyTotal>0?`<div style="color:#FF6584;font-size:.82rem;marg
 const prevBest=G.sc[s.id]||0;const improved=sc>prevBest&&prevBest>0?`<div style="color:var(--a);font-size:.85rem;margin-top:.3rem">${_t('📈 שיפור!')} ${prevBest} → ${sc} ${_t("נק'")}</div>`:'';
 // Longest correct streak
 let maxStreak=0,curStreak=0;s.q.forEach((q,i)=>{if(a[i]===q.c){curStreak++;if(curStreak>maxStreak)maxStreak=curStreak}else{curStreak=0}});
-const _seq=sortStages(S.filter(x=>x.tg!=='בונוס - ספר'&&x.tg!=='בונוס מיוחד'));const _ci=_seq.findIndex(x=>x.id===s.id);const nextStage=_ci>=0&&_ci<_seq.length-1?_seq[_ci+1]:null;
+const _seq=sortStages(S.filter(x=>x.tg!=='בונוס - ספר'&&x.tg!=='בונוס מיוחד'&&!_stageHidden(x)));const _ci=_seq.findIndex(x=>x.id===s.id);const nextStage=_ci>=0&&_ci<_seq.length-1?_seq[_ci+1]:null;
 const nextLabel=nextStage?'לשלב הבא &larr;':'';
 h+=`<div class="qres" id="quizResult"><div class="grade-badge ${gradeClass}">${grade}</div><div class="sc">${fpct}%</div><div class="sl">${gradeNames[grade]}</div><div class="res-stats"><div class="res-stat"><div class="rs-val">${ok}/${s.q.length}</div><div class="rs-lbl">תשובות נכונות</div></div><div class="res-stat"><div class="rs-val">${sc}</div><div class="rs-lbl">נקודות</div></div><div class="res-stat"><div class="rs-val">${maxStreak}</div><div class="rs-lbl">רצף מקסימלי</div></div></div>${bonus}${penaltyMsg}${improved}<div style="display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1rem">${nextLabel?`<button class="bp" onclick="ss(${nextStage.id})">${nextLabel}</button>`:''}<button class="bs" onclick="rr(${s.id})">נסו שוב</button> <button class="bs" onclick="mp()">למפה</button></div></div>`}
 // Always add navigation buttons at the bottom (even if quiz incomplete)
@@ -6789,7 +6804,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.43';
+const APP_VERSION='1.6.44';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -7100,6 +7115,7 @@ function checkCloudUnlocks(){
   .then(d=>{
     if(d.success&&d.data){
       if(d.data.interviewUnlocked==='true'){G.interviewUnlocked=true;sv();updateChatFabLock()}
+      if(typeof d.data.navyArm!=='undefined'){var _na=(String(d.data.navyArm)==='true');if(_na!==G.navyArm){G.navyArm=_na;sv();try{rg()}catch(e){}}}
       if(d.data.adminMessage&&d.data.adminMessage.trim()){if(d.data.adminMessage!==G.adminMessage){G.adminMessage=d.data.adminMessage;G.adminMessageRead=false;sv();updateAdminMsgFab()}}
     }else if(d && d.success===false && /not found/i.test(String(d.error||''))){
       // Admin deleted this account — force re-registration
@@ -7700,6 +7716,7 @@ pendingUsers.forEach(u=>{
   h+='<div><div class="adm-pending-name">👤 '+esc(u.userName)+'</div>';
   h+='<div class="adm-pending-time">📅 ביקש/ה: '+esc(u.lastLogin||u.firstUse||'—')+'</div></div>';
   h+='<div class="adm-pending-btns">';
+  h+='<label class="pu-navy-lbl" style="font-size:.74rem;display:inline-flex;align-items:center;gap:.2rem;color:var(--t2);white-space:nowrap"><input type="checkbox" class="pu-navy">⚓ זרוע הים</label>';
   h+='<button class="adm-pending-approve" onclick="admApproveUser(\''+eName+'\',this)">✅ אשר</button>';
   h+='<button class="adm-pending-reject" onclick="admRejectUser(\''+eName+'\',this)">❌ דחה</button>';
   h+='</div></div>';
@@ -8397,6 +8414,10 @@ h+='<h4>🔧 פעולות מנהל</h4>';
 const isUnlocked=String(u.interviewUnlocked||'')==='true';
 h+='<div class="adm-ctrl-row"><label>🔓 פתיחת שלב 24 - בסוף השירות הצבאי</label>';
 h+='<label class="adm-toggle"><input type="checkbox" '+(isUnlocked?'checked':'')+' onchange="admToggleInterview(\''+eName+'\',this.checked)"><span class="slider"></span></label></div>';
+// Navy-arm toggle: marks the user as זרוע הים → they see the "מבנה זרוע הים" stage. Hidden from civilians. Admin-only.
+const isNavy=String(u.navyArm||'')==='true';
+h+='<div class="adm-ctrl-row"><label>⚓ משתמש זרוע הים <span style="font-size:.72rem;color:var(--t2)">(רואה את שלב מבנה זרוע הים)</span></label>';
+h+='<label class="adm-toggle"><input type="checkbox" '+(isNavy?'checked':'')+' onchange="admToggleNavy(\''+eName+'\',this.checked)"><span class="slider"></span></label></div>';
 
 // Manual stage credit — mark a stage as completed for the user (e.g. bug remediation)
 h+='<div style="margin-top:.7rem;padding-top:.7rem;border-top:1px solid rgba(108,99,255,.12)">';
@@ -8510,6 +8531,19 @@ function admToggleInterview(name,unlock){
       const u=_admUsers.find(x=>x.userName===name);
       if(u)u.interviewUnlocked=unlock?'true':'false';
       _admMsgStatus(unlock?'✅ שלב 24 נפתח עבור '+name:'🔒 שלב 24 ננעל עבור '+name,'var(--a)',4000);
+    }else{_admMsgStatus('❌ שגיאה: '+(d.error||'לא ניתן לעדכן'),'var(--s)',5000)}
+  }).catch(()=>{_admMsgStatus('📴 שגיאת חיבור - ודאו שה-Apps Script עודכן','var(--s)',5000)});
+}
+// Mark/unmark a user as זרוע הים (admin-only). Navy users see the "מבנה זרוע הים" stage; civilians never do.
+function admToggleNavy(name,navy){
+  _admMsgStatus(navy?'מסמן כזרוע הים...':'מסיר סימון זרוע הים...','var(--t2)');
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'setNavyArm',userName:name,navy:navy,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+  .then(r=>r.json())
+  .then(d=>{
+    if(d.success){
+      const u=_admUsers.find(x=>x.userName===name);
+      if(u)u.navyArm=navy?'true':'false';
+      _admMsgStatus(navy?'⚓ '+name+' סומן כזרוע הים':'🚫 הוסר סימון זרוע הים מ-'+name,'var(--a)',4000);
     }else{_admMsgStatus('❌ שגיאה: '+(d.error||'לא ניתן לעדכן'),'var(--s)',5000)}
   }).catch(()=>{_admMsgStatus('📴 שגיאת חיבור - ודאו שה-Apps Script עודכן','var(--s)',5000)});
 }
@@ -8978,15 +9012,16 @@ function admDeleteBug(rowIndex,btn){
 }
 
 function admApproveUser(name,btn){
+  var _navy=!!(btn&&btn.parentNode&&btn.parentNode.querySelector('.pu-navy')&&btn.parentNode.querySelector('.pu-navy').checked);
   if(btn){btn.disabled=true;btn.textContent='⏳'}
-  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'approveUser',userName:name,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'approveUser',userName:name,navy:_navy,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
   .then(r=>r.json())
   .then(d=>{
     if(d.success){
       const u=_admUsers.find(x=>x.userName===name);
-      if(u)u.status='approved';
+      if(u){u.status='approved';if(_navy)u.navyArm='true';}
       renderAdminDashboard();
-      showAchievement('✅','משתמש אושר!',name);
+      showAchievement('✅','משתמש אושר!'+(_navy?' ⚓':''),name);
     }else{
       if(btn){btn.disabled=false;btn.textContent='✅ אשר'}
       showModal('⚠️','שגיאה',d.error||'לא ניתן לאשר','הבנתי');
