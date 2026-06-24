@@ -6789,7 +6789,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.42';
+const APP_VERSION='1.6.43';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -8000,8 +8000,9 @@ sorted.forEach((u,i)=>{
   }
   let _rcCell='—';
   if(_rc>0){
-    const _label=_rc===1?'24h':_rc===2?'48h':'שבועי×'+(_rc-2);
-    _rcCell='<span style="background:rgba(255,193,7,0.15);color:#FFC107;padding:2px 6px;border-radius:8px;font-size:.7rem">'+_rc+' ('+_label+')</span>';
+    const _open=Math.min(_rc,2), _week=Math.max(0,_rc-2);
+    const _label=_week>0?(_open+' פתיחה + '+_week+' שבועי'):(_open+' פתיחה');
+    _rcCell='<span title="סה״כ '+_rc+' תזכורות: '+_open+' פתיחה (24ש׳+48ש׳) + '+_week+' שבועיות (תקרה 4)" style="background:rgba(255,193,7,0.15);color:#FFC107;padding:2px 6px;border-radius:8px;font-size:.7rem;white-space:nowrap">'+_label+'</span>';
   }
   const _deactBadge=_isDeactivated?' <span style="background:rgba(255,101,132,.15);color:#FF6584;padding:1px 7px;border-radius:8px;font-size:.65rem;margin-right:.3rem;font-weight:700" title="המשתמש ביטל את החשבון">🚫 מבוטל</span>':'';
   t+='<tr style="cursor:pointer;'+(_isDeactivated?'opacity:.55':'')+'" onclick="showUserDetail(\''+n+'\')">';
