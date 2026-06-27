@@ -6862,7 +6862,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.46';
+const APP_VERSION='1.6.47';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -8042,6 +8042,23 @@ function _admLangCell(v){
   if(v==='he')return '<span title="המשתמש משתמש בממשק בעברית" style="background:rgba(0,201,167,.13);color:#00C9A7;padding:2px 7px;border-radius:8px;font-size:.7rem;font-weight:700">🌐 עברית</span>';
   return '<span title="המשתמש עדיין לא דיווח שפה (כנראה לא ריענן מאז שהפיצ\'ר נוסף)" style="color:var(--t2);font-size:.72rem">❔ טרם דווח</span>';
 }
+// Navy-arm status badge for the admin table — clickable to toggle right from the table.
+// Navy users see the military-only stages (מבנה זרוע הים + סוף השירות); civilians never do.
+function _admNavyBadge(isNavy,name,cellId){
+  var n=esc(name||'').replace(/'/g,"\\'");
+  if(isNavy)return '<span onclick="event.stopPropagation();admToggleNavyRow(\''+n+'\',false,\''+cellId+'\')" title="זרוע הים — פתוחים לו שלבי הצבא (מבנה זרוע הים + סוף השירות). לחצו כדי להפוך לאזרח." style="cursor:pointer;background:rgba(0,201,167,.16);color:#00C9A7;padding:2px 8px;border-radius:8px;font-size:.7rem;font-weight:700;white-space:nowrap">⚓ זרוע ים</span>';
+  return '<span onclick="event.stopPropagation();admToggleNavyRow(\''+n+'\',true,\''+cellId+'\')" title="אזרח — שלבי הצבא מוסתרים ממנו. לחצו כדי לסמן כזרוע הים." style="cursor:pointer;color:var(--t2);border:1px dashed rgba(255,255,255,.2);padding:2px 8px;border-radius:8px;font-size:.7rem;white-space:nowrap">— אזרח</span>';
+}
+function admToggleNavyRow(name,navy,cellId){
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'setNavyArm',userName:name,navy:navy,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+  .then(r=>r.json()).then(d=>{
+    if(d&&d.success){
+      var u=_admUsers&&_admUsers.find(x=>x.userName===name);if(u)u.navyArm=navy?'true':'false';
+      var c=document.getElementById(cellId);if(c)c.innerHTML=_admNavyBadge(navy,name,cellId);
+      try{_admMsgStatus(navy?'⚓ '+name+' — סומן כזרוע הים':'🚫 '+name+' — הוגדר כאזרח','var(--a)',2500)}catch(e){}
+    }else{try{_admMsgStatus('שגיאה בעדכון הסימון','var(--s)',3000)}catch(e){}}
+  }).catch(()=>{try{_admMsgStatus('שגיאת חיבור','var(--s)',3000)}catch(e){}});
+}
 function buildAdmTable(users){
 const sorted=[...users].sort((a,b)=>{
   let va=a[_admSort.col],vb=b[_admSort.col];
@@ -8050,7 +8067,7 @@ const sorted=[...users].sort((a,b)=>{
   if(va<vb)return -1*_admSort.dir;if(va>vb)return 1*_admSort.dir;return 0;
 });
 const arrow=_admSort.dir===1?' ▲':' ▼';
-const cols=[{k:'userName',l:'שם'},{k:'email',l:'מייל'},{k:'score',l:'ניקוד'},{k:'stagesCount',l:'שלבים'},{k:'title',l:'דרגה'},{k:'streak',l:'סטריק'},{k:'lastLogin',l:'כניסה אחרונה'},{k:'appVersion',l:'גרסה'},{k:'lang',l:'שפה'},{k:'reminderCount',l:'תזכורות'},{k:'firstUse',l:'הרשמה'},{k:'_act',l:''}];
+const cols=[{k:'userName',l:'שם'},{k:'email',l:'מייל'},{k:'score',l:'ניקוד'},{k:'stagesCount',l:'שלבים'},{k:'title',l:'דרגה'},{k:'streak',l:'סטריק'},{k:'lastLogin',l:'כניסה אחרונה'},{k:'appVersion',l:'גרסה'},{k:'lang',l:'שפה'},{k:'navyArm',l:'⚓ זרוע ים'},{k:'reminderCount',l:'תזכורות'},{k:'firstUse',l:'הרשמה'},{k:'_act',l:''}];
 
 let t='<table class="adm-tbl"><thead><tr>';
 cols.forEach(c=>{
@@ -8059,7 +8076,7 @@ cols.forEach(c=>{
 });
 t+='</tr></thead><tbody>';
 
-if(sorted.length===0){t+='<tr><td colspan="12" style="text-align:center;padding:2rem;color:var(--t2)">לא נמצאו משתמשים</td></tr>'}
+if(sorted.length===0){t+='<tr><td colspan="13" style="text-align:center;padding:2rem;color:var(--t2)">לא נמצאו משתמשים</td></tr>'}
 sorted.forEach((u,i)=>{
   const n=esc(u.userName||'').replace(/'/g,"\\'");
   const _la=parseInt(u.lastActivity)||0;
@@ -8091,6 +8108,7 @@ sorted.forEach((u,i)=>{
   t+='<td style="font-size:.74rem">'+esc(u.lastLogin||'—')+'</td>';
   t+='<td>'+_admVersionCell(u.appVersion)+'</td>';
   t+='<td>'+_admLangCell(u.lang)+'</td>';
+  t+='<td id="navyc'+i+'">'+_admNavyBadge(String(u.navyArm||'')==='true',u.userName,'navyc'+i)+'</td>';
   t+='<td>'+_rcCell+'</td>';
   t+='<td style="font-size:.74rem">'+esc(u.firstUse||'—')+'</td>';
   t+='<td><button class="adm-del" onclick="event.stopPropagation();admDelete(\''+n+'\')">🗑️</button></td>';
