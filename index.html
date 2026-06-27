@@ -6862,7 +6862,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.47';
+const APP_VERSION='1.6.48';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -8059,6 +8059,23 @@ function admToggleNavyRow(name,navy,cellId){
     }else{try{_admMsgStatus('שגיאה בעדכון הסימון','var(--s)',3000)}catch(e){}}
   }).catch(()=>{try{_admMsgStatus('שגיאת חיבור','var(--s)',3000)}catch(e){}});
 }
+// Compute a user's rank LIVE from their stored stagesList (mirrors getTitle), so the admin "דרגה" column
+// always matches actual progress — the stored title is only as fresh as the user's last save, and the
+// stage-monotonic union / old renumber bug could leave it stale or inflated.
+function _admTitleFor(stagesList,navyArm){
+  if(stagesList===undefined||stagesList===null||stagesList==='')return '—';
+  var set={};String(stagesList).split(',').forEach(function(x){var n=parseInt(x,10);if(!isNaN(n))set[n]=true;});
+  var has=function(ids){return ids.every(function(i){return set[i];});};
+  var found=[2,3,4,5,6,7,8,9,10];
+  var books=[];for(var b=100;b<=125;b++)books.push(b);
+  var everything=[];for(var i=0;i<=25;i++)everything.push(i);everything=everything.concat(books);
+  if(String(navyArm)!=='true')everything=everything.filter(function(i){return i!==1&&i!==25;});
+  if(has(everything))return '👑 סניור מוצר';
+  if(has(PM_IDS))return '🎖️ מנהל מוצר מוסמך';
+  if(has(found))return '⚓ מנהל מוצר בהסמכה';
+  if(set[2])return '🎓 סטודנט לניהול מוצר';
+  return '—';
+}
 function buildAdmTable(users){
 const sorted=[...users].sort((a,b)=>{
   let va=a[_admSort.col],vb=b[_admSort.col];
@@ -8103,7 +8120,7 @@ sorted.forEach((u,i)=>{
   t+='<td>'+_emailCell+'</td>';
   t+='<td>'+(parseInt(u.score)||0)+'</td>';
   t+='<td>'+(parseInt(u.stagesCount)||0)+'/52</td>';
-  t+='<td style="font-size:.76rem">'+esc(u.title||'—')+'</td>';
+  t+='<td style="font-size:.76rem">'+esc(_admTitleFor(u.stagesList,u.navyArm))+'</td>';
   t+='<td>'+(parseInt(u.streak)>0?'🔥'+u.streak:'—')+'</td>';
   t+='<td style="font-size:.74rem">'+esc(u.lastLogin||'—')+'</td>';
   t+='<td>'+_admVersionCell(u.appVersion)+'</td>';
@@ -8221,7 +8238,7 @@ h+='<div style="background:rgba(108,99,255,.1);border-radius:12px;padding:.8rem;
 
 h+='<div class="am-stat"><span class="am-k">ניקוד</span><span class="am-v">'+(parseInt(u.score)||0)+'</span></div>';
 h+='<div class="am-stat"><span class="am-k">שלבים</span><span class="am-v">'+(parseInt(u.stagesCount)||0)+'/52</span></div>';
-h+='<div class="am-stat"><span class="am-k">דרגה</span><span class="am-v">'+esc(u.title||'—')+'</span></div>';
+h+='<div class="am-stat"><span class="am-k">דרגה</span><span class="am-v">'+esc(_admTitleFor(u.stagesList,u.navyArm))+'</span></div>';
 h+='<div class="am-stat"><span class="am-k">רצף</span><span class="am-v">'+(parseInt(u.streak)>0?'🔥 '+u.streak+' ימים':'—')+'</span></div>';
 h+='<div class="am-stat"><span class="am-k">כניסה אחרונה</span><span class="am-v">'+esc(u.lastLogin||'—')+'</span></div>';
 const _laMs=parseInt(u.lastActivity)||0;
