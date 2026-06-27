@@ -4446,7 +4446,7 @@ function _saveReflection(sid){
   if(!txt)return;
   const v=txt.value.trim();
   if(!G.reflections)G.reflections={};
-  if(v){G.reflections[sid]={text:v.substring(0,200),t:Date.now()};G.ts+=5;showAchievement('📌','תובנה נשמרה!','+5 נק׳ · אפשר לראות ברטרוספקטיבה')}
+  if(v){G.reflections[sid]={text:v.substring(0,200),t:Date.now()};G.ts+=5;showAchievement('📌','תובנה נשמרה!','+5 נק׳ · אפשר לראות ברטרוספקטיבה');try{logActivity('reflection','שלב '+sid+': '+v.substring(0,80),5);trackEvent('reflections','save',sid)}catch(e){}}
   sv();
   const overlay=txt.closest('.daily-modal');if(overlay)overlay.remove();
 }
@@ -6862,7 +6862,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.48';
+const APP_VERSION='1.6.49';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -8309,6 +8309,25 @@ h+='<div class="am-stat"><span class="am-k">זמני דילוג</span><span clas
 h+='<div class="am-stat"><span class="am-k">שביעות רצון</span><span class="am-v" style="color:var(--t2)">'+((parseInt(u.stagesCount)||0)>=3?'טרם דירג (לא דילג)':'טרם הגיע לסף (3 שלבים)')+'</span></div>';
 }
 
+// === Personal reflections the user wrote at the end of each chapter (monitored, per stage) ===
+var uRefl={};try{uRefl=JSON.parse(u.reflectionsJSON||'{}')}catch(e){}
+var _reflKeys=Object.keys(uRefl).filter(function(k){return uRefl[k]&&uRefl[k].text});
+if(_reflKeys.length){
+  h+='<div style="margin-top:1rem;background:rgba(108,99,255,0.06);border-radius:12px;padding:.7rem .9rem;border:1px solid rgba(108,99,255,0.15)">';
+  h+='<strong style="color:var(--p);font-size:.9rem;display:block;margin-bottom:.5rem">📌 תובנות אישיות — מה שהמשתמש רשם לעצמו בסוף כל פרק ('+_reflKeys.length+')</strong>';
+  _reflKeys.sort(function(a,b){return (uRefl[b].t||0)-(uRefl[a].t||0)}).forEach(function(sid){
+    var refl=uRefl[sid];var st=S.find(function(x){return x.id===parseInt(sid)});
+    var date=refl.t?new Date(refl.t).toLocaleDateString('he-IL',{timeZone:'Asia/Jerusalem'}):'';
+    h+='<div style="background:rgba(255,255,255,.03);border-right:3px solid var(--p);border-radius:8px;padding:.5rem .7rem;margin-bottom:.4rem">';
+    h+='<div style="font-size:.72rem;color:var(--t2);margin-bottom:.2rem">'+(st?esc(st.ic+' שלב '+sid+': '+st.t):'שלב '+sid)+(date?' · '+date:'')+'</div>';
+    h+='<div style="font-size:.85rem;color:var(--t1);font-style:italic;word-break:break-word">"'+esc(refl.text)+'"</div>';
+    h+='</div>';
+  });
+  h+='</div>';
+}else{
+  h+='<div class="am-stat"><span class="am-k">תובנות אישיות</span><span class="am-v" style="color:var(--t2);font-size:.78rem">— טרם כתב תובנות</span></div>';
+}
+
 // Derive "started but not completed" stages from multiple signals:
 //   1) Activity log openStage/switchTab/answer events (recent activity)
 //   2) stageTimeJSON keys (time spent per stage_tab)
@@ -8471,8 +8490,8 @@ if(activityLog.length>0){
   const _shown=Math.min(10,activityLog.length);
   h+='<div style="margin-top:1rem"><strong style="color:var(--p);font-size:.9rem">📊 יומן פעילות (10 אחרונות מתוך '+activityLog.length+'):</strong>';
   h+='<div style="max-height:480px;overflow-y:auto;margin-top:.5rem;border-radius:10px;background:rgba(108,99,255,.05);padding:.5rem">';
-  const actIcons={login:'🚪',openStage:'📖',switchTab:'🔀',answer:'✍️',completeStage:'🏆',openGlossary:'📚',openProfile:'👤',readAdminMsg:'💬',duelAccept:'⚔️',duelDecline:'🚫',endSession:'⏱️',adminCredit:'🛡️',adminUncredit:'↩️'};
-  const actNames={login:'התחברות',openStage:'פתח שלב',switchTab:'מעבר טאב',answer:'תשובה',completeStage:'סיים שלב',openGlossary:'פתח מילון',openProfile:'פרופיל',readAdminMsg:'קרא הודעה',duelAccept:'קיבל דו-קרב',duelDecline:'דחה דו-קרב',endSession:'סיים סשן',adminCredit:'זיכוי ע״י מנהל',adminUncredit:'ביטול זיכוי ע״י מנהל'};
+  const actIcons={login:'🚪',openStage:'📖',switchTab:'🔀',answer:'✍️',completeStage:'🏆',openGlossary:'📚',openProfile:'👤',readAdminMsg:'💬',duelAccept:'⚔️',duelDecline:'🚫',endSession:'⏱️',adminCredit:'🛡️',adminUncredit:'↩️',reflection:'📌'};
+  const actNames={login:'התחברות',openStage:'פתח שלב',switchTab:'מעבר טאב',answer:'תשובה',completeStage:'סיים שלב',openGlossary:'פתח מילון',openProfile:'פרופיל',readAdminMsg:'קרא הודעה',duelAccept:'קיבל דו-קרב',duelDecline:'דחה דו-קרב',endSession:'סיים סשן',adminCredit:'זיכוי ע״י מנהל',adminUncredit:'ביטול זיכוי ע״י מנהל',reflection:'תובנה אישית'};
   [...activityLog].reverse().slice(0,10).forEach(act=>{
     const tm=new Date(act.t);const tStr=tm.toLocaleString('he-IL',{timeZone:'Asia/Jerusalem'});
     h+='<div style="font-size:.75rem;padding:.3rem .4rem;border-bottom:1px solid rgba(108,99,255,.08);display:flex;gap:.5rem;align-items:center">';
