@@ -6868,7 +6868,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.52';
+const APP_VERSION='1.6.53';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -8860,18 +8860,17 @@ function admShowDataResearch(){
   _renderDataResearch();
 }
 // ===== "📺 ניתוח תוכן" — readable per-stage/chapter breakdown of video + narration views =====
+var _admContentData=null;
 function admShowContentAnalytics(){
-  if(!_admAnalytics){
-    $('adv').innerHTML='<div class="adm-wrap" style="text-align:center;padding:4rem"><div style="font-size:2.5rem;margin-bottom:.5rem">⏳</div><p style="color:var(--t2)">טוען נתוני תוכן...</p></div>';
-    fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getAnalytics',adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
-    .then(r=>r.json()).then(d=>{if(d.success&&d.data){_admAnalytics=d.data;_renderContentAnalytics()}else{$('adv').innerHTML='<div class="adm-wrap"><div style="text-align:center;padding:3rem"><p style="font-size:2rem">📺</p><p style="color:var(--t2)">אין נתוני תוכן עדיין</p><p style="color:var(--t2);font-size:.78rem;margin-top:1rem">⚠️ ודאו שעשיתם Deploy מחדש ל-GAS</p></div><button class="bp" style="width:100%;margin-top:1rem" onclick="_admBackToUsers()">→ חזרה</button></div>'}})
-    .catch(()=>{$('adv').innerHTML='<div class="adm-wrap"><p style="text-align:center;padding:3rem;color:var(--s)">📴 שגיאת חיבור</p><button class="bp" style="width:100%" onclick="_admBackToUsers()">→ חזרה</button></div>'});
-    return;
-  }
-  _renderContentAnalytics();
+  // Always fetch fresh WITH staging events included, so the admin can verify content monitoring on staging
+  // too (regular dashboard stays prod-only). Stored separately so it doesn't pollute the prod analytics.
+  $('adv').innerHTML='<div class="adm-wrap" style="text-align:center;padding:4rem"><div style="font-size:2.5rem;margin-bottom:.5rem">⏳</div><p style="color:var(--t2)">טוען נתוני תוכן...</p></div>';
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getAnalytics',includeStaging:true,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+  .then(r=>r.json()).then(d=>{if(d.success&&d.data){_admContentData=d.data;_renderContentAnalytics()}else{$('adv').innerHTML='<div class="adm-wrap"><div style="text-align:center;padding:3rem"><p style="font-size:2rem">📺</p><p style="color:var(--t2)">אין נתוני תוכן עדיין</p><p style="color:var(--t2);font-size:.78rem;margin-top:1rem">⚠️ ודאו שעשיתם Deploy מחדש ל-GAS</p></div><button class="bp" style="width:100%;margin-top:1rem" onclick="_admBackToUsers()">→ חזרה</button></div>'}})
+  .catch(()=>{$('adv').innerHTML='<div class="adm-wrap"><p style="text-align:center;padding:3rem;color:var(--s)">📴 שגיאת חיבור</p><button class="bp" style="width:100%" onclick="_admBackToUsers()">→ חזרה</button></div>'});
 }
 function _renderContentAnalytics(){
-  const A=_admAnalytics||{};const sm=A.subMeta||{};const fu=A.featUsers||{};
+  const A=_admContentData||_admAnalytics||{};const sm=A.subMeta||{};const fu=A.featUsers||{};
   function stName(id){var s=(typeof S!=='undefined')&&S.find(function(x){return x.id===parseInt(id)});return s?(s.ic+' שלב '+id+': '+s.t):('שלב '+id);}
   const FEATS=[
     {k:'introVideo',t:'🎬 סרטוני פתיחה',hasCh:false,hasVoice:false},
@@ -8882,7 +8881,7 @@ function _renderContentAnalytics(){
   let h='<div class="adm-wrap">';
   h+='<button class="bbtn" onclick="_admBackToUsers()">→ חזרה לפאנל ניהול</button>';
   h+='<h2 style="font-size:1.4rem;margin:.3rem 0;text-align:center">📺 ניתוח תוכן — סרטונים והקראות</h2>';
-  h+='<p style="text-align:center;color:var(--t2);font-size:.8rem;margin-bottom:1rem">צפיות לפי שלב, פרק, שפה וקריין (כולל חוזרות). בסוגריים = משתמשים ייחודיים.</p>';
+  h+='<p style="text-align:center;color:var(--t2);font-size:.8rem;margin-bottom:1rem">צפיות לפי שלב, פרק, שפה וקריין (כולל חוזרות). בסוגריים = משתמשים ייחודיים. <span style="color:#ce93d8">כולל אירועי סטייגינג (לבדיקה)</span>.</p>';
   FEATS.forEach(function(F){
     var data=sm[F.k]||{};var keys=Object.keys(data);
     var uniq=fu[F.k]?Object.keys(fu[F.k]).length:0;
