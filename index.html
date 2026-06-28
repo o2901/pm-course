@@ -6868,7 +6868,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.53';
+const APP_VERSION='1.6.54';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -8586,6 +8586,10 @@ h+='<label class="adm-toggle"><input type="checkbox" '+(isUnlocked?'checked':'')
 const isNavy=String(u.navyArm||'')==='true';
 h+='<div class="adm-ctrl-row"><label>⚓ משתמש זרוע הים <span style="font-size:.72rem;color:var(--t2)">(רואה את שלב מבנה זרוע הים)</span></label>';
 h+='<label class="adm-toggle"><input type="checkbox" '+(isNavy?'checked':'')+' onchange="admToggleNavy(\''+eName+'\',this.checked)"><span class="slider"></span></label></div>';
+// Admin-role toggle: a flagged user gets a floating 🛡️ button that opens the management panel WITHOUT the password.
+const isAdminU=String(u.isAdmin||'')==='true';
+h+='<div class="adm-ctrl-row"><label>🛡️ הרשאת אדמין <span style="font-size:.72rem;color:var(--t2)">(כפתור צף לפאנל ניהול — בלי סיסמה)</span></label>';
+h+='<label class="adm-toggle"><input type="checkbox" '+(isAdminU?'checked':'')+' onchange="admToggleAdmin(\''+eName+'\',this.checked)"><span class="slider"></span></label></div>';
 
 // Manual stage credit — mark a stage as completed for the user (e.g. bug remediation)
 h+='<div style="margin-top:.7rem;padding-top:.7rem;border-top:1px solid rgba(108,99,255,.12)">';
@@ -8712,6 +8716,19 @@ function admToggleNavy(name,navy){
       const u=_admUsers.find(x=>x.userName===name);
       if(u)u.navyArm=navy?'true':'false';
       _admMsgStatus(navy?'⚓ '+name+' סומן כזרוע הים':'🚫 הוסר סימון זרוע הים מ-'+name,'var(--a)',4000);
+    }else{_admMsgStatus('❌ שגיאה: '+(d.error||'לא ניתן לעדכן'),'var(--s)',5000)}
+  }).catch(()=>{_admMsgStatus('📴 שגיאת חיבור - ודאו שה-Apps Script עודכן','var(--s)',5000)});
+}
+// Grant/revoke admin role (admin-only). A flagged user gets a floating 🛡️ button → management panel, no password.
+function admToggleAdmin(name,val){
+  _admMsgStatus(val?'מעניק הרשאת ניהול...':'מסיר הרשאת ניהול...','var(--t2)');
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'setIsAdmin',userName:name,isAdmin:val,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+  .then(r=>r.json())
+  .then(d=>{
+    if(d.success){
+      const u=_admUsers.find(x=>x.userName===name);
+      if(u)u.isAdmin=val?'true':'false';
+      _admMsgStatus(val?'🛡️ '+name+' קיבל הרשאת ניהול':'🚫 הרשאת הניהול הוסרה מ-'+name,'var(--a)',4000);
     }else{_admMsgStatus('❌ שגיאה: '+(d.error||'לא ניתן לעדכן'),'var(--s)',5000)}
   }).catch(()=>{_admMsgStatus('📴 שגיאת חיבור - ודאו שה-Apps Script עודכן','var(--s)',5000)});
 }
