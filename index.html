@@ -6868,7 +6868,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.54';
+const APP_VERSION='1.6.55';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -7578,7 +7578,7 @@ const FLOAT_FEATURES=['daily','duel','spacedRep','interview','adminMsg','cert','
 // Navigation buttons in the continue-hero (not floating, but tracked per user request).
 const NAV_FEATURES=['random','lastVisited'];
 // Other tracked interactions that aren't float/nav buttons.
-const OTHER_FEATURES=['language','glossary','theme','sound','leaderboard','profile','about','narration','video'];// 🌐 lang switch + first-run popup + glossary/theme/sound/leaderboard/profile header buttons
+const OTHER_FEATURES=['language','glossary','theme','sound','leaderboard','profile','about','narration','introVideo','chapterVideo','topicVideo','video'];// 🌐 lang switch + popups + glossary/theme/sound/leaderboard/profile + the 4 content-monitoring keys (intro=per-stage openers, chapter=per-chapter "צפייה" presentations, topic=NotebookLM, video=legacy combined)
 const TRACKED_FEATURES=FLOAT_FEATURES.concat(NAV_FEATURES).concat(OTHER_FEATURES);
 const FEAT_META={
   daily:{ic:'🎯',name:'השאלה היומית',col:'#FFC107'},
@@ -7597,8 +7597,11 @@ const FEAT_META={
   leaderboard:{ic:'🏆',name:'טבלת מובילים',col:'#FFB300'},
   profile:{ic:'👤',name:'פרופיל',col:'#66BB6A'},
   about:{ic:'👨‍💻',name:'על היוצר',col:'#26A69A'},
-  narration:{ic:'🗣️',name:'הקראה',col:'#8D6E63'},
-  video:{ic:'🎬',name:'סרטוני פרקים',col:'#FF6584'}
+  narration:{ic:'🗣️',name:'הקראה (פר פרק)',col:'#8D6E63'},
+  introVideo:{ic:'🎬',name:'סרטוני פתיחה (פר שלב)',col:'#FF6584'},
+  chapterVideo:{ic:'📽️',name:'צפייה בפרק — הצגות (פר פרק)',col:'#EC407A'},
+  topicVideo:{ic:'🎞️',name:'סרטון פרק NotebookLM',col:'#AB47BC'},
+  video:{ic:'🎬',name:'וידאו (היסטורי/מאוחד)',col:'#9E9E9E'}
 };
 const FEAT_ACT_NAMES={open:'נפתח',answer_correct:'תשובה נכונה',answer_wrong:'תשובה שגויה',challenge_simple:'אתגר פשוט נשלח',challenge_wager:'אתגר הימור נשלח',accept:'אתגר התקבל',decline:'אתגר נדחה',complete:'הושלמה',submit:'נשלח',go:'ניווט',switch_en:'מעבר לאנגלית',switch_he:'מעבר לעברית',toggle:'הפעלה/כיבוי',play:'הופעל',stop:'נעצר',rate:'שינוי מהירות הקראה',voice:'בחירת קול מקריא',version_check:'בדיקת עדכון גרסה',intro_play:'ניגון פתיח שלב',play_auto:'ניגון סרטון אוטומטי'};
 // Asia/Jerusalem 'yyyy-MM-dd' (matches server-stamped event dates) so client today/month buckets align.
