@@ -450,7 +450,9 @@ body.b-navy .civ-only{display:none!important}
 .scard.done .perfect-star{display:block}.scard:not(.done) .perfect-star{display:none}
 .challenge-banner{background:linear-gradient(135deg,rgba(255,152,0,.15),rgba(255,101,132,.1));border:1px solid rgba(255,152,0,.25);border-radius:14px;padding:.7rem 1.2rem;margin-bottom:1rem;text-align:center;font-size:.85rem;color:var(--t2);direction:rtl}
 .challenge-banner strong{color:#FF9800}
-.info-bar{position:fixed;top:48px;left:0;right:0;z-index:98;background:linear-gradient(180deg,rgba(15,14,23,.92),rgba(15,14,23,.85));backdrop-filter:blur(16px);border-bottom:1px solid rgba(108,99,255,.1);padding:.4rem 1.2rem;display:flex;justify-content:center;gap:.8rem;align-items:center;direction:rtl;font-size:.77rem;overflow:hidden;white-space:nowrap}
+.info-bar{position:fixed;top:48px;left:0;right:0;z-index:98;background:linear-gradient(180deg,rgba(15,14,23,.92),rgba(15,14,23,.85));backdrop-filter:blur(16px);border-bottom:1px solid rgba(108,99,255,.1);padding:.4rem 1rem;display:flex;justify-content:safe center;gap:.8rem;align-items:center;direction:rtl;font-size:.77rem;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;white-space:nowrap;scrollbar-width:none}
+.info-bar::-webkit-scrollbar{display:none}
+.info-bar .ib-item{flex:0 0 auto}
 .info-bar.hid{display:none}
 .ib-item{display:flex;align-items:center;gap:.35rem;color:var(--t2);min-width:0;overflow:hidden;text-overflow:ellipsis}
 .ib-item strong{color:var(--a);font-weight:600}
@@ -965,7 +967,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 </div>
 <div class="pbar hid" id="pb"><div class="pfill" id="pf" style="width:0%"></div></div>
 <div class="hdr hid" id="hd">
-<div style="display:flex;align-items:center;gap:.6rem"><div class="hdr-logo" onclick="_logoClick()">Product Master ⚓</div><div id="hdr-user-group" style="display:flex;align-items:center;gap:.35rem;flex-wrap:nowrap;min-width:0;flex:1;justify-content:center"><div id="hdr-user" style="font-size:.65rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"></div><div id="tb"></div></div><div class="hdr-home" onclick="goHome()" title="חזרה למסך הכניסה">🏠</div></div>
+<div style="display:flex;align-items:center;gap:.6rem"><div class="hdr-logo" onclick="_logoClick()">Product Master ⚓</div><div id="hdr-user-group" style="display:flex;align-items:center;gap:.35rem;flex-wrap:nowrap;min-width:0;flex:1;justify-content:center"><div id="hdr-user" style="font-size:.65rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"></div><div id="tb"></div></div><div class="hdr-home" onclick="showAbout()" title="על היוצר" aria-label="על היוצר">👤</div><div class="hdr-home" onclick="goHome()" title="חזרה למסך הכניסה">🏠</div></div>
 <div class="hdr-stats">
 <div class="badge"><span>⭐</span><span class="v" id="ts">0</span><span>נק'</span></div>
 <div class="badge"><span>🏆</span><span class="v" id="cs">0</span><span>/52</span></div>
@@ -5040,7 +5042,7 @@ function pfNarrate(btn){
   if(!chunks.length)return;
   _narr.chunks=chunks;_narr.i=0;_narr.active=true;_narr.btn=btn;
   btn.classList.add('on');btn.innerHTML='⏹ '+(_enLang()?'Stop':'עצור');
-  trackEvent('narration','play',G.st+'_'+(sec.dataset&&sec.dataset.idx!=null?sec.dataset.idx:''));
+  trackEvent('narration','play',G.st+'_'+(sec.dataset&&sec.dataset.idx!=null?sec.dataset.idx:'')+'_'+(_enLang()?'en':'he')+'_'+(G.avVoice||'avri'));/* per-chapter narration, tagged stage_chapter_lang_voice */
   _narrNext();
 }
 // Inject a narration button into every topic card (always-visible area, right after the heading).
@@ -5074,7 +5076,7 @@ function _videoEmbed(u){
 }
 function pfVideo(stageId,topicIdx){
   var url=_videoUrl(stageId,topicIdx);if(!url)return;
-  trackEvent('video','play',stageId+'_'+topicIdx);
+  trackEvent('topicVideo','play',stageId+'_'+topicIdx+'_'+(_enLang()?'en':'he'));/* per-chapter NotebookLM video, tagged stage_chapter_lang */
   try{_narrStop()}catch(e){}
   var ov=document.createElement('div');ov.className='daily-modal';ov.onclick=function(e){if(e.target===ov)ov.remove()};
   ov.innerHTML='<div class="daily-modal-box" style="max-width:760px;width:94vw;padding:.6rem">'
@@ -5103,7 +5105,7 @@ function enhanceIntroVideo(){
   var wrap=document.createElement('div');wrap.style.cssText='border-radius:12px;overflow:hidden;background:#000';
   if(/\.mp4($|\?)/i.test(url)){
     var v=document.createElement('video');v.controls=true;v.preload='metadata';v.style.cssText='width:100%;display:block;max-height:400px';v.src=url;
-    var tracked=false;v.addEventListener('play',function(){if(!tracked){tracked=true;trackEvent('video','intro_play',G.st);}});
+    v.addEventListener('play',function(){trackEvent('introVideo','play',G.st+'_'+(_enLang()?'en':'he'));});/* per-VIEW: tagged stage_lang so admin sees which opener is most-watched + repeat views */
     wrap.appendChild(v);
   }else{
     var f=document.createElement('iframe');f.src=_videoEmbed(url);f.allowFullscreen=true;f.style.cssText='width:100%;aspect-ratio:16/9;border:0;display:block';
@@ -5529,7 +5531,7 @@ function _avRenderPrefs(){
 function _avNav(d){_av.i=Math.max(0,Math.min(_av.slides.length-1,_av.i+d));_avRender();if(_av.on)_avSpeak();}
 function pfAutoVideo(stageId,topicIdx){
   var sec=document.querySelector('#tc .csec[data-idx="'+(topicIdx-1)+'"]');if(!sec)return;
-  trackEvent('video','play_auto',stageId+'_'+topicIdx);
+  trackEvent('chapterVideo','play',stageId+'_'+topicIdx+'_'+(_enLang()?'en':'he')+'_'+(G.avVoice||'avri'));/* auto-generated chapter presentation, tagged stage_chapter_lang_voice */
   try{_narrStop()}catch(e){}
   var title=((sec.querySelector('h3')||{}).textContent||'').replace(/^\s*\d+\s*/,'').replace(/[✓✔]/g,'').trim();
   try{title=title.replace(/[←-⇿⌀-➿⬀-⯿️\u{1F000}-\u{1FAFF}]/gu,' ').replace(/\s+/g,' ').trim();}catch(e){}
@@ -6862,7 +6864,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.50';
+const APP_VERSION='1.6.51';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
