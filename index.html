@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Product Master ⚓ - קורס ניהול מוצר</title>
+<title>Product Master - קורס ניהול מוצר</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%236C63FF'/><stop offset='1' stop-color='%2300C9A7'/></linearGradient></defs><rect width='64' height='64' rx='14' fill='url(%23g)'/><g fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='32' cy='18' r='4'/><path d='M32 22v26M24 28h16M16 38c0 8 8 12 16 12s16-4 16-12M16 38l-4-4M16 38l4-4M48 38l-4-4M48 38l4-4'/></g></svg>">
 <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%236C63FF'/><stop offset='1' stop-color='%2300C9A7'/></linearGradient></defs><rect width='64' height='64' rx='14' fill='url(%23g)'/><g fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='32' cy='18' r='4'/><path d='M32 22v26M24 28h16M16 38c0 8 8 12 16 12s16-4 16-12M16 38l-4-4M16 38l4-4M48 38l-4-4M48 38l4-4'/></g></svg>">
 <meta name="theme-color" content="#6C63FF">
@@ -450,7 +450,9 @@ body.b-navy .civ-only{display:none!important}
 .scard.done .perfect-star{display:block}.scard:not(.done) .perfect-star{display:none}
 .challenge-banner{background:linear-gradient(135deg,rgba(255,152,0,.15),rgba(255,101,132,.1));border:1px solid rgba(255,152,0,.25);border-radius:14px;padding:.7rem 1.2rem;margin-bottom:1rem;text-align:center;font-size:.85rem;color:var(--t2);direction:rtl}
 .challenge-banner strong{color:#FF9800}
-.info-bar{position:fixed;top:48px;left:0;right:0;z-index:98;background:linear-gradient(180deg,rgba(15,14,23,.92),rgba(15,14,23,.85));backdrop-filter:blur(16px);border-bottom:1px solid rgba(108,99,255,.1);padding:.4rem 1.2rem;display:flex;justify-content:center;gap:.8rem;align-items:center;direction:rtl;font-size:.77rem;overflow:hidden;white-space:nowrap}
+.info-bar{position:fixed;top:48px;left:0;right:0;z-index:98;background:linear-gradient(180deg,rgba(15,14,23,.92),rgba(15,14,23,.85));backdrop-filter:blur(16px);border-bottom:1px solid rgba(108,99,255,.1);padding:.4rem 1rem;display:flex;justify-content:safe center;gap:.8rem;align-items:center;direction:rtl;font-size:.77rem;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;white-space:nowrap;scrollbar-width:none}
+.info-bar::-webkit-scrollbar{display:none}
+.info-bar .ib-item{flex:0 0 auto}
 .info-bar.hid{display:none}
 .ib-item{display:flex;align-items:center;gap:.35rem;color:var(--t2);min-width:0;overflow:hidden;text-overflow:ellipsis}
 .ib-item strong{color:var(--a);font-weight:600}
@@ -761,6 +763,9 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 .lb-fab{position:fixed;bottom:8.75rem;right:1.5rem;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,rgba(255,179,0,.93),rgba(245,124,0,.93));color:#fff;border:none;font-size:1.35rem;cursor:pointer;z-index:180;box-shadow:0 4px 20px rgba(255,179,0,.35);transition:.3s;display:flex;align-items:center;justify-content:center}
 .lb-fab:hover{transform:scale(1.1);box-shadow:0 8px 28px rgba(255,179,0,.5)}
 @media(max-width:600px){.lb-fab{width:48px;height:48px;font-size:1.2rem;bottom:7.875rem;right:1.2rem}}
+.admin-fab{position:fixed;bottom:12.25rem;right:1.5rem;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,rgba(156,39,176,.95),rgba(108,99,255,.95));color:#fff;border:none;font-size:1.35rem;cursor:pointer;z-index:180;box-shadow:0 4px 20px rgba(156,39,176,.4);transition:.3s;display:flex;align-items:center;justify-content:center}
+.admin-fab:hover{transform:translateY(-2px) scale(1.05)}
+@media(max-width:600px){.admin-fab{width:48px;height:48px;font-size:1.2rem;bottom:11.15rem;right:1.2rem}}
 /* Reserved */
 /* Admin unlock/msg controls */
 .adm-ctrl-section{margin-top:1rem;padding:1rem;background:rgba(108,99,255,.06);border-radius:12px;border:1px solid rgba(108,99,255,.12)}
@@ -875,7 +880,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 <div class="particles" id="pts"></div>
 <div class="app" id="app">
 <div id="ws" class="welcome">
-<div class="ws-anchor">⚓</div>
+<div class="ws-anchor">🎯</div>
 <div class="ws-lang" id="wsLang">
 <button class="ws-lang-btn" id="wsLangHe" onclick="applyLanguage('he')">עברית</button>
 <button class="ws-lang-btn" id="wsLangEn" onclick="applyLanguage('en')">English</button>
@@ -905,7 +910,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 <div class="ws-rank-path">
 <div class="ws-rank"><div class="ws-rank-icon">🎓</div><div class="ws-rank-name" data-i18n="סטודנט">סטודנט</div><div class="ws-rank-req" data-i18n="סיימו שלב 2">סיימו שלב 2</div></div>
 <div class="ws-rank-arrow">&#8592;</div>
-<div class="ws-rank"><div class="ws-rank-icon">⚓</div><div class="ws-rank-name" data-i18n="בהסמכה">בהסמכה</div><div class="ws-rank-req" data-i18n="שלבים 2-10">שלבים 2-10</div></div>
+<div class="ws-rank"><div class="ws-rank-icon">🚀</div><div class="ws-rank-name" data-i18n="בהסמכה">בהסמכה</div><div class="ws-rank-req" data-i18n="שלבים 2-10">שלבים 2-10</div></div>
 <div class="ws-rank-arrow">&#8592;</div>
 <div class="ws-rank"><div class="ws-rank-icon">🎖️</div><div class="ws-rank-name" data-i18n="מוסמך">מוסמך</div><div class="ws-rank-req" data-i18n="23 שלבי ליבה">23 שלבי ליבה</div></div>
 <div class="ws-rank-arrow">&#8592;</div>
@@ -921,9 +926,9 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 </div>
 
 <button class="btn-go" onclick="go()" data-i18n="התחל את המסע ←">התחל את המסע &larr;</button>
-<div style="display:flex;gap:.6rem;margin-top:.5rem;flex-wrap:wrap;justify-content:center">
-<button class="btn-about" onclick="showAbout()" data-i18n="👤 על היוצר">👤 על היוצר</button>
-<button class="btn-about" onclick="showAdmin()" data-i18n="🔧 ניהול">🔧 ניהול</button>
+<!-- admin entry: pushed far down + faint so new users don't notice it (password-gated) -->
+<div style="margin-top:4rem;text-align:center;opacity:.22">
+<button onclick="showAdmin()" data-i18n="🔧 ניהול" style="background:none;border:none;color:var(--t2);font-size:.68rem;cursor:pointer;font-family:inherit;padding:.3rem">🔧 ניהול</button>
 </div>
 </div>
 <div id="ab" class="about-page hid">
@@ -932,7 +937,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 </div>
 <div class="about-card">
 <h2>👨‍💻 על עומרי דזבלי</h2>
-<div class="about-subtitle">Omri Degibly | יוצר מערכת Product Master ⚓</div>
+<div class="about-subtitle">Omri Degibly | יוצר מערכת Product Master</div>
 
 <div class="about-section civ-only">
 <h3>💼 רקע מקצועי</h3>
@@ -965,7 +970,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 </div>
 <div class="pbar hid" id="pb"><div class="pfill" id="pf" style="width:0%"></div></div>
 <div class="hdr hid" id="hd">
-<div style="display:flex;align-items:center;gap:.6rem"><div class="hdr-logo" onclick="_logoClick()">Product Master ⚓</div><div id="hdr-user-group" style="display:flex;align-items:center;gap:.35rem;flex-wrap:nowrap;min-width:0;flex:1;justify-content:center"><div id="hdr-user" style="font-size:.65rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"></div><div id="tb"></div></div><div class="hdr-home" onclick="goHome()" title="חזרה למסך הכניסה">🏠</div></div>
+<div style="display:flex;align-items:center;gap:.6rem"><div class="hdr-logo" onclick="_logoClick()">Product Master<span class="navy-only"> ⚓</span></div><div id="hdr-user-group" style="display:flex;align-items:center;gap:.35rem;flex-wrap:nowrap;min-width:0;flex:1;justify-content:center"><div id="hdr-user" style="font-size:.65rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"></div><div id="tb"></div></div><div class="hdr-home" onclick="showAbout()" title="על היוצר" aria-label="על היוצר">👨‍💻</div><div class="hdr-home" onclick="goHome()" title="חזרה למסך הכניסה">🏠</div></div>
 <div class="hdr-stats">
 <div class="badge"><span>⭐</span><span class="v" id="ts">0</span><span>נק'</span></div>
 <div class="badge"><span>🏆</span><span class="v" id="cs">0</span><span>/52</span></div>
@@ -1032,6 +1037,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 <button class="cert-fab hid" id="certFab" onclick="generateCert()" title="תעודת סיום">📜</button>
 <button class="glossary-fab hid" id="glossaryFab" onclick="showGlossary()" title="מילון מונחים">📖</button>
 <button class="lb-fab hid" id="lbFab" onclick="showLeaderboard()" title="טבלת מובילים">🏆</button>
+<button class="admin-fab hid" id="adminFab" onclick="adminEnterByFlag()" title="ניהול המערכת">🛡️</button>
 <button class="bug-fab hid" id="bugFab" onclick="showBugReport()" title="דיווח על תקלה או הצעה">🐛</button>
 <div class="chat-panel hid" id="chatPanel">
 <div class="chat-hdr"><h4>🤖 עוזר חכם</h4><button class="chat-close" onclick="toggleChat()">✕</button></div>
@@ -3374,7 +3380,7 @@ const UI_EN={"הכרת המסע":"Getting to know the journey","מבנה ומת�
 // ===== about page =====
 "👨‍💻 על עומרי דזבלי":"👨‍💻 About Omri Degibly","⚓ רקע מקצועי":"⚓ Professional Background",
 "🎖️ תפקידים בשירות הצבאי":"🎖️ Roles in Military Service",
-"Omri Degibly | יוצר מערכת Product Master ⚓":"Omri Degibly | Creator of Product Master ⚓",
+"Omri Degibly | יוצר מערכת Product Master":"Omri Degibly | Creator of Product Master",
 "רס\"ן במילואים בזרוע הים, בעל ניסיון עשיר בניהול מוצר בדגש על מערכות השליטה והמודיעין.":"Major (reserves) in the Israeli Navy, with extensive product-management experience focused on command-and-control and intelligence systems.",
 "רע״ן צל מערכות מידע במילואים":"Information Systems Branch Head (reserves)","יחידת מפת״ח, מספן ציוד, זרוע הים":"MAPTACH Unit, Equipment Division, Navy",
 "CPO (Chief Product Officer) זרוע הים":"CPO (Chief Product Officer), Navy",
@@ -3575,8 +3581,8 @@ function _stageHidden(s){return !!(s&&(s.id===1||s.id===25)&&!G.navyArm);}/* nav
 function _totalVisible(){return S.filter(s=>!_stageHidden(s)).length;}
 function _dispNum(s){return s.id===0?1:s.id;}   // intro (id0) shows as "שלב 1" so the visible sequence is gapless
 function _noNum(s){return s.id===1;}            // navy stage: rendered as a number-less special card "⚓ מבנה זרוע הים"
-function getTitle(){const d=G.done;const has2to10=[2,3,4,5,6,7,8,9,10].every(i=>d.has(i));const hasAll=PM_IDS.every(i=>d.has(i));const hasEverything=S.every(st=>_stageHidden(st)||d.has(st.id));if(hasEverything)return{name:'סניור מוצר',cls:'allstar',icon:'👑'};if(hasAll)return{name:'מנהל מוצר מוסמך',cls:'senior',icon:'🎖️'};if(has2to10)return{name:'מנהל מוצר בהסמכה',cls:'naval',icon:'⚓'};if(d.has(2))return{name:'סטודנט לניהול מוצר',cls:'student',icon:'🎓'};return null}
-function checkTitleCeremony(){const t=getTitle();if(t&&t.cls==='allstar'&&!G.titleShownAll){G.titleShownAll=true;sv();showModal('👑','אגדה!','סניור מוצר',(_enLang()?'You completed all 52 stages — core and books! You are now a <strong>Senior Product Manager</strong> — the highest rank in the system. No one is above you! 👑🎉':'סיימת את כל 52 השלבים - ליבה וספרים! אתה עכשיו <strong>סניור מוצר</strong> - הדרגה הגבוהה ביותר במערכת. אין מעליך! 👑🎉'));cf();cf();cf()}else if(t&&t.cls==='senior'&&!G.titleShown15){G.titleShown15=true;sv();showModal('🎖️','כל הכבוד, מוסמך!','מנהל מוצר מוסמך',(_enLang()?'You completed the 23 required stages! You now hold the most comprehensive knowledge in product management. Your rank: <strong>Certified Product Manager</strong>. You have earned a celebration! 🎉':'סיימת את 23 השלבים הנדרשים! אתה עכשיו בעל הידע המקיף ביותר בניהול מוצר. הדרגה שלך: <strong>מנהל מוצר מוסמך</strong>. מגיע לך מבצע הוקרה! 🎉'));cf();cf()}else if(t&&t.cls==='naval'&&!G.titleShown9){G.titleShown9=true;sv();showModal('⚓','מזל טוב, מפקד!','מנהל מוצר בהסמכה',(_enLang()?'You completed the 9 foundational and intermediate stages! Your rank: <strong>Product Manager in Training</strong>. 14 more advanced stages and you become certified! 💪':'סיימת את 9 שלבי הבסיס והביניים! הדרגה שלך: <strong>מנהל מוצר בהסמכה</strong>. עוד 14 שלבים מתקדמים והופך למוסמך! 💪'));cf()}else if(t&&t.cls==='student'&&!G.titleShown2){G.titleShown2=true;sv();showModal('🎓','ברוכים הבאים!','סטודנט לניהול מוצר',(_enLang()?'You completed the first stage and earned the rank: <strong>Product Management Student</strong>. 8 more stages to the Product Manager in Training rank! 🚀':'סיימת את השלב הראשון וקיבלת את הדרגה: <strong>סטודנט לניהול מוצר</strong>. עוד 8 שלבים לדרגת מנהל מוצר בהסמכה! 🚀'));cf()}}
+function getTitle(){const d=G.done;const has2to10=[2,3,4,5,6,7,8,9,10].every(i=>d.has(i));const hasAll=PM_IDS.every(i=>d.has(i));const hasEverything=S.every(st=>_stageHidden(st)||d.has(st.id));if(hasEverything)return{name:'סניור מוצר',cls:'allstar',icon:'👑'};if(hasAll)return{name:'מנהל מוצר מוסמך',cls:'senior',icon:'🎖️'};if(has2to10)return{name:'מנהל מוצר בהסמכה',cls:'naval',icon:(G.navyArm?'⚓':'🚀')};if(d.has(2))return{name:'סטודנט לניהול מוצר',cls:'student',icon:'🎓'};return null}
+function checkTitleCeremony(){const t=getTitle();if(t&&t.cls==='allstar'&&!G.titleShownAll){G.titleShownAll=true;sv();showModal('👑','אגדה!','סניור מוצר',(_enLang()?'You completed all 52 stages — core and books! You are now a <strong>Senior Product Manager</strong> — the highest rank in the system. No one is above you! 👑🎉':'סיימת את כל 52 השלבים - ליבה וספרים! אתה עכשיו <strong>סניור מוצר</strong> - הדרגה הגבוהה ביותר במערכת. אין מעליך! 👑🎉'));cf();cf();cf()}else if(t&&t.cls==='senior'&&!G.titleShown15){G.titleShown15=true;sv();showModal('🎖️','כל הכבוד, מוסמך!','מנהל מוצר מוסמך',(_enLang()?'You completed the 23 required stages! You now hold the most comprehensive knowledge in product management. Your rank: <strong>Certified Product Manager</strong>. You have earned a celebration! 🎉':'סיימת את 23 השלבים הנדרשים! אתה עכשיו בעל הידע המקיף ביותר בניהול מוצר. הדרגה שלך: <strong>מנהל מוצר מוסמך</strong>. מגיע לך מבצע הוקרה! 🎉'));cf();cf()}else if(t&&t.cls==='naval'&&!G.titleShown9){G.titleShown9=true;sv();showModal((G.navyArm?'⚓':'🚀'),(G.navyArm?'מזל טוב, מפקד!':'מזל טוב!'),'מנהל מוצר בהסמכה',(_enLang()?'You completed the 9 foundational and intermediate stages! Your rank: <strong>Product Manager in Training</strong>. 14 more advanced stages and you become certified! 💪':'סיימת את 9 שלבי הבסיס והביניים! הדרגה שלך: <strong>מנהל מוצר בהסמכה</strong>. עוד 14 שלבים מתקדמים והופך למוסמך! 💪'));cf()}else if(t&&t.cls==='student'&&!G.titleShown2){G.titleShown2=true;sv();showModal('🎓','ברוכים הבאים!','סטודנט לניהול מוצר',(_enLang()?'You completed the first stage and earned the rank: <strong>Product Management Student</strong>. 8 more stages to the Product Manager in Training rank! 🚀':'סיימת את השלב הראשון וקיבלת את הדרגה: <strong>סטודנט לניהול מוצר</strong>. עוד 8 שלבים לדרגת מנהל מוצר בהסמכה! 🚀'));cf()}}
 
 // Modal system
 function showModal(icon,title,titleName,text){const m=document.createElement('div');m.className='modal-overlay';m.id='modal';m.innerHTML=`<div class="modal-box"><div class="modal-icon">${icon}</div><h2>${title}</h2><div class="modal-title-name">🏅 ${titleName}</div><p>${text}</p><button class="bp" onclick="closeModal()">המשך ללמוד &larr;</button></div>`;document.body.appendChild(m)}
@@ -3595,7 +3601,7 @@ const hookMessages=[
 {cond:()=>pc()===17,icon:'💪',text:'<strong>17 שלבי ליבה!</strong> כמעט שם! עוד 6 שלבים לדרגת מנהל מוצר מוסמך!'},
 {cond:()=>pc()===19,icon:'🏆',text:'<strong>19 שלבי ליבה!</strong> עוד 4 שלבים והופך/ת למנהל מוצר מוסמך!'},
 {cond:()=>pc()===16,icon:'🤖',text:'<strong>16 שלבי ליבה!</strong> כמעט סיימת - עוד 7 שלבים!'},
-{cond:()=>pc()===18,icon:'⚓',text:'<strong>18 שלבי ליבה!</strong> עוד 5 שלבים!'},
+{cond:()=>pc()===18,icon:(G.navyArm?'⚓':'📈'),text:'<strong>18 שלבי ליבה!</strong> עוד 5 שלבים!'},
 {cond:()=>pc()===20,icon:'🏅',text:'<strong>20 שלבי ליבה!</strong> עוד 3 שלבים!'},
 {cond:()=>pc()===22,icon:'🏅',text:'<strong>22 שלבי ליבה!</strong> עוד שלב אחד אחרון!'},
 {cond:()=>pc()===23,icon:'🏅',text:'<strong>כל 23 שלבי הליבה הושלמו!</strong> סיימת את המסע. אין עליך! 🎉'},
@@ -3958,6 +3964,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
     }catch(e){}
     if(d.data.interviewUnlocked==='true')G.interviewUnlocked=true;
     G.navyArm=(String(d.data.navyArm)==='true');/* navy-arm flag (admin-set); absent ⇒ civilian (navy stage hidden) */
+    G.isAdmin=(String(d.data.isAdmin)==='true');/* admin flag (admin-set); shows the floating admin button -> management screen without password */
     if(parseInt(d.data.satisfaction)>0)G.satisfactionRating=parseInt(d.data.satisfaction);
     if(d.data.adminMessage&&d.data.adminMessage.trim()){if(d.data.adminMessage!==G.adminMessage){G.adminMessage=d.data.adminMessage;G.adminMessageRead=(d.data.adminMessage===_lastReadMsg())}}else{G.adminMessage='';G.adminMessageRead=true}
     // Cache email status for popup logic
@@ -5040,7 +5047,7 @@ function pfNarrate(btn){
   if(!chunks.length)return;
   _narr.chunks=chunks;_narr.i=0;_narr.active=true;_narr.btn=btn;
   btn.classList.add('on');btn.innerHTML='⏹ '+(_enLang()?'Stop':'עצור');
-  trackEvent('narration','play',G.st+'_'+(sec.dataset&&sec.dataset.idx!=null?sec.dataset.idx:''));
+  trackEvent('narration','play',G.st+'_'+(sec.dataset&&sec.dataset.idx!=null?sec.dataset.idx:'')+'_'+(_enLang()?'en':'he')+'_'+(G.avVoice||'avri'));/* per-chapter narration, tagged stage_chapter_lang_voice */
   _narrNext();
 }
 // Inject a narration button into every topic card (always-visible area, right after the heading).
@@ -5074,7 +5081,7 @@ function _videoEmbed(u){
 }
 function pfVideo(stageId,topicIdx){
   var url=_videoUrl(stageId,topicIdx);if(!url)return;
-  trackEvent('video','play',stageId+'_'+topicIdx);
+  trackEvent('topicVideo','play',stageId+'_'+topicIdx+'_'+(_enLang()?'en':'he'));/* per-chapter NotebookLM video, tagged stage_chapter_lang */
   try{_narrStop()}catch(e){}
   var ov=document.createElement('div');ov.className='daily-modal';ov.onclick=function(e){if(e.target===ov)ov.remove()};
   ov.innerHTML='<div class="daily-modal-box" style="max-width:760px;width:94vw;padding:.6rem">'
@@ -5103,7 +5110,7 @@ function enhanceIntroVideo(){
   var wrap=document.createElement('div');wrap.style.cssText='border-radius:12px;overflow:hidden;background:#000';
   if(/\.mp4($|\?)/i.test(url)){
     var v=document.createElement('video');v.controls=true;v.preload='metadata';v.style.cssText='width:100%;display:block;max-height:400px';v.src=url;
-    var tracked=false;v.addEventListener('play',function(){if(!tracked){tracked=true;trackEvent('video','intro_play',G.st);}});
+    v.addEventListener('play',function(){trackEvent('introVideo','play',G.st+'_'+(_enLang()?'en':'he'));});/* per-VIEW: tagged stage_lang so admin sees which opener is most-watched + repeat views */
     wrap.appendChild(v);
   }else{
     var f=document.createElement('iframe');f.src=_videoEmbed(url);f.allowFullscreen=true;f.style.cssText='width:100%;aspect-ratio:16/9;border:0;display:block';
@@ -5529,7 +5536,7 @@ function _avRenderPrefs(){
 function _avNav(d){_av.i=Math.max(0,Math.min(_av.slides.length-1,_av.i+d));_avRender();if(_av.on)_avSpeak();}
 function pfAutoVideo(stageId,topicIdx){
   var sec=document.querySelector('#tc .csec[data-idx="'+(topicIdx-1)+'"]');if(!sec)return;
-  trackEvent('video','play_auto',stageId+'_'+topicIdx);
+  trackEvent('chapterVideo','play',stageId+'_'+topicIdx+'_'+(_enLang()?'en':'he')+'_'+(G.avVoice||'avri'));/* auto-generated chapter presentation, tagged stage_chapter_lang_voice */
   try{_narrStop()}catch(e){}
   var title=((sec.querySelector('h3')||{}).textContent||'').replace(/^\s*\d+\s*/,'').replace(/[✓✔]/g,'').trim();
   try{title=title.replace(/[←-⇿⌀-➿⬀-⯿️\u{1F000}-\u{1FAFF}]/gu,' ').replace(/\s+/g,' ').trim();}catch(e){}
@@ -6748,7 +6755,7 @@ const LB_KEY='pmV7_leaderboard';
 function getLeaderboard(){try{return JSON.parse(localStorage.getItem(LB_KEY)||'[]')}catch(e){return[]}}
 function updateLeaderboard(){if(!G.userName||G.userName==='אנונימי')return;const lb=getLeaderboard();const existing=lb.findIndex(e=>e.name===G.userName);const entry={name:G.userName,score:G.ts,stages:G.done.size,title:(getTitle()||{}).name||'',date:new Date().toLocaleDateString('he-IL',{timeZone:'Asia/Jerusalem'}),dateISO:new Date().toISOString(),streak:G.streak};if(existing>=0){lb[existing]=entry}else{lb.push(entry)}lb.sort((a,b)=>b.score-a.score||b.stages-a.stages);localStorage.setItem(LB_KEY,JSON.stringify(lb.slice(0,50)))}
 
-function showLeaderboard(){trackEvent('leaderboard','open');$('ws').classList.add('hid');$('mv').classList.add('hid');$('sv').classList.add('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');$('ib').classList.add('hid');if($('ab'))$('ab').classList.add('hid');$('lbv').classList.remove('hid');$('hd').classList.remove('hid');$('pb').classList.remove('hid');if($('lbFab'))$('lbFab').classList.add('hid');renderLeaderboard()}
+function showLeaderboard(){trackEvent('leaderboard','open');$('ws').classList.add('hid');$('mv').classList.add('hid');$('sv').classList.add('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');$('ib').classList.add('hid');if($('ab'))$('ab').classList.add('hid');$('lbv').classList.remove('hid');$('hd').classList.remove('hid');$('pb').classList.remove('hid');if($('lbFab'))$('lbFab').classList.add('hid');if($('adminFab'))$('adminFab').classList.add('hid');renderLeaderboard()}
 function hideLeaderboard(){$('lbv').classList.add('hid');if(G.s){mp()}else{goHome()}}
 
 function _isThisMonth(entry){
@@ -6862,7 +6869,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.50';
+const APP_VERSION='1.6.56';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -7099,9 +7106,9 @@ function chatSearch(query){
 }
 // Show training FAB + daily FAB when in map or stage view
 const _origMp2=mp;
-mp=function(){_origMp2();$('chatFab').classList.remove('hid');$('dailyFab').classList.remove('hid');$('bugFab').classList.remove('hid');if($('glossaryFab'))$('glossaryFab').classList.remove('hid');if($('lbFab'))$('lbFab').classList.remove('hid');updateSrFab();updateChatFabLock();updateAdminMsgFab();updateCertFab()};
+mp=function(){_origMp2();$('chatFab').classList.remove('hid');$('dailyFab').classList.remove('hid');$('bugFab').classList.remove('hid');if($('glossaryFab'))$('glossaryFab').classList.remove('hid');if($('lbFab'))$('lbFab').classList.remove('hid');if($('adminFab'))$('adminFab').classList.toggle('hid',!G.isAdmin);updateSrFab();updateChatFabLock();updateAdminMsgFab();updateCertFab()};
 const _origGoHome2=goHome;
-goHome=function(){_origGoHome2();$('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');$('srFab').classList.add('hid');$('adminMsgFab').classList.add('hid');$('certFab').classList.add('hid');$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');if($('lbFab'))$('lbFab').classList.add('hid');const dm=$('dailyModal');if(dm&&!dm.classList.contains('hid')){dm.classList.add('hid');dm.innerHTML=''}};
+goHome=function(){_origGoHome2();$('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');$('srFab').classList.add('hid');$('adminMsgFab').classList.add('hid');$('certFab').classList.add('hid');$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');if($('lbFab'))$('lbFab').classList.add('hid');if($('adminFab'))$('adminFab').classList.add('hid');const dm=$('dailyModal');if(dm&&!dm.classList.contains('hid')){dm.classList.add('hid');dm.innerHTML=''}};
 
 // ========== FEATURE: NEW-VERSION REFRESH PROMPT ==========
 // The app is a single-file SPA that's opened once and left open. Without this, a user who never
@@ -7572,7 +7579,7 @@ const FLOAT_FEATURES=['daily','duel','spacedRep','interview','adminMsg','cert','
 // Navigation buttons in the continue-hero (not floating, but tracked per user request).
 const NAV_FEATURES=['random','lastVisited'];
 // Other tracked interactions that aren't float/nav buttons.
-const OTHER_FEATURES=['language','glossary','theme','sound','leaderboard','profile','about','narration','video'];// 🌐 lang switch + first-run popup + glossary/theme/sound/leaderboard/profile header buttons
+const OTHER_FEATURES=['language','glossary','theme','sound','leaderboard','profile','about','narration','introVideo','chapterVideo','topicVideo','video'];// 🌐 lang switch + popups + glossary/theme/sound/leaderboard/profile + the 4 content-monitoring keys (intro=per-stage openers, chapter=per-chapter "צפייה" presentations, topic=NotebookLM, video=legacy combined)
 const TRACKED_FEATURES=FLOAT_FEATURES.concat(NAV_FEATURES).concat(OTHER_FEATURES);
 const FEAT_META={
   daily:{ic:'🎯',name:'השאלה היומית',col:'#FFC107'},
@@ -7591,8 +7598,11 @@ const FEAT_META={
   leaderboard:{ic:'🏆',name:'טבלת מובילים',col:'#FFB300'},
   profile:{ic:'👤',name:'פרופיל',col:'#66BB6A'},
   about:{ic:'👨‍💻',name:'על היוצר',col:'#26A69A'},
-  narration:{ic:'🗣️',name:'הקראה',col:'#8D6E63'},
-  video:{ic:'🎬',name:'סרטוני פרקים',col:'#FF6584'}
+  narration:{ic:'🗣️',name:'הקראה (פר פרק)',col:'#8D6E63'},
+  introVideo:{ic:'🎬',name:'סרטוני פתיחה (פר שלב)',col:'#FF6584'},
+  chapterVideo:{ic:'📽️',name:'צפייה בפרק — הצגות (פר פרק)',col:'#EC407A'},
+  topicVideo:{ic:'🎞️',name:'סרטון פרק NotebookLM',col:'#AB47BC'},
+  video:{ic:'🎬',name:'וידאו (היסטורי/מאוחד)',col:'#9E9E9E'}
 };
 const FEAT_ACT_NAMES={open:'נפתח',answer_correct:'תשובה נכונה',answer_wrong:'תשובה שגויה',challenge_simple:'אתגר פשוט נשלח',challenge_wager:'אתגר הימור נשלח',accept:'אתגר התקבל',decline:'אתגר נדחה',complete:'הושלמה',submit:'נשלח',go:'ניווט',switch_en:'מעבר לאנגלית',switch_he:'מעבר לעברית',toggle:'הפעלה/כיבוי',play:'הופעל',stop:'נעצר',rate:'שינוי מהירות הקראה',voice:'בחירת קול מקריא',version_check:'בדיקת עדכון גרסה',intro_play:'ניגון פתיח שלב',play_auto:'ניגון סרטון אוטומטי'};
 // Asia/Jerusalem 'yyyy-MM-dd' (matches server-stamped event dates) so client today/month buckets align.
@@ -7620,7 +7630,7 @@ $('ws').classList.add('hid');$('mv').classList.add('hid');$('sv').classList.add(
 $('adv').classList.remove('hid');$('hd').classList.remove('hid');$('pb').classList.remove('hid');
 // Show admin indicator instead of user data in header
 const tb=$('tb');if(tb)tb.innerHTML='<div style="font-size:.7rem;color:var(--a);white-space:nowrap">🔧 מנהל מערכת</div>';
-$('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');$('srFab').classList.add('hid');$('adminMsgFab').classList.add('hid');$('certFab').classList.add('hid');$('duelFab').classList.add('hid');$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');if($('lbFab'))$('lbFab').classList.add('hid');
+$('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');$('srFab').classList.add('hid');$('adminMsgFab').classList.add('hid');$('certFab').classList.add('hid');$('duelFab').classList.add('hid');$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');if($('lbFab'))$('lbFab').classList.add('hid');if($('adminFab'))$('adminFab').classList.add('hid');
 renderAdminGate();window.scrollTo(0,0);
 }
 
@@ -7653,6 +7663,23 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'adminLogin',password:pa
 }).catch(()=>{if(errEl)errEl.textContent='❌ שגיאת רשת'});
 }
 function admLogout(){_admToken='';_admTokenExp=0;try{sessionStorage.removeItem('pm_admin_token');sessionStorage.removeItem('pm_admin_token_exp')}catch(e){}hideAdmin();}
+// Flagged-admin entry (no password): obtain an adminToken via the user's own session + the isAdmin flag,
+// then open the management panel directly. The password gate (admLogin) remains as a fallback.
+function adminEnterByFlag(){
+  if(!G.isAdmin){showAchievement('🔒','גישת מנהל','אין לך הרשאת ניהול');return;}
+  var tok=G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||'';
+  if(!tok){showAchievement('🔒','גישת מנהל','נדרשת התחברות מחדש');return;}
+  showAchievement('🛡️','פאנל ניהול','מאמת הרשאה...');
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'adminAccessByFlag',userName:G.userName,sessionToken:tok}),headers:{'Content-Type':'text/plain'}})
+  .then(r=>r.json()).then(d=>{
+    if(d&&d.success&&d.adminToken){
+      _admToken=d.adminToken;_admTokenExp=d.expiresAt||(Date.now()+3*60*60*1000);
+      try{sessionStorage.setItem('pm_admin_token',_admToken);sessionStorage.setItem('pm_admin_token_exp',String(_admTokenExp))}catch(e){}
+      try{trackEvent('admin','enterByFlag')}catch(e){}
+      showAdmin();loadAdminData();
+    }else{showAchievement('🔒','גישת מנהל','לא ניתן לאמת הרשאת ניהול');}
+  }).catch(()=>showAchievement('📴','שגיאה','שגיאת רשת'));
+}
 
 let _admAutoRefresh=null;
 let _admBugCount=0;
@@ -7850,7 +7877,7 @@ h+='</div>';
 // === Floating-feature usage (Phase 2 analytics) ===
 h+='<div style="margin-bottom:1.2rem">';
 h+='<h3 style="font-size:1rem;color:var(--p);margin:0 0 .7rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">🎈 שימוש בפיצ׳רים וכפתורים <span style="font-size:.72rem;color:var(--t2);font-weight:500">(המספר הגדול = מאז ומתמיד · למטה = החודש · היום)</span>';
-h+='<button class="bs" style="font-size:.72rem;padding:.25rem .7rem;margin-right:auto;background:rgba(108,99,255,.1);color:var(--p);border-color:rgba(108,99,255,.3)" onclick="admShowDataResearch()">📊 מחקר נתונים מלא →</button></h3>';
+h+='<button class="bs" style="font-size:.72rem;padding:.25rem .7rem;margin-right:auto;background:rgba(108,99,255,.1);color:var(--p);border-color:rgba(108,99,255,.3)" onclick="admShowDataResearch()">📊 מחקר נתונים מלא →</button> <button class="bs" style="font-size:.72rem;padding:.25rem .7rem;background:rgba(156,39,176,.1);color:#ce93d8;border-color:rgba(156,39,176,.3)" onclick="admShowContentAnalytics()">📺 ניתוח תוכן (סרטונים/הקראה) →</button></h3>';
 if(!_admAnalytics){
   h+='<div style="text-align:center;padding:1.2rem;color:var(--t2);font-size:.82rem;background:rgba(108,99,255,.05);border-radius:12px">⏳ טוען נתוני שימוש... <span style="font-size:.72rem">(אם לא נטען — ודאו שבוצע Deploy מחדש ל-Google Apps Script)</span></div>';
 }else{
@@ -8076,6 +8103,23 @@ function admToggleNavyRow(name,navy,cellId){
 // Compute a user's rank LIVE from their stored stagesList (mirrors getTitle), so the admin "דרגה" column
 // always matches actual progress — the stored title is only as fresh as the user's last save, and the
 // stage-monotonic union / old renumber bug could leave it stale or inflated.
+// Admin-role badge for the users table — clickable to grant/revoke. A flagged admin gets a floating
+// button that opens the management panel without the password.
+function _admAdminBadge(isAdmin,name,cellId){
+  var n=esc(name||'').replace(/'/g,"\\'");
+  if(isAdmin)return '<span onclick="event.stopPropagation();admToggleAdminRow(\''+n+'\',false,\''+cellId+'\')" title="אדמין — רואה כפתור צף לפאנל הניהול (בלי סיסמה). לחצו להסרה." style="cursor:pointer;background:rgba(156,39,176,.18);color:#ce93d8;padding:2px 8px;border-radius:8px;font-size:.7rem;font-weight:700;white-space:nowrap">🛡️ אדמין</span>';
+  return '<span onclick="event.stopPropagation();admToggleAdminRow(\''+n+'\',true,\''+cellId+'\')" title="משתמש רגיל. לחצו כדי להעניק הרשאת ניהול." style="cursor:pointer;color:var(--t2);border:1px dashed rgba(255,255,255,.2);padding:2px 8px;border-radius:8px;font-size:.7rem;white-space:nowrap">— רגיל</span>';
+}
+function admToggleAdminRow(name,val,cellId){
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'setIsAdmin',userName:name,isAdmin:val,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+  .then(r=>r.json()).then(d=>{
+    if(d&&d.success){
+      var u=_admUsers&&_admUsers.find(x=>x.userName===name);if(u)u.isAdmin=val?'true':'false';
+      var c=document.getElementById(cellId);if(c)c.innerHTML=_admAdminBadge(val,name,cellId);
+      try{_admMsgStatus(val?'🛡️ '+name+' — קיבל הרשאת ניהול':'🚫 '+name+' — הרשאת ניהול הוסרה','var(--a)',2500)}catch(e){}
+    }else{try{_admMsgStatus('שגיאה בעדכון ההרשאה','var(--s)',3000)}catch(e){}}
+  }).catch(()=>{try{_admMsgStatus('שגיאת חיבור','var(--s)',3000)}catch(e){}});
+}
 function _admTitleFor(stagesList,navyArm){
   if(stagesList===undefined||stagesList===null||stagesList==='')return '—';
   var set={};String(stagesList).split(',').forEach(function(x){var n=parseInt(x,10);if(!isNaN(n))set[n]=true;});
@@ -8086,7 +8130,7 @@ function _admTitleFor(stagesList,navyArm){
   if(String(navyArm)!=='true')everything=everything.filter(function(i){return i!==1&&i!==25;});
   if(has(everything))return '👑 סניור מוצר';
   if(has(PM_IDS))return '🎖️ מנהל מוצר מוסמך';
-  if(has(found))return '⚓ מנהל מוצר בהסמכה';
+  if(has(found))return (String(navyArm)==='true'?'⚓':'🚀')+' מנהל מוצר בהסמכה';
   if(set[2])return '🎓 סטודנט לניהול מוצר';
   return '—';
 }
@@ -8098,7 +8142,7 @@ const sorted=[...users].sort((a,b)=>{
   if(va<vb)return -1*_admSort.dir;if(va>vb)return 1*_admSort.dir;return 0;
 });
 const arrow=_admSort.dir===1?' ▲':' ▼';
-const cols=[{k:'userName',l:'שם'},{k:'email',l:'מייל'},{k:'score',l:'ניקוד'},{k:'stagesCount',l:'שלבים'},{k:'title',l:'דרגה'},{k:'streak',l:'סטריק'},{k:'lastLogin',l:'כניסה אחרונה'},{k:'appVersion',l:'גרסה'},{k:'lang',l:'שפה'},{k:'navyArm',l:'⚓ זרוע ים'},{k:'reminderCount',l:'תזכורות'},{k:'firstUse',l:'הרשמה'},{k:'_act',l:''}];
+const cols=[{k:'userName',l:'שם'},{k:'email',l:'מייל'},{k:'score',l:'ניקוד'},{k:'stagesCount',l:'שלבים'},{k:'title',l:'דרגה'},{k:'streak',l:'סטריק'},{k:'lastLogin',l:'כניסה אחרונה'},{k:'appVersion',l:'גרסה'},{k:'lang',l:'שפה'},{k:'navyArm',l:'⚓ זרוע ים'},{k:'isAdmin',l:'🛡️ אדמין'},{k:'reminderCount',l:'תזכורות'},{k:'firstUse',l:'הרשמה'},{k:'_act',l:''}];
 
 let t='<table class="adm-tbl"><thead><tr>';
 cols.forEach(c=>{
@@ -8107,7 +8151,7 @@ cols.forEach(c=>{
 });
 t+='</tr></thead><tbody>';
 
-if(sorted.length===0){t+='<tr><td colspan="13" style="text-align:center;padding:2rem;color:var(--t2)">לא נמצאו משתמשים</td></tr>'}
+if(sorted.length===0){t+='<tr><td colspan="14" style="text-align:center;padding:2rem;color:var(--t2)">לא נמצאו משתמשים</td></tr>'}
 sorted.forEach((u,i)=>{
   const n=esc(u.userName||'').replace(/'/g,"\\'");
   const _la=parseInt(u.lastActivity)||0;
@@ -8140,6 +8184,7 @@ sorted.forEach((u,i)=>{
   t+='<td>'+_admVersionCell(u.appVersion)+'</td>';
   t+='<td>'+_admLangCell(u.lang)+'</td>';
   t+='<td id="navyc'+i+'">'+_admNavyBadge(String(u.navyArm||'')==='true',u.userName,'navyc'+i)+'</td>';
+  t+='<td id="adminc'+i+'">'+_admAdminBadge(String(u.isAdmin||'')==='true',u.userName,'adminc'+i)+'</td>';
   t+='<td>'+_rcCell+'</td>';
   t+='<td style="font-size:.74rem">'+esc(u.firstUse||'—')+'</td>';
   t+='<td><button class="adm-del" onclick="event.stopPropagation();admDelete(\''+n+'\')">🗑️</button></td>';
@@ -8545,6 +8590,10 @@ h+='<label class="adm-toggle"><input type="checkbox" '+(isUnlocked?'checked':'')
 const isNavy=String(u.navyArm||'')==='true';
 h+='<div class="adm-ctrl-row"><label>⚓ משתמש זרוע הים <span style="font-size:.72rem;color:var(--t2)">(רואה את שלב מבנה זרוע הים)</span></label>';
 h+='<label class="adm-toggle"><input type="checkbox" '+(isNavy?'checked':'')+' onchange="admToggleNavy(\''+eName+'\',this.checked)"><span class="slider"></span></label></div>';
+// Admin-role toggle: a flagged user gets a floating 🛡️ button that opens the management panel WITHOUT the password.
+const isAdminU=String(u.isAdmin||'')==='true';
+h+='<div class="adm-ctrl-row"><label>🛡️ הרשאת אדמין <span style="font-size:.72rem;color:var(--t2)">(כפתור צף לפאנל ניהול — בלי סיסמה)</span></label>';
+h+='<label class="adm-toggle"><input type="checkbox" '+(isAdminU?'checked':'')+' onchange="admToggleAdmin(\''+eName+'\',this.checked)"><span class="slider"></span></label></div>';
 
 // Manual stage credit — mark a stage as completed for the user (e.g. bug remediation)
 h+='<div style="margin-top:.7rem;padding-top:.7rem;border-top:1px solid rgba(108,99,255,.12)">';
@@ -8671,6 +8720,19 @@ function admToggleNavy(name,navy){
       const u=_admUsers.find(x=>x.userName===name);
       if(u)u.navyArm=navy?'true':'false';
       _admMsgStatus(navy?'⚓ '+name+' סומן כזרוע הים':'🚫 הוסר סימון זרוע הים מ-'+name,'var(--a)',4000);
+    }else{_admMsgStatus('❌ שגיאה: '+(d.error||'לא ניתן לעדכן'),'var(--s)',5000)}
+  }).catch(()=>{_admMsgStatus('📴 שגיאת חיבור - ודאו שה-Apps Script עודכן','var(--s)',5000)});
+}
+// Grant/revoke admin role (admin-only). A flagged user gets a floating 🛡️ button → management panel, no password.
+function admToggleAdmin(name,val){
+  _admMsgStatus(val?'מעניק הרשאת ניהול...':'מסיר הרשאת ניהול...','var(--t2)');
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'setIsAdmin',userName:name,isAdmin:val,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+  .then(r=>r.json())
+  .then(d=>{
+    if(d.success){
+      const u=_admUsers.find(x=>x.userName===name);
+      if(u)u.isAdmin=val?'true':'false';
+      _admMsgStatus(val?'🛡️ '+name+' קיבל הרשאת ניהול':'🚫 הרשאת הניהול הוסרה מ-'+name,'var(--a)',4000);
     }else{_admMsgStatus('❌ שגיאה: '+(d.error||'לא ניתן לעדכן'),'var(--s)',5000)}
   }).catch(()=>{_admMsgStatus('📴 שגיאת חיבור - ודאו שה-Apps Script עודכן','var(--s)',5000)});
 }
@@ -8817,6 +8879,49 @@ function admShowDataResearch(){
     return;
   }
   _renderDataResearch();
+}
+// ===== "📺 ניתוח תוכן" — readable per-stage/chapter breakdown of video + narration views =====
+var _admContentData=null;
+function admShowContentAnalytics(){
+  // Always fetch fresh WITH staging events included, so the admin can verify content monitoring on staging
+  // too (regular dashboard stays prod-only). Stored separately so it doesn't pollute the prod analytics.
+  $('adv').innerHTML='<div class="adm-wrap" style="text-align:center;padding:4rem"><div style="font-size:2.5rem;margin-bottom:.5rem">⏳</div><p style="color:var(--t2)">טוען נתוני תוכן...</p></div>';
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getAnalytics',includeStaging:true,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
+  .then(r=>r.json()).then(d=>{if(d.success&&d.data){_admContentData=d.data;_renderContentAnalytics()}else{$('adv').innerHTML='<div class="adm-wrap"><div style="text-align:center;padding:3rem"><p style="font-size:2rem">📺</p><p style="color:var(--t2)">אין נתוני תוכן עדיין</p><p style="color:var(--t2);font-size:.78rem;margin-top:1rem">⚠️ ודאו שעשיתם Deploy מחדש ל-GAS</p></div><button class="bp" style="width:100%;margin-top:1rem" onclick="_admBackToUsers()">→ חזרה</button></div>'}})
+  .catch(()=>{$('adv').innerHTML='<div class="adm-wrap"><p style="text-align:center;padding:3rem;color:var(--s)">📴 שגיאת חיבור</p><button class="bp" style="width:100%" onclick="_admBackToUsers()">→ חזרה</button></div>'});
+}
+function _renderContentAnalytics(){
+  const A=_admContentData||_admAnalytics||{};const sm=A.subMeta||{};const fu=A.featUsers||{};
+  function stName(id){var s=(typeof S!=='undefined')&&S.find(function(x){return x.id===parseInt(id)});return s?(s.ic+' שלב '+id+': '+s.t):('שלב '+id);}
+  const FEATS=[
+    {k:'introVideo',t:'🎬 סרטוני פתיחה',hasCh:false,hasVoice:false},
+    {k:'chapterVideo',t:'📽️ הצגות פרקים (אוטו-וידאו)',hasCh:true,hasVoice:true},
+    {k:'topicVideo',t:'🎞️ סרטוני פרק (NotebookLM)',hasCh:true,hasVoice:false},
+    {k:'narration',t:'🔊 הקראות',hasCh:true,hasVoice:true}
+  ];
+  let h='<div class="adm-wrap">';
+  h+='<button class="bbtn" onclick="_admBackToUsers()">→ חזרה לפאנל ניהול</button>';
+  h+='<h2 style="font-size:1.4rem;margin:.3rem 0;text-align:center">📺 ניתוח תוכן — סרטונים והקראות</h2>';
+  h+='<p style="text-align:center;color:var(--t2);font-size:.8rem;margin-bottom:1rem">צפיות לפי שלב, פרק, שפה וקריין (כולל חוזרות). בסוגריים = משתמשים ייחודיים. <span style="color:#ce93d8">כולל אירועי סטייגינג (לבדיקה)</span>.</p>';
+  FEATS.forEach(function(F){
+    var data=sm[F.k]||{};var keys=Object.keys(data);
+    var uniq=fu[F.k]?Object.keys(fu[F.k]).length:0;
+    var total=keys.reduce(function(a,k){return a+(data[k]||0);},0);
+    h+='<div class="pv-card" style="margin-bottom:1rem"><h3 style="font-size:.95rem">'+F.t+' — '+total+' צפיות'+(uniq?' · '+uniq+' משתמשים':'')+'</h3>';
+    if(!keys.length){h+='<p style="color:var(--t2);font-size:.8rem">— אין צפיות עדיין</p></div>';return;}
+    keys.sort(function(a,b){return data[b]-data[a];});
+    h+='<div style="overflow-x:auto"><table class="adm-tbl" style="font-size:.78rem"><thead><tr><th>שלב</th>'+(F.hasCh?'<th>פרק</th>':'')+'<th>שפה</th>'+(F.hasVoice?'<th>קריין</th>':'')+'<th>צפיות</th></tr></thead><tbody>';
+    keys.forEach(function(k){var p=String(k).split('_');var stg=p[0];var idx=1;var ch=F.hasCh?p[idx++]:'';var lang=p[idx++]||'';var voice=F.hasVoice?(p[idx++]||''):'';
+      h+='<tr><td style="white-space:normal;max-width:230px">'+esc(stName(stg))+'</td>';
+      if(F.hasCh)h+='<td>'+(ch!==''&&ch!=null?esc(String(ch)):'—')+'</td>';
+      h+='<td>'+(lang==='en'?'🇬🇧 EN':(lang==='he'?'🇮🇱 HE':esc(lang||'—')))+'</td>';
+      if(F.hasVoice)h+='<td>'+esc(voice||'—')+'</td>';
+      h+='<td style="font-weight:700;color:#ce93d8">'+(data[k]||0)+'</td></tr>';
+    });
+    h+='</tbody></table></div></div>';
+  });
+  h+='<div style="margin-top:1rem"><button class="bp" style="width:100%" onclick="_admBackToUsers()">→ חזרה לפאנל ניהול</button></div></div>';
+  $('adv').innerHTML=h;window.scrollTo(0,0);
 }
 function _renderDataResearch(){
   const A=_admAnalytics||{};
@@ -9402,7 +9507,7 @@ function _enterDuelGame(duelData){
   _duelQIdx=0;_duelMyScore=0;_duelId=duelData.duelId;
   ['ws','mv','sv','hd','pb','ib','miv','glv','pv','lbv','pendingView'].forEach(v=>{if($(v))$(v).classList.add('hid')});
   $('duelFab').classList.add('hid');$('srFab').classList.add('hid');$('dailyFab').classList.add('hid');$('chatFab').classList.add('hid');
-  if($('adminMsgFab'))$('adminMsgFab').classList.add('hid');if($('certFab'))$('certFab').classList.add('hid');if($('bugFab'))$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');if($('lbFab'))$('lbFab').classList.add('hid');
+  if($('adminMsgFab'))$('adminMsgFab').classList.add('hid');if($('certFab'))$('certFab').classList.add('hid');if($('bugFab'))$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');if($('lbFab'))$('lbFab').classList.add('hid');if($('adminFab'))$('adminFab').classList.add('hid');
   $('duelView').classList.remove('hid');
   _duelPost('duelReady',{duelId:_duelId,userName:G.userName}).then(d=>{
     if(d.success&&d.bothReady){_startDuelRound()}
