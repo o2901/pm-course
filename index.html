@@ -970,7 +970,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 </div>
 <div class="pbar hid" id="pb"><div class="pfill" id="pf" style="width:0%"></div></div>
 <div class="hdr hid" id="hd">
-<div style="display:flex;align-items:center;gap:.6rem"><div class="hdr-logo" onclick="_logoClick()">Product Master<span class="navy-only"> ⚓</span></div><div id="hdr-user-group" style="display:flex;align-items:center;gap:.35rem;flex-wrap:nowrap;min-width:0;flex:1;justify-content:center"><div id="hdr-user" style="font-size:.65rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"></div><div id="tb"></div></div><div class="hdr-home" onclick="showAbout()" title="על היוצר" aria-label="על היוצר">👨‍💻</div><div class="hdr-home" onclick="goHome()" title="חזרה למסך הכניסה">🏠</div></div>
+<div style="display:flex;align-items:center;gap:.6rem"><div class="hdr-logo" onclick="_logoClick()">Product Master<span class="navy-only"> ⚓</span></div><div id="hdr-user-group" style="display:flex;align-items:center;gap:.35rem;flex-wrap:nowrap;min-width:0;flex:1;justify-content:center"><div id="hdr-user" style="font-size:.65rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"></div><div id="tb"></div></div><div class="hdr-home navy-only" onclick="showAbout()" title="על היוצר" aria-label="על היוצר">👨‍💻</div><div class="hdr-home" onclick="goHome()" title="חזרה למסך הכניסה">🏠</div></div>
 <div class="hdr-stats">
 <div class="badge"><span>⭐</span><span class="v" id="ts">0</span><span>נק'</span></div>
 <div class="badge"><span>🏆</span><span class="v" id="cs">0</span><span>/52</span></div>
@@ -6869,7 +6869,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.56';
+const APP_VERSION='1.6.57';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -7599,8 +7599,8 @@ const FEAT_META={
   profile:{ic:'👤',name:'פרופיל',col:'#66BB6A'},
   about:{ic:'👨‍💻',name:'על היוצר',col:'#26A69A'},
   narration:{ic:'🗣️',name:'הקראה (פר פרק)',col:'#8D6E63'},
-  introVideo:{ic:'🎬',name:'סרטוני פתיחה (פר שלב)',col:'#FF6584'},
-  chapterVideo:{ic:'📽️',name:'צפייה בפרק — הצגות (פר פרק)',col:'#EC407A'},
+  introVideo:{ic:'🎬',name:'סרטוני שלבים',col:'#FF6584'},
+  chapterVideo:{ic:'📽️',name:'מצגות פרקים',col:'#EC407A'},
   topicVideo:{ic:'🎞️',name:'סרטון פרק NotebookLM',col:'#AB47BC'},
   video:{ic:'🎬',name:'וידאו (היסטורי/מאוחד)',col:'#9E9E9E'}
 };
@@ -8894,8 +8894,8 @@ function _renderContentAnalytics(){
   const A=_admContentData||_admAnalytics||{};const sm=A.subMeta||{};const fu=A.featUsers||{};
   function stName(id){var s=(typeof S!=='undefined')&&S.find(function(x){return x.id===parseInt(id)});return s?(s.ic+' שלב '+id+': '+s.t):('שלב '+id);}
   const FEATS=[
-    {k:'introVideo',t:'🎬 סרטוני פתיחה',hasCh:false,hasVoice:false},
-    {k:'chapterVideo',t:'📽️ הצגות פרקים (אוטו-וידאו)',hasCh:true,hasVoice:true},
+    {k:'introVideo',t:'🎬 סרטוני שלבים',hasCh:false,hasVoice:false},
+    {k:'chapterVideo',t:'📽️ מצגות פרקים',hasCh:true,hasVoice:true},
     {k:'topicVideo',t:'🎞️ סרטוני פרק (NotebookLM)',hasCh:true,hasVoice:false},
     {k:'narration',t:'🔊 הקראות',hasCh:true,hasVoice:true}
   ];
