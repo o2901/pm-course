@@ -3959,7 +3959,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
     if(d.data.interviewUnlocked==='true')G.interviewUnlocked=true;
     G.navyArm=(String(d.data.navyArm)==='true');/* navy-arm flag (admin-set); absent ⇒ civilian (navy stage hidden) */
     if(parseInt(d.data.satisfaction)>0)G.satisfactionRating=parseInt(d.data.satisfaction);
-    if(d.data.adminMessage&&d.data.adminMessage.trim()){if(d.data.adminMessage!==G.adminMessage){G.adminMessage=d.data.adminMessage;G.adminMessageRead=false}}else{G.adminMessage='';G.adminMessageRead=true}
+    if(d.data.adminMessage&&d.data.adminMessage.trim()){if(d.data.adminMessage!==G.adminMessage){G.adminMessage=d.data.adminMessage;G.adminMessageRead=(d.data.adminMessage===_lastReadMsg())}}else{G.adminMessage='';G.adminMessageRead=true}
     // Cache email status for popup logic
     G.cloudEmail=storedEmail;
     G.cloudEmailConsent=String(d.data.emailConsent||'')==='true';
@@ -6862,7 +6862,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.49';
+const APP_VERSION='1.6.50';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -7175,7 +7175,7 @@ function checkCloudUnlocks(){
     if(d.success&&d.data){
       if(d.data.interviewUnlocked==='true'){G.interviewUnlocked=true;sv();updateChatFabLock()}
       if(typeof d.data.navyArm!=='undefined'){var _na=(String(d.data.navyArm)==='true');if(_na!==G.navyArm){G.navyArm=_na;sv();try{rg()}catch(e){}}}
-      if(d.data.adminMessage&&d.data.adminMessage.trim()){if(d.data.adminMessage!==G.adminMessage){G.adminMessage=d.data.adminMessage;G.adminMessageRead=false;sv();updateAdminMsgFab()}}
+      if(d.data.adminMessage&&d.data.adminMessage.trim()){if(d.data.adminMessage!==G.adminMessage){G.adminMessage=d.data.adminMessage;G.adminMessageRead=(d.data.adminMessage===_lastReadMsg());sv();updateAdminMsgFab()}}
     }else if(d && d.success===false && /not found/i.test(String(d.error||''))){
       // Admin deleted this account — force re-registration
       _handleAccountDeleted();
@@ -7254,12 +7254,22 @@ function deviceLabel(dev){
 
 function startSessionTimer(){
   G.sessionStart=Date.now();_lastActivityTime=Date.now();
-  // First-of-the-day bonus - skips day 1, starts from day 2
-  const today=new Date().toDateString();
+  // Period-based login bonus: points are granted ONLY for the FIRST login in the MORNING and the FIRST at
+  // NIGHT, each once per calendar day. A user may log in many times a day — every OTHER login just greets
+  // "ברוך שובך" (no points; that toast already fires in the login handler). Day-1 (signup day) gives none.
+  const _now=new Date();const today=_now.toDateString();const _h=_now.getHours();
   const firstDay=G.firstUse?new Date(G.firstUse).toDateString():today;
-  if(G.lastBonusDay!==today&&G.s&&firstDay!==today){
-    G.lastBonusDay=today;G.ts+=10;
-    setTimeout(()=>showAchievement('☀️','בוקר טוב!','+10 נק׳ בונוס כניסה יומית · המשך כך'),900);
+  if(G.s&&firstDay!==today){
+    const _period=(_h>=5&&_h<12)?'morning':((_h>=18||_h<5)?'night':null);
+    if(_period==='morning'&&G.lastMorningBonus!==today){
+      G.lastMorningBonus=today;G.ts+=10;
+      try{logActivity('loginBonus','בונוס בוקר +10',10);trackEvent('login','morningBonus')}catch(e){}
+      setTimeout(()=>showAchievement('☀️','בוקר טוב!','+10 נק׳ · בונוס כניסה ראשונה בבוקר'),900);
+    }else if(_period==='night'&&G.lastNightBonus!==today){
+      G.lastNightBonus=today;G.ts+=10;
+      try{logActivity('loginBonus','בונוס לילה +10',10);trackEvent('login','nightBonus')}catch(e){}
+      setTimeout(()=>showAchievement('🌙','לילה טוב!','+10 נק׳ · בונוס כניסה ראשונה בלילה'),900);
+    }
   }
   sv();
 }
@@ -7404,10 +7414,10 @@ function startSatisfactionTimer(){/* trigger is now achievement-based — see ma
 //   • First prompt once the user has completed >=3 stages (at a stage-completion moment).
 //   • If they skip ("אח"כ"), re-prompt every 2 further stage-completions.
 //   • Repeats until they actually rate; once rated it never shows again.
-function _satNextThreshold(){
-  if(G.satSkips&&G.satSkips.length){return (parseInt(G.satSkips[G.satSkips.length-1].st)||0)+2}
-  return 3;
-}
+// Entry gate: ask once the user has completed >=2 stages. The RE-ASK cadence is time-based (see
+// _showSatIfReady) — NOT a per-skip stage backoff, which previously pushed the next prompt out by +2
+// stages each skip and meant a user who skipped once and didn't keep progressing was never asked again.
+function _satNextThreshold(){return 2;}
 function maybeShowSatisfaction(){
   if(G.satisfactionRating>0)return;
   if((G.done?G.done.size:0)<_satNextThreshold())return;
@@ -7417,6 +7427,9 @@ var _satRetryCount=0;
 function _showSatIfReady(){
   if(G.satisfactionRating>0)return;// Already rated - never show
   if(document.getElementById('satOverlay'))return;// our popup is already open
+  if((G.done?G.done.size:0)<_satNextThreshold())return;// not enough stages yet
+  var _satNext=0;try{_satNext=parseInt(localStorage.getItem('pm_sat_next')||'0')||0}catch(e){}
+  if(Date.now()<_satNext)return;// time-throttle: re-ask at most ~once/day until the user actually rates
   if(document.querySelector('.daily-modal')){
     // Another modal (typically the post-stage "reflection" popup, which opens 400ms earlier)
     // is on screen. Don't bail — wait for it to close, then show, so the survey isn't
@@ -7429,6 +7442,7 @@ function _showSatIfReady(){
   _showSatPopup();
 }
 function _showSatPopup(){
+  try{localStorage.setItem('pm_sat_next',String(Date.now()+20*3600*1000))}catch(e){}// re-ask ~once/day until rated
   var overlay=document.createElement('div');
   overlay.className='daily-modal';
   overlay.id='satOverlay';
@@ -7499,7 +7513,7 @@ function _satSubmit(){
 // user already finished every stage (so no new stage-completion will fire), give it one more
 // chance when they return to the map — at most once per session.
 const _origMpSat=mp;
-mp=function(){_origMpSat();if(G.satisfactionRating>0)return;if(_satLastShownTime>0)return;if((G.done?G.done.size:0)>=_satNextThreshold()){setTimeout(_showSatIfReady,2500)}};
+mp=function(){_origMpSat();if(G.satisfactionRating>0)return;if((G.done?G.done.size:0)>=_satNextThreshold()){setTimeout(_showSatIfReady,2500)}};
 
 // ========== FEATURE 5: BUG REPORT ==========
 function showBugReport(){
