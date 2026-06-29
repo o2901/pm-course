@@ -756,7 +756,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 .bug-fab{position:fixed;bottom:1.5rem;right:1.5rem;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,rgba(255,101,132,.92),rgba(255,60,100,.92));color:#fff;border:none;font-size:1.5rem;cursor:pointer;z-index:180;box-shadow:0 6px 24px rgba(255,101,132,.4);transition:.3s;display:flex;align-items:center;justify-content:center;animation:bugFabPulse 2.8s infinite}
 .bug-fab:hover{transform:scale(1.1);box-shadow:0 8px 30px rgba(255,101,132,.55)}
 @keyframes bugFabPulse{0%,100%{box-shadow:0 6px 24px rgba(255,101,132,.3)}50%{box-shadow:0 6px 30px rgba(255,101,132,.6)}}
-@media(max-width:600px){.bug-fab{width:50px;height:50px;font-size:1.3rem;bottom:1.2rem;right:1.2rem}}
+@media(max-width:600px){.bug-fab{width:48px;height:48px;font-size:1.2rem;bottom:1.2rem;right:1.2rem}}
 .glossary-fab{position:fixed;bottom:5.25rem;right:1.5rem;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,rgba(0,188,212,.93),rgba(0,150,180,.93));color:#fff;border:none;font-size:1.35rem;cursor:pointer;z-index:180;box-shadow:0 4px 20px rgba(0,188,212,.35);transition:.3s;display:flex;align-items:center;justify-content:center}
 .glossary-fab:hover{transform:scale(1.1);box-shadow:0 8px 28px rgba(0,188,212,.5)}
 @media(max-width:600px){.glossary-fab{width:48px;height:48px;font-size:1.2rem;bottom:4.6rem;right:1.2rem}}
@@ -798,6 +798,15 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 .duel-fab:hover{transform:scale(1.1);box-shadow:0 8px 30px rgba(108,99,255,.5)}
 .duel-fab .duel-fab-badge{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;border-radius:50%;background:#00C9A7;color:#fff;font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 3px;border:2px solid var(--bg)}
 .duel-fab.no-online .duel-fab-badge{background:var(--t2);opacity:.5}
+/* Mobile: left-column FABs match the right column's size (48px) + rhythm. Without this they stayed 52px while the right side shrank to 48px — left looked bigger. Bottoms mirror the right column row-by-row. */
+@media(max-width:600px){
+  .chat-fab{width:48px;height:48px;font-size:1.2rem;left:1.2rem;bottom:1.2rem}
+  .daily-fab{width:48px;height:48px;font-size:1.2rem;left:1.2rem;bottom:4.6rem}
+  .duel-fab{width:48px;height:48px;font-size:1.2rem;left:1.2rem;bottom:7.875rem}
+  .sr-fab{width:48px;height:48px;font-size:1.2rem;left:1.2rem;bottom:11.15rem}
+  .cert-fab{width:48px;height:48px;font-size:1.2rem;left:1.2rem;bottom:14.425rem}
+  .admin-msg-fab{width:48px;height:48px;font-size:1.2rem;left:1.2rem;bottom:17.7rem}
+}
 .duel-panel{position:fixed;bottom:0;left:0;width:340px;max-width:95vw;max-height:70vh;background:var(--card);border-radius:16px 16px 0 0;border:1px solid rgba(108,99,255,.25);z-index:190;transform:translateY(100%);transition:transform .3s;overflow:hidden;direction:rtl}
 .duel-panel.open{transform:translateY(0)}
 .duel-panel-hdr{padding:.8rem 1rem;background:linear-gradient(135deg,rgba(108,99,255,.15),rgba(156,39,176,.1));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(108,99,255,.15)}
@@ -3761,7 +3770,21 @@ function getChalRemain(){return CHAL_CYCLE-Math.floor(Date.now()/1000)%CHAL_CYCL
 function renderTipMap(){const el=$('dtip');if(!el)return;const tip=_currentMapStageId>=0?getContextualTip(_currentMapStageId):_dTips()[getTipIdx()];const stg=_currentMapStageId>=0?S.find(x=>x.id===_currentMapStageId):null;const label=stg?` (${stg.t})`:'';el.innerHTML=`<div class="daily-tip"><span class="dt-icon">🧠</span> <strong>${_t('טיפ')}${label}:</strong> ${tip}</div>`}
 function renderChalMap(){const el=$('dchal');if(!el)return;const coreDone=S.filter(s=>s.tg!=='בונוס - ספר'&&s.tg!=='בונוס מיוחד').filter(s=>G.done.has(s.id)).length;if(coreDone>=20){el.innerHTML='';return}const ch=_dChals()[getChalIdx()];el.innerHTML=`<div class="challenge-banner">${ch}</div>`}
 function _syncInfoBarTop(){var ib=$('ib'),hd=$('hd'),sv=$('sv');if(!ib||!hd)return;var mob=window.innerWidth<=600,vis=!ib.classList.contains('hid')&&!hd.classList.contains('hid');if(mob&&vis){var hH=hd.offsetHeight;ib.style.top=hH+'px';if(sv&&!sv.classList.contains('hid'))sv.style.paddingTop=(hH+ib.offsetHeight+10)+'px';}else{ib.style.top='';if(sv)sv.style.paddingTop='';}}
-function renderInfoBar(){const ib=$('ib');if(!ib)return;_syncInfoBarTop();const tipEl=$('ib-tip');const chalEl=$('ib-chal');if(tipEl){const tip=getContextualTip(G.st);tipEl.innerHTML=`🧠 <strong>${_t('טיפ:')}</strong> ${tip}`}if(chalEl){if(G.done.size>=14){chalEl.innerHTML=''}else{const ch=_dChals()[getChalIdx()];chalEl.innerHTML=ch}}}
+var _ibHintShown=false;
+// One-time scroll hint for the tip/challenge bar: on first entry, if the row overflows, briefly reveal the
+// hidden end then settle back at the reading start (HE/RTL=right, EN/LTR=left) so users notice it scrolls + can read it.
+function _hintInfoBar(){
+  if(_ibHintShown)return;var ib=$('ib');if(!ib||ib.classList.contains('hid'))return;
+  setTimeout(function(){
+    if(_ibHintShown)return;if(!ib||ib.classList.contains('hid'))return;
+    var overflow=ib.scrollWidth-ib.clientWidth;if(overflow<=8)return;// nothing hidden -> no hint
+    _ibHintShown=true;
+    var endPos=(G.lang!=='en')?-overflow:overflow;// modern RTL: reading-start scrollLeft=0, end=negative. scrollTo() clamps negatives; rAF can be throttled -> step scrollLeft via setInterval.
+    function _tw(to,dur,cb){var from=ib.scrollLeft,steps=Math.max(1,Math.round(dur/25)),i=0;var iv=setInterval(function(){i++;var p=Math.min(1,i/steps);var e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;ib.scrollLeft=from+(to-from)*e;if(p>=1){clearInterval(iv);if(cb)cb();}},25);}
+    _tw(endPos,700,function(){setTimeout(function(){_tw(0,700);},1500);});
+  },700);
+}
+function renderInfoBar(){const ib=$('ib');if(!ib)return;_syncInfoBarTop();const tipEl=$('ib-tip');const chalEl=$('ib-chal');if(tipEl){const tip=getContextualTip(G.st);tipEl.innerHTML=`🧠 <strong>${_t('טיפ:')}</strong> ${tip}`}if(chalEl){if(G.done.size>=14){chalEl.innerHTML=''}else{const ch=_dChals()[getChalIdx()];chalEl.innerHTML=ch}}_hintInfoBar();}
 let _tickInterval;
 function startTickers(){if(_tickInterval)clearInterval(_tickInterval);_tickInterval=setInterval(()=>{const tr=getTipRemain(),cr=getChalRemain();const ts=fmtTimer(tr),cs=fmtTimer(cr);const ttm=$('tt-map');if(ttm)ttm.textContent=ts;const ttb=$('tt-bar');if(ttb)ttb.textContent=ts;const ctm=$('ct-map');if(ctm)ctm.textContent=cs;const ctb=$('ct-bar');if(ctb)ctb.textContent=cs;if(tr<=1){setTimeout(()=>{renderTipMap();renderInfoBar()},1100)}if(cr<=1){setTimeout(()=>{renderChalMap();renderInfoBar()},1100)}},1000)}
 
@@ -6869,7 +6892,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.58';
+const APP_VERSION='1.6.59';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
