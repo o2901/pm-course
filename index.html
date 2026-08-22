@@ -807,8 +807,8 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
   .cert-fab{width:48px;height:48px;font-size:1.2rem;left:1.2rem;bottom:14.425rem}
   .admin-msg-fab{width:48px;height:48px;font-size:1.2rem;left:1.2rem;bottom:17.7rem}
 }
-.duel-panel{position:fixed;bottom:0;left:0;width:340px;max-width:95vw;max-height:70vh;background:var(--card);border-radius:16px 16px 0 0;border:1px solid rgba(108,99,255,.25);z-index:190;transform:translateY(100%);transition:transform .3s;overflow:hidden;direction:rtl}
-.duel-panel.open{transform:translateY(0)}
+.duel-panel{position:fixed;bottom:0;left:0;width:340px;max-width:95vw;max-height:70vh;background:var(--card);border-radius:16px 16px 0 0;border:1px solid rgba(108,99,255,.25);z-index:190;transform:translateY(100%);visibility:hidden;pointer-events:none;transition:transform .3s;overflow:hidden;direction:rtl}
+.duel-panel.open{transform:translateY(0);visibility:visible;pointer-events:auto}
 .duel-panel-hdr{padding:.8rem 1rem;background:linear-gradient(135deg,rgba(108,99,255,.15),rgba(156,39,176,.1));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(108,99,255,.15)}
 .duel-panel-hdr h4{font-size:.95rem;font-weight:700;color:var(--t1)}
 .duel-panel-close{background:none;border:none;color:var(--t2);font-size:1.1rem;cursor:pointer}
@@ -4298,7 +4298,7 @@ _pendingName='';
 $('pendingView').classList.add('hid');$('ws').classList.remove('hid');
 window.scrollTo(0,0);
 }
-function goHome(){try{_narrStop()}catch(e){}G.v='w';$('ws').classList.remove('hid');$('mv').classList.add('hid');$('sv').classList.add('hid');$('hd').classList.add('hid');$('pb').classList.add('hid');$('ib').classList.add('hid');$('miv').classList.add('hid');$('lbv').classList.add('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');$('pendingView').classList.add('hid');$('duelView').classList.add('hid');$('duelFab').classList.add('hid');if($('ab'))$('ab').classList.add('hid');window.scrollTo(0,0)}
+function goHome(){try{_narrStop()}catch(e){}try{_closeDuelPanel()}catch(e){}G.v='w';$('ws').classList.remove('hid');$('mv').classList.add('hid');$('sv').classList.add('hid');$('hd').classList.add('hid');$('pb').classList.add('hid');$('ib').classList.add('hid');$('miv').classList.add('hid');$('lbv').classList.add('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');$('pendingView').classList.add('hid');$('duelView').classList.add('hid');$('duelFab').classList.add('hid');if($('ab'))$('ab').classList.add('hid');window.scrollTo(0,0)}
 function mp(){G.v='m';$('ws').classList.add('hid');$('mv').classList.remove('hid');$('sv').classList.add('hid');$('hd').classList.remove('hid');$('pb').classList.remove('hid');$('ib').classList.add('hid');$('miv').classList.add('hid');$('glv').classList.add('hid');$('pv').classList.add('hid');$('lbv').classList.add('hid');$('pendingView').classList.add('hid');$('duelView').classList.add('hid');uh();rg();renderTipMap();renderDailyModal();renderMapActions();renderMapRank();renderXPArea();renderSkillBadges();startTickers();updateDailyFab();_initDuelSystem();updateAdminMsgFab();checkCloudUnlocks();renderSocialTicker();renderDailyGoal()}
 function renderDailyGoal(){
   const el=$('daily-goal');if(!el)return;
@@ -6895,7 +6895,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.60';
+const APP_VERSION='1.6.61';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -7658,7 +7658,7 @@ $('adv').classList.remove('hid');$('hd').classList.remove('hid');$('pb').classLi
 // Show admin indicator instead of user data in header
 const tb=$('tb');if(tb)tb.innerHTML='<div style="font-size:.7rem;color:var(--a);white-space:nowrap">🔧 מנהל מערכת</div>';
 $('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');$('srFab').classList.add('hid');$('adminMsgFab').classList.add('hid');$('certFab').classList.add('hid');$('duelFab').classList.add('hid');$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');if($('lbFab'))$('lbFab').classList.add('hid');if($('adminFab'))$('adminFab').classList.add('hid');
-renderAdminGate();window.scrollTo(0,0);
+try{_closeDuelPanel()}catch(e){}renderAdminGate();window.scrollTo(0,0);
 }
 
 function hideAdmin(){$('adv').classList.add('hid');if(G.s){mp()}else{goHome()}}
@@ -9375,6 +9375,7 @@ function _updateDuelFab(){
 }
 
 // Duel panel
+function _closeDuelPanel(){_duelPanelOpen=false;var p=$('duelPanel');if(p)p.classList.remove('open')}
 function _toggleDuelPanel(){
   _duelPanelOpen=!_duelPanelOpen;
   $('duelPanel').classList.toggle('open',_duelPanelOpen);
@@ -9533,7 +9534,7 @@ function _enterDuelGame(duelData){
   _duelQuestions=JSON.parse(duelData.questionsJSON||'[]');
   _duelQIdx=0;_duelMyScore=0;_duelId=duelData.duelId;
   ['ws','mv','sv','hd','pb','ib','miv','glv','pv','lbv','pendingView'].forEach(v=>{if($(v))$(v).classList.add('hid')});
-  $('duelFab').classList.add('hid');$('srFab').classList.add('hid');$('dailyFab').classList.add('hid');$('chatFab').classList.add('hid');
+  _closeDuelPanel();$('duelFab').classList.add('hid');$('srFab').classList.add('hid');$('dailyFab').classList.add('hid');$('chatFab').classList.add('hid');
   if($('adminMsgFab'))$('adminMsgFab').classList.add('hid');if($('certFab'))$('certFab').classList.add('hid');if($('bugFab'))$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');if($('lbFab'))$('lbFab').classList.add('hid');if($('adminFab'))$('adminFab').classList.add('hid');
   $('duelView').classList.remove('hid');
   _duelPost('duelReady',{duelId:_duelId,userName:G.userName}).then(d=>{
