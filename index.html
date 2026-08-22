@@ -809,6 +809,11 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 }
 .duel-panel{position:fixed;bottom:0;left:0;width:340px;max-width:95vw;max-height:70vh;background:var(--card);border-radius:16px 16px 0 0;border:1px solid rgba(108,99,255,.25);z-index:190;transform:translateY(100%);visibility:hidden;pointer-events:none;transition:transform .3s;overflow:hidden;direction:rtl}
 .duel-panel.open{transform:translateY(0);visibility:visible;pointer-events:auto}
+.quiz-missing{margin:.6rem 0 1rem;padding:.8rem .9rem;background:rgba(255,179,0,.09);border:1px solid rgba(255,179,0,.4);border-radius:12px}
+.quiz-missing .qmiss-title{font-weight:800;font-size:.88rem;color:var(--t1);margin-bottom:.5rem}
+.quiz-missing .qmiss-item{display:flex;justify-content:space-between;align-items:center;gap:.6rem;padding:.45rem .6rem;margin:.3rem 0;background:rgba(255,255,255,.04);border:1px solid rgba(255,179,0,.25);border-radius:9px;font-size:.83rem;color:var(--t1);cursor:pointer;transition:.2s}
+.quiz-missing .qmiss-item:hover{background:rgba(255,179,0,.14)}
+.quiz-missing .qmiss-go{color:var(--p);font-weight:700;white-space:nowrap;font-size:.78rem}
 .duel-panel-hdr{padding:.8rem 1rem;background:linear-gradient(135deg,rgba(108,99,255,.15),rgba(156,39,176,.1));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(108,99,255,.15)}
 .duel-panel-hdr h4{font-size:.95rem;font-weight:700;color:var(--t1)}
 .duel-panel-close{background:none;border:none;color:var(--t2);font-size:1.1rem;cursor:pointer}
@@ -3977,6 +3982,15 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
         if(cv&&cv.text&&(!lv||(parseInt(cv.t)||0)>(parseInt(lv.t)||0)))G.reflections[sid]=cv;
       });
     }catch(e){}
+    // Merge partial progress from cloud (#67): union — cloud fills gaps, local (fresher) wins conflicts.
+    try{
+      const _pg=JSON.parse(d.data.progressJSON||'');
+      if(_pg&&typeof _pg==='object'){
+        if(_pg.s){if(!G._seenSec)G._seenSec={};Object.keys(_pg.s).forEach(function(k){if(_pg.s[k]&&!G._seenSec[k])G._seenSec[k]=true;});}
+        if(_pg.t){if(!G._tabVisits)G._tabVisits={};Object.keys(_pg.t).forEach(function(k){if(!G._tabVisits[k])G._tabVisits[k]=_pg.t[k];else if(_pg.t[k]&&typeof _pg.t[k]==='object'){Object.keys(_pg.t[k]).forEach(function(k2){if(!G._tabVisits[k][k2])G._tabVisits[k][k2]=_pg.t[k][k2];});}});}
+        if(_pg.q){if(!G.qa)G.qa={};Object.keys(_pg.q).forEach(function(k){if(!G.qa[k])G.qa[k]=_pg.q[k];else if(_pg.q[k]&&typeof _pg.q[k]==='object'){Object.keys(_pg.q[k]).forEach(function(k2){if(G.qa[k][k2]==null)G.qa[k][k2]=_pg.q[k][k2];});}});}
+      }
+    }catch(e){}
     // Merge satisfaction-skip log from cloud (#sat) — dedupe by timestamp
     try{
       const cloudSk=JSON.parse(d.data.satSkipsJSON||'[]');
@@ -5035,7 +5049,8 @@ try{speechSynthesis.getVoices();}catch(e){} // kick the async voice-list load ea
 function setNarrRate(r){G.narrRate=r;try{sv()}catch(e){}trackEvent('narration','rate',r);try{showProfile()}catch(e){}}
 function setNarrVoice(name){if(_enLang())G.narrVoiceEn=name||'';else G.narrVoiceHe=name||'';try{sv()}catch(e){}trackEvent('narration','voice',name||'auto');}
 function _narrNext(){
-  if(!_narr.active||_narr.i>=_narr.chunks.length){_narrStop();return;}
+  if(!_narr.active){_narrStop();return;}
+  if(_narr.i>=_narr.chunks.length){try{if(_narr.doneKey)_markTopicConsumed(_narr.doneKey)}catch(e){}_narrStop();return;}/* natural finish = topic consumed (bug #67) */
   var u=new SpeechSynthesisUtterance(_narr.chunks[_narr.i++]);
   u.rate=(G.narrRate&&G.narrRate>0)?G.narrRate:1;
   var v=null;try{v=_narrPickVoice();}catch(e){}
@@ -5068,7 +5083,7 @@ function pfNarrate(btn){
   while((m=re.exec(txt))){var sent=m[0];if((cur+sent).length>200&&cur){chunks.push(cur);cur=sent;}else{cur+=sent;}}
   if(cur.trim())chunks.push(cur);
   if(!chunks.length)return;
-  _narr.chunks=chunks;_narr.i=0;_narr.active=true;_narr.btn=btn;
+  _narr.chunks=chunks;_narr.i=0;_narr.active=true;_narr.btn=btn;_narr.doneKey=(sec.dataset&&sec.dataset.idx!=null)?(G.st+'_'+sec.dataset.idx):null;
   btn.classList.add('on');btn.innerHTML='⏹ '+(_enLang()?'Stop':'עצור');
   trackEvent('narration','play',G.st+'_'+(sec.dataset&&sec.dataset.idx!=null?sec.dataset.idx:'')+'_'+(_enLang()?'en':'he')+'_'+(G.avVoice||'avri'));/* per-chapter narration, tagged stage_chapter_lang_voice */
   _narrNext();
@@ -5512,7 +5527,7 @@ function _avRender(){
 function _avAdvance(myTok){
   if(!_av.on||myTok!==_av.tok)return;
   if(_av.i<_av.slides.length-1){_av.i++;_avRender();_avSpeak();}
-  else{_av.on=false;_avRender();}
+  else{_av.on=false;_avRender();try{_markTopicConsumed(window._avDoneKey)}catch(e){}}
 }
 function _avSpeak(){
   if(!_av.on)return;
@@ -5573,6 +5588,7 @@ function pfAutoVideo(stageId,topicIdx){
   if(cur.trim())chunks.push(cur.trim());
   chunks=chunks.map(function(c){return c.replace(/․/g,'.').replace(/\s*·\s*\./g,'.').replace(/\.\s*\.+/g,'.').replace(/\s{2,}/g,' ').trim();}).filter(function(c){return /[A-Za-z0-9֐-׿]/.test(c);});
   if(!chunks.length)return;
+  window._avDoneKey=stageId+'_'+(topicIdx-1);/* finishing the chapter presentation counts as reading the topic (bug #67) */
   _avClose();
   var emoji='';try{var hm=(((sec.querySelector('h3')||{}).textContent)||'').match(/[\u{1F000}-\u{1FAFF}⌀-➿]/u);emoji=hm?hm[0]:'';}catch(e){}
   // Visuals over the CSS ambient background. Each chapter draws from its STAGE's pool
@@ -5730,6 +5746,7 @@ function pfAccToggle(btn){
 }
 // Mirror of the progress-bar updates from _markSeenByScroll, callable when an accordion opens.
 function _updateReadProgress(){
+  try{sv()}catch(e){}/* seen-marks used to stay memory-only until an unrelated sv() — closing the tab lost them (bug #67) */
   var s = S.find(function(x){return x.id===G.st;}); if(!s) return;
   var total = s.th.length;
   var seenCount = s.th.filter(function(_,j){return G._seenSec && G._seenSec[G.st+'_'+j];}).length;
@@ -5797,7 +5814,7 @@ function _markSeenByScroll(){
     if(body){                                   // accordion topic → require OPEN + scrolled through
       if(!body.classList.contains('open'))return;
       const rb=body.getBoundingClientRect();
-      seen=(rb.bottom>0&&rb.bottom<=vh+40);
+      seen=(rb.bottom<=vh+40);/* scrolled past while open counts too — the old rb.bottom>0 let fast flings skip the band, leaving read topics unmarked (bug #67) */
     }else{                                       // plain topic → scrolled to/through, or fully on screen
       seen=(r.top<vh*0.5)||(r.bottom<=vh+40&&r.bottom>40);
     }
@@ -5841,6 +5858,10 @@ if(!G._pu[s.id])G._pu[s.id]={};
 const puState=G._pu[s.id];
 if(!puState.f)puState.f={};if(!puState.h)puState.h={};
 h+=`<div class="quiz-bar-label">📝 ${answered}/${s.q.length} ${_t('שאלות')} | ${pct}% ${_t('הושלם')}</div><div class="quiz-bar"><div class="quiz-bar-fill" style="width:${pct}%"></div></div>`;
+if(al&&!G.done.has(s.id)){const _ps=stagePartsStatus(s);if(!_ps.full){let _mi='';
+if(!_ps.readAll){const _miss=s.th.map((_,i)=>(G._seenSec&&G._seenSec[s.id+'_'+i])?null:(i+1)).filter(x=>x!=null);_mi+='<div class="qmiss-item" onclick="_jumpToTopic('+(_miss[0]-1)+')">📚 '+(_enLang()?'Topics not yet marked as read: ':'נושאים שטרם סומנו כנקראו: ')+_miss.join(', ')+'<span class="qmiss-go">'+(_enLang()?'Take me there ←':'קח אותי לשם ←')+'</span></div>';}
+if(!_ps.caseSeen){_mi+='<div class="qmiss-item" onclick="st(\'c\')">📋 '+(_enLang()?'The case study was not opened yet':'הקייס סטאדי עדיין לא נפתח')+'<span class="qmiss-go">'+(_enLang()?'Open the case ←':'לקייס ←')+'</span></div>';}
+h+='<div class="quiz-missing"><div class="qmiss-title">🎯 '+(_enLang()?'You answered all the questions! To complete the stage:':'ענית על כל השאלות! כדי שהשלב יסומן כהושלם:')+'</div>'+_mi+'</div>';}}
 let streak=0;s.q.forEach((q,i)=>{const shuf=getShuffledOpts(s.id,i,q);const ans=a[i]!==undefined,ok=ans&&a[i]===q.c;if(ans&&ok)streak++;else if(ans)streak=0;
 // Check if 50/50 was used on this question
 const hidden5050=puState.f[i]||null;
@@ -5929,6 +5950,8 @@ updateStreak();uh();if(ok/s.q.length>=.8)cf();showHook();tryCompleteStage(sid,tr
 // section was seen, the case tab was visited, AND all quiz questions were answered.
 // Points are still awarded for the quiz regardless. Called from the quiz, the reading
 // section observer, and the case-tab switch so completion lands the moment the last part is done.
+function _markTopicConsumed(key){try{if(!key)return;if(!G._seenSec)G._seenSec={};if(G._seenSec[key])return;G._seenSec[key]=true;var sid=parseInt(key.split('_')[0],10),idx=key.split('_')[1];if(G.v==='s'&&G.st===sid&&G.tab==='l'){var sec=document.querySelector('.csec[data-idx="'+idx+'"]');if(sec)sec.classList.add('sec-seen');_updateReadProgress();}else{sv();tryCompleteStage(sid,false);}}catch(e){}}
+function _jumpToTopic(i){st('l');setTimeout(function(){try{var e=document.querySelector('.csec[data-idx="'+i+'"]');if(e)e.scrollIntoView({behavior:'smooth',block:'center'})}catch(x){}},300)}
 function stagePartsStatus(s){
   const tv=(G._tabVisits&&G._tabVisits[s.id])||{};
   const readAll=(s.th&&s.th.length)?s.th.every((_,i)=>G._seenSec&&G._seenSec[s.id+'_'+i]):true;
@@ -6895,7 +6918,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.61';
+const APP_VERSION='1.6.62';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -6969,6 +6992,7 @@ function _doSync(){
     sessionToken:G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||'',
     lastDevice:JSON.stringify(G.lastDevice||detectDevice()),
     quizAttemptsJSON:JSON.stringify(G.quizAttempts||{}),
+    progressJSON:JSON.stringify({s:G._seenSec||{},t:G._tabVisits||{},q:G.qa||{}}),/* partial progress (read-marks/case-visits/answers) — used to be device-local only (bug #67) */
     satSkipsJSON:JSON.stringify(G.satSkips||[]),
     reflectionsJSON:JSON.stringify(G.reflections||{}),
     appVersion:APP_VERSION,
