@@ -819,6 +819,7 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 .intro-rate{border:none;background:transparent;color:var(--t2);font-size:.74rem;padding:.2rem .45rem;border-radius:6px;cursor:pointer;font-family:Heebo}
 .intro-rate.on{background:var(--p);color:#fff;font-weight:700}
 .intro-btn{border:1px solid rgba(108,99,255,.35);background:rgba(108,99,255,.1);color:var(--t1);font-size:.76rem;padding:.25rem .55rem;border-radius:8px;cursor:pointer;font-family:Heebo}
+.intro-cc.on{background:var(--p);color:#fff;border-color:var(--p)}
 .intro-resume{margin-top:.45rem;font-size:.78rem;color:var(--t2)}
 .intro-resume a{color:var(--p);font-weight:700}
 .vpc-fig{margin:.8rem 0 1rem}
@@ -5179,10 +5180,14 @@ function enhanceIntroVideo(){
   card.appendChild(wrap);
   first.parentNode.insertBefore(card,first);
 }
+// Captions preference (G.ccOff, remembered on the device). Applies to the <track> mode and keeps the chip in sync
+// with the browser's own CC button (textTracks 'change' event).
+function _introApplyCc(v,card){try{var tt=v.textTracks&&v.textTracks[0];if(tt)tt.mode=G.ccOff?'hidden':'showing';}catch(e){}_introSyncCcChip(v,card);}
+function _introSyncCcChip(v,card){try{var b=card.querySelector('.intro-cc');if(!b)return;var tt=v.textTracks&&v.textTracks[0];var on=tt?(tt.mode==='showing'):!G.ccOff;if(tt&&(tt.mode==='showing')===!!G.ccOff){G.ccOff=!on;sv();}/* user used the native CC button -> remember it */b.textContent='💬 '+(_enLang()?(on?'Captions: on':'Captions: off'):(on?'כתוביות: פעיל':'כתוביות: כבוי'));b.classList.toggle('on',on);}catch(e){}}
 // Opener card extras (#57 captions · #58 duration/speed/skip/resume · #59 fullscreen)
 function _introEnhance(v,url,key,card,first){
   var en=_enLang();
-  try{var vtt=url.replace(/\.mp4(\?.*)?$/i,'.vtt');var _ck='pm_vtt_'+key,_cached=null;try{_cached=sessionStorage.getItem(_ck)}catch(e){}(_cached==='0'?Promise.resolve({ok:false}):fetch(vtt,{method:'HEAD',cache:'no-store'})).then(function(r){try{sessionStorage.setItem(_ck,r.ok?'1':'0')}catch(e){}if(!r.ok)return;var t=document.createElement('track');t.kind='subtitles';t.srclang=en?'en':'he';t.label=en?'English':'עברית';t.src=vtt;t.default=true;v.appendChild(t);setTimeout(function(){try{if(v.textTracks&&v.textTracks[0])v.textTracks[0].mode='showing';}catch(e){}},300);var ccb=card.querySelector('.intro-cc');if(ccb)ccb.style.display='';}).catch(function(){});}catch(e){}
+  try{var vtt=url.replace(/\.mp4(\?.*)?$/i,'.vtt');var _ck='pm_vtt_'+key,_cached=null;try{_cached=sessionStorage.getItem(_ck)}catch(e){}(_cached==='0'?Promise.resolve({ok:false}):fetch(vtt,{method:'HEAD',cache:'no-store'})).then(function(r){try{sessionStorage.setItem(_ck,r.ok?'1':'0')}catch(e){}if(!r.ok)return;var t=document.createElement('track');t.kind='subtitles';t.srclang=en?'en':'he';t.label=en?'English':'עברית';t.src=vtt;t.default=!G.ccOff;v.appendChild(t);setTimeout(function(){_introApplyCc(v,card);},300);try{v.textTracks.addEventListener('change',function(){_introSyncCcChip(v,card)})}catch(e){}var ccb=card.querySelector('.intro-cc');if(ccb)ccb.style.display='';}).catch(function(){});}catch(e){}
   var bar=document.createElement('div');bar.className='intro-bar';
   var dur=document.createElement('span');dur.className='intro-dur';dur.textContent='⏱ …';bar.appendChild(dur);
   var rates=[1,1.25,1.5,2],cur=(G.introRate&&G.introRate>0)?G.introRate:1;
@@ -5190,7 +5195,7 @@ function _introEnhance(v,url,key,card,first){
   rates.forEach(function(r){var b=document.createElement('button');b.type='button';b.className='intro-rate'+(r===cur?' on':'');b.textContent=r+'×';b.onclick=function(){G.introRate=r;cur=r;try{v.playbackRate=r}catch(e){}sv();rwrap.querySelectorAll('.intro-rate').forEach(function(x){x.classList.toggle('on',x===b)});trackEvent('introVideo','rate_'+r);};rwrap.appendChild(b);});
   bar.appendChild(rwrap);
   var fs=document.createElement('button');fs.type='button';fs.className='intro-btn';fs.textContent='⛶ '+(en?'Fullscreen':'מסך מלא');fs.onclick=function(){try{if(v.requestFullscreen)v.requestFullscreen();else if(v.webkitEnterFullscreen)v.webkitEnterFullscreen();else if(v.webkitRequestFullscreen)v.webkitRequestFullscreen();}catch(e){}trackEvent('introVideo','fullscreen');};bar.appendChild(fs);
-  var cc=document.createElement('span');cc.className='intro-cc';cc.style.display='none';cc.textContent='💬 '+(en?'Captions on':'כתוביות פעילות');bar.appendChild(cc);
+  var cc=document.createElement('button');cc.type='button';cc.className='intro-btn intro-cc';cc.style.display='none';cc.title=en?'Toggle captions':'הפעלה/כיבוי כתוביות';cc.onclick=function(){G.ccOff=!G.ccOff;sv();_introApplyCc(v,card);trackEvent('introVideo',G.ccOff?'cc_off':'cc_on');};bar.appendChild(cc);_introSyncCcChip(v,card);
   var skip=document.createElement('button');skip.type='button';skip.className='intro-btn';skip.textContent='⤵ '+(en?'Skip to reading':'דלג לקריאה');skip.onclick=function(){try{v.pause()}catch(e){}try{first.scrollIntoView({behavior:'smooth',block:'start'})}catch(e){}trackEvent('introVideo','skip');};bar.appendChild(skip);
   card.appendChild(bar);
   function fmt(t){t=Math.max(0,Math.round(t||0));return Math.floor(t/60)+':'+('0'+(t%60)).slice(-2)}
@@ -6977,7 +6982,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.64';
+const APP_VERSION='1.6.65';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
