@@ -1,0 +1,716 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:22.460
+Welcome to The Explainer. Have you ever been handed this incredibly ambitious goal, a super tight deadline, and absolutely zero direct reports? Yeah, if you're a product manager, that's literally just a Tuesday. Today, we're diving into the senior PM playbook for leading without authority. We're going to figure out exactly how top-tier leaders drive massive results relying entirely on influence.
+
+2
+00:00:23.120 --> 00:00:24.620
+So here's the core dilemma, right?
+
+3
+00:00:24.940 --> 00:00:27.540
+How do you lead when absolutely no one reports to you?
+
+4
+00:00:27.860 --> 00:00:31.140
+In a normal corporate hierarchy, your rank dictates action.
+
+5
+00:00:31.460 --> 00:00:34.860
+But the second you step into a PM role, that hierarchy just vanishes.
+
+6
+00:00:35.400 --> 00:00:37.220
+The developers, they don't report to you.
+
+7
+00:00:37.500 --> 00:00:39.380
+The designers definitely don't owe you anything.
+
+8
+00:00:39.380 --> 00:00:43.460
+In the data team, well, they're already swamped with someone else's project.
+
+9
+00:00:44.000 --> 00:00:48.420
+Yet somehow, your entire success is measured by your ability to get all of these brilliant,
+
+10
+00:00:48.840 --> 00:00:52.360
+fiercely autonomous people moving in the exact same direction.
+
+11
+00:00:52.460 --> 00:00:59.200
+Because at the end of the day, brilliant strategy and beautiful roadmaps mean absolutely nothing if people don't actively choose to follow you.
+
+12
+00:01:00.060 --> 00:01:02.760
+To really ground these concepts, let's meet Mikul.
+
+13
+00:01:03.180 --> 00:01:05.660
+She's going to be our narrative guide for this explainer.
+
+14
+00:01:06.280 --> 00:01:10.620
+Mikul is a senior product manager at a fast-paced sauce startup called Velux.
+
+15
+00:01:11.060 --> 00:01:21.180
+And every single day, she is facing these high-stakes scenarios where she has to guide developers, designers, and even C-suite executives, all without the power to issue a single direct order.
+
+16
+00:01:21.640 --> 00:01:22.640
+No way, right?
+
+17
+00:01:22.960 --> 00:01:26.220
+Well, let's see what we can actually learn from how she pulls this off.
+
+18
+00:01:27.000 --> 00:01:29.080
+Okay, let's dive right into this roadmap.
+
+19
+00:01:29.520 --> 00:01:31.960
+We've got five essential areas to master today.
+
+20
+00:01:32.400 --> 00:01:34.440
+First, leading without direct authority.
+
+21
+00:01:35.000 --> 00:01:36.460
+Second, tailoring your message.
+
+22
+00:01:37.020 --> 00:01:38.520
+Third, mapping key stakeholders.
+
+23
+00:01:39.260 --> 00:01:41.120
+Fourth, navigating collaborative conflict.
+
+24
+00:01:41.500 --> 00:01:43.560
+And finally, negotiating interests.
+
+25
+00:01:43.920 --> 00:01:44.660
+Let's get into it.
+
+26
+00:01:45.200 --> 00:01:48.520
+Section 1, reading without direct authority.
+
+27
+00:01:48.520 --> 00:01:55.520
+You know, the first thing I found really fascinating about Michelle's playbook is her strict rule against relying on borrowed authority.
+
+28
+00:01:55.880 --> 00:01:59.660
+We've all been tempted to say, well, the CEO asked for this, right?
+
+29
+00:01:59.860 --> 00:02:04.700
+And sure, that might win you a quick argument today, but it completely erodes the team's respect over time.
+
+30
+00:02:05.360 --> 00:02:07.740
+Instead, she relies on four core pullers.
+
+31
+00:02:08.260 --> 00:02:11.900
+First is influence, which means combining hard data with genuine empathy.
+
+32
+00:02:12.540 --> 00:02:16.400
+Second is trust, which is just built slowly, day by day, through kept promises.
+
+33
+00:02:17.140 --> 00:02:21.420
+Third, vision, because let's face it, people mobilize for meaning, not just a list of tasks.
+
+34
+00:02:21.880 --> 00:02:27.080
+And fourth is execution, which means getting your hands dirty and actively removing blockers for your team.
+
+35
+00:02:27.740 --> 00:02:30.100
+Actually, a really great industry pro tip here.
+
+36
+00:02:30.240 --> 00:02:39.040
+If you combine these four pillars with Kim Scott's concept of radical candor, you know, caring personally but challenging directly, it builds an immense amount of trust.
+
+37
+00:02:39.700 --> 00:02:45.640
+To see what this kind of influence looks like in action, just look at how Mischel handled a massive tech debt crisis.
+
+38
+00:02:46.220 --> 00:02:49.760
+She urgently needed the dev team to dedicate a full sprint to tech debt.
+
+39
+00:02:50.020 --> 00:02:52.940
+But of course, the executives only wanted flashy new features.
+
+40
+00:02:53.180 --> 00:02:53.900
+So what did she do?
+
+41
+00:02:54.160 --> 00:02:55.400
+She didn't issue commands.
+
+42
+00:02:55.780 --> 00:02:57.700
+Instead, she sat down with the lead developer,
+
+43
+00:02:58.120 --> 00:02:59.900
+looked at the messy code with real empathy,
+
+44
+00:03:00.260 --> 00:03:03.180
+and brought just one extremely sharp data point to the table.
+
+45
+00:03:03.960 --> 00:03:04.520
+31%.
+
+46
+00:03:04.520 --> 00:03:07.780
+She showed that 31% of all customer support tickets
+
+47
+00:03:07.780 --> 00:03:10.280
+were stemming directly from synchronization failures.
+
+48
+00:03:10.680 --> 00:03:12.840
+Then she turned right around and showed the executives
+
+49
+00:03:12.840 --> 00:03:16.840
+how fixing this one issue would actually accelerate their next two flashy features.
+
+50
+00:03:17.260 --> 00:03:20.280
+And just like that, the sprint was approved, not a single order given.
+
+51
+00:03:20.980 --> 00:03:24.020
+Moving on to section two, tailoring your message.
+
+52
+00:03:24.440 --> 00:03:29.060
+You can be literally the sharpest product manager in the room, but here's the truth.
+
+53
+00:03:29.360 --> 00:03:33.460
+If your message isn't perfectly calibrated for the specific audience you're talking to,
+
+54
+00:03:33.800 --> 00:03:34.640
+you've already failed.
+
+55
+00:03:35.040 --> 00:03:37.700
+As a PM, you have to be a master translator.
+
+56
+00:03:38.260 --> 00:03:41.320
+Shifting your focus based on who is in the room is absolutely key.
+
+57
+00:03:41.780 --> 00:03:42.520
+I mean, think about it.
+
+58
+00:03:42.520 --> 00:03:46.460
+You wouldn't hand a developer a high-level executive ROI report, right?
+
+59
+00:03:46.760 --> 00:03:49.860
+Nor would you give the CEO a granular list of technical trade-offs.
+
+60
+00:03:50.360 --> 00:03:52.400
+Customers, they just want value and simplicity.
+
+61
+00:03:52.880 --> 00:03:54.760
+Meanwhile, your core team, they need vision.
+
+62
+00:03:54.980 --> 00:03:55.820
+They need inspiration.
+
+63
+00:03:56.400 --> 00:03:59.040
+Oh, and remember, the format totally matters too.
+
+64
+00:03:59.420 --> 00:04:02.040
+A quick three-sentence Slack message is great for coordination,
+
+65
+00:04:02.280 --> 00:04:06.000
+but please don't use it to replace a six-page strategic narrative document.
+
+66
+00:04:06.740 --> 00:04:09.560
+Now, a brilliantly effective way to execute this,
+
+67
+00:04:09.560 --> 00:04:12.480
+especially for executives, is the bluff method.
+
+68
+00:04:12.520 --> 00:04:18.940
+That stands for bottom line up front. Take a look at this comparison. On one side, we have a typical
+
+69
+00:04:18.940 --> 00:04:23.860
+rambling technical email that Mikai initially drafted for her CEO about delaying a launch.
+
+70
+00:04:24.100 --> 00:04:29.300
+It totally buries the lead under a mountain of context. But on the other side, that's the bluff
+
+71
+00:04:29.300 --> 00:04:34.900
+version she actually sent. The very first line hits you right away. Recommendation, delay launch by
+
+72
+00:04:34.900 --> 00:04:41.300
+14 days. Bam. Then it's followed by crisp, clear bullet points detailing the security vulnerability,
+
+73
+00:04:41.300 --> 00:04:44.860
+the cost of delaying, and the massive business risk of not delaying.
+
+74
+00:04:45.440 --> 00:04:46.640
+The result of doing it this way?
+
+75
+00:04:47.060 --> 00:04:50.200
+Her CEO approved it from his phone in exactly 20 minutes.
+
+76
+00:04:50.900 --> 00:04:53.340
+So yeah, always put the bottom line up front.
+
+77
+00:04:53.960 --> 00:04:57.280
+All right, section three, mapping your key stakeholders.
+
+78
+00:04:58.080 --> 00:05:01.740
+As a PM, you're sitting at this completely chaotic intersection.
+
+79
+00:05:02.280 --> 00:05:05.020
+The CEO has a grand vision, sales is sweating over a quota,
+
+80
+00:05:05.200 --> 00:05:09.040
+and literally everyone thinks the product is built just for their specific department.
+
+81
+00:05:09.460 --> 00:05:09.980
+It's a lot.
+
+82
+00:05:10.540 --> 00:05:12.560
+To survive this, you need a solid system.
+
+83
+00:05:13.100 --> 00:05:16.560
+Step one, identify a stakeholder's actual power to influence the product.
+
+84
+00:05:16.920 --> 00:05:20.440
+Step two, gauge their true interest level in the day-to-day weeds of what you're doing.
+
+85
+00:05:20.820 --> 00:05:23.200
+And step three, refresh this map constantly.
+
+86
+00:05:23.680 --> 00:05:24.380
+Why do we do this?
+
+87
+00:05:24.640 --> 00:05:27.740
+Because the golden rule of stakeholder management is zero surprises.
+
+88
+00:05:28.240 --> 00:05:31.580
+Seriously, a stakeholder who hears bad news early, that's a partner.
+
+89
+00:05:31.580 --> 00:05:35.300
+But a stakeholder who hears that same bad news for the first time in a crowded meeting,
+
+90
+00:05:35.580 --> 00:05:37.060
+that is an adversary for sure.
+
+91
+00:05:37.760 --> 00:05:42.180
+So in practice, this just means tailoring your engagement based on where people fall on the map.
+
+92
+00:05:42.660 --> 00:05:47.660
+Your high-power, high-interest folks, they need to be managed closely, usually with regular one-on-ones.
+
+93
+00:05:48.000 --> 00:05:54.220
+But if they have high power and low interest, like, say, a CFO, you just need to keep them satisfied with high-level updates.
+
+94
+00:05:54.560 --> 00:05:56.600
+Do not drown them in the technical details.
+
+95
+00:05:57.040 --> 00:06:01.360
+Micho uses this exact mapping exercise right before every single quarterly review.
+
+96
+00:06:01.360 --> 00:06:05.700
+By pre-aligning with the CEO and the VP of sales based on their specific quadrants,
+
+97
+00:06:05.700 --> 00:06:10.600
+By the time she gets to the actual roadmap meeting, it's completely smooth, totally argument-free.
+
+98
+00:06:11.240 --> 00:06:15.860
+Which brings us to Section 4, Navigating Collaborative Conflict.
+
+99
+00:06:16.420 --> 00:06:20.860
+Look, when passionate people work together, conflict is a feature, not a bug.
+
+100
+00:06:21.080 --> 00:06:21.740
+It's going to happen.
+
+101
+00:06:22.220 --> 00:06:26.960
+The trick is eliminating the messy, unnecessary confusion before that conflict even starts.
+
+102
+00:06:27.280 --> 00:06:29.340
+And the RACI matrix is perfect for this.
+
+103
+00:06:29.820 --> 00:06:33.320
+It clearly defines who is responsible, as in doing the actual work.
+
+104
+00:06:33.320 --> 00:06:35.220
+Who is accountable, for final sign-off.
+
+105
+00:06:35.220 --> 00:06:38.980
+who needs to be consulted for input, and who just gets informed with updates.
+
+106
+00:06:39.380 --> 00:06:42.900
+It literally stops those, wait, I thought you were handling that arguments cold.
+
+107
+00:06:43.200 --> 00:06:44.980
+And I absolutely love this golden rule.
+
+108
+00:06:45.280 --> 00:06:49.240
+If there is more than one person listed as accountable, then absolutely no one is accountable.
+
+109
+00:06:49.940 --> 00:06:52.640
+Okay, but what happens when you actually do clash?
+
+110
+00:06:53.180 --> 00:06:57.120
+Well, the Thomas-Kilman model identifies five distinct conflict styles,
+
+111
+00:06:57.460 --> 00:07:00.140
+and it maps them based on assertiveness versus cooperativeness.
+
+112
+00:07:00.560 --> 00:07:02.760
+You can compete and just force your way through.
+
+113
+00:07:02.760 --> 00:07:05.600
+You can compromise and awkwardly split the difference.
+
+114
+00:07:06.000 --> 00:07:10.260
+You can avoid the issue entirely, or you can just accommodate the other person and give in.
+
+115
+00:07:10.820 --> 00:07:15.340
+But if you're a product manager, collaborating is your absolute superpower.
+
+116
+00:07:15.800 --> 00:07:20.660
+It means being highly assertive about the business goals, but highly cooperative with the people involved.
+
+117
+00:07:21.160 --> 00:07:26.960
+It is definitely not about settling for some weak half-measure compromise where everybody leaves the room slightly unhappy.
+
+118
+00:07:27.280 --> 00:07:31.140
+It's about digging deep to find a genuinely mutually beneficial solution.
+
+119
+00:07:31.660 --> 00:07:34.460
+Because remember, since you don't actually manage anyone,
+
+120
+00:07:34.880 --> 00:07:39.280
+relying on true collaboration is what builds that long-term trust you need to survive in this role.
+
+121
+00:07:39.840 --> 00:07:42.600
+And when you inevitably have to have a tough conversation,
+
+122
+00:07:43.060 --> 00:07:45.260
+especially when you're managing up to your boss,
+
+123
+00:07:45.260 --> 00:07:48.600
+the SBI feedback model is an absolute lifesaver.
+
+124
+00:07:49.140 --> 00:07:51.600
+It stands for Situation, Behavior, Impact.
+
+125
+00:07:51.860 --> 00:07:55.620
+So instead of making an emotional judgment like you don't respect the design team,
+
+126
+00:07:55.840 --> 00:07:56.880
+you frame it objectively.
+
+127
+00:07:57.340 --> 00:08:00.260
+You say, hey, yesterday in the meeting, that's the situation,
+
+128
+00:08:00.260 --> 00:08:03.360
+When you interrupted the designer, there's the observable behavior.
+
+129
+00:08:03.760 --> 00:08:06.140
+It caused the rest of the team to stop sharing their ideas.
+
+130
+00:08:06.460 --> 00:08:07.680
+And that is the impact.
+
+131
+00:08:07.980 --> 00:08:08.580
+See how that works?
+
+132
+00:08:08.860 --> 00:08:13.920
+It completely strips the heated emotion away and focuses everyone purely on solving the problem together.
+
+133
+00:08:14.220 --> 00:08:19.840
+Which brings us to our final section, section 5, negotiating interests, not positions.
+
+134
+00:08:20.760 --> 00:08:26.260
+Since you lack formal authority, principled negotiation is basically your sharpest tool for getting alignment.
+
+135
+00:08:26.880 --> 00:08:29.600
+Think about the classic story of two sisters fighting over an orange.
+
+136
+00:08:30.080 --> 00:08:33.420
+Their position, what they're loudly demanding, is I want the orange.
+
+137
+00:08:33.920 --> 00:08:38.020
+Now, a simple compromise just cuts it right down the middle, leaving them both with less than they wanted.
+
+138
+00:08:38.560 --> 00:08:42.500
+But if you take a second to investigate their interests, like why do they actually want it,
+
+139
+00:08:42.900 --> 00:08:47.400
+you might discover that one sister just wants the juice to drink, and the other just needs the peel to bake a cake.
+
+140
+00:08:47.840 --> 00:08:50.880
+By focusing on those underlying interests rather than their rigid positions,
+
+141
+00:08:51.300 --> 00:08:54.340
+both sisters can walk away with 100% of what they actually need.
+
+142
+00:08:54.340 --> 00:08:55.720
+It's a real game-changer.
+
+143
+00:08:56.520 --> 00:09:00.620
+But before you can start finding those interests, you absolutely must know your BATNA.
+
+144
+00:09:00.820 --> 00:09:03.160
+That's your best alternative to a negotiated agreement.
+
+145
+00:09:03.760 --> 00:09:05.260
+Basically, it's your walkaway plan.
+
+146
+00:09:05.740 --> 00:09:10.260
+Going into any negotiation without a solid alternative makes every single no feel like a fatal threat.
+
+147
+00:09:10.760 --> 00:09:14.300
+Knowing your BATNA beforehand, that keeps you calm, it gives you crucial leverage,
+
+148
+00:09:14.300 --> 00:09:16.760
+and it really helps you define the zone of possible agreement.
+
+149
+00:09:17.340 --> 00:09:19.780
+Let's see how Mischel applies this framework in real life.
+
+150
+00:09:20.320 --> 00:09:23.440
+Imagine a massive enterprise client threatens VLOX saying,
+
+151
+00:09:23.960 --> 00:09:27.280
+Build us a custom dashboard right now or we are canceling our contract.
+
+152
+00:09:28.140 --> 00:09:29.900
+Their position is clearly a custom dashboard,
+
+153
+00:09:30.240 --> 00:09:34.180
+and building that would eat up an entire incredibly expensive development sprint.
+
+154
+00:09:34.780 --> 00:09:35.800
+But Mishel just pauses.
+
+155
+00:09:36.200 --> 00:09:37.280
+She checks her BATNA.
+
+156
+00:09:37.560 --> 00:09:38.160
+Losing this client?
+
+157
+00:09:38.600 --> 00:09:40.800
+Yeah, it would sting, but it wouldn't bankrupt the company.
+
+158
+00:09:41.220 --> 00:09:42.400
+So she's got room to breathe.
+
+159
+00:09:43.040 --> 00:09:46.900
+Instead of fighting with them over the roadmap, she just asks why they need it.
+
+160
+00:09:47.000 --> 00:09:49.840
+Turns out, the client's true interest is just,
+
+161
+00:09:50.260 --> 00:09:52.580
+I need a quarterly data report to show my boss.
+
+162
+00:09:53.180 --> 00:09:53.580
+Boom.
+
+163
+00:09:54.220 --> 00:09:58.660
+Mischel completely bypasses that costly development sprint just by giving them a quick, automated
+
+164
+00:09:58.660 --> 00:09:59.280
+report template.
+
+165
+00:09:59.780 --> 00:10:01.580
+They found the juice, and they found the peel.
+
+166
+00:10:02.160 --> 00:10:04.640
+And that brings us to our core takeaway for this explainer.
+
+167
+00:10:05.200 --> 00:10:08.880
+Zero surprises and high trust are the real currency of product management.
+
+168
+00:10:09.660 --> 00:10:13.660
+Leading without authority, it isn't some magical, innate personality trait that you're
+
+169
+00:10:13.660 --> 00:10:14.320
+just born with.
+
+170
+00:10:14.600 --> 00:10:15.060
+Not at all.
+
+171
+00:10:15.420 --> 00:10:16.980
+It's a systematic process.
+
+172
+00:10:16.980 --> 00:10:21.820
+It's about gathering hard data, tailoring your communication, actively mapping out your
+
+173
+00:10:21.820 --> 00:10:27.340
+stakeholders, collaborating through the inevitable conflicts, and constantly, constantly negotiating
+
+174
+00:10:27.340 --> 00:10:32.080
+for those underlying interests. I'm going to leave you with this one thought to take into your work
+
+175
+00:10:32.080 --> 00:10:36.580
+week. In your very next cross-functional meeting, are you going to be stubbornly defending your
+
+176
+00:10:36.580 --> 00:10:41.840
+position, or will you take a step back to uncover their true interests? Your answer to that is what
+
+177
+00:10:41.840 --> 00:10:46.920
+dictates whether you are simply managing a bunch of tasks or truly leading a product. Thanks so
+
+178
+00:10:46.920 --> 00:10:48.800
+much for joining me on this explainer, and I'll see you next time.
+

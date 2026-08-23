@@ -1,0 +1,412 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:29.980
+Hey everyone, and welcome to The Explainer. I am so glad you're here. Today, I'm going to be putting on my senior product manager mentor hat. We're going to look way past all the buzzwords and the theory, and I'm going to show you exactly how the real job is done. Look, if you want to build products that people actually need, products that fundamentally change user behavior and, you know, actually drive market success, you have to understand exactly who you are building for. So today, we're going to master the art and the science of building strategic personas. Let's get started.
+
+2
+00:00:30.000 --> 00:00:36.040
+into it. Okay, let's dive right into our syllabus for today's masterclass. We'll be moving through
+
+3
+00:00:36.040 --> 00:00:40.780
+six structured steps, starting off with the cognitive bias trap. Then we'll move into
+
+4
+00:00:40.780 --> 00:00:46.480
+building a strategic persona and uncovering jobs to be done. From there, we'll tackle mapping the
+
+5
+00:00:46.480 --> 00:00:51.100
+persona journey, passing the mom test, and finally, balancing qualitative and quantitative
+
+6
+00:00:51.100 --> 00:00:55.580
+data. This is literally your roadmap to building products that are rooted in reality.
+
+7
+00:00:55.580 --> 00:01:01.750
+All right, section one, the cognitive bias trap and exactly why you need research.
+
+8
+00:01:02.310 --> 00:01:07.490
+Listen, before we build a single thing, we absolutely have to address the most dangerous
+
+9
+00:01:07.490 --> 00:01:12.150
+mistake that junior product managers make right out of the gate. And that's assuming that you
+
+10
+00:01:12.150 --> 00:01:17.510
+are the user. The crucial point is this. Assuming your personal experience represents the broader
+
+11
+00:01:17.510 --> 00:01:23.530
+user base is a massive, massive cognitive bias. Like even if you use your own product every single
+
+12
+00:01:23.530 --> 00:01:28.230
+day, your experience simply does not represent the market as a whole. Without user research,
+
+13
+00:01:28.370 --> 00:01:33.110
+you aren't actually managing a product. You're really just guessing. Research is the absolute
+
+14
+00:01:33.110 --> 00:01:38.010
+bedrock of every single product decision you're going to make. Now, to avoid gathering bad data,
+
+15
+00:01:38.170 --> 00:01:43.610
+you have to be incredibly selective about who you actually talk to. You've got to target highly
+
+16
+00:01:43.610 --> 00:01:48.950
+precise segments. So don't just say students. Say second year engineering students who work
+
+17
+00:01:48.950 --> 00:01:54.570
+part-time. See the difference? Also, avoid your power users. I know it's tempting, but I already
+
+18
+00:01:54.570 --> 00:01:58.810
+love your product and they're just going to give you skewed, overly positive feedback. You also
+
+19
+00:01:58.810 --> 00:02:04.350
+want to ensure you have real diversity in roles, tenure, and company size. And honestly, here's the
+
+20
+00:02:04.350 --> 00:02:10.110
+best part. You do not need to interview hundreds of people. Actually, scratch that. You really only
+
+21
+00:02:10.110 --> 00:02:15.570
+need five to eight high-quality interviews to hit what we call a saturation point, which is where
+
+22
+00:02:15.570 --> 00:02:22.730
+really clear patterns start to emerge. Let's move on to section two, building a strategic persona,
+
+23
+00:02:23.290 --> 00:02:29.210
+moving beyond abstract users. So this is where we take all that great data we've gathered and
+
+24
+00:02:29.210 --> 00:02:34.510
+turn it into the ultimate tool to anchor our decisions. Meet Sarah. She is not just some
+
+25
+00:02:34.510 --> 00:02:39.690
+abstract statistic. She is a 32-year-old B2B SaaS team lead at a mid-sized tech company.
+
+26
+00:02:40.170 --> 00:02:44.510
+And notice we aren't just listing demographic facts here. We are defining her specific goals,
+
+27
+00:02:44.510 --> 00:02:48.570
+like wanting to keep her team productive, and we're pinpointing her exact pain points,
+
+28
+00:02:48.790 --> 00:02:53.490
+like a total lack of visibility into her team's workloads. Giving Sarah a real face and a real
+
+29
+00:02:53.490 --> 00:02:58.650
+story ensures that our product solves an actual human problem, and it keeps our entire strategy
+
+30
+00:02:58.650 --> 00:03:05.050
+completely grounded. Which brings us to Section 3, Uncovering Jobs to be Done, or JTBD,
+
+31
+00:03:05.350 --> 00:03:10.970
+the Engine of Intent. Now, this framework shifts our focus entirely. Instead of asking
+
+32
+00:03:10.970 --> 00:03:14.950
+what our persona wants, we have to ask what they are actually trying to accomplish.
+
+33
+00:03:15.490 --> 00:03:18.930
+It's this brilliant theory by Clayton Christensen, which basically states that
+
+34
+00:03:18.930 --> 00:03:23.790
+customers don't buy products at all. They hire them to perform a specific job or overcome a
+
+35
+00:03:23.790 --> 00:03:27.110
+struggle. There's a really famous study about McDonald's milkshakes. Basically,
+
+36
+00:03:27.250 --> 00:03:30.790
+they wanted to increase sales, and their research revealed that morning commuters were their biggest
+
+37
+00:03:30.790 --> 00:03:35.510
+buyers. But why? Well, they didn't just want a milkshake. They hired the thick milkshake to
+
+38
+00:03:35.510 --> 00:03:39.830
+survive a long, really boring drive to work, mainly because it wouldn't make a mess all over
+
+39
+00:03:39.830 --> 00:03:44.550
+their clothes like a bagel would, and it lasted way longer than a banana. And this brilliantly
+
+40
+00:03:44.550 --> 00:03:50.150
+illustrates that a job is never just practical. There are actually three layers of intent. First
+
+41
+00:03:50.150 --> 00:03:54.150
+is the functional layer, which is the practical execution, like transferring money quickly.
+
+42
+00:03:54.530 --> 00:03:59.170
+But right beneath that is the emotional layer, how the user actually wants to feel,
+
+43
+00:03:59.550 --> 00:04:04.650
+like perhaps feeling totally in control of their finances. And finally, you have the social layer,
+
+44
+00:04:04.730 --> 00:04:09.350
+how the user wants to be perceived by others, like looking responsible to their family.
+
+45
+00:04:09.830 --> 00:04:13.170
+A truly great PM builds for all three of these layers.
+
+46
+00:04:13.610 --> 00:04:16.250
+You're going to want to take note of this job story formula.
+
+47
+00:04:16.710 --> 00:04:19.710
+When situation, I want motivation, so result.
+
+48
+00:04:20.210 --> 00:04:23.610
+Unlike your standard user story that really just focuses on a functional action,
+
+49
+00:04:24.030 --> 00:04:26.510
+the job story focuses completely on motivation.
+
+50
+00:04:27.010 --> 00:04:31.070
+For example, when I'm on a boring commute, I want something tasty that occupies my time
+
+51
+00:04:31.070 --> 00:04:33.310
+so the drive goes fast and I'm not hungry until lunch.
+
+52
+00:04:33.650 --> 00:04:34.830
+It's a total game changer.
+
+53
+00:04:34.830 --> 00:04:38.890
+If you know the underlying job, you can build the absolute perfect product to do it.
+
+54
+00:04:39.450 --> 00:04:44.410
+Moving right along to Section 4, Mapping the Persona Journey, Tracking the Truth.
+
+55
+00:04:45.010 --> 00:04:49.690
+Look, knowing Sarah's goals is great and all, but we need to track her entire life cycle.
+
+56
+00:04:50.190 --> 00:04:52.570
+A customer journey isn't just a single isolated event.
+
+57
+00:04:52.890 --> 00:04:55.290
+It starts at day zero, with awareness and consideration.
+
+58
+00:04:55.830 --> 00:04:57.990
+Then day one brings acquisition and onboarding.
+
+59
+00:04:58.390 --> 00:05:02.810
+By week four, we're looking at usage and retention, and hopefully by year one, we hit advocacy.
+
+60
+00:05:02.810 --> 00:05:07.010
+As a product manager, you must identify exactly what your persona is doing,
+
+61
+00:05:07.010 --> 00:05:10.710
+what they are feeling, and what they are struggling with at every single chronological
+
+62
+00:05:10.710 --> 00:05:14.430
+step on this map. That's how you ensure you are proactively meeting their needs.
+
+63
+00:05:15.150 --> 00:05:22.170
+Okay, section five, passing the mom test, escaping polite lies. So asking the wrong questions during
+
+64
+00:05:22.170 --> 00:05:26.810
+a user interview is actually worse than doing no research at all, seriously, because it gives
+
+65
+00:05:26.810 --> 00:05:31.350
+you false confidence. You've got to be aware of polite lies. If you ask a hypothetical future
+
+66
+00:05:31.350 --> 00:05:35.450
+question like, hey, would you use this feature? People are going to say yes just to be nice to
+
+67
+00:05:36.070 --> 00:05:39.910
+Instead, you need grounded truth, which is drawn from the methodology of the mom test.
+
+68
+00:05:40.290 --> 00:05:42.830
+You must ask about past factual experiences.
+
+69
+00:05:43.310 --> 00:05:44.510
+When did you last face this problem?
+
+70
+00:05:44.730 --> 00:05:46.250
+What did you actually do about it?
+
+71
+00:05:46.590 --> 00:05:48.570
+Talk about their life, not your product idea.
+
+72
+00:05:48.970 --> 00:05:52.250
+You have to dig into the past to validate your personas with absolute certainty.
+
+73
+00:05:52.890 --> 00:05:55.290
+Let me tell you a quick story that perfectly captures this.
+
+74
+00:05:55.670 --> 00:05:58.850
+A user at Vilex urgently demands an export to Excel feature.
+
+75
+00:05:59.130 --> 00:06:01.550
+Now, a junior PM just goes ahead and builds it.
+
+76
+00:06:01.870 --> 00:06:03.370
+But a senior PM asks why.
+
+77
+00:06:03.370 --> 00:06:09.850
+They dig all the way down to the root issue and discover that the user's manager really just wants to know who is overloaded with work.
+
+78
+00:06:10.430 --> 00:06:12.930
+The true job to be done there is workload visibility.
+
+79
+00:06:13.490 --> 00:06:19.530
+So instead of a reactive Excel export, the PM builds a live dashboard that solves the exact same problem for dozens of clients.
+
+80
+00:06:20.130 --> 00:06:23.790
+That right there? That is strategic roadmap prioritization in action.
+
+81
+00:06:24.370 --> 00:06:32.190
+Which brings us to our final lesson, Section 6, Balancing Qualitative and Quantitative Data, the executive balance.
+
+82
+00:06:32.630 --> 00:06:36.050
+So how exactly do we harmonize all this different data we've collected?
+
+83
+00:06:36.550 --> 00:06:38.670
+Well, you need both sides of the coin to really succeed.
+
+84
+00:06:39.110 --> 00:06:40.550
+On one hand, you have qualitative data.
+
+85
+00:06:40.930 --> 00:06:42.810
+Those are your deep-dive interviews and observations.
+
+86
+00:06:43.410 --> 00:06:46.130
+This gives you the why and helps you discover the root problems.
+
+87
+00:06:46.630 --> 00:06:49.030
+But as we know, users often say one thing and do another.
+
+88
+00:06:49.350 --> 00:06:51.670
+That's exactly why you need the other side, quantitative data.
+
+89
+00:06:52.250 --> 00:06:54.350
+Your analytics and surveys provide the what,
+
+90
+00:06:54.590 --> 00:06:57.810
+showing you actual user behavior at scale and helping you size the problem.
+
+91
+00:06:58.370 --> 00:07:00.590
+Basically, qualitative insights discover the issue
+
+92
+00:07:00.590 --> 00:07:02.850
+and quantitative metrics confirm its impact.
+
+93
+00:07:03.310 --> 00:07:04.930
+As we wrap up this explainer,
+
+94
+00:07:05.070 --> 00:07:07.590
+I want to leave you with one final kind of provocative thought.
+
+95
+00:07:08.350 --> 00:07:11.410
+Users are almost always going to ask you to build a faster horse.
+
+96
+00:07:11.790 --> 00:07:14.950
+But as a strategic product manager armed with deep user research,
+
+97
+00:07:15.210 --> 00:07:16.890
+jobs to be done, and validated personas,
+
+98
+00:07:17.410 --> 00:07:19.090
+are you really just going to build that faster horse?
+
+99
+00:07:19.350 --> 00:07:21.890
+Or are you going to find out why they are riding in the first place?
+
+100
+00:07:22.370 --> 00:07:23.850
+Answer that, and you'll build the car.
+
+101
+00:07:24.500 --> 00:07:26.340
+Thanks so much for joining me on this deep dive.
+
+102
+00:07:26.340 --> 00:07:28.880
+Now go out there and build something that truly matters.
+

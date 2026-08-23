@@ -1,0 +1,568 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:12.760
+Welcome to the Explainer. Look, if you're a technical leader, a CTO, VP of engineering, or frankly, anyone steering the technical ship right now, you already know that just slapping an API key onto a legacy product is not a long-term strategy.
+
+2
+00:00:13.140 --> 00:00:20.420
+We are right in the middle of a fundamental shift in how we build systems. Today, we're diving into the new paradigm known as software 2.0.
+
+3
+00:00:20.500 --> 00:00:27.200
+Because AI, it isn't just a shiny new feature to tack onto your backlog. It's a fundamentally non-deterministic infrastructure.
+
+4
+00:00:27.200 --> 00:00:30.620
+And successfully scaling it means you've got to throw out the old rulebook
+
+5
+00:00:30.620 --> 00:00:33.300
+and adopt an entirely new set of engineering playbooks.
+
+6
+00:00:33.820 --> 00:00:36.000
+So here's our roadmap for today.
+
+7
+00:00:36.200 --> 00:00:42.400
+We'll start with the software 2.0 paradigm, then tackle the big question, build, fine-tune, or API.
+
+8
+00:00:42.900 --> 00:00:47.820
+After that, we'll look at inference costs and latency, data leakage, rag versus hallucinations,
+
+9
+00:00:48.060 --> 00:00:50.440
+and finally, how to survive model drift.
+
+10
+00:00:50.940 --> 00:00:55.500
+All right, let's jump right into section one, the software 2.0 paradigm.
+
+11
+00:00:55.500 --> 00:00:59.960
+time. To really grasp software 2.0, you have to think about how we used to build things.
+
+12
+00:01:00.320 --> 00:01:05.800
+In software 1.0, a programmer sat down and wrote explicit rigid rules. If the email contains the
+
+13
+00:01:05.800 --> 00:01:11.200
+word Viagra, mark it as spam, right? You manually defined every single edge case. But here is the
+
+14
+00:01:11.200 --> 00:01:16.460
+crucial shift. In software 2.0, we stop writing those rules. Instead, we feed neural networks
+
+15
+00:01:16.460 --> 00:01:20.720
+massive amounts of data and basically let the system independently discover the statistical
+
+16
+00:01:20.720 --> 00:01:25.060
+patterns on its own. You show the network 10 million marked emails, and it figures out what
+
+17
+00:01:25.060 --> 00:01:29.200
+spam looks like without you holding its hand. The model isn't actually thinking like a human,
+
+18
+00:01:29.380 --> 00:01:33.540
+it's predicting based on deep statistical patterns. And really understanding that difference,
+
+19
+00:01:33.760 --> 00:01:38.080
+that is absolutely key to unlocking new product opportunities that were literally impossible
+
+20
+00:01:38.080 --> 00:01:45.220
+just five years ago. Moving on to section two, the foundational choice, build, fine-tune, or API.
+
+21
+00:01:45.760 --> 00:01:51.140
+So there's a pretty harsh reality to AI production economics, and you absolutely have to separate
+
+22
+00:01:51.140 --> 00:01:53.760
+the training phase from the inference phase.
+
+23
+00:01:54.560 --> 00:01:56.280
+Pre-training a massive model from scratch
+
+24
+00:01:56.280 --> 00:01:58.480
+requires reading essentially the entire internet.
+
+25
+00:01:58.960 --> 00:02:01.780
+We're talking massive, one-time capital expenditures here.
+
+26
+00:02:02.180 --> 00:02:04.220
+Millions of dollars, thousands of GPUs,
+
+27
+00:02:04.520 --> 00:02:06.040
+months of nonstop computation.
+
+28
+00:02:06.920 --> 00:02:07.980
+Inference, on the other hand,
+
+29
+00:02:08.020 --> 00:02:10.620
+is what happens when your user actually asks a question.
+
+30
+00:02:11.000 --> 00:02:14.520
+That is a continuous, transactional, per-query cost.
+
+31
+00:02:14.860 --> 00:02:16.640
+It's measured in seconds and cents.
+
+32
+00:02:17.060 --> 00:02:19.120
+Every single token generated costs you money.
+
+33
+00:02:19.480 --> 00:02:23.720
+As a technical leader, you have got to structure your unit economics around this continuous
+
+34
+00:02:23.720 --> 00:02:24.960
+operational expense.
+
+35
+00:02:25.300 --> 00:02:27.760
+Which brings us to your core infrastructure options.
+
+36
+00:02:28.140 --> 00:02:31.780
+Should you use an API, fine-tune an existing model, or just build one from scratch?
+
+37
+00:02:32.260 --> 00:02:36.460
+Well, using an off-the-shelf API is incredibly fast, it's cheap, and it's perfect for initial
+
+38
+00:02:36.460 --> 00:02:37.200
+proofs of concept.
+
+39
+00:02:37.620 --> 00:02:40.060
+But, you know, it means vendor lock-in and a lot less control.
+
+40
+00:02:40.560 --> 00:02:44.020
+Fine-tuning an existing model, that gives you vastly better performance for your specific
+
+41
+00:02:44.020 --> 00:02:47.640
+domain, but it requires clean proprietary data and specialized training costs.
+
+42
+00:02:47.640 --> 00:02:52.180
+And finally, building a model from scratch gives you total control and a unique competitive
+
+43
+00:02:52.180 --> 00:02:56.560
+advantage, but it requires massive capital and a dedicated world-class AI research team.
+
+44
+00:02:57.140 --> 00:02:58.660
+So how on earth do you choose?
+
+45
+00:02:59.040 --> 00:03:00.700
+Well, there's a golden rule of thumb here.
+
+46
+00:03:01.340 --> 00:03:04.860
+Don't build what you can buy and don't buy what you can use for free.
+
+47
+00:03:05.340 --> 00:03:10.600
+You should always start with an API to prove that the AI actually delivers real value to
+
+48
+00:03:10.600 --> 00:03:11.140
+your users.
+
+49
+00:03:11.540 --> 00:03:17.060
+Only step up to fine tuning or the astronomical cost of building from scratch if you have a
+
+50
+00:03:17.060 --> 00:03:22.020
+strict, undeniable business necessity, and the unique proprietary data to back it up.
+
+51
+00:03:22.680 --> 00:03:28.380
+All right, section three, inference costs and latency. In traditional software, we obsessed
+
+52
+00:03:28.380 --> 00:03:35.080
+over page load times, right? Well, in software 2.0, we obsess over TTFT, time to first token.
+
+53
+00:03:35.580 --> 00:03:39.920
+Research shows that users will tolerate a wait of only two to three seconds for an AI response
+
+54
+00:03:39.920 --> 00:03:44.800
+before they just abandon the interaction. Because AI generation takes time, you have to architect
+
+55
+00:03:44.800 --> 00:03:49.280
+your UX to handle this latency. You can't just leave users hanging, staring at a blank screen.
+
+56
+00:03:49.560 --> 00:03:53.840
+You need to implement streaming interfaces, loading states, and intermediate content to
+
+57
+00:03:53.840 --> 00:03:58.000
+bridge that two to three second gap. It's literally a make or break product constraint.
+
+58
+00:03:58.600 --> 00:04:02.740
+And honestly, if you're working in computer vision or audio, it gets even more intense.
+
+59
+00:04:03.220 --> 00:04:07.860
+Let's say you're analyzing real-time video, maybe for an autonomous vehicle or live sports tracking.
+
+60
+00:04:08.280 --> 00:04:12.880
+Your edge inference constraints are brutal. You need less than 30 milliseconds of latency
+
+61
+00:04:12.880 --> 00:04:18.680
+per frame just to keep up. This usually forces you to completely abandon heavy cloud APIs and
+
+62
+00:04:18.680 --> 00:04:24.080
+figure out how to run highly optimized smaller models directly on edge devices. Which brings us
+
+63
+00:04:24.080 --> 00:04:30.160
+to section four, data leakage and privacy. Let's talk about data leakage. It is the silent killer
+
+64
+00:04:30.160 --> 00:04:34.820
+of machine learning projects. Data leakage happens when you use a feature during the model's training
+
+65
+00:04:34.820 --> 00:04:39.520
+phase that simply will not be available when the model is running live in production. You are
+
+66
+00:04:39.520 --> 00:04:44.840
+basically, inadvertently, giving the model the answer key during its test. The result? Your
+
+67
+00:04:44.840 --> 00:04:48.700
+model looks like an absolute genius in the lab, but the second you deploy it to production,
+
+68
+00:04:48.880 --> 00:04:54.100
+it completely falls apart. Let me give you a very real, classic example of this trap.
+
+69
+00:04:54.540 --> 00:04:59.260
+Imagine your team is building a model to predict customer churn. They feed the historical data
+
+70
+00:04:59.260 --> 00:05:04.720
+in and wow, the model is 99% accurate. High fives all around, right? But wait,
+
+71
+00:05:04.720 --> 00:05:09.740
+They accidentally included the database column for cancellation date as a predictive feature.
+
+72
+00:05:10.320 --> 00:05:12.120
+Well, of course the model knows who is going to churn.
+
+73
+00:05:12.380 --> 00:05:14.120
+It's literally looking at the date they canceled.
+
+74
+00:05:14.560 --> 00:05:20.100
+But in the real world, when you're trying to predict if an active customer might cancel next month, that field is going to be blank.
+
+75
+00:05:20.830 --> 00:05:28.370
+To avoid disastrous mistakes like that, your data science team has to perform rigorous exploratory data analysis, or EDA.
+
+76
+00:05:28.990 --> 00:05:32.290
+Think of this as the site survey before you pour the foundation for a house.
+
+77
+00:05:33.010 --> 00:05:36.510
+Before writing a single line of model code, you must look for red flags.
+
+78
+00:05:37.110 --> 00:05:40.890
+Do you have extreme imbalance, where 99.9% of your examples are negative?
+
+79
+00:05:41.410 --> 00:05:44.330
+Are you missing values in over 50% of your critical features?
+
+80
+00:05:44.850 --> 00:05:48.250
+Is there inherent bias, where the data only represents a single demographic?
+
+81
+00:05:48.770 --> 00:05:54.230
+If you don't catch these things in the EDA phase, any model you build on top of it will be fundamentally compromised.
+
+82
+00:05:54.890 --> 00:05:58.770
+And this right here is why deep domain knowledge is non-negotiable.
+
+83
+00:05:58.770 --> 00:06:00.950
+Consider this actual real-world case.
+
+84
+00:06:01.210 --> 00:06:03.810
+A team built an AI to detect pneumonia from x-rays.
+
+85
+00:06:04.150 --> 00:06:06.530
+It hit 95% accuracy in testing.
+
+86
+00:06:06.810 --> 00:06:07.510
+Amazing, right?
+
+87
+00:06:07.650 --> 00:06:09.390
+But when an actual doctor reviewed it,
+
+88
+00:06:09.570 --> 00:06:12.650
+they realized the AI wasn't looking at the lungs at all.
+
+89
+00:06:12.990 --> 00:06:13.350
+Nope.
+
+90
+00:06:13.590 --> 00:06:16.710
+It had learned to recognize the specific font of the text label
+
+91
+00:06:16.710 --> 00:06:17.750
+in the corner of the x-ray
+
+92
+00:06:17.750 --> 00:06:21.010
+that belonged to a hospital known for a high rate of severe cases.
+
+93
+00:06:21.450 --> 00:06:23.770
+Without domain experts in the loop during data analysis,
+
+94
+00:06:24.070 --> 00:06:26.270
+your brilliant math might just be learning hospital fonts
+
+95
+00:06:26.270 --> 00:06:27.990
+instead of actually detecting diseases.
+
+96
+00:06:28.650 --> 00:06:32.170
+Let's move on to section five, rag versus hallucinations.
+
+97
+00:06:32.530 --> 00:06:36.110
+When you're dealing with language models, you have a clear escalation path for injecting
+
+98
+00:06:36.110 --> 00:06:36.450
+knowledge.
+
+99
+00:06:36.790 --> 00:06:39.350
+You should always start with prompting for general tasks.
+
+100
+00:06:39.490 --> 00:06:41.010
+It's cheap, it's fast, it works.
+
+101
+00:06:41.410 --> 00:06:45.270
+But when your model needs specific, factual, and up-to-date knowledge about your proprietary
+
+102
+00:06:45.270 --> 00:06:48.450
+business, you step up to rag, which we'll define in a second.
+
+103
+00:06:48.950 --> 00:06:53.370
+You should reserve expensive fine-tuning only for when you need the model to adopt a
+
+104
+00:06:53.370 --> 00:06:57.550
+highly specific tone or behavior, like speaking exactly in your brand's unique voice.
+
+105
+00:06:57.990 --> 00:07:00.510
+Please, don't fine-tune just to teach the model facts.
+
+106
+00:07:00.710 --> 00:07:03.310
+It is way too expensive and an absolute nightmare to update.
+
+107
+00:07:04.200 --> 00:07:05.380
+So, what is RAG?
+
+108
+00:07:05.540 --> 00:07:08.100
+It stands for Retrieval Augmented Generation,
+
+109
+00:07:08.460 --> 00:07:11.520
+and it is exactly how you beat AI hallucinations.
+
+110
+00:07:12.180 --> 00:07:13.380
+Step 1. Retrieval
+
+111
+00:07:13.380 --> 00:07:16.020
+A user asks about your company's return policy,
+
+112
+00:07:16.020 --> 00:07:20.320
+and the system searches your secure database for the actual return policy document.
+
+113
+00:07:20.840 --> 00:07:22.000
+Step 2. Augmented
+
+114
+00:07:22.000 --> 00:07:27.580
+The system grabs that document and secretly pastes it into the prompt alongside the user's question.
+
+115
+00:07:28.080 --> 00:07:33.300
+Step 3. Generation. The model now reads your actual document and generates an answer strictly
+
+116
+00:07:33.300 --> 00:07:38.100
+based on that text. By doing this, you're securely grounding the AI in your reality,
+
+117
+00:07:38.380 --> 00:07:41.360
+completely preventing it from just making up a policy that doesn't exist.
+
+118
+00:07:41.940 --> 00:07:48.140
+Finally, Section 6. Surviving Model Drift. You see, traditional software mostly stays
+
+119
+00:07:48.140 --> 00:07:53.480
+exactly the same once it's deployed. AI models? They absolutely do not. They suffer from model
+
+120
+00:07:53.480 --> 00:07:58.240
+drift. This is the inevitable degradation of an AI model's predictive power in production
+
+121
+00:07:58.240 --> 00:08:03.980
+simply because real-world data and user behaviors constantly change over time. Think about it. If
+
+122
+00:08:03.980 --> 00:08:09.560
+you train a model on data from 2022 and user habits shift drastically by 2024, your model's
+
+123
+00:08:09.560 --> 00:08:14.480
+accuracy is going to plummet. Deploying a model without rigorous continuous monitoring is literally
+
+124
+00:08:14.480 --> 00:08:19.400
+planting a ticking time bomb in your infrastructure. And because of this drift, your team has to adopt
+
+125
+00:08:19.400 --> 00:08:24.880
+cyclic, non-linear methodologies like the CRISP-DM cycle. You don't just go straight from step one to
+
+126
+00:08:24.880 --> 00:08:29.800
+step six and then head to the golf course. It's a loop. You evaluate in step five, realize you need
+
+127
+00:08:29.800 --> 00:08:34.840
+more features, and jump back to step three for data prep. Or you deploy in step six, model drift
+
+128
+00:08:34.840 --> 00:08:39.380
+hits six months later, performance drops, and you loop right back to step four for remodeling.
+
+129
+00:08:40.060 --> 00:08:43.840
+Architecting software 2.0 means building infrastructure that naturally supports
+
+130
+00:08:43.840 --> 00:08:49.840
+these continuous, repeating maintenance loops. So to guarantee long-term reliability, you need
+
+131
+00:08:49.840 --> 00:08:54.600
+a holistic strategy. You can't just measure technical accuracy in a vacuum. You must tie
+
+132
+00:08:54.600 --> 00:08:59.680
+your model's performance to actual business KPIs, like reducing false positives without hurting
+
+133
+00:08:59.680 --> 00:09:05.700
+overall revenue. For any high-stakes outputs, medical, financial, legal, you absolutely must
+
+134
+00:09:05.700 --> 00:09:10.520
+enforce a human in the loop to catch the weird edge cases the AI misses. And of course, you must
+
+135
+00:09:10.520 --> 00:09:15.100
+actively monitor for that model drift and have automated pipelines ready to go for continuous
+
+136
+00:09:15.100 --> 00:09:20.460
+retraining cycles. As you look at the architecture of your next big AI project, you really have to
+
+137
+00:09:20.460 --> 00:09:25.680
+ask yourself a tough question. Are you building a resilient, cyclical loop that monitors, adapts,
+
+138
+00:09:25.780 --> 00:09:30.340
+and learns over time? Or are you just deploying a brittle endpoint that will confidently hallucinate
+
+139
+00:09:30.340 --> 00:09:35.060
+its way to failure the moment the real world changes? Architecting Software 2.0 is fundamentally
+
+140
+00:09:35.060 --> 00:09:40.060
+about planning for the unknown. Build smart, monitor constantly, and never ever trust a model
+
+141
+00:09:40.060 --> 00:09:43.220
+blindly. Thanks so much for joining me on this explainer. See you next time.
+

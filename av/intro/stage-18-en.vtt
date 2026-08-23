@@ -1,0 +1,672 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:07.600
+Welcome to The Explainer. We're tackling a topic today that, honestly, is secretly the backbone of the entire software industry.
+
+2
+00:00:08.140 --> 00:00:16.040
+Now, you might be thinking to yourself, software versioning? Isn't that just kind of a bureaucratic chore for developers? Absolutely not. No way.
+
+3
+00:00:16.520 --> 00:00:20.380
+Today, we're going to reframe exactly how you look at those little numbers separated by dots.
+
+4
+00:00:20.780 --> 00:00:27.940
+Versioning is a critical communication tool. It's basically the invisible glue that binds product managers, developers, and customers all together.
+
+5
+00:00:28.460 --> 00:00:30.660
+It signals stability, value, and intent.
+
+6
+00:00:31.060 --> 00:00:36.180
+So let's unpack exactly how you can turn what just seems like boring math into a rock-solid foundation of trust.
+
+7
+00:00:36.700 --> 00:00:38.180
+Okay, let's dive into this.
+
+8
+00:00:38.600 --> 00:00:43.680
+Before we look at the right way to do things, let's just paint a picture of the absolute chaos of an unversioned world.
+
+9
+00:00:44.220 --> 00:00:49.460
+Imagine a reality where every single time you deploy code, you are basically spinning a roulette wheel.
+
+10
+00:00:49.600 --> 00:00:56.540
+A customer reports a bug, but because there's no clear version identifier, your support team has absolutely zero way to reproduce it.
+
+11
+00:00:56.540 --> 00:00:59.060
+What exact state of the software are they even using?
+
+12
+00:00:59.540 --> 00:01:01.760
+Without versions, you're literally flying blind.
+
+13
+00:01:02.660 --> 00:01:04.320
+And the consequences of this chaos?
+
+14
+00:01:05.000 --> 00:01:05.660
+They're severe.
+
+15
+00:01:06.340 --> 00:01:10.440
+Just imagine it's Monday morning and your team pushes a seemingly tiny update,
+
+16
+00:01:10.900 --> 00:01:13.360
+maybe just changing a data type or renaming a parameter.
+
+17
+00:01:14.020 --> 00:01:19.280
+Suddenly, boom, 500 enterprise clients who built their internal systems on top of your public API
+
+18
+00:01:19.280 --> 00:01:20.880
+come crashing down all at once.
+
+19
+00:01:21.260 --> 00:01:23.940
+Because you didn't manage or communicate that version change properly,
+
+20
+00:01:23.940 --> 00:01:25.980
+their integrations are instantly broken.
+
+21
+00:01:26.540 --> 00:01:28.660
+And worse, when you inevitably try to roll back
+
+22
+00:01:28.660 --> 00:01:30.560
+to a stable state, you can't.
+
+23
+00:01:30.560 --> 00:01:32.700
+You have no fixed anchor points in your history.
+
+24
+00:01:32.700 --> 00:01:34.300
+It's pretty much a guaranteed way
+
+25
+00:01:34.300 --> 00:01:37.040
+to completely destroy customer trust overnight.
+
+26
+00:01:37.040 --> 00:01:39.600
+So here is the journey we're taking today.
+
+27
+00:01:39.600 --> 00:01:41.660
+First, the versioning contract.
+
+28
+00:01:41.660 --> 00:01:44.060
+Two, semantic versioning rules.
+
+29
+00:01:44.060 --> 00:01:46.940
+Three, comparing Semver and Calver.
+
+30
+00:01:46.940 --> 00:01:49.560
+Four, API versioning and sunsets.
+
+31
+00:01:49.560 --> 00:01:51.700
+Five, smart release deployments.
+
+32
+00:01:51.700 --> 00:01:53.500
+And six, automation.
+
+33
+00:01:53.500 --> 00:01:54.940
+Let's get right to it.
+
+34
+00:01:54.940 --> 00:01:58.900
+Section 1. The Versioning Contract. More than just math.
+
+35
+00:01:59.420 --> 00:02:04.120
+You see, a version number is this vital tool that signals stability to everyone involved,
+
+36
+00:02:04.440 --> 00:02:09.220
+especially your non-technical stakeholders. For product managers, it dictates roadmaps and guides
+
+37
+00:02:09.220 --> 00:02:13.780
+marketing communications. I mean, it explains why a version 2.0 is a massive launch event,
+
+38
+00:02:14.020 --> 00:02:19.200
+while a version 1.4.3 is just a quiet maintenance update. It even impacts service-level agreements.
+
+39
+00:02:19.800 --> 00:02:24.420
+I want you to remember this core metaphor. A version is a binding contract between the creator
+
+40
+00:02:24.420 --> 00:02:28.640
+and the consumer. When you publish a version number, you are making a promise. You're telling
+
+41
+00:02:28.640 --> 00:02:32.280
+them exactly what they can expect from this update. You're saying, if you see this number
+
+42
+00:02:32.280 --> 00:02:37.120
+change in this specific way, here is exactly what will happen to your code. And that predictability,
+
+43
+00:02:37.520 --> 00:02:41.140
+that's exactly how long-term product adoption and customer satisfaction are secured.
+
+44
+00:02:41.860 --> 00:02:46.040
+Section 2. Semantic Versioning Rules Explained. The Industry Standard.
+
+45
+00:02:46.720 --> 00:02:52.640
+Now, what's really interesting about this slide is how brilliantly simple yet strict this system is.
+
+46
+00:02:53.300 --> 00:02:56.660
+Created back in 2011 by GitHub co-founder Tom Preston-Werner,
+
+47
+00:02:57.220 --> 00:02:59.540
+Semver is the universal language of software compatibility.
+
+48
+00:03:00.100 --> 00:03:03.360
+It is the gold standard used by major ecosystems, like NPM,
+
+49
+00:03:03.640 --> 00:03:05.860
+to communicate exactly how an update is going to behave.
+
+50
+00:03:06.460 --> 00:03:10.400
+It uses this three-part format, major.minor.patch.
+
+51
+00:03:10.780 --> 00:03:13.620
+You bump the patch number when you release a backward-compatible bug fix.
+
+52
+00:03:13.800 --> 00:03:15.060
+It's completely safe for the user.
+
+53
+00:03:15.420 --> 00:03:17.380
+You bump the minor number when you add a new feature,
+
+54
+00:03:17.380 --> 00:03:19.380
+but it still remains fully backward-compatible.
+
+55
+00:03:19.800 --> 00:03:21.200
+Again, totally safe to upgrade.
+
+56
+00:03:21.620 --> 00:03:24.820
+But you bump the major number when you introduce a breaking change.
+
+57
+00:03:25.280 --> 00:03:28.520
+This yells to the user, stop, you are going to need to adapt your code.
+
+58
+00:03:28.960 --> 00:03:30.420
+And crucially, there's a reset rule.
+
+59
+00:03:30.780 --> 00:03:33.860
+When you bump a higher component, everything to its right resets to zero.
+
+60
+00:03:33.980 --> 00:03:39.980
+So version 1.4.2, getting a new feature, becomes 1.5.0, not 1.5.2.
+
+61
+00:03:40.540 --> 00:03:45.920
+Actually, if you take away only one thing from this entire explainer, let it be this golden rule right here.
+
+62
+00:03:46.480 --> 00:03:50.080
+Any breaking change absolutely requires a major version bump.
+
+63
+00:03:50.400 --> 00:03:57.740
+If you remove a function, if you change a parameter name, or, you know, if you make an optional field mandatory, you are breaking the contract.
+
+64
+00:03:57.740 --> 00:04:05.100
+The central question a developer literally must ask before a release is, will an existing user have to change their code to keep things working?
+
+65
+00:04:05.520 --> 00:04:08.220
+If the answer is yes, it's a major update. Period.
+
+66
+00:04:09.000 --> 00:04:14.360
+Section 3. Comparing Semver and Calver. Choosing the right model for your users.
+
+67
+00:04:14.360 --> 00:04:22.340
+And this brilliantly illustrates that while semantic versioning is incredible, it isn't some magic silver bullet for every single situation.
+
+68
+00:04:22.860 --> 00:04:24.440
+Even its creator admits that.
+
+69
+00:04:25.080 --> 00:04:29.640
+Choosing the right versioning model depends entirely on who is actually consuming your product.
+
+70
+00:04:30.240 --> 00:04:33.060
+When you compare them side by side, the contrast makes perfect sense.
+
+71
+00:04:33.800 --> 00:04:39.900
+Semver is absolutely mandatory when you're building libraries, packages, or APIs where other developers' code depends on yours.
+
+72
+00:04:40.280 --> 00:04:41.220
+It signals compatibility.
+
+73
+00:04:41.220 --> 00:04:46.800
+But look over at Calver, which uses the release date as the version number, like year.month.
+
+74
+00:04:47.460 --> 00:04:51.380
+Calver is perfect for end-user applications, operating systems, or SaaS products
+
+75
+00:04:51.380 --> 00:04:54.060
+where users aren't programmatically integrating with your code.
+
+76
+00:04:54.480 --> 00:04:59.800
+Like when a user sees Ubuntu 22.04, they instantly know the software is from April 2022.
+
+77
+00:05:00.440 --> 00:05:01.380
+It signals age.
+
+78
+00:05:01.800 --> 00:05:06.440
+That allows PMs and users to immediately understand how outdated a current version might be.
+
+79
+00:05:06.680 --> 00:05:11.080
+Section 4. API Versioning and Sunsets. Protecting your integration.
+
+80
+00:05:11.220 --> 00:05:15.160
+All right, let's step into the high-stakes world of public APIs.
+
+81
+00:05:15.680 --> 00:05:21.320
+As we talked about earlier, breaking a client integration is pretty much the ultimate cardinal sin in software development.
+
+82
+00:05:21.760 --> 00:05:27.340
+An API requires intense versioning discipline to ensure stability and keep your customers' trust intact.
+
+83
+00:05:27.760 --> 00:05:30.500
+Now, there are three main strategies for routing API versions.
+
+84
+00:05:31.140 --> 00:05:34.640
+First up, you have the URL path, like slash v2 slash users.
+
+85
+00:05:34.760 --> 00:05:39.540
+This is by far the most universally adopted method because it's incredibly visible and transparent,
+
+86
+00:05:39.540 --> 00:05:41.940
+even if it does slightly clutter up the URL.
+
+87
+00:05:42.580 --> 00:05:43.920
+Second is the query parameter,
+
+88
+00:05:44.220 --> 00:05:46.460
+where you just add question mark version equals two
+
+89
+00:05:46.460 --> 00:05:47.380
+to the end of the URL.
+
+90
+00:05:47.800 --> 00:05:48.460
+It's super simple,
+
+91
+00:05:48.600 --> 00:05:50.740
+but honestly, developers can easily overlook it.
+
+92
+00:05:51.220 --> 00:05:52.600
+Third is using a custom header.
+
+93
+00:05:52.920 --> 00:05:54.720
+This keeps the URL beautifully clean,
+
+94
+00:05:54.880 --> 00:05:56.800
+but it makes manual testing directly in a browser
+
+95
+00:05:56.800 --> 00:05:57.740
+a whole lot harder.
+
+96
+00:05:58.260 --> 00:05:59.180
+Whichever path you choose,
+
+97
+00:05:59.360 --> 00:06:00.820
+consistency is the name of the game.
+
+98
+00:06:01.500 --> 00:06:04.420
+To minimize the knee for those major API version bumps
+
+99
+00:06:04.420 --> 00:06:05.080
+in the first place,
+
+100
+00:06:05.260 --> 00:06:06.900
+you really should adopt Postal's law.
+
+101
+00:06:07.460 --> 00:06:09.680
+You might also hear it called the robustness principle.
+
+102
+00:06:10.560 --> 00:06:14.240
+Basically, when designing an API, be liberal in what you accept from the client.
+
+103
+00:06:14.860 --> 00:06:20.020
+If a client sends an unrecognized field in their request, your API should safely ignore it rather than just crashing.
+
+104
+00:06:20.620 --> 00:06:25.620
+Building robust APIs that survive non-breaking changes, that is a hallmark of truly excellent engineering.
+
+105
+00:06:26.300 --> 00:06:29.240
+But look, eventually you will need to make a breaking change.
+
+106
+00:06:29.240 --> 00:06:31.380
+You've got to move from version 1 to version 2.
+
+107
+00:06:31.820 --> 00:06:34.780
+So how do you do that without completely infuriating your users?
+
+108
+00:06:35.600 --> 00:06:37.800
+You execute a graceful API sunset.
+
+109
+00:06:38.660 --> 00:06:42.240
+Step one, release v2, but keep v1 running simultaneously.
+
+110
+00:06:43.040 --> 00:06:45.660
+Step two, mark v1 as depreciated.
+
+111
+00:06:46.020 --> 00:06:48.180
+It still works, but you add a sunset header
+
+112
+00:06:48.180 --> 00:06:49.420
+signaling that it's going away.
+
+113
+00:06:50.200 --> 00:06:52.640
+Step three, communicate clearly with your clients,
+
+114
+00:06:52.880 --> 00:06:55.560
+giving them a really obvious dedicated migration path.
+
+115
+00:06:56.040 --> 00:06:59.860
+And finally, step four, only after a generous grace period.
+
+116
+00:06:59.860 --> 00:07:02.280
+We're talking usually six to 12 months here.
+
+117
+00:07:02.660 --> 00:07:04.360
+Do you actually shut down v1?
+
+118
+00:07:04.820 --> 00:07:08.840
+This is the ultimate test of customer trust, giving them plenty of time to adapt.
+
+119
+00:07:09.760 --> 00:07:14.520
+Section 5. Smart Release and Deployment, Ensuring Stable Transitions
+
+120
+00:07:14.520 --> 00:07:19.660
+So, you've managed your version numbers and greasefully handled your API changes.
+
+121
+00:07:19.660 --> 00:07:24.740
+But how do PMs and developers actually balance a really aggressive roadmap of new releases
+
+122
+00:07:24.740 --> 00:07:26.780
+with that core promise of stability?
+
+123
+00:07:27.260 --> 00:07:30.320
+Well, you don't just chuck the code onto the servers and cross your fingers.
+
+124
+00:07:30.900 --> 00:07:35.120
+You use smart deployment strategies to safely enforce your versioning contract out in the wild.
+
+125
+00:07:35.700 --> 00:07:39.740
+In a Canary release, you roll out the new version to just 1-5% of your users.
+
+126
+00:07:40.300 --> 00:07:43.500
+If it crashes, you've only impacted a tiny fraction of your base.
+
+127
+00:07:44.100 --> 00:07:47.300
+A blue-green deployment uses two perfectly identical environments.
+
+128
+00:07:47.820 --> 00:07:51.060
+You deploy the new version to the idle environment, switch the traffic over,
+
+129
+00:07:51.060 --> 00:07:54.920
+and if something goes sideways, you have an instant single-switch rollback to the old version.
+
+130
+00:07:55.220 --> 00:07:55.940
+No panic needed.
+
+131
+00:07:56.600 --> 00:07:59.720
+And a rolling deployment gradually shifts the update server by server,
+
+132
+00:07:59.720 --> 00:08:02.460
+ensuring absolutely zero downtime for the user.
+
+133
+00:08:03.280 --> 00:08:06.440
+Section 6. Automation via Conventional Commits
+
+134
+00:08:06.440 --> 00:08:08.520
+Letting Machines Do the Paperwork
+
+135
+00:08:08.520 --> 00:08:13.480
+Let's move to the really fun stuff and see how this builds into a fully automated machine.
+
+136
+00:08:14.160 --> 00:08:17.320
+Managing version numbers manually is practically begging for human error.
+
+137
+00:08:17.780 --> 00:08:21.580
+People forget to bump a patch or they jump to a major version just for marketing reasons
+
+138
+00:08:21.580 --> 00:08:23.460
+without actually introducing breaking changes.
+
+139
+00:08:24.000 --> 00:08:24.800
+The solution here?
+
+140
+00:08:25.180 --> 00:08:28.460
+Letting machines do the paperwork through a standard called conventional commits.
+
+141
+00:08:29.040 --> 00:08:31.700
+Developers simply add a standard prefix to their commit messages.
+
+142
+00:08:32.180 --> 00:08:36.220
+If they write fix, the system automatically knows it's a bug fix and prepares a patch bump.
+
+143
+00:08:36.420 --> 00:08:38.920
+If they write feat, the system preps a minor bump.
+
+144
+00:08:39.300 --> 00:08:42.920
+And if they include the exact text breaking change, it triggers a major bump.
+
+145
+00:08:43.380 --> 00:08:46.000
+By standardizing this, you can generate two things automatically,
+
+146
+00:08:46.360 --> 00:08:48.120
+a highly technical change log for your developers,
+
+147
+00:08:48.580 --> 00:08:52.320
+and high-level release notes focusing purely on value for your customers and PMs.
+
+148
+00:08:52.700 --> 00:08:56.000
+And here is what that seamless flow actually looks like
+
+149
+00:08:56.000 --> 00:08:58.320
+when you use an automation tool like Symantec Release.
+
+150
+00:08:58.460 --> 00:09:01.360
+A developer merges their code into the main branch.
+
+151
+00:09:01.740 --> 00:09:04.660
+The tool automatically parses those commit prefixes we just talked about.
+
+152
+00:09:05.060 --> 00:09:08.860
+It calculates the exact next semantic version with literally zero human intervention.
+
+153
+00:09:09.440 --> 00:09:13.240
+It then creates an immutable git tag, which is a permanent anchor point in your code history,
+
+154
+00:09:13.500 --> 00:09:14.780
+and publishes the release notes.
+
+155
+00:09:15.220 --> 00:09:19.000
+A simple feat tag effortlessly becomes a polished, fully documented release.
+
+156
+00:09:19.260 --> 00:09:20.420
+It's totally foolproof.
+
+157
+00:09:21.180 --> 00:09:22.700
+So what does this all mean for us?
+
+158
+00:09:23.140 --> 00:09:27.140
+Whether you're a product manager steering the roadmap or a developer writing the actual commits,
+
+159
+00:09:27.620 --> 00:09:28.600
+Please remember this.
+
+160
+00:09:28.920 --> 00:09:30.180
+Versioning is not bureaucracy.
+
+161
+00:09:30.860 --> 00:09:32.380
+It's a language of predictability.
+
+162
+00:09:32.980 --> 00:09:41.280
+Avoiding commitment by leaving your software in an endless zero-ver state, you know, never hitting version 1.0, that's an anti-pattern that genuinely hurts your product.
+
+163
+00:09:41.960 --> 00:09:47.940
+Consistent semantic versioning is hands down the cheapest, most effective way to build and maintain trust with your users.
+
+164
+00:09:48.440 --> 00:09:49.400
+So I'll leave you with this thought.
+
+165
+00:09:49.760 --> 00:09:51.100
+Take a look at your latest release.
+
+166
+00:09:51.100 --> 00:09:53.680
+Are your version numbers actually keeping their promises?
+
+167
+00:09:54.500 --> 00:09:55.600
+Thanks for learning with me today.
+

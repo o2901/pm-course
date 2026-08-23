@@ -1,0 +1,548 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:22.680
+Welcome to the Explainer. Today, we are completely shifting the way you think about APIs. Look, whether you're a product manager, a business leader, or, you know, any non-technical stakeholder, understanding how systems actually talk to each other, it's no longer just a back-end job for the engineering team. It's a core business strategy. So, get ready to look at your digital infrastructure through an entirely new lens. Let's get right into it.
+
+2
+00:00:22.680 --> 00:00:27.320
+60 to 80 percent left that sink in for a second that is the percentage of modern
+
+3
+00:00:27.320 --> 00:00:31.540
+product features that depend entirely on system to system communication think
+
+4
+00:00:31.540 --> 00:00:34.720
+about the products we use every day integrating with payment providers like
+
+5
+00:00:34.720 --> 00:00:38.680
+stripe pulling in live weather data enabling those quick social logins or
+
+6
+00:00:38.680 --> 00:00:42.080
+even just connecting your own internal systems if you don't understand how
+
+7
+00:00:42.080 --> 00:00:46.000
+these interfaces work you really can't make strategic product decisions you've
+
+8
+00:00:46.000 --> 00:00:49.460
+got to care about apis because they're literally the connective tissue of your
+
+9
+00:00:49.460 --> 00:00:54.740
+entire business. Okay, here's our roadmap for today. We'll start with why an API is a product,
+
+10
+00:00:54.740 --> 00:01:00.220
+then formats and performance trade-offs, designing the API contract, versioning and stability,
+
+11
+00:01:00.700 --> 00:01:04.260
+security and integrations, and finally, winning with developer experience.
+
+12
+00:01:05.000 --> 00:01:11.140
+All right, section one, API is a product. For the longest time, APIs were kind of just seen as,
+
+13
+00:01:11.200 --> 00:01:15.900
+you know, backend plumbing, just wiring. But the core revelation here, and this is heavily
+
+14
+00:01:15.900 --> 00:01:21.980
+championed in Barani Subramaniam's work is that an API is actually a full-fledged product. The only
+
+15
+00:01:21.980 --> 00:01:26.800
+real difference? Your users aren't clicking pretty buttons on a screen. They're developers writing code.
+
+16
+00:01:27.220 --> 00:01:31.520
+And that means it desperately needs a product manager to guide its strategy. Now you might be
+
+17
+00:01:31.520 --> 00:01:37.240
+thinking, wait, I don't write code. How on earth can I manage an API? Well, the truth is you don't
+
+18
+00:01:37.240 --> 00:01:41.900
+need to write a single line of code to manage these core product pillars. As a PM, you're the
+
+19
+00:01:41.900 --> 00:01:47.260
+defining the use cases like who are our clients and what do they actually need to get done you
+
+20
+00:01:47.260 --> 00:01:52.620
+prioritize the endpoints to figure out your mvp you set the versioning strategy establish the pricing
+
+21
+00:01:52.620 --> 00:01:58.140
+models define the service level agreements and crucially you drive the developer experience
+
+22
+00:01:58.140 --> 00:02:03.420
+it's your job to ensure the api serves actual tangible business goals rather than just being
+
+23
+00:02:03.420 --> 00:02:09.420
+a fun sandbox for the engineers moving on to section two formats and performance trade-offs
+
+24
+00:02:09.420 --> 00:02:13.220
+We're going to focus on how technical API constraints aren't just IT headaches.
+
+25
+00:02:13.520 --> 00:02:18.240
+They have a direct, massive impact on the end user's experience and your business's ability to scale.
+
+26
+00:02:18.760 --> 00:02:22.960
+Let's translate a pure tech concept directly into business value.
+
+27
+00:02:23.620 --> 00:02:25.960
+Synchronous versus asynchronous communication.
+
+28
+00:02:26.760 --> 00:02:30.720
+So synchronous communication means the system waits for an immediate response.
+
+29
+00:02:30.820 --> 00:02:34.740
+This is awesome for really fast things, like, say, looking up a user profile.
+
+30
+00:02:35.240 --> 00:02:39.440
+But a super common trap PMs fall into is demanding that everything be synchronous
+
+31
+00:02:39.440 --> 00:02:41.780
+because they think immediate means faster.
+
+32
+00:02:42.440 --> 00:02:45.260
+Actually, if an operation takes more than two to three seconds,
+
+33
+00:02:45.680 --> 00:02:47.560
+like generating a massive data export,
+
+34
+00:02:48.120 --> 00:02:50.560
+forcing it to be synchronous is going to freeze the user's app.
+
+35
+00:02:50.560 --> 00:02:52.680
+You just trap them on an endless loading screen.
+
+36
+00:02:53.440 --> 00:02:56.780
+For those heavy tasks, you've absolutely got to use asynchronous communication.
+
+37
+00:02:57.400 --> 00:03:00.340
+That's where the system basically says, got it, I'm working on it.
+
+38
+00:03:00.440 --> 00:03:01.780
+I'll let you know exactly when it's done.
+
+39
+00:03:02.460 --> 00:03:05.280
+And hey, data formatting deeply impacts your bottom line.
+
+40
+00:03:05.840 --> 00:03:08.760
+Look at the payload sizes for the exact same piece of data.
+
+41
+00:03:09.200 --> 00:03:10.900
+The differences are honestly striking.
+
+42
+00:03:11.520 --> 00:03:13.260
+JSON is the modern web standard, right?
+
+43
+00:03:13.540 --> 00:03:17.780
+It's human-readable, makes debugging super easy, and sits at about 100 kilobytes.
+
+44
+00:03:18.360 --> 00:03:21.400
+XML is older, definitely heavier at 130 kilobytes.
+
+45
+00:03:21.620 --> 00:03:24.260
+But then you look at protopuffers or protobuf.
+
+46
+00:03:24.480 --> 00:03:28.920
+It compresses that exact same data down to just 35 kilobytes.
+
+47
+00:03:29.520 --> 00:03:31.360
+Now, while JSON is great for public web APIs,
+
+48
+00:03:31.880 --> 00:03:34.780
+if you have internal microservices making billions of requests,
+
+49
+00:03:35.300 --> 00:03:38.860
+switching to protobuf is going to drastically slash your CPU and network costs.
+
+50
+00:03:39.160 --> 00:03:40.480
+It's a total game changer.
+
+51
+00:03:40.740 --> 00:03:44.100
+You're also going to hear a lot of debate about REST versus GraphQL.
+
+52
+00:03:44.740 --> 00:03:46.120
+REST is the industry standard.
+
+53
+00:03:46.460 --> 00:03:48.300
+It's simple, reliable, resource-based.
+
+54
+00:03:48.700 --> 00:03:51.100
+But sometimes REST gives you way too much data,
+
+55
+00:03:51.360 --> 00:03:53.420
+which creates a problem called overfetching.
+
+56
+00:03:54.120 --> 00:03:55.520
+GraphQL solves this beautifully
+
+57
+00:03:55.520 --> 00:03:58.900
+by letting the client ask for the exact specific data points it needs
+
+58
+00:03:58.900 --> 00:04:03.600
+in one single request. It's like going to a buffet and only getting exactly what you want to eat.
+
+59
+00:04:04.160 --> 00:04:08.720
+But as the API PM, you have to ask the tough questions. Do our data requirements actually
+
+60
+00:04:08.720 --> 00:04:12.940
+justify the added maintenance and caching headaches that come with GraphQL? It's all about balancing
+
+61
+00:04:12.940 --> 00:04:19.080
+that shiny innovation with, you know, practical reality. Okay, section three, designing the API
+
+62
+00:04:19.080 --> 00:04:24.560
+contract. This is where we look at how you, as a product leader, take a high-level product vision
+
+63
+00:04:24.560 --> 00:04:28.940
+and turn it into a concrete technical contract using schemas and documentation.
+
+64
+00:04:29.620 --> 00:04:33.660
+The API definition lifecycle usually starts with defining your use cases
+
+65
+00:04:33.660 --> 00:04:36.880
+and modeling the resources, things like users or orders.
+
+66
+00:04:37.460 --> 00:04:39.880
+Next, you actually design the specific endpoints.
+
+67
+00:04:40.240 --> 00:04:43.640
+But step four, mock and iterate, this is where the magic happens.
+
+68
+00:04:44.180 --> 00:04:46.620
+By creating a mock server using OpenAPI,
+
+69
+00:04:46.620 --> 00:04:49.220
+your front-end developers or even external partners
+
+70
+00:04:49.220 --> 00:04:52.000
+can start testing their side of the integration immediately.
+
+71
+00:04:52.000 --> 00:04:55.340
+They don't even have to wait for your backend team to finish writing the code.
+
+72
+00:04:55.660 --> 00:04:58.160
+It radically, radically accelerates your time to market.
+
+73
+00:04:58.840 --> 00:05:02.040
+And while we're talking design, we have to talk about item potency.
+
+74
+00:05:02.460 --> 00:05:03.740
+Don't let the big word scare you.
+
+75
+00:05:04.160 --> 00:05:07.680
+Item potency simply means that no matter how many times you run an operation,
+
+76
+00:05:08.020 --> 00:05:10.760
+the result is the exact same as if you ran it just once.
+
+77
+00:05:11.200 --> 00:05:12.160
+So why does the business care?
+
+78
+00:05:12.480 --> 00:05:14.460
+Well, imagine a customer taps buy, right?
+
+79
+00:05:14.640 --> 00:05:17.600
+But then their Wi-Fi drops and their app automatically retries the request.
+
+80
+00:05:18.020 --> 00:05:21.640
+Without item potency, congratulations, that customer just got charged twice.
+
+81
+00:05:21.640 --> 00:05:26.100
+Total nightmare. But by implementing an item potency key, the server recognizes the duplicate
+
+82
+00:05:26.100 --> 00:05:30.640
+request and guarantees your customer is only charged once. Giants like Stripe and Square rely
+
+83
+00:05:30.640 --> 00:05:36.400
+heavily on this. It's absolutely essential. Section four, versioning and stability. Once
+
+84
+00:05:36.400 --> 00:05:41.060
+your API is live in the wild, you have to establish critical rules so you don't accidentally break
+
+85
+00:05:41.060 --> 00:05:46.020
+your partner's integrations overnight. This is basically the ultimate survival checklist for
+
+86
+00:05:46.020 --> 00:05:52.680
+NEPM managing an API. Understanding breaking versus non-breaking changes. Adding a new optional
+
+87
+00:05:52.680 --> 00:05:57.920
+field or throwing in a completely new endpoint, totally fine. That's non-breaking. But the second
+
+88
+00:05:57.920 --> 00:06:03.000
+you remove an existing field or change a data type from a string to a number or suddenly make
+
+89
+00:06:03.000 --> 00:06:08.140
+a previously optional field mandatory, you've just instituted a breaking change. And you are
+
+90
+00:06:08.140 --> 00:06:13.880
+going to crash your client's software. Not good. Because of that massive risk, we follow the golden
+
+91
+00:06:13.880 --> 00:06:20.240
+rule of API management. Once published, never break. Period. If you absolutely must make a
+
+92
+00:06:20.240 --> 00:06:24.320
+breaking change to fundamentally improve the system, you have to release an entirely new API
+
+93
+00:06:24.320 --> 00:06:28.240
+version, like moving from version one to version two. And here's the kicker. You have to keep
+
+94
+00:06:28.240 --> 00:06:32.980
+supporting that old version for a minimum of 12 to 18 months. You have to give your partners time
+
+95
+00:06:32.980 --> 00:06:39.280
+to migrate gracefully. Section five, security and integration. This is where product managers
+
+96
+00:06:39.280 --> 00:06:43.380
+set up the guardrails to protect the business while still smartly connecting it to the outside
+
+97
+00:06:43.380 --> 00:06:49.460
+world. Security naturally starts with authentication, basically verifying exactly who is calling your
+
+98
+00:06:49.460 --> 00:06:54.700
+system. In different business scenarios, demand completely different methods. A simple API key,
+
+99
+00:06:55.000 --> 00:06:59.300
+that might be totally fine for a quick internal service. But if you're building a public app where
+
+100
+00:06:59.300 --> 00:07:04.390
+third parties are accessing user data, you absolutely need OAuth 2.0. If you're handling
+
+101
+00:07:04.390 --> 00:07:09.890
+heavily secure financial B2B integrations, you're going to need mutual TLS, where both servers
+
+102
+00:07:09.890 --> 00:07:14.950
+verify each other's certificates. As a PM, your job is to match the security rigor directly to the
+
+103
+00:07:14.950 --> 00:07:21.730
+business use case. Next up is rate limiting. If you don't limit how often clients can call your API,
+
+104
+00:07:22.230 --> 00:07:27.110
+a single poorly coded app can send thousands of requests a second and completely crash your
+
+105
+00:07:27.110 --> 00:07:32.590
+servers for everyone else. You can set up tiered limits. Maybe your free users get 100 requests an
+
+106
+00:07:32.590 --> 00:07:38.070
+hour while enterprise users get unlimited access. Twitter is a great real world example here. They
+
+107
+00:07:38.070 --> 00:07:42.530
+actively protect their platform by capping developers at 300 requests per 15-minute window
+
+108
+00:07:42.530 --> 00:07:46.730
+for their really intensive search endpoints. You have to design these limits intentionally.
+
+109
+00:07:47.430 --> 00:07:53.390
+Now let's talk about how systems communicate efficiently using webhooks. A webhook is essentially
+
+110
+00:07:53.390 --> 00:07:58.230
+a reverse API. Instead of your app constantly knocking on the server's door every five seconds
+
+111
+00:07:58.230 --> 00:08:02.790
+asking, hey, is there an update? Is there an update? Which, by the way, wastes an immense
+
+112
+00:08:02.790 --> 00:08:07.750
+amount of resources. A webhook allows the server to proactively push that real-time event to your
+
+113
+00:08:07.750 --> 00:08:12.470
+client the exact millisecond it happens. This is how GitHub alerts your system of a code update
+
+114
+00:08:12.470 --> 00:08:17.390
+or how Stripe instantly tells your server a payment went through. It is so much more efficient.
+
+115
+00:08:18.150 --> 00:08:24.570
+Finally, section six, winning with developer experience. Make no mistake, developer experience
+
+116
+00:08:24.570 --> 00:08:31.570
+or DX is the ultimate deciding factor for whether your API sees massive long-term adoption or just
+
+117
+00:08:31.570 --> 00:08:36.830
+fades into total obscurity. So what makes a great developer experience? It comes down to the tools
+
+118
+00:08:36.830 --> 00:08:41.210
+you provide. You need highly interactive documentation. You need safe sandbox environments
+
+119
+00:08:41.210 --> 00:08:45.350
+where developers can test things without, you know, breaking production. You need pre-built
+
+120
+00:08:45.350 --> 00:08:50.570
+SDKs in popular programming languages. But the absolute master metric here, it's the time to
+
+121
+00:08:50.570 --> 00:08:54.710
+first hello world. How long does it take a developer from the second they sign up to making
+
+122
+00:08:54.710 --> 00:08:59.310
+their very first successful API call? For a world-class product like Stripe, that entire
+
+123
+00:08:59.310 --> 00:09:05.130
+process takes just seven minutes. That is the gold standard you're aiming for. And why exactly is
+
+124
+00:09:05.130 --> 00:09:11.190
+Stripe the gold standard because Stripe invests 40% of their engineering resources into documentation
+
+125
+00:09:11.190 --> 00:09:16.990
+in DX. 40%. That is huge. They know that a developer who can integrate quickly and painlessly
+
+126
+00:09:16.990 --> 00:09:22.790
+instantly becomes a paying customer. PMs who ignore developer experience, who just throw a messy API
+
+127
+00:09:22.790 --> 00:09:27.290
+over the fence, they are going to rapidly lose their clients to competitors who actually treat
+
+128
+00:09:27.290 --> 00:09:32.910
+developers like valued users. Which brings us to our final and definitely most important question.
+
+129
+00:09:32.910 --> 00:09:36.790
+Is your API truly ready for its most important users?
+
+130
+00:09:37.350 --> 00:09:43.090
+I really hope this explainer has shown you that an API is never just lines of code sitting on a backend server somewhere.
+
+131
+00:09:43.450 --> 00:09:44.870
+It is a fundamental product.
+
+132
+00:09:45.190 --> 00:09:50.530
+It requires strategy, it requires deep empathy for the developer, and it requires strict business alignment.
+
+133
+00:09:51.190 --> 00:09:53.590
+So think about your own digital interfaces today.
+
+134
+00:09:53.970 --> 00:09:56.830
+Are you treating them as the vital products they actually are?
+
+135
+00:09:57.330 --> 00:10:02.390
+Thank you so much for joining me, and I highly encourage you to take these insights straight back to your teams.
+
+136
+00:10:02.910 --> 00:10:32.890
+Thank you.
+
