@@ -1,0 +1,552 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:07.100
+Welcome to The Explainer. You know, if you're building products today, you already know we've got access to more data than literally any generation before us.
+
+2
+00:00:07.360 --> 00:00:14.620
+But as a seasoned product mentor, I see the same reoccurring problem all the time. Modern teams are just absolutely drowning in dashboards.
+
+3
+00:00:15.020 --> 00:00:20.720
+You open up your analytics tool, right? And boom, dozens of charts, hundreds of metrics, flashing green and red numbers everywhere.
+
+4
+00:00:21.040 --> 00:00:26.200
+It feels productive, but without a clear strategy, you aren't actually navigating. You're kind of just floating.
+
+5
+00:00:26.660 --> 00:00:28.540
+So today, we're going to change that.
+
+6
+00:00:28.820 --> 00:00:33.060
+We'll walk through the exact framework you need to turn all that noise into clear, actionable
+
+7
+00:00:33.060 --> 00:00:33.520
+signals.
+
+8
+00:00:34.140 --> 00:00:38.660
+We've all heard this classic quote, a man without data is just a man with an opinion.
+
+9
+00:00:39.120 --> 00:00:42.780
+And honestly, it sounds great in a meeting, but I want to push back on that right away.
+
+10
+00:00:43.140 --> 00:00:47.000
+I got to warn you, a person with hundreds of numbers, but absolutely no structured framework
+
+11
+00:00:47.000 --> 00:00:50.080
+is just going to deliver longer, way more confusing presentations.
+
+12
+00:00:50.740 --> 00:00:53.440
+Having data doesn't automatically mean you make better decisions.
+
+13
+00:00:53.920 --> 00:00:56.640
+Sometimes it just gives you this dangerous illusion of certainty.
+
+14
+00:00:57.120 --> 00:00:59.700
+To actually be data-informed, well, we need a playbook.
+
+15
+00:01:00.240 --> 00:01:01.600
+And here is that playbook.
+
+16
+00:01:01.920 --> 00:01:03.720
+First up, mapping the pirate funnel.
+
+17
+00:01:04.080 --> 00:01:06.800
+Two, steering with KPIs and OKRs.
+
+18
+00:01:06.800 --> 00:01:09.040
+Three, navigating by your North Star.
+
+19
+00:01:09.440 --> 00:01:11.380
+Four, dodging those deadly data traps.
+
+20
+00:01:11.800 --> 00:01:14.420
+Five, using leading indicators and countermetrics.
+
+21
+00:01:14.720 --> 00:01:19.080
+And finally, number six, becoming a truly data-informed product manager.
+
+22
+00:01:19.910 --> 00:01:23.190
+All right, let's dive right into section one, mapping the pirate funnel.
+
+23
+00:01:23.470 --> 00:01:30.270
+To really make sense of your user's journey, you kind of have to look at your product like it's a leaky bucket that desperately needs a diagnostic map.
+
+24
+00:01:30.270 --> 00:01:35.450
+I mean, if you don't know exactly where the water is spilling out, just pouring more water in won't help at all.
+
+25
+00:01:35.950 --> 00:01:39.570
+That map? It's the famous AARR Pirate Metrics Framework.
+
+26
+00:01:39.970 --> 00:01:42.310
+It breaks the whole journey into five sequential steps.
+
+27
+00:01:42.870 --> 00:01:45.350
+First, acquisition. How do users actually find you?
+
+28
+00:01:45.690 --> 00:01:50.170
+Second, activation. Do they experience that core aha moment the very first time they use it?
+
+29
+00:01:50.630 --> 00:01:52.830
+Third, retention. Do they keep coming back?
+
+30
+00:01:53.390 --> 00:01:54.270
+Fourth, revenue.
+
+31
+00:01:54.570 --> 00:01:55.270
+Are they paying you?
+
+32
+00:01:55.650 --> 00:01:56.730
+And fifth, referral.
+
+33
+00:01:57.110 --> 00:01:58.410
+Do they love it enough to tell others?
+
+34
+00:01:58.870 --> 00:02:00.390
+The golden rule here is so simple
+
+35
+00:02:00.390 --> 00:02:02.030
+but literally ignored all the time.
+
+36
+00:02:02.290 --> 00:02:04.170
+You absolutely must fix the biggest leak
+
+37
+00:02:04.170 --> 00:02:05.930
+before you pour more marketing dollars in.
+
+38
+00:02:06.310 --> 00:02:08.410
+Don't try to tackle all five stages at once.
+
+39
+00:02:08.910 --> 00:02:09.710
+Find your bottleneck,
+
+40
+00:02:09.930 --> 00:02:11.190
+focus your entire quarter on it,
+
+41
+00:02:11.310 --> 00:02:11.950
+and then move on.
+
+42
+00:02:12.510 --> 00:02:14.930
+Let's actually ground this with a great case study
+
+43
+00:02:14.930 --> 00:02:15.950
+from our source material
+
+44
+00:02:15.950 --> 00:02:17.870
+about a product manager named McCall
+
+45
+00:02:17.870 --> 00:02:19.490
+over at a company called Velox.
+
+46
+00:02:19.850 --> 00:02:21.570
+So her team was popping champagne,
+
+47
+00:02:21.570 --> 00:02:26.790
+celebrating 5,000 new sign-ups a month. Huge, right? But McCall mapped out her pirate funnel
+
+48
+00:02:26.790 --> 00:02:32.990
+and spotted a massive, glaring issue. Their activation rate was only 45%. That means a
+
+49
+00:02:32.990 --> 00:02:38.670
+massive 55% drop-off was happening right after sign-up. More than half of those users never
+
+50
+00:02:38.670 --> 00:02:44.790
+even experienced the product's actual value. So, McCall made a bold call. She froze all new
+
+51
+00:02:44.790 --> 00:02:49.030
+acquisition campaigns and dedicated the entire quarter strictly to fixing that onboarding
+
+52
+00:02:49.030 --> 00:02:56.270
+experience. Moving on to section two, steering with KPIs and OKRs. Once you've mapped your funnel
+
+53
+00:02:56.270 --> 00:03:01.050
+and found that leak, how do you manage your team's day-to-day focus? Well, think of an airplane
+
+54
+00:03:01.050 --> 00:03:06.650
+cockpit. In that cockpit, you've got two completely different sets of tools. First, you have your KPIs,
+
+55
+00:03:06.950 --> 00:03:11.630
+key performance indicators. Think of these as your ongoing health dials, engine temperature,
+
+56
+00:03:11.910 --> 00:03:16.050
+fuel levels, altitude. You track them constantly, and as long as everything's in the green,
+
+57
+00:03:16.050 --> 00:03:21.550
+you just keep flying. Simple. But your OKRs, objectives, and key results, those are your
+
+58
+00:03:21.550 --> 00:03:27.450
+destination. It's the we need to land in Chicago by Tuesday goal. OKRs are time-bound, super
+
+59
+00:03:27.450 --> 00:03:33.010
+ambitious projects where, honestly, hitting 70% of your target is a massive success. If you're
+
+60
+00:03:33.010 --> 00:03:38.290
+hitting 100% on your OKRs every single time, you just aren't aiming high enough. So KPIs keep the
+
+61
+00:03:38.290 --> 00:03:42.190
+plane from crashing, while OKRs dictate exactly where we're flying this quarter.
+
+62
+00:03:42.190 --> 00:03:46.410
+Okay, Section 3, Navigating by the North Star.
+
+63
+00:04:12.190 --> 00:04:18.150
+North wasn't total signups. It was weekly active teams. Why? Because if entire teams were actively
+
+64
+00:04:18.150 --> 00:04:23.130
+collaborating every week, real value was being delivered. Everything else, all those KPIs and
+
+65
+00:04:23.130 --> 00:04:28.390
+OKRs, ultimately had to serve that one North Star. And, you know, your business model entirely
+
+66
+00:04:28.390 --> 00:04:32.910
+dictates what that North Star should be. If you're running a SaaS company, it might be weekly active
+
+67
+00:04:32.910 --> 00:04:37.650
+users or tasks completed. But if you're running a marketplace like Airbnb or Uber, you're looking
+
+68
+00:04:37.650 --> 00:04:42.030
+at transactions per week to make sure both the buyers and the sellers are getting value. Media
+
+69
+00:04:42.030 --> 00:04:46.610
+companies? They usually care about time reading or sessions per week. E-commerce is driven by
+
+70
+00:04:46.610 --> 00:04:51.530
+purchases per month. The point is, you have to pick the one specific metric that definitively
+
+71
+00:04:51.530 --> 00:04:57.370
+proves your particular customer is succeeding. Which brings us to Section 4, Avoiding Deadly
+
+72
+00:04:57.370 --> 00:05:04.590
+Data Traps. Look, even with a perfect North Star, data is exactly like a radar screen. It only shows
+
+73
+00:05:04.590 --> 00:05:10.050
+what's in range, which hides incredibly dangerous blind spots just off screen. And one of the
+
+74
+00:05:10.050 --> 00:05:14.910
+deadliest blind spots out there is survivorship bias. It's the logical error of only looking at
+
+75
+00:05:14.910 --> 00:05:19.750
+the people who actually made it past a certain point. Think of the mathematician Abraham Wald
+
+76
+00:05:19.750 --> 00:05:24.750
+examining returning World War II bomber plans. The military wanted to put heavy armor on the
+
+77
+00:05:24.750 --> 00:05:29.810
+parts of the planes that had the most bullet holes. Makes sense, right? But Wald realized a huge flaw.
+
+78
+00:05:30.230 --> 00:05:33.730
+The bullet holes they could actually see were on the planes that survived and made it home.
+
+79
+00:05:34.030 --> 00:05:37.410
+The planes that got hit in the engines, they didn't come back. The most dangerous bullet
+
+80
+00:05:37.410 --> 00:05:43.610
+holes are always the ones you don't see. So let me challenge you directly. Who isn't answering
+
+81
+00:05:43.610 --> 00:05:49.270
+your surveys? Back at Valox, Michael saw this awesome 40% drop in support tickets on her
+
+82
+00:05:49.270 --> 00:05:54.230
+dashboard. Her team was thrilled, ready to celebrate, but she dug a little deeper. She
+
+83
+00:05:54.230 --> 00:05:59.570
+realized that customer churns secretly went up at the exact same time. The users didn't magically
+
+84
+00:05:59.570 --> 00:06:04.830
+stop having problems. They were just so incredibly frustrated with a new feature that they gave up,
+
+85
+00:06:04.830 --> 00:06:10.430
+stopped complaining and silently left. The data looked totally fine, but only because she was
+
+86
+00:06:10.430 --> 00:06:16.370
+accidentally looking at the survivors. To dodge these traps, we need some proven cures. The first
+
+87
+00:06:16.370 --> 00:06:21.510
+major trap is vanity metrics. You know, things like total downloads that basically only ever go up and
+
+88
+00:06:21.510 --> 00:06:26.990
+just look fantastic in a slide deck. The cure? Measure actionable usage instead. Ask yourself,
+
+89
+00:06:27.290 --> 00:06:32.410
+what will I actually do differently based on this number? Trap number two is correlation. That's
+
+90
+00:06:32.410 --> 00:06:37.230
+assuming Feature X causes retention, when in reality your most active users just happen to
+
+91
+00:06:37.230 --> 00:06:42.570
+use Feature X. The cure there is hunting down a third hidden variable. And trap number three,
+
+92
+00:06:42.970 --> 00:06:48.290
+the small sample size. The cure is simple, but hard. Patience. Just wait for statistical
+
+93
+00:06:48.290 --> 00:06:53.760
+significance before making any massive company-wide changes. All right, section five,
+
+94
+00:06:54.120 --> 00:06:59.440
+leading indicators and countermetrics. Once you've nailed down those actionable metrics,
+
+95
+00:06:59.440 --> 00:07:03.840
+you've got to organize them so you can anticipate the future, rather than just scrambling to react
+
+96
+00:07:03.840 --> 00:07:08.540
+to the past. And that brings us to the crucial difference between leading and lagging indicators.
+
+97
+00:07:09.060 --> 00:07:13.180
+Lagging indicators reflect past results, things like monthly revenue or quarterly churn.
+
+98
+00:07:13.500 --> 00:07:17.660
+Obviously, they're vital for measuring business health, but here's the catch. By the time revenue
+
+99
+00:07:17.660 --> 00:07:22.360
+actually drops, the damage is already done. It's just too late. That's why a seasoned PM
+
+100
+00:07:22.360 --> 00:07:27.060
+completely obsesses over predictive, leading indicators like activation rate or weekly
+
+101
+00:07:27.060 --> 00:07:31.940
+signups. Because if activation drops today, you know for a fact churn is coming next month,
+
+102
+00:07:32.020 --> 00:07:37.100
+and you actually still have time to fix it. But be careful here. As you push your team to hit those
+
+103
+00:07:37.100 --> 00:07:42.780
+leading indicators, you are guaranteed to run into Goodhart's law. When a measure becomes a target,
+
+104
+00:07:42.980 --> 00:07:48.140
+it completely ceases to be a good measure. People will naturally try to cheat the system to hit their
+
+105
+00:07:48.140 --> 00:07:53.180
+goal. For example, if you strictly measure development velocity, developers will just ship
+
+106
+00:07:53.180 --> 00:07:59.140
+buggy code faster. That's exactly why you absolutely must use countermetrics. Pair your
+
+107
+00:07:59.140 --> 00:08:04.480
+velocity with bug rates. Pair customer support response time with customer satisfaction scores.
+
+108
+00:08:05.200 --> 00:08:10.840
+Pair your new signups with day 7 retention. Countermetrics are your safety net. They ensure
+
+109
+00:08:10.840 --> 00:08:15.820
+you don't accidentally optimize one single number at the total destruction of your product's quality.
+
+110
+00:08:16.630 --> 00:08:21.350
+Finally, Section 6. Becoming a Truly Data-Informed Product Manager.
+
+111
+00:08:22.050 --> 00:08:26.370
+Product expert Peter Yang points out this massive critical difference between being
+
+112
+00:08:26.370 --> 00:08:32.230
+blindly data-driven and being wisely data-informed. Let's look at one last story from Velox to see
+
+113
+00:08:32.230 --> 00:08:37.390
+exactly why. So Mikkel rolled out this brand new onboarding flow. After just three days,
+
+114
+00:08:37.390 --> 00:08:44.090
+on a tiny sample size of 25 users, activation spiked to 71%. Man, the temptation to rush to
+
+115
+00:08:44.090 --> 00:08:49.870
+the CEO and announce a massive victory was huge. But Mikkel held back. She waited for statistical
+
+116
+00:08:49.870 --> 00:08:55.490
+significance. Two weeks later, with a solid sample of 600 users, the true activation rate settled at
+
+117
+00:08:55.490 --> 00:09:01.470
+58%. Now that is still a phenomenal win, but it's much more realistic. By refusing to be blindly
+
+118
+00:09:01.470 --> 00:09:05.850
+driven by a tiny data spike, she completely preserved her long-term credibility with her
+
+119
+00:09:05.850 --> 00:09:10.890
+engineering team and the executive board. And really, the biggest psychological enemy of the
+
+120
+00:09:10.890 --> 00:09:16.990
+data-informed PM is confirmation bias. We work our tails off on a feature for months we desperately
+
+121
+00:09:16.990 --> 00:09:22.270
+want it to succeed so our brain just magically finds the one chart that says it did to defeat
+
+122
+00:09:22.270 --> 00:09:27.870
+this you have to build a new habit define exactly what success and failure look like before you
+
+123
+00:09:27.870 --> 00:09:33.310
+ever open the dashboard write the actual threshold down on paper because once you see those numbers
+
+124
+00:09:33.310 --> 00:09:38.270
+it's too late your brain will immediately start making excuses for why the feature is actually
+
+125
+00:09:38.270 --> 00:09:44.350
+working ultimately becoming truly data informed means deeply understanding the limits of your own
+
+126
+00:09:44.350 --> 00:09:50.110
+tools. Quantitative data, your analytics, your charts, your funnels, it will tell you exactly
+
+127
+00:09:50.110 --> 00:09:55.110
+what is happening, right down to the decimal point, but it will almost never tell you why.
+
+128
+00:09:55.530 --> 00:10:00.430
+To understand the why, you have to physically step away from the dashboard and gather qualitative
+
+129
+00:10:00.430 --> 00:10:06.150
+data. You literally have to talk to your users. Your analytics might clearly show that users drop
+
+130
+00:10:06.150 --> 00:10:10.330
+off at step three, but a five-minute user interview will tell you it's simply because your checkout
+
+131
+00:10:10.330 --> 00:10:15.190
+button is hidden behind a pop-up ad. So as we wrap up, I want to leave you with this provocative
+
+132
+00:10:15.190 --> 00:10:19.690
+question to think about as you audit your own team's goals today. Look at your North Star,
+
+133
+00:10:19.870 --> 00:10:24.950
+look at your KPIs. If your main dashboard metric suddenly goes up tomorrow, do you actually know
+
+134
+00:10:24.950 --> 00:10:29.050
+why? Or are you just staring at the dials, crossing your fingers, and hoping for the best?
+
+135
+00:10:29.530 --> 00:10:34.130
+Data is an incredibly powerful tool, but at the end of the day, it is just a tool. It is entirely
+
+136
+00:10:34.130 --> 00:10:38.790
+up to you to build the framework, define the strategy, and uncover the real human behavior
+
+137
+00:10:38.790 --> 00:10:43.930
+behind those numbers. So take this playbook, apply it, and go become truly data-informed.
+

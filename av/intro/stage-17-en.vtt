@@ -1,0 +1,540 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:26.900
+Welcome to This Explainer. Today, we're taking on a massive challenge that honestly plagues almost every product and development team out there. We're diving into source material that can transform your product backlog from absolute, utter chaos into crystal clarity. So, whether you're a product manager, a scrum master, or a developer, let's explore exactly how backlog mechanics should work. We're going to extract the exact strategies you need to make your backlog a genuinely powerful engine for delivery.
+
+2
+00:00:27.460 --> 00:00:28.460
+Be honest for a second.
+
+3
+00:00:28.920 --> 00:00:29.440
+Think about it.
+
+4
+00:00:29.600 --> 00:00:32.240
+Is your product backlog a dynamic, strategic roadmap?
+
+5
+00:00:32.600 --> 00:00:36.080
+Or is it a graveyard where good ideas just go to die?
+
+6
+00:00:36.480 --> 00:00:37.540
+We've all seen it, right?
+
+7
+00:00:37.680 --> 00:00:41.580
+The nightmare scenario of a 500-item, completely chaotic backlog
+
+8
+00:00:41.580 --> 00:00:43.680
+where absolutely nobody knows what's important
+
+9
+00:00:43.680 --> 00:00:45.960
+and somehow everything is a top priority.
+
+10
+00:00:46.460 --> 00:00:49.540
+Well, today we're contrasting that overwhelming mess with the ideal,
+
+11
+00:00:49.960 --> 00:00:52.900
+a lean, actionable, and rigorously prioritized roadmap
+
+12
+00:00:52.900 --> 00:00:55.040
+that your whole team actually understands.
+
+13
+00:00:55.740 --> 00:00:57.200
+Okay, let's dive into this.
+
+14
+00:00:57.340 --> 00:01:00.100
+We'll start big with the iceberg rules of backlog management,
+
+15
+00:01:00.100 --> 00:01:03.920
+then zoom in on writing winning user stories and defining acceptance criteria.
+
+16
+00:01:04.400 --> 00:01:06.740
+After that, we'll tackle time estimates and story points.
+
+17
+00:01:07.080 --> 00:01:10.020
+And finally, we'll wrap up with some advanced prioritization strategies.
+
+18
+00:01:10.820 --> 00:01:14.880
+First up, section one, the iceberg rules for backlog management.
+
+19
+00:01:15.720 --> 00:01:18.060
+A fundamental truth, straight from the Scrum Guide,
+
+20
+00:01:18.380 --> 00:01:21.260
+is that a product backlog is a living, breathing document.
+
+21
+00:01:21.600 --> 00:01:25.120
+But actually, a lot of teams mix up two really critical artifacts here.
+
+22
+00:01:25.220 --> 00:01:26.020
+So let's clear it up.
+
+23
+00:01:26.180 --> 00:01:29.440
+The product backlog, that's owned entirely by the product manager.
+
+24
+00:01:29.740 --> 00:01:31.840
+It spans the entire lifetime of the product.
+
+25
+00:01:31.840 --> 00:01:36.180
+It's highly dynamic, and it contains items with totally varying levels of detail.
+
+26
+00:01:36.740 --> 00:01:38.160
+But the sprint backlog is different.
+
+27
+00:01:38.660 --> 00:01:40.640
+That is owned strictly by the development team.
+
+28
+00:01:41.060 --> 00:01:42.740
+It spans just one single sprint.
+
+29
+00:01:43.040 --> 00:01:47.060
+The scope is absolutely locked in, and every single item in there is highly detailed.
+
+30
+00:01:47.560 --> 00:01:51.220
+Blurring the lines between those two is basically step one toward agile chaos.
+
+31
+00:01:51.920 --> 00:01:56.140
+The source material suggests managing the product backlog like a giant iceberg.
+
+32
+00:01:56.640 --> 00:02:00.740
+The level of detail should scale directly with how close you are to actual development.
+
+33
+00:02:00.800 --> 00:02:09.080
+So the top 20% of your backlog, the very tip of the iceberg, should be highly detailed, estimated, and completely ready to go for sprint planning.
+
+34
+00:02:09.400 --> 00:02:11.740
+The middle 30% has moderate detail.
+
+35
+00:02:12.080 --> 00:02:15.220
+You know, you understand the general idea, but it definitely needs some refinement.
+
+36
+00:02:15.640 --> 00:02:17.500
+And that massive bottom 50%?
+
+37
+00:02:17.820 --> 00:02:20.820
+Those should just be vague ideas, epics, and titles.
+
+38
+00:02:20.820 --> 00:02:26.480
+No deep details allowed whatsoever. Agile expert Roman Pitchler puts this perfectly. He says,
+
+39
+00:02:26.760 --> 00:02:30.760
+don't try to write detailed user stories for everything up front. You'll waste time on stories
+
+40
+00:02:30.760 --> 00:02:35.260
+that will change or never get built. Detail only what's coming next. Honestly, trying to write out
+
+41
+00:02:35.260 --> 00:02:39.560
+exhaustive specifications for the bottom 50% of your iceberg is a massive waste of your time.
+
+42
+00:02:39.800 --> 00:02:43.460
+Because let's face it, by the time you actually get around to building them, the market or your
+
+43
+00:02:43.460 --> 00:02:49.220
+product itself will have completely changed. Moving right along to section two, writing winning user
+
+44
+00:02:49.220 --> 00:02:55.260
+stories. Okay, now that we understand the macro view, let's zoom in a bit. First, we really need
+
+45
+00:02:55.260 --> 00:03:01.780
+to understand scale. An epic takes weeks or even months to complete. A user story takes days. Both
+
+46
+00:03:01.780 --> 00:03:06.980
+of those are written by the product manager. But tasks? Tasks take hours, and they are written by
+
+47
+00:03:06.980 --> 00:03:12.400
+the developers. A huge, super common anti-pattern is product managers trying to write technical
+
+48
+00:03:12.400 --> 00:03:18.920
+tasks, like build an API endpoint. Look, the PM's job is to define the what and the why. For example,
+
+49
+00:03:18.920 --> 00:03:24.260
+as a manager, I want to export a weekly PDF report. It is totally up to the developers to
+
+50
+00:03:24.260 --> 00:03:29.960
+define the how through specific technical tasks. To really pressure test those stories before they
+
+51
+00:03:29.960 --> 00:03:34.680
+ever reach the development team, the sources highlight Bill Wake's famous invest framework.
+
+52
+00:03:35.180 --> 00:03:40.140
+It's a great checklist. Your story must be independent, so story B doesn't rely entirely
+
+53
+00:03:40.140 --> 00:03:44.420
+on story A just to function. It's got to be negotiable, right? Not some rigid contract.
+
+54
+00:03:44.420 --> 00:03:49.900
+It needs to be valuable to the user or the business, estimable by the team, small enough
+
+55
+00:03:49.900 --> 00:03:52.780
+to actually fit into a single sprint, and finally testable.
+
+56
+00:03:53.180 --> 00:03:55.520
+Just saying the system will be fast isn't testable.
+
+57
+00:03:55.900 --> 00:03:59.400
+Saying the report loads in under two seconds, now that is testable.
+
+58
+00:04:00.200 --> 00:04:00.800
+Section 3.
+
+59
+00:04:01.160 --> 00:04:03.680
+Defining Success with Acceptance Criteria
+
+60
+00:04:03.680 --> 00:04:09.020
+So how do we shift from the general narrative of a user story into the strict, hard boundaries
+
+61
+00:04:09.020 --> 00:04:10.240
+of its actual scope?
+
+62
+00:04:10.480 --> 00:04:13.020
+The answer is Acceptance Criteria, or AC.
+
+63
+00:04:13.460 --> 00:04:18.220
+These are the specific conditions that absolutely must be met for a user story to be considered finished.
+
+64
+00:04:18.620 --> 00:04:23.600
+They define exactly what is in scope and, maybe more importantly, what is out of scope.
+
+65
+00:04:23.900 --> 00:04:28.080
+Without clear acceptance criteria, you're essentially forcing your developers to guess what you want.
+
+66
+00:04:28.240 --> 00:04:31.500
+And let me tell you, mind reading is not a reliable development strategy.
+
+67
+00:04:31.820 --> 00:04:34.680
+It literally always leads to disappointment at the end of the sprint.
+
+68
+00:04:34.880 --> 00:04:40.300
+The absolute best way to write AC is using the Behavior-Driven Development, or BDD, format.
+
+69
+00:04:40.700 --> 00:04:42.700
+It's just a super simple three-step logic.
+
+70
+00:04:43.020 --> 00:04:44.720
+One, given a start condition.
+
+71
+00:04:45.220 --> 00:04:47.020
+Two, when an action occurs.
+
+72
+00:04:47.480 --> 00:04:49.620
+Three, then the expected result happens.
+
+73
+00:04:49.980 --> 00:04:53.520
+So, for example, given that I am on the reports page and there is data,
+
+74
+00:04:53.920 --> 00:04:58.640
+when I click export PDF, then a formatted PDF file downloads to my machine.
+
+75
+00:04:59.220 --> 00:05:02.500
+See, this simple little formula just entirely eliminates ambiguity.
+
+76
+00:05:03.060 --> 00:05:05.880
+But hey, even with the best formatting in the world,
+
+77
+00:05:05.880 --> 00:05:08.800
+we have to remember Jeff Patton's legendary rule.
+
+78
+00:05:09.280 --> 00:05:11.900
+A user story is a placeholder for a conversation.
+
+79
+00:05:12.640 --> 00:05:16.560
+Perfect documentation can never, ever replace actual human collaboration.
+
+80
+00:05:17.260 --> 00:05:19.740
+The ticket isn't the final product. It's an invitation.
+
+81
+00:05:20.200 --> 00:05:24.140
+An invitation for the product manager and the dev team to talk, clarify things,
+
+82
+00:05:24.280 --> 00:05:27.380
+and get fully aligned before a single line of code is ever written.
+
+83
+00:05:28.260 --> 00:05:30.980
+Section 4. Time Estimates and Story Points
+
+84
+00:05:30.980 --> 00:05:35.580
+This alignment we just talked about, it usually happens during backlog refinement.
+
+85
+00:05:35.580 --> 00:05:41.460
+And the crucial takeaway here is understanding exactly why teams use story points instead of hours.
+
+86
+00:05:41.940 --> 00:05:46.820
+Story points measure relative complexity, effort, and uncertainty, and they're assessed by team
+
+87
+00:05:46.820 --> 00:05:52.160
+consensus. Hours, on the other hand, measure expected time, usually just guessed by a single
+
+88
+00:05:52.160 --> 00:05:57.500
+developer. If you try to convert story points into hours, you know, saying, okay, one point equals
+
+89
+00:05:57.500 --> 00:06:02.060
+one day, you're completely destroying the collective knowledge, the uncertainty padding,
+
+90
+00:06:02.060 --> 00:06:07.120
+and the risk assessment benefits of agile estimation. Just never equate points directly
+
+91
+00:06:07.120 --> 00:06:13.020
+to ours. To avoid that trap of false precision, the research points to using t-shirt sizing map
+
+92
+00:06:13.020 --> 00:06:19.840
+to the Fibonacci sequence. 1, 2, 3, 5, 8, 13. By using steps that grow further and further apart,
+
+93
+00:06:20.100 --> 00:06:24.240
+you literally force the team to acknowledge uncertainty. An extra small ticket might be a
+
+94
+00:06:24.240 --> 00:06:29.280
+simple text change worth one point, but a large ticket? That might be a super complex external API
+
+95
+00:06:29.280 --> 00:06:34.720
+integration worth 8 or 13 points. And honestly, anything larger than an XL, say 20 points,
+
+96
+00:06:34.720 --> 00:06:38.080
+is actually just an epic in disguise, and it needs to be broken down.
+
+97
+00:06:38.700 --> 00:06:40.460
+Oh, and using techniques like planning poker,
+
+98
+00:06:40.660 --> 00:06:44.200
+where everyone reveals their estimates simultaneously, that's a game changer.
+
+99
+00:06:44.540 --> 00:06:47.540
+It helps overcome anchoring bias and stops the loudest person in the room
+
+100
+00:06:47.540 --> 00:06:48.860
+from dictating the whole estimate.
+
+101
+00:06:49.340 --> 00:06:54.320
+And finally, Section 5, Advanced Prioritization and Debt Management.
+
+102
+00:06:54.800 --> 00:06:57.660
+So, now that your tickets are refined and estimated,
+
+103
+00:06:58.060 --> 00:07:00.160
+how do you mathematically choose what to build next?
+
+104
+00:07:00.840 --> 00:07:04.140
+Enter WSJF, or Weighted Shortest Job First.
+
+105
+00:07:04.140 --> 00:07:07.140
+It's a really powerful prioritization formula.
+
+106
+00:07:07.140 --> 00:07:11.380
+You calculate it by taking the cost of delay and dividing it by the job duration, which
+
+107
+00:07:11.380 --> 00:07:14.200
+by the way is basically just your story point.
+
+108
+00:07:14.200 --> 00:07:18.860
+Cost of delay itself is calculated by adding up user value, time criticality, and risk
+
+109
+00:07:18.860 --> 00:07:19.860
+reduction.
+
+110
+00:07:19.860 --> 00:07:24.140
+It forces you to look at both the massive value of a feature and how quickly you can actually
+
+111
+00:07:24.140 --> 00:07:25.140
+get it out the door.
+
+112
+00:07:25.140 --> 00:07:29.820
+Let's think about how this math works in a real-world scenario, by comparing two totally
+
+113
+00:07:29.820 --> 00:07:30.960
+different features.
+
+114
+00:07:30.960 --> 00:07:35.180
+On one hand, we have a highly visible user feature, a PDF export.
+
+115
+00:07:35.180 --> 00:07:41.460
+It has a cost of delay of 13 and a duration of 3, giving it a WSJF score of 4.3.
+
+116
+00:07:41.460 --> 00:07:43.860
+But compare that to a back-end security upgrade.
+
+117
+00:07:43.860 --> 00:07:47.620
+The user won't even see it, but its time criticality and risk reduction are absolutely
+
+118
+00:07:47.620 --> 00:07:50.640
+huge, giving it a cost of delay of 31.
+
+119
+00:07:50.640 --> 00:07:55.500
+Divided by a duration of 5, its WSJF score comes out to 6.2.
+
+120
+00:07:55.500 --> 00:07:59.860
+This math brilliantly proves exactly why a boring back-end security upgrade can and
+
+121
+00:07:59.860 --> 00:08:05.360
+should win priority over a shiny new user feature. It simply delivers the most critical value in the
+
+122
+00:08:05.360 --> 00:08:09.120
+shortest amount of time. And as you're prioritizing all this, you really need to keep in mind the
+
+123
+00:08:09.120 --> 00:08:13.220
+concept of dual-track agile. Basically, you actually have two tracks running simultaneously.
+
+124
+00:08:13.640 --> 00:08:17.460
+The discovery backlog is for validating ideas. The goal here is purely learning,
+
+125
+00:08:17.700 --> 00:08:21.780
+driven by the PM and the designer. Then, the delivery backlog is for actually building those
+
+126
+00:08:21.780 --> 00:08:26.460
+validated stories. Product discovery expert Teresa Torres points out a vital, absolute truth here.
+
+127
+00:08:26.460 --> 00:08:30.880
+Teams that skip the discovery track and just pull raw ideas straight into delivery are building
+
+128
+00:08:30.880 --> 00:08:35.640
+features based on highly, highly dangerous assumptions. Which brings us to a final
+
+129
+00:08:35.640 --> 00:08:40.500
+provocative challenge from the sources. I want you to think about your own backlog right now.
+
+130
+00:08:40.860 --> 00:08:45.480
+When was the last time you just declared backlog bankruptcy? Seriously, if you have 200 items
+
+131
+00:08:45.480 --> 00:08:48.580
+sitting at the bottom of your iceberg that haven't been touched in over six months,
+
+132
+00:08:48.880 --> 00:08:54.340
+the experts say delete them, archive them, poof. I know it sounds terrifying, but if an idea is
+
+133
+00:08:54.340 --> 00:08:58.920
+truly critical to your product success, it will inevitably come back up. So my question for you is,
+
+134
+00:08:59.120 --> 00:09:03.140
+are you brave enough to delete the clutter and finally turn your chaos into clarity?
+

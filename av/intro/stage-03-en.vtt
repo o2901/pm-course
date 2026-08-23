@@ -1,0 +1,220 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:04.660
+It is easy to assume that building a digital product works like a traditional factory.
+
+2
+00:00:05.280 --> 00:00:12.460
+A manager hands down a blueprint, and the team executes the orders, step by step, until the software rolls off the line.
+
+3
+00:00:13.140 --> 00:00:19.440
+Because of that assumption, organizations often confuse the person running the product with a traditional project manager.
+
+4
+00:00:20.060 --> 00:00:23.140
+A project manager is focused entirely on execution.
+
+5
+00:00:23.140 --> 00:00:32.080
+They figure out the how and the when, carefully managing resources so the team delivers a specific scope on time and exactly on budget.
+
+6
+00:00:32.700 --> 00:00:35.760
+But there's a vulnerability in that execution-focused model.
+
+7
+00:00:36.340 --> 00:00:45.520
+A development team can hit every deadline, stay within budget, and check every box on the spec sheet, only to launch something zero users actually want to use.
+
+8
+00:00:46.040 --> 00:00:48.560
+The project succeeds, but the product fails.
+
+9
+00:00:49.160 --> 00:00:52.260
+To prevent that failure, companies rely on a product manager.
+
+10
+00:00:52.840 --> 00:00:57.320
+This role anchors the development process by defining the specific problem worth solving
+
+11
+00:00:57.320 --> 00:01:00.100
+and the exact product required to address it.
+
+12
+00:01:00.100 --> 00:01:03.380
+This creates an immediate organizational paradox.
+
+13
+00:01:04.040 --> 00:01:08.140
+The product manager is measured entirely by the commercial success of the product,
+
+14
+00:01:08.600 --> 00:01:13.580
+yet they have exactly zero formal authority over the engineers and designers who build it.
+
+15
+00:01:14.100 --> 00:01:16.320
+They cannot issue a single direct order.
+
+16
+00:01:17.150 --> 00:01:18.970
+To keep a product relevant in the market,
+
+17
+00:01:18.970 --> 00:01:24.850
+an organization has to trust a leader who drives the entire vision, completely stripped of the
+
+18
+00:01:24.850 --> 00:01:30.210
+power to command. Any piece of software is built out of three distinct and frequently
+
+19
+00:01:30.210 --> 00:01:36.630
+conflicting worlds. First is the business domain. This area focuses on ensuring the product serves
+
+20
+00:01:36.630 --> 00:01:42.330
+the company's strategic goals and generates a measurable return on investment. Next is
+
+21
+00:01:42.330 --> 00:01:47.590
+technology. This domain deals with engineering constraints, evaluating development effort,
+
+22
+00:01:47.590 --> 00:01:53.630
+and calculating technical trade-offs. Finally, there is user experience. This represents the
+
+23
+00:01:53.630 --> 00:01:58.410
+customer's voice, ensuring the software is intuitive and solves a real human problem.
+
+24
+00:01:59.010 --> 00:02:03.510
+A product manager is rarely the foremost expert in any single one of these fields.
+
+25
+00:02:04.110 --> 00:02:08.950
+Instead, they are the only person stationed precisely at the intersection where all three
+
+26
+00:02:08.950 --> 00:02:15.230
+overlap. They don't navigate this intersection alone. They form a product trio alongside design
+
+27
+00:02:15.230 --> 00:02:21.590
+and tech leads. These three operate as a unit of equals, balancing viability, usability, and
+
+28
+00:02:21.590 --> 00:02:26.630
+technical feasibility together. Because a product manager cannot pull rank within this trio,
+
+29
+00:02:26.630 --> 00:02:32.050
+they rely on two specific tools, objective data analysis to prove a concept's value,
+
+30
+00:02:32.590 --> 00:02:36.410
+and cross-departmental translation to explain technical constraints to an executive
+
+31
+00:02:36.410 --> 00:02:42.410
+or business goals to an engineer. Influence replaces authority. A product manager leads
+
+32
+00:02:42.410 --> 00:02:47.290
+the team by proving they can fluently speak the unique language of every department simultaneously.
+
+33
+00:02:48.030 --> 00:02:52.450
+It is common to picture this role as someone sitting at a desk, writing endless lists of
+
+34
+00:02:52.450 --> 00:02:57.750
+technical requirements for developers to code. This chart shows the actual daily schedule of
+
+35
+00:02:57.750 --> 00:03:03.030
+a product manager, based on McKinsey survey data. The timeline breaks down their total time
+
+36
+00:03:03.030 --> 00:03:08.570
+allocation into distinct percentage blocks. Defining product requirements is just one part
+
+37
+00:03:08.570 --> 00:03:14.690
+of the job. It actually accounts for only about 14% of their week. The vast majority of their time
+
+38
+00:03:14.690 --> 00:03:21.150
+goes elsewhere. 17% is dedicated to setting strategy, 15% to cross-functional collaboration,
+
+39
+00:03:21.650 --> 00:03:26.750
+and 12% straight to meeting with customers and partners. The bulk of the job is communication.
+
+40
+00:03:27.510 --> 00:03:33.310
+Success depends on aligning human minds around a single, cohesive picture, an effort that far
+
+41
+00:03:33.310 --> 00:03:38.210
+outweighs the time spent managing individual software tickets. This distinction becomes
+
+42
+00:03:38.210 --> 00:03:43.810
+obvious when you compare a modern product team to an older feature team model. In a feature team,
+
+43
+00:03:44.050 --> 00:03:49.330
+developers act purely as contractors, blindly executing a predetermined list of requests
+
+44
+00:03:49.330 --> 00:03:54.090
+handed down from management. The danger of that model is how it measures success.
+
+45
+00:03:54.590 --> 00:04:00.530
+It relies on output, simply counting how many features the team shipped. A team can ship 20 new
+
+46
+00:04:00.530 --> 00:04:05.350
+features, but if those features don't solve a user's problem, the performance metrics won't
+
+47
+00:04:05.350 --> 00:04:11.130
+budge. The target state is an empowered team. Instead of a strict feature list, they are handed
+
+48
+00:04:11.130 --> 00:04:16.930
+a complex problem to solve, with autonomy to discover the best solution. They measure success
+
+49
+00:04:16.930 --> 00:04:22.610
+by outcome, tracking the actual change in user behavior and business value. The product manager
+
+50
+00:04:22.610 --> 00:04:27.430
+acts as the boss of the problem. They take full responsibility for the health of the solution,
+
+51
+00:04:27.950 --> 00:04:31.090
+focusing their energy on the quality and impact of the team's work.
+
+52
+00:04:31.790 --> 00:04:36.410
+True product leadership is measured entirely by the real-world value the software generates,
+
+53
+00:04:36.870 --> 00:04:41.290
+and the only way to generate that value is by getting a highly diverse team of experts
+
+54
+00:04:41.290 --> 00:04:44.150
+to voluntarily march in the exact same direction.
+

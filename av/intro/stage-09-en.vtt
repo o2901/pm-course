@@ -1,0 +1,576 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:29.380
+Welcome back, everyone. Look, if you have ever been trapped in one of those endless, absolutely agonizing Slack debates about what a feature was actually supposed to do, or if you've ever had a developer hand over a finished product that looks literally nothing like what you envisioned, you are in exactly the right place today. In this explainer, we're on a mission to completely eliminate ambiguity in your product requirements. We're going to take those vague, abstract ideas and transform them into bulletproof, measurable, code-level criteria.
+
+2
+00:00:29.860 --> 00:00:33.660
+Let's make sure we're building exactly what we intend to, every single time.
+
+3
+00:00:34.360 --> 00:00:36.940
+Okay, let's just quickly dive into our roadmap for today.
+
+4
+00:00:37.140 --> 00:00:40.320
+We're going to start by looking at 1. Preventing Startup Failure.
+
+5
+00:00:40.480 --> 00:00:43.280
+Then we'll move right into 2. Defining What and Why.
+
+6
+00:00:43.280 --> 00:00:45.380
+3. Setting Quantitative Metrics.
+
+7
+00:00:45.740 --> 00:00:47.200
+4. The Given When Then Framework.
+
+8
+00:00:47.480 --> 00:00:50.360
+And finally, we'll wrap up with 5. Socratic Stress Testing.
+
+9
+00:00:51.190 --> 00:00:54.670
+Alright, Section 1. Preventing the Number 1 Reason for Startup Failure.
+
+10
+00:00:55.030 --> 00:00:59.130
+Before we even think about writing a single line of code, or heck, even writing a requirement,
+
+11
+00:00:59.410 --> 00:01:03.330
+we need to confront a pretty terrifying reality about why most companies fail
+
+12
+00:01:03.330 --> 00:01:04.730
+before they even get off the ground.
+
+13
+00:01:05.210 --> 00:01:09.630
+According to CB Insights, the absolute number one reason startups crash and burn
+
+14
+00:01:09.630 --> 00:01:11.730
+is simply no market need.
+
+15
+00:01:12.330 --> 00:01:13.270
+Think about that for a second.
+
+16
+00:01:13.610 --> 00:01:16.090
+It's building an excellent, flawless product for a problem
+
+17
+00:01:16.090 --> 00:01:17.930
+that nobody's actually willing to pay to solve.
+
+18
+00:01:18.350 --> 00:01:20.390
+It's kind of like a military operation, right?
+
+19
+00:01:20.790 --> 00:01:24.190
+No commander in their right mind plans an operation with solid intelligence.
+
+20
+00:01:24.730 --> 00:01:26.150
+They need to know what's happening in the arena,
+
+21
+00:01:26.150 --> 00:01:29.650
+what forces are operating, and where the window of opportunity actually is.
+
+22
+00:01:30.130 --> 00:01:32.450
+Building a product without validating that market need,
+
+23
+00:01:32.650 --> 00:01:34.930
+it's basically like deploying troops completely in the dark.
+
+24
+00:01:35.390 --> 00:01:37.290
+So that crucial intelligence gathering,
+
+25
+00:01:37.690 --> 00:01:40.470
+that's what we call the market requirements document, or the MRD.
+
+26
+00:01:40.890 --> 00:01:44.210
+This document exists purely to prove there is a battle actually worth fighting
+
+27
+00:01:44.210 --> 00:01:46.370
+before you move a single developer or designer.
+
+28
+00:01:46.750 --> 00:01:50.230
+It defines the size of the market using real numbers, not just gut feelings.
+
+29
+00:01:50.510 --> 00:01:53.210
+It pinpoints exactly what the customer is trying to achieve,
+
+30
+00:01:53.390 --> 00:01:54.690
+rather than just what they're asking for.
+
+31
+00:01:55.190 --> 00:01:59.630
+Honestly, think of the MRD not as just more corporate bureaucracy, but as incredibly cheap
+
+32
+00:01:59.630 --> 00:02:00.110
+insurance.
+
+33
+00:02:00.470 --> 00:02:04.090
+It's insurance against building a great product for a completely non-existent market.
+
+34
+00:02:04.370 --> 00:02:09.210
+Let's move on and see how this intelligence actually builds over time through this chronological
+
+35
+00:02:09.210 --> 00:02:09.570
+funnel.
+
+36
+00:02:10.270 --> 00:02:13.610
+You start at the top with the MRD to figure out the why and who.
+
+37
+00:02:14.250 --> 00:02:18.190
+Only then do you write the PRD, the product requirements document, to answer the what.
+
+38
+00:02:18.530 --> 00:02:22.770
+Then comes the design spec for how it looks, the tech spec for how it's actually built,
+
+39
+00:02:22.770 --> 00:02:25.370
+And finally, the user stories for your specific sprints.
+
+40
+00:02:25.870 --> 00:02:26.810
+But here's the catch.
+
+41
+00:02:27.110 --> 00:02:29.470
+If you skip that very first MRD step,
+
+42
+00:02:29.790 --> 00:02:33.170
+every single document that follows is essentially built on thin air.
+
+43
+00:02:33.790 --> 00:02:37.850
+Moving to section two, defining the what and why.
+
+44
+00:02:38.210 --> 00:02:41.190
+So once we know for sure we have a valid market,
+
+45
+00:02:41.610 --> 00:02:43.930
+how do we translate those broad market needs
+
+46
+00:02:43.930 --> 00:02:46.650
+into actual tangible product requirements?
+
+47
+00:02:47.110 --> 00:02:48.870
+Now, what's really interesting about this
+
+48
+00:02:48.870 --> 00:02:50.970
+is the stark contrast between these two approaches.
+
+49
+00:02:50.970 --> 00:02:57.170
+The MRD on the left, it's focused entirely outward, on the market, the customer, the competition.
+
+50
+00:02:57.650 --> 00:03:00.150
+Its main audience is your executives and strategy teams.
+
+51
+00:03:00.610 --> 00:03:03.610
+But the PRD on the right shifts that focus entirely.
+
+52
+00:03:04.110 --> 00:03:08.010
+It focuses inward, on the solution, the features, the acceptance criteria.
+
+53
+00:03:08.530 --> 00:03:11.430
+Its audience is your developers, your designers, your QA testers.
+
+54
+00:03:11.930 --> 00:03:16.590
+The PRD clearly defines the what and the why, and explicitly, and I mean explicitly,
+
+55
+00:03:16.990 --> 00:03:18.770
+leaves the how up to your development team.
+
+56
+00:03:19.210 --> 00:03:23.130
+If you're looking for a super lean, effective way to structure your PRD,
+
+57
+00:03:23.530 --> 00:03:25.930
+Lenny's seven questions framework is fantastic.
+
+58
+00:03:26.290 --> 00:03:28.090
+It just asks, what's the problem?
+
+59
+00:03:28.450 --> 00:03:29.210
+Who's the audience?
+
+60
+00:03:29.530 --> 00:03:30.110
+Why now?
+
+61
+00:03:30.370 --> 00:03:31.430
+What's the high-level solution?
+
+62
+00:03:31.890 --> 00:03:32.710
+What is out of scope?
+
+63
+00:03:32.870 --> 00:03:33.950
+How do we measure success?
+
+64
+00:03:34.070 --> 00:03:34.870
+And what are the risks?
+
+65
+00:03:35.390 --> 00:03:37.390
+Notice that out of scope section in particular,
+
+66
+00:03:37.910 --> 00:03:40.450
+explicitly stating what you are not going to build
+
+67
+00:03:40.450 --> 00:03:43.950
+will literally prevent the vast majority of arguments later down the line.
+
+68
+00:03:44.330 --> 00:03:45.630
+To really see this in action,
+
+69
+00:03:45.630 --> 00:03:50.210
+let's look at a real-world case study from our sources featuring McCall. She's a product manager
+
+70
+00:03:50.210 --> 00:03:54.670
+at a company called Velux, and she was tasked with building a brand new smart notifications feature.
+
+71
+00:03:55.230 --> 00:03:59.950
+That brings us to section three, sitting quantitative adoption metrics. Because let's
+
+72
+00:03:59.950 --> 00:04:03.830
+be real, if you don't define what success looks like before a single line of code is written,
+
+73
+00:04:04.230 --> 00:04:08.790
+pretty much any result is going to look like a success in hindsight. When Michelle wrote her
+
+74
+00:04:08.790 --> 00:04:14.950
+PRD for Velux, she didn't just guess that people needed smart notifications. No, she grounded her
+
+75
+00:04:14.950 --> 00:04:22.310
+document in hard, undeniable data. She found that exactly 38% of VLOX users were actively missing
+
+76
+00:04:22.310 --> 00:04:28.090
+deadlines specifically because they didn't see an update in time. This number completely proved
+
+77
+00:04:28.090 --> 00:04:33.270
+the existence of the problem. It wasn't just some PM's gut feeling. It was a highly measurable
+
+78
+00:04:33.270 --> 00:04:39.600
+pain point. So the crucial point here is how she translated that specific problem into a goal.
+
+79
+00:04:39.600 --> 00:04:45.400
+On the left, you see a vague kind of fluffy wish, reduce missed deadlines, but on the right,
+
+80
+00:04:45.520 --> 00:04:51.680
+you see Mikael's actual quantitative adoption metric, a 25% decrease in missed deadlines within
+
+81
+00:04:51.680 --> 00:04:58.540
+one quarter. A genuinely good PRD is concise and it's decisive. It replaces vague adjectives with
+
+82
+00:04:58.540 --> 00:05:05.340
+strict, measurable targets that everyone can agree on. Section 4. Eliminating ambiguity with
+
+83
+00:05:05.340 --> 00:05:12.010
+given when then. Okay, so we have a solid goal, but now we need to bridge that highly dangerous gap
+
+84
+00:05:12.010 --> 00:05:18.110
+between the PRD and the actual written code. How do we eliminate ambiguity entirely? Well,
+
+85
+00:05:18.230 --> 00:05:24.050
+we do this through acceptance criteria, or AC. These are the strict, verifiable conditions
+
+86
+00:05:24.050 --> 00:05:29.890
+that define when a feature is truly, officially complete. Without acceptance criteria, a developer
+
+87
+00:05:29.890 --> 00:05:33.950
+might mark a ticket as done, but when you actually go in to review it, it's not at all
+
+88
+00:05:33.950 --> 00:05:38.750
+what you asked for. And I'll let you in on a secret. That gap? It's almost always due to your
+
+89
+00:05:38.750 --> 00:05:44.750
+vague phrasing, not the developer's negligence. AC is the contract that finally closes the gap
+
+90
+00:05:44.750 --> 00:05:49.730
+between your intent and their execution. The absolutely most powerful format for writing
+
+91
+00:05:49.730 --> 00:05:54.690
+these criteria is the Given When Then framework. It's this brilliant rhythmic rule of three.
+
+92
+00:05:55.410 --> 00:06:01.070
+Given establishes the initial context or the starting state. When describes the specific
+
+93
+00:06:01.070 --> 00:06:06.410
+action taken by the user and then dictates the exact expected result.
+
+94
+00:06:06.410 --> 00:06:11.070
+It breaks every single requirement down into a completely unambiguous, highly testable
+
+95
+00:06:11.070 --> 00:06:13.950
+scenario that QA can easily verify.
+
+96
+00:06:13.950 --> 00:06:15.290
+Let's look at an example.
+
+97
+00:06:15.290 --> 00:06:18.130
+Say Velox needs to add Enterprise Single Sign-On.
+
+98
+00:06:18.130 --> 00:06:21.350
+A bad requirement simply says SSO should work well.
+
+99
+00:06:21.350 --> 00:06:26.950
+I mean, to a back-end developer, well might mean it eventually succeeds after 45 agonizing
+
+100
+00:06:26.950 --> 00:06:27.950
+seconds.
+
+101
+00:06:27.950 --> 00:06:29.910
+Instead, we use the framework.
+
+102
+00:06:29.910 --> 00:06:34.590
+Given an Okta user, when an enterprise email is entered, then the login completes in under
+
+103
+00:06:34.590 --> 00:06:35.870
+five seconds.
+
+104
+00:06:35.870 --> 00:06:40.670
+By replacing those vague adjectives with precise, hard metrics, you completely eliminate that
+
+105
+00:06:40.670 --> 00:06:43.150
+endless ping pong game back and forth with QA.
+
+106
+00:06:43.150 --> 00:06:47.690
+And you know, this framework is even more critical for your edge cases.
+
+107
+00:06:47.690 --> 00:06:51.990
+Writing something like, handle login errors, is basically an open invitation for a developer
+
+108
+00:06:51.990 --> 00:06:55.210
+to just throw up a blank white screen when things break.
+
+109
+00:06:55.210 --> 00:06:57.290
+But Michael applied the format perfectly.
+
+110
+00:06:57.290 --> 00:07:01.310
+Give in a failed login, then show a clear error message with a support link, ensuring
+
+111
+00:07:01.310 --> 00:07:03.570
+no white screen is displayed.
+
+112
+00:07:03.570 --> 00:07:07.910
+Defining these edge cases up front literally saves weeks of costly, frustrating revisions
+
+113
+00:07:07.910 --> 00:07:08.910
+down the line.
+
+114
+00:07:08.910 --> 00:07:11.110
+Finally, Section 5.
+
+115
+00:07:11.110 --> 00:07:15.210
+Stress Testing Your Product Requirements There's a realization you really need to
+
+116
+00:07:15.210 --> 00:07:16.210
+have here.
+
+117
+00:07:16.210 --> 00:07:21.010
+The exact moment your PRD looks polished, pretty, and ready to share is actually the
+
+118
+00:07:21.010 --> 00:07:24.530
+most dangerous moment in its entire life cycle.
+
+119
+00:07:24.530 --> 00:07:28.570
+A document that hasn't been deeply investigated is going to fall apart at its very first review.
+
+120
+00:07:28.570 --> 00:07:33.710
+You need to use Socratic questioning to stress test your own work, much like they do over at Amazon or Figma.
+
+121
+00:07:34.030 --> 00:07:37.350
+Ask yourself, is the problem actually real, and how do I know?
+
+122
+00:07:37.770 --> 00:07:44.190
+Going back to McCall at Velox, she interrogated her own PRD and realized her initial data was based on just 12 support tickets.
+
+123
+00:07:44.710 --> 00:07:50.770
+Realizing that wasn't nearly enough evidence, she paused, and she validated the problem with a 200-user survey before moving forward.
+
+124
+00:07:50.770 --> 00:07:54.870
+Which leads directly to the next question you absolutely must ask.
+
+125
+00:07:55.250 --> 00:07:57.050
+What is the simplest version of the solution?
+
+126
+00:07:57.430 --> 00:08:02.950
+And this brilliantly illustrates how Mitchell originally envisioned this massive, complex, real-time notification engine.
+
+127
+00:08:03.190 --> 00:08:11.250
+But through questioning, she completely swapped that complex engine for a simple daily email digest that could test her hypothesis in just one week of development.
+
+128
+00:08:11.650 --> 00:08:14.470
+She saved weeks of engineering time just by starting small.
+
+129
+00:08:15.130 --> 00:08:18.970
+Here is a challenge you should seriously apply to every single project.
+
+130
+00:08:18.970 --> 00:08:23.010
+What happens if we only have half the resources to build this?
+
+131
+00:08:23.530 --> 00:08:28.110
+Answering this forces you to ruthlessly find the absolute core value of your product.
+
+132
+00:08:28.710 --> 00:08:32.770
+For Meeko, it meant stripping away everything except the single most critical alert,
+
+133
+00:08:33.050 --> 00:08:34.090
+the deadline change.
+
+134
+00:08:34.470 --> 00:08:39.170
+Sure, it cuts the scope of the PRD in half, but it makes the remaining feature twice as strong.
+
+135
+00:08:39.670 --> 00:08:43.090
+So I'm going to leave you with this final, provocative thought to take away from this
+
+136
+00:08:43.090 --> 00:08:43.810
+explainer today.
+
+137
+00:08:43.810 --> 00:08:48.850
+If you shared your current product requirements document right now, today, with your harshest
+
+138
+00:08:48.850 --> 00:08:53.650
+critics, would it survive 15 minutes of relentless Socratic questioning? Would your metrics hold up?
+
+139
+00:08:53.870 --> 00:08:58.490
+Are your acceptance criteria truly unambiguous? Take the time to scrutinize your own documents,
+
+140
+00:08:58.750 --> 00:09:02.430
+because by putting in that effort up front, you eliminate the ambiguity, you stop building
+
+141
+00:09:02.430 --> 00:09:05.990
+features that nobody actually wants, and you ensure that when your team writes code,
+
+142
+00:09:05.990 --> 00:09:08.070
+they are building exactly what the market demands.
+
+143
+00:09:08.390 --> 00:09:10.650
+Thanks for joining me, and I'll catch you on the next explainer.
+

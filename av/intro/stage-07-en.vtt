@@ -1,0 +1,460 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:28.420
+Welcome to This Explainer. Today, we're tackling a challenge that honestly plagues product teams everywhere. I'm talking about the absolute headache of transforming a chaotic, ever-growing backlog, you know, the one keeping you up at night, into a strategic, flexible roadmap. Think of this as a hands-on tutorial. We're going to unpack the exact tools and frameworks you need to build a roadmap that actually works. We'll use real data, objective frameworks, and a structure that embraces the totally unpredictable nature of business, rather than fighting against it.
+
+2
+00:00:29.260 --> 00:00:31.040
+Here's our game plan for today.
+
+3
+00:00:31.460 --> 00:00:33.660
+1. Outcomes vs. Outputs
+
+4
+00:00:33.660 --> 00:00:35.780
+2. Prioritization Models
+
+5
+00:00:35.780 --> 00:00:38.060
+3. The Art of Saying No
+
+6
+00:00:38.060 --> 00:00:40.400
+4. Tech Debt as ROI
+
+7
+00:00:40.400 --> 00:00:43.660
+and 5. Building the Now, Next, Later Map
+
+8
+00:00:43.660 --> 00:00:45.060
+Let's dive right in.
+
+9
+00:00:45.880 --> 00:00:48.720
+Alright, Section 1. Outcomes vs. Outputs
+
+10
+00:00:48.720 --> 00:00:50.600
+This is a total paradigm shift.
+
+11
+00:00:51.060 --> 00:00:54.020
+A successful roadmap is really a strategic communication tool
+
+12
+00:00:54.020 --> 00:00:56.600
+that explains the where and why of your product's direction.
+
+13
+00:00:56.600 --> 00:01:03.000
+It is absolutely not a giant Gantt chart of broken promises detailing exactly who is doing what on some random Tuesday.
+
+14
+00:01:03.500 --> 00:01:06.120
+You've got to make this mental shift right out of the gate.
+
+15
+00:01:06.580 --> 00:01:13.780
+When you frame a roadmap item as an output, something like build a new onboarding feature, you essentially lock your team into a predetermined solution.
+
+16
+00:01:14.260 --> 00:01:23.560
+But when you reframe it as a measurable outcome, say, improve activation by 15%, you give your team the total freedom to find the absolute best path forward.
+
+17
+00:01:23.560 --> 00:01:28.460
+I mean, sometimes a winning solution to boost activation is just a better automated email campaign.
+
+18
+00:01:28.740 --> 00:01:29.920
+No code required at all.
+
+19
+00:01:30.560 --> 00:01:34.440
+Moving right along to section two, prioritization models.
+
+20
+00:01:34.800 --> 00:01:37.220
+This is about turning chaos into order.
+
+21
+00:01:37.820 --> 00:01:42.940
+Look, you probably have something like 200 items in your backlog, but only one development team.
+
+22
+00:01:43.440 --> 00:01:48.420
+The CEO wants AI, sales wants integrations, and support is literally begging for bug fixes.
+
+23
+00:01:48.840 --> 00:01:52.800
+We have to objectively filter this chaos down to your top 10 priorities.
+
+24
+00:01:53.540 --> 00:01:56.680
+Now, there is no single perfect prioritization model out there.
+
+25
+00:01:57.100 --> 00:02:01.220
+You have to select the right framework based on your project's current level of business uncertainty.
+
+26
+00:02:01.880 --> 00:02:09.420
+For example, if you need to deeply understand user expectations, Kano is fantastic for separating basic must-haves from delighters.
+
+27
+00:02:09.760 --> 00:02:11.800
+Need to quickly align internal stakeholders?
+
+28
+00:02:12.340 --> 00:02:17.340
+Moscow categorizes things into really clear boundaries of must, should, could, and won't have.
+
+29
+00:02:17.880 --> 00:02:22.940
+Or if you're running fast-growth experiments with a lot of high uncertainty, ICE is definitely your go-to.
+
+30
+00:02:23.400 --> 00:02:26.780
+But for our core tutorial today, where we're looking to build a quarterly roadmap,
+
+31
+00:02:27.160 --> 00:02:31.480
+we're going to apply the RICE model to objectively score and rank our product initiatives.
+
+32
+00:02:32.140 --> 00:02:36.260
+RICE stands for Reach, Impact, Confidence, and Effort.
+
+33
+00:02:36.260 --> 00:02:41.580
+You basically multiply reach by impact and confidence, and then divide that whole thing by the effort,
+
+34
+00:02:41.920 --> 00:02:44.380
+meaning the number of weeks it takes one person to build it.
+
+35
+00:02:44.380 --> 00:02:54.960
+By quantifying an impact score on a set scale, say 0.25 for minimal up to 3 for massive, and demanding a realistic confidence percentage, this model literally takes the emotion out of the room.
+
+36
+00:02:55.320 --> 00:02:59.360
+It turns a shouting match into a structured, rational conversation about assumptions.
+
+37
+00:03:00.360 --> 00:03:07.720
+So the crucial takeaway here is how you use these numbers to justify your choices, especially when you're looking at the cost of delay.
+
+38
+00:03:08.260 --> 00:03:14.700
+Imagine a stakeholder is demanding a custom reporting feature, but you've prioritized single sign-on, or SSO.
+
+39
+00:03:15.160 --> 00:03:21.520
+Well, if missing that SSO integration means a cost of delay of $150,000 in lost enterprise deals every single month,
+
+40
+00:03:21.960 --> 00:03:24.900
+clear data effortlessly wins the argument over gut feelings.
+
+41
+00:03:25.420 --> 00:03:30.360
+Which brings us to Section 3, the incredibly important art of saying no.
+
+42
+00:03:30.780 --> 00:03:36.560
+Now that we have our prioritized data-backed list, we have to face what's probably the hardest part of product management,
+
+43
+00:03:36.560 --> 00:03:40.700
+actually rejecting stakeholder requests. Let's look at how to handle this.
+
+44
+00:03:41.360 --> 00:03:46.720
+Steve Jobs hit the nail on the head when he said innovation is saying no to a thousand things.
+
+45
+00:03:47.240 --> 00:03:51.860
+True prioritization actually hurts. If your decisions aren't making anyone even a little
+
+46
+00:03:51.860 --> 00:03:55.620
+bit uncomfortable, you honestly haven't prioritized. You've just made a wish list.
+
+47
+00:03:56.100 --> 00:04:00.480
+Every single time you say yes to one feature, you are silently saying no to something else
+
+48
+00:04:00.480 --> 00:04:06.440
+because your team's capacity is totally finite. So here are four proven strategies for negotiating
+
+49
+00:04:06.440 --> 00:04:11.840
+those trade-offs when rejecting feature requests without burning any bridges. First, present the
+
+50
+00:04:11.840 --> 00:04:16.320
+trade-off explicitly. Hey, we can build this, but it delays the onboarding revamp we already
+
+51
+00:04:16.320 --> 00:04:21.780
+committed to. Second, return to the strategy. Our quarterly OKR is retention, but this request
+
+52
+00:04:21.780 --> 00:04:27.680
+serves acquisition. Third, use the data. Point out that a requested tweak only impacts 3% of users
+
+53
+00:04:27.680 --> 00:04:33.840
+while a current bug is impacting 40%. And finally, offer an alternative. Instead of building a massive
+
+54
+00:04:33.840 --> 00:04:35.180
+of custom integration right now,
+
+55
+00:04:35.440 --> 00:04:37.260
+offer a simple CSV export workaround.
+
+56
+00:04:37.620 --> 00:04:39.640
+It might just solve 80% of the customer's problem
+
+57
+00:04:39.640 --> 00:04:40.900
+in a fraction of the time.
+
+58
+00:04:41.420 --> 00:04:42.220
+Okay, section four,
+
+59
+00:04:42.620 --> 00:04:44.160
+technical debt as a business investment.
+
+60
+00:04:44.540 --> 00:04:46.940
+This is another really vital area of the roadmap
+
+61
+00:04:46.940 --> 00:04:48.680
+that constantly gets overlooked.
+
+62
+00:04:49.380 --> 00:04:50.920
+While we manage external requests,
+
+63
+00:04:51.160 --> 00:04:53.720
+we absolutely have to protect the internal health
+
+64
+00:04:53.720 --> 00:04:55.840
+of our product by addressing technical debt.
+
+65
+00:04:56.520 --> 00:04:58.700
+The biggest mistake product managers make here
+
+66
+00:04:58.700 --> 00:05:00.720
+is letting engineers present tech debt
+
+67
+00:05:00.720 --> 00:05:02.380
+as just a technical complaint.
+
+68
+00:05:02.380 --> 00:05:09.160
+To secure a budget for necessary engineering maintenance, you must translate that technical debt into compelling business ROI.
+
+69
+00:05:09.920 --> 00:05:14.000
+For example, if an aging database is slowing your team down, frame it like this.
+
+70
+00:05:14.420 --> 00:05:19.800
+A four-week database migration will save 30% of development time on every single feature next quarter.
+
+71
+00:05:20.380 --> 00:05:23.940
+Suddenly, that's not a technical chore. That's a high-yield business investment.
+
+72
+00:05:24.260 --> 00:05:27.400
+And here is the golden rule for maintaining your momentum.
+
+73
+00:05:27.400 --> 00:05:33.960
+You must incorporate 15-20% of every single sprint for managing long-term infrastructure health.
+
+74
+00:05:34.540 --> 00:05:39.180
+Do not wait around for a mythical tech debt month, because trust me, it will never get approved.
+
+75
+00:05:39.680 --> 00:05:45.980
+Bake it right into your continuous cycles so your ability to innovate doesn't completely grind to a halt under the weight of old code.
+
+76
+00:05:46.660 --> 00:05:48.760
+Finally, Section 5, Building the Map.
+
+77
+00:05:49.240 --> 00:05:50.420
+Now, next, later.
+
+78
+00:05:50.800 --> 00:05:55.860
+We've got our prioritized initiatives, our stakeholder buy-in, and our tech debt budget totally secured.
+
+79
+00:05:55.860 --> 00:05:58.220
+Let's actually assemble the roadmap itself.
+
+80
+00:05:58.940 --> 00:06:00.560
+Forget strict, rigid dates.
+
+81
+00:06:00.960 --> 00:06:01.720
+They're a trap.
+
+82
+00:06:02.200 --> 00:06:06.420
+One delayed feature causes customers to threaten to leave and sales to absolutely panic.
+
+83
+00:06:07.120 --> 00:06:10.720
+Instead, map your prioritized outcomes across three time horizons.
+
+84
+00:06:11.180 --> 00:06:12.700
+Now, next, and later.
+
+85
+00:06:13.320 --> 00:06:16.220
+This elegantly respects the inherent uncertainty of your business
+
+86
+00:06:16.220 --> 00:06:19.160
+while still providing total, crystal-clear direction.
+
+87
+00:06:19.880 --> 00:06:21.160
+So what's now?
+
+88
+00:06:21.800 --> 00:06:26.660
+This represents work happening immediately, usually the next two to four weeks, perfectly
+
+89
+00:06:26.660 --> 00:06:28.760
+aligning with standard development sprints.
+
+90
+00:06:29.400 --> 00:06:32.500
+Because it's happening right now, it has incredibly high certainty.
+
+91
+00:06:33.360 --> 00:06:38.580
+This is where you have granular detail, committed user stories, assigned developers, and clear-cut
+
+92
+00:06:38.580 --> 00:06:39.680
+metrics for success.
+
+93
+00:06:40.280 --> 00:06:42.200
+Then we have the next horizon.
+
+94
+00:06:42.600 --> 00:06:44.260
+Think roughly one to three months out.
+
+95
+00:06:44.600 --> 00:06:47.700
+This is where we show our strategic intent for the upcoming quarter.
+
+96
+00:06:47.700 --> 00:06:55.480
+We know the broad themes are epics, you know, those large bodies of work we want to tackle, but the exact features and user stories remain totally flexible.
+
+97
+00:06:55.960 --> 00:06:59.700
+This lets us privet the details based on the data and feedback we're learning right now.
+
+98
+00:07:00.180 --> 00:07:04.400
+And later, that covers three to six months out or even further.
+
+99
+00:07:04.760 --> 00:07:07.660
+This acknowledges a very high level of uncertainty.
+
+100
+00:07:08.280 --> 00:07:11.260
+It essentially functions as an indicator of future exploration.
+
+101
+00:07:11.920 --> 00:07:15.380
+Things like explore AI features or public APIs.
+
+102
+00:07:15.920 --> 00:07:21.680
+It's a strategic intention and explicitly not a binding promise to your stakeholders or your sales team.
+
+103
+00:07:22.120 --> 00:07:25.020
+Okay, let's quickly summarize your masterclass checklist.
+
+104
+00:07:25.660 --> 00:07:27.280
+Frame outcomes over outputs.
+
+105
+00:07:27.840 --> 00:07:30.020
+Filter your top 10 initiatives using the RICE model.
+
+106
+00:07:30.560 --> 00:07:33.220
+Protect 20% of your sprint capacity for tech debt.
+
+107
+00:07:33.760 --> 00:07:36.780
+Map everything into now, next, and later horizons.
+
+108
+00:07:36.780 --> 00:07:39.620
+And finally, negotiate buy-in using hard data.
+
+109
+00:07:40.080 --> 00:07:45.480
+By doing this, you transform from merely managing a backlog to actively driving your product's strategic direction.
+
+110
+00:07:45.800 --> 00:07:51.360
+I want to leave you with a final, slightly provocative thought as you take these tools back to your teams.
+
+111
+00:07:51.780 --> 00:07:57.340
+If your roadmap doesn't disappoint at least one important stakeholder, are you really prioritizing?
+
+112
+00:07:57.780 --> 00:08:03.060
+Remember, a great roadmap is a story of your product's future, and it's built on hard choices.
+
+113
+00:08:03.500 --> 00:08:05.880
+So use these frameworks to make those choices count.
+
+114
+00:08:06.440 --> 00:08:09.040
+Thanks for joining me on this explainer, and I'll catch you next time.
+

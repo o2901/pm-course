@@ -1,0 +1,492 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:10.120
+Okay, let's dive into this. Welcome to the Explainer. I'm putting on my strategic product lead hat today to present a meticulous, investor-ready market overview of Velox.
+
+2
+00:00:10.620 --> 00:00:17.760
+Now, if you're a Series A through C investor, you already know that the project management space is crowded, it's noisy, and it is absolutely ruthless.
+
+3
+00:00:18.120 --> 00:00:23.040
+You really don't need another pitch deck filled with fluff and hockey stick graphs based on pure wishful thinking.
+
+4
+00:00:23.100 --> 00:00:26.760
+You need a confident, realistic, and completely data-backed thesis.
+
+5
+00:00:26.760 --> 00:00:35.620
+So, in this explainer, we're going to break down exactly where Velik stands, how we systematically dismantle our competition, and precisely how we plan to capture our market.
+
+6
+00:00:36.160 --> 00:00:45.200
+Here's a quick look at our roadmap. We'll be moving through market sizing, market forces, differentiation, our SWOT and moats, and then we'll wrap up with expansion and growth. Let's get right to it.
+
+7
+00:00:45.840 --> 00:00:48.600
+Section 1. Market Sizing and Opportunity
+
+8
+00:00:48.960 --> 00:00:56.050
+So, you always see this number, right? $20 billion. That's the global total addressable market for project management tools.
+
+9
+00:00:56.050 --> 00:01:17.930
+And sure, it looks absolutely fantastic on a pitch deck, but let's be real. Sophisticated investors like you demand reality. Telling you, hey, if we just capture 1%, well, that's not a strategy, that's a total fantasy. That $20 billion, it includes massive enterprise, on-premise legacy systems, and entire industries we literally do not even touch. So, let's pivot to the real numbers.
+
+10
+00:01:17.930 --> 00:01:22.970
+And this brilliantly illustrates our actual serviceable obtainable market, or SOM.
+
+11
+00:01:23.330 --> 00:01:28.570
+This is the grounded, bottom-up calculation of what we can realistically capture in the next two to three years.
+
+12
+00:01:29.010 --> 00:01:30.150
+Here's how we get there.
+
+13
+00:01:30.570 --> 00:01:35.810
+Step 1. Look at the hard data. There are roughly 50,000 Series A to C startups globally.
+
+14
+00:01:36.310 --> 00:01:42.370
+Step 2. We filter out all the noise, which leaves us with about 30,000 highly relevant software and services companies,
+
+15
+00:01:42.690 --> 00:01:44.530
+our exact ideal customer profile.
+
+16
+00:01:45.230 --> 00:01:48.830
+Step three, we multiply that by our average annual revenue per customer.
+
+17
+00:01:49.350 --> 00:01:52.670
+At about 25 users paying 15 bucks a month, that's $4,500.
+
+18
+00:01:53.470 --> 00:01:58.710
+Which brings us to step four, yielding a total obtainable market of exactly $135 million.
+
+19
+00:01:59.310 --> 00:02:04.970
+This is a highly realistic, stress-tested number that proves we deeply understand our specific slice of the pie.
+
+20
+00:02:05.310 --> 00:02:09.750
+Moving right along to section two, market forces and competitors.
+
+21
+00:02:09.750 --> 00:02:15.130
+Let's zoom out a bit and map the battlefield because we definitely aren't operating in a vacuum.
+
+22
+00:02:15.650 --> 00:02:20.150
+We know exactly who's shooting at us. We use Porter's five forces to really gauge market
+
+23
+00:02:20.150 --> 00:02:25.590
+profitability. First off, rivalry, it is exceptionally high. We are fighting bloody
+
+24
+00:02:25.590 --> 00:02:30.730
+battles every single day against giants like Asana and Monday. Substitutes are medium threat.
+
+25
+00:02:31.090 --> 00:02:34.530
+You know, teams just sort of making do with messy Excel spreadsheets or Notion docs.
+
+26
+00:02:35.050 --> 00:02:39.250
+Buyers, they're strong. Enterprise clients love to demand those hefty discounts.
+
+27
+00:02:39.750 --> 00:02:40.810
+But here's the interesting part.
+
+28
+00:02:41.170 --> 00:02:44.130
+New entrants are actually a surprisingly low to medium threat.
+
+29
+00:02:44.550 --> 00:02:44.850
+Why?
+
+30
+00:02:45.130 --> 00:02:47.090
+Well, technically, building a task gap is easy.
+
+31
+00:02:47.390 --> 00:02:50.490
+But the barrier to earning massive enterprise trust, that's huge.
+
+32
+00:02:50.710 --> 00:02:52.050
+And it keeps the new players at bay.
+
+33
+00:02:52.530 --> 00:02:58.190
+And finally, supplier power is incredibly low since cloud infrastructure like AWS is completely commoditized.
+
+34
+00:02:58.390 --> 00:03:03.110
+So the crucial point is, how do we stack up systematically against the heavyweights?
+
+35
+00:03:03.690 --> 00:03:06.750
+We evaluate our competitors across six core dimensions.
+
+36
+00:03:06.750 --> 00:03:13.050
+product, target audience, business model, strengths, weaknesses, and trends. We're
+
+37
+00:03:13.050 --> 00:03:17.890
+looking dead at Velox versus Asana and Linear, no apples to oranges here. By
+
+38
+00:03:17.890 --> 00:03:21.110
+breaking it down across these specific dimensions, we can clearly see that
+
+39
+00:03:21.110 --> 00:03:25.250
+Asana's biggest weakness is its bloated complexity for remote teams. Meanwhile,
+
+40
+00:03:25.250 --> 00:03:30.070
+Linear's core strength is its hyper focus on engineering. This evaluation tells us
+
+41
+00:03:30.070 --> 00:03:34.230
+exactly who we're fighting and exactly where their armor is thin. Now let's
+
+42
+00:03:34.230 --> 00:03:40.110
+ground this in reality with some real-world data from our Q4 win-loss analysis. We are crushing it
+
+43
+00:03:40.110 --> 00:03:46.710
+with the 70% win rate against Asana and 66% against Monday. But visually, I want to highlight
+
+44
+00:03:46.710 --> 00:03:52.650
+our glaring vulnerability right here, our 53% win rate against Linear. We're barely scraping by with
+
+45
+00:03:52.650 --> 00:03:56.790
+a coin toss when we go head-to-head with them. As a product lead, honestly, this is the number
+
+46
+00:03:56.790 --> 00:04:01.510
+keeping me up at night, and it absolutely demands an explanation. When we actually sat down and
+
+47
+00:04:01.510 --> 00:04:06.290
+interviewed the customers we lost to Linear, one piece of feedback kept coming up over and over.
+
+48
+00:04:06.770 --> 00:04:11.450
+The developers prefer Linear's UI. Linear absolutely dominates what we call developer
+
+49
+00:04:11.450 --> 00:04:16.410
+experience or DX. They've got the instant load times, the slick dark modes, total keyboard
+
+50
+00:04:16.410 --> 00:04:21.690
+shortcut dominance. So here is our strategic concession. We lose to Linear on DX, but we're
+
+51
+00:04:21.690 --> 00:04:26.730
+not framing this as a failure. Actually, it's an intentional strategy choice. It's about focus.
+
+52
+00:04:26.730 --> 00:04:31.390
+We're actively choosing not to fight in their developer-only arena because, as you'll see,
+
+53
+00:04:31.510 --> 00:04:33.630
+our true value lies somewhere entirely different.
+
+54
+00:04:34.270 --> 00:04:35.910
+Which brings us to Section 3,
+
+55
+00:04:36.230 --> 00:04:38.450
+Differentiation and Value Pricing.
+
+56
+00:04:38.710 --> 00:04:41.330
+Since we aren't trying to out-code Linear for Developers,
+
+57
+00:04:41.430 --> 00:04:44.030
+and we definitely aren't fighting Asana on sheer feature bloat,
+
+58
+00:04:44.270 --> 00:04:45.950
+let me introduce you to our secret weapon.
+
+59
+00:04:46.370 --> 00:04:48.210
+We are playing the Blue Ocean Strategy.
+
+60
+00:04:48.610 --> 00:04:50.410
+Instead of thrashing around in a red ocean,
+
+61
+00:04:50.570 --> 00:04:52.190
+swarming with bloodthirsty competitors,
+
+62
+00:04:52.610 --> 00:04:54.430
+all fighting over the exact same features,
+
+63
+00:04:54.430 --> 00:04:57.590
+we are creating a completely new uncontested market space.
+
+64
+00:04:58.110 --> 00:04:59.270
+Think of Cirque du Soleil, right?
+
+65
+00:04:59.270 --> 00:05:02.030
+They didn't just try to be a slightly better traditional circus.
+
+66
+00:05:02.430 --> 00:05:07.210
+They eliminated the animals, added theater, and built a completely new competition-free category.
+
+67
+00:05:07.690 --> 00:05:08.350
+That's Velox.
+
+68
+00:05:08.610 --> 00:05:10.230
+We are doing the exact same thing.
+
+69
+00:05:10.530 --> 00:05:15.130
+We are pivoting away from the noise, straight into the uncontested space of remote-first simplicity.
+
+70
+00:05:15.490 --> 00:05:20.190
+We strip away everything unnecessary and build exclusively for distributed asynchronous teams.
+
+71
+00:05:20.550 --> 00:05:21.570
+That is our ocean.
+
+72
+00:05:22.230 --> 00:05:24.890
+And this approach feeds directly into our pricing model.
+
+73
+00:05:25.310 --> 00:05:30.150
+Looking at this strategy matrix, we absolutely refuse to play the generic cost leadership game.
+
+74
+00:05:30.430 --> 00:05:32.950
+We are not the Walmart or the Ryanair of project management.
+
+75
+00:05:33.390 --> 00:05:36.430
+Competing on being the cheapest is literally just a race to the bottom.
+
+76
+00:05:36.870 --> 00:05:41.770
+Instead, much like Apple uses peer differentiation, VALOX uses value-based pricing.
+
+77
+00:05:41.850 --> 00:05:47.950
+We charge based on the unique value of saving a remote team, say, 10 hours a week in unnecessary sync meetings.
+
+78
+00:05:48.330 --> 00:05:54.510
+Because we offer a remote-first DNA that nobody else has, our customers are more than happy to pay a premium for that exact value.
+
+79
+00:05:54.890 --> 00:05:58.850
+Moving on to Section 4, SWOT and Competitive Motes.
+
+80
+00:05:59.510 --> 00:06:01.950
+Now, it's one thing to win a customer, right?
+
+81
+00:06:02.150 --> 00:06:04.510
+But it's a whole other game to actually keep them.
+
+82
+00:06:04.990 --> 00:06:06.630
+Now, what's really interesting about this slide,
+
+83
+00:06:06.930 --> 00:06:10.270
+our meticulous SWOT matrix is our massive internal strength.
+
+84
+00:06:10.670 --> 00:06:13.330
+We have a staggering 94% retention rate.
+
+85
+00:06:13.850 --> 00:06:16.810
+Once teams are fully onboarded, they literally do not leave.
+
+86
+00:06:17.190 --> 00:06:19.690
+But we have to balance that against our known weaknesses.
+
+87
+00:06:20.110 --> 00:06:22.090
+We have a 45% activation rate,
+
+88
+00:06:22.370 --> 00:06:24.750
+which tells us our onboarding definitely needs some work.
+
+89
+00:06:24.990 --> 00:06:27.630
+and of course, that developer experience gap we talked about.
+
+90
+00:06:28.350 --> 00:06:32.430
+Externally, our opportunities are massive, especially when it comes to leveraging AI
+
+91
+00:06:32.430 --> 00:06:36.990
+and riding the continuous global wave of remote work. But we remain highly vigilant of the threats,
+
+92
+00:06:37.390 --> 00:06:42.470
+specifically Microsoft Loop getting bundled into enterprise packages and the obvious macroeconomic
+
+93
+00:06:42.470 --> 00:06:47.570
+recession risks. To defend against those exact threats, the lock has aggressively built out
+
+94
+00:06:47.570 --> 00:06:52.430
+our competitive moats. You know, Warren Buffett compares a truly great business to a castle with
+
+95
+00:06:52.430 --> 00:06:58.570
+a deep, deep moat? Well, ours are threefold. First up, deep switching costs. Once a remote team
+
+96
+00:06:58.570 --> 00:07:03.130
+integrates all their asynchronous workflows into Velox, ripping that out to move to a new tool
+
+97
+00:07:03.130 --> 00:07:08.610
+becomes a massive, incredibly painful headache. Second, growing network effects. As more and
+
+98
+00:07:08.610 --> 00:07:12.710
+more departments within a single company join Velox, the value of the tool just increases
+
+99
+00:07:12.710 --> 00:07:18.610
+exponentially for everyone involved. And third, a strong remote first brand identity. We aren't
+
+100
+00:07:18.610 --> 00:07:23.470
+just selling a piece of software, we are selling the very philosophy of modern, distributed work.
+
+101
+00:07:23.870 --> 00:07:27.690
+These moats are absolutely crucial for protecting us against the established market incumbents.
+
+102
+00:07:28.380 --> 00:07:33.980
+Finally, Section 5, Market Expansion and Growth, the Conquest Phase.
+
+103
+00:07:34.500 --> 00:07:39.500
+So, we've mapped out the market, the competitors, and our heavy defenses. Now, let's talk about how
+
+104
+00:07:39.500 --> 00:07:44.180
+we actually draw. This is exactly how your Series B and C capital will be mathematically
+
+105
+00:07:44.180 --> 00:07:50.440
+deployed to fuel our next big leap. We project our future roadmap using the Ansof matrix to really
+
+106
+00:07:50.440 --> 00:07:55.880
+weigh risk versus ward. Over on the left, we've got our low risk play, market penetration. This
+
+107
+00:07:55.880 --> 00:08:00.100
+means deploying capital directly into sales to deepen our hold on our existing target market of
+
+108
+00:08:00.100 --> 00:08:04.560
+series A to C startups. We know this market inside and out, and we absolutely know how to
+
+109
+00:08:04.560 --> 00:08:09.480
+win it. Contrasting this, over on the right, is our higher risk, high reward play, product development.
+
+110
+00:08:09.940 --> 00:08:13.660
+This is where we invest heavily in launching native AI assistance and fully featured mobile
+
+111
+00:08:13.660 --> 00:08:16.640
+collapse, allowing us to sell even more value to that existing market.
+
+112
+00:08:16.980 --> 00:08:19.680
+It is a highly calculated, balanced, two-pronged attack.
+
+113
+00:08:20.280 --> 00:08:21.220
+So let's recap.
+
+114
+00:08:21.480 --> 00:08:23.620
+We've walked through the hard bottoms-up math.
+
+115
+00:08:23.880 --> 00:08:28.340
+We've taken a very honest, unflinching look at the bloody competitive landscape.
+
+116
+00:08:28.340 --> 00:08:34.040
+And we've demonstrated a highly defensible blue ocean strategy that is built entirely
+
+117
+00:08:34.040 --> 00:08:36.120
+on value, not discounts.
+
+118
+00:08:36.500 --> 00:08:40.620
+The data is clear, the moats are extremely deep, and the roadmap is set.
+
+119
+00:08:41.100 --> 00:08:43.640
+So the final question I have for you today is simple.
+
+120
+00:08:43.660 --> 00:08:49.220
+are you ready to back the remote first category leader? Think about the sheer value we are
+
+121
+00:08:49.220 --> 00:08:54.220
+unlocking here. I'll leave you to ponder that as we wrap up DisExplainer. Thank you so much
+
+122
+00:08:54.220 --> 00:08:55.740
+for your focus and your time today.
+

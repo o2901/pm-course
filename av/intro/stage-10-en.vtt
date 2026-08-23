@@ -1,0 +1,556 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:27.900
+Alright, let's jump right into this explainer. Today, we're taking off our builder hats and putting on our executive consultant hats. We're going to conduct a really rigorous, data-driven audit of product risk mitigation. So, if you're the one overseeing product teams, allocating capital, or making those big strategic calls, this is absolutely for you. We're going to break down exactly how you transform wild, unpredictable development cycles into a highly controlled, financially sound validation machine.
+
+2
+00:00:27.900 --> 00:00:32.480
+Because we need to confront the ultimate executive nightmare right out of the gate
+
+3
+00:00:32.480 --> 00:00:33.540
+You know the one
+
+4
+00:00:33.540 --> 00:00:34.760
+You've probably seen it happen
+
+5
+00:00:34.760 --> 00:00:35.840
+Or let's be honest
+
+6
+00:00:35.840 --> 00:00:36.940
+Maybe you even lived it
+
+7
+00:00:36.940 --> 00:00:38.580
+You've got a full year of development
+
+8
+00:00:38.580 --> 00:00:40.160
+A completely depleted budget
+
+9
+00:00:40.160 --> 00:00:42.580
+A team that's been burning the midnight oil for months
+
+10
+00:00:42.580 --> 00:00:44.120
+And then you finally launch
+
+11
+00:00:44.120 --> 00:00:45.720
+And the market just shrugs
+
+12
+00:00:45.720 --> 00:00:47.240
+Literally zero demand
+
+13
+00:00:47.240 --> 00:00:49.820
+Pouring massive amounts of capital into a launch
+
+14
+00:00:49.820 --> 00:00:51.980
+Only to find out nobody actually wants the thing
+
+15
+00:00:51.980 --> 00:00:56.720
+Yeah, that's the exact scenario we are going to learn how to systematically prevent today
+
+16
+00:00:56.720 --> 00:00:59.960
+Here is our executive briefing agenda for today.
+
+17
+00:01:00.400 --> 00:01:02.740
+One, the unvalidated development trap.
+
+18
+00:01:03.220 --> 00:01:06.040
+Two, how fast loops save company capital.
+
+19
+00:01:06.660 --> 00:01:09.520
+Three, using hypotheses as measurement tools.
+
+20
+00:01:10.200 --> 00:01:12.860
+Four, treating validation as business insurance.
+
+21
+00:01:13.460 --> 00:01:15.940
+Five, segmenting data to find value.
+
+22
+00:01:16.340 --> 00:01:19.680
+And six, the strategic choice to pivot or persevere.
+
+23
+00:01:20.480 --> 00:01:22.520
+Okay, let's get into section one,
+
+24
+00:01:22.840 --> 00:01:24.840
+the unvalidated development trap.
+
+25
+00:01:24.840 --> 00:01:30.520
+When you look at the traditional development approach, you're talking about cycles that take months, sometimes even years.
+
+26
+00:01:30.800 --> 00:01:34.440
+You're carrying this massive, heavy balloon of risk right up until launch day.
+
+27
+00:01:34.600 --> 00:01:37.340
+And the only thing you're really measuring is schedule compliance.
+
+28
+00:01:37.660 --> 00:01:39.160
+Like, hey, did we ship on time?
+
+29
+00:01:39.600 --> 00:01:43.180
+But look, shipping on time absolutely does not mean you built the right thing.
+
+30
+00:01:43.620 --> 00:01:45.600
+Now flip that and consider the lean approach.
+
+31
+00:01:45.840 --> 00:01:51.600
+We are shifting from that high-risk model of guessing for months to a low-risk model of validating in just days or weeks.
+
+32
+00:01:52.060 --> 00:01:54.180
+The risk is incredibly small and it's all up front.
+
+33
+00:01:54.180 --> 00:01:58.160
+And your progress metric? It's no longer a timeline. It's validated learning.
+
+34
+00:01:58.640 --> 00:02:02.680
+Moving right along to section two, fast loops save company capital.
+
+35
+00:02:03.020 --> 00:02:06.520
+Now you've definitely heard of the build, measure, learn loop before,
+
+36
+00:02:06.660 --> 00:02:10.060
+but I really want you to look at it through a completely different lens today.
+
+37
+00:02:10.280 --> 00:02:15.740
+This is not just some agile engineering process. It is a high-speed capital-saving mechanism.
+
+38
+00:02:16.040 --> 00:02:20.900
+You build the absolute smallest testable experiment, and to be clear, that's an experiment,
+
+39
+00:02:20.900 --> 00:02:26.820
+not a mini product. You measure real behavioral data like actual clicks or payments, not just
+
+40
+00:02:26.820 --> 00:02:31.920
+user opinions. And then you learn, which means making a hard, objective decision on what to do
+
+41
+00:02:31.920 --> 00:02:38.240
+next. Listen to this, because this is absolutely crucial. A team that closes that loop in two
+
+42
+00:02:38.240 --> 00:02:43.500
+weeks learns six times faster than a team that takes three months. And that is on the exact same
+
+43
+00:02:43.500 --> 00:02:49.700
+budget. Speed literally equals financial efficiency here. The faster you can close that loop, the
+
+44
+00:02:49.700 --> 00:02:54.180
+faster you can kill bad ideas before they drain your runway, which just skyrockets your overall
+
+45
+00:02:54.180 --> 00:02:59.260
+return on investment. Actually, let's put some real-world case data behind this. Take a company
+
+46
+00:02:59.260 --> 00:03:04.760
+we'll call VLOX. Their product manager, Mikkel, got a request to spend a full quarter of development
+
+47
+00:03:04.760 --> 00:03:09.400
+building a complex workload management dashboard. But instead of just saying yes, she ran a
+
+48
+00:03:09.400 --> 00:03:14.500
+mitigation test. She set up a quick two-week loop using a manual, static dashboard that she
+
+49
+00:03:14.500 --> 00:03:19.840
+literally updated by hand once a day and she sent it to just 10 loyal clients. The result? Eight out
+
+50
+00:03:19.840 --> 00:03:24.460
+of those 10 clients engaged with it every single day. The outcome was that full development was
+
+51
+00:03:24.460 --> 00:03:29.200
+eventually approved, but this time it was based on hard, undeniable behavioral data, completely
+
+52
+00:03:29.200 --> 00:03:34.500
+saving a quarter's budget from being just a gut-feeling guess. Let's move into section three,
+
+53
+00:03:35.000 --> 00:03:41.440
+hypotheses as measurement tools. We need to talk about the concept of the executive hypothesis.
+
+54
+00:03:41.440 --> 00:03:47.160
+A hypothesis is not just a guess, it has to be a predefined contract.
+
+55
+00:03:47.160 --> 00:03:51.680
+It forces your team to state exactly what they're changing, who the audience is, the
+
+56
+00:03:51.680 --> 00:03:56.120
+specific behavior they expect to see, the exact baseline and target metrics, and the
+
+57
+00:03:56.120 --> 00:03:57.120
+time frame.
+
+58
+00:03:57.120 --> 00:04:01.260
+Because look, if you don't define what success looks like before the test starts, your team
+
+59
+00:04:01.260 --> 00:04:05.400
+will unconsciously move the goalposts later on, just to make whatever result they got
+
+60
+00:04:05.400 --> 00:04:06.820
+look like a win.
+
+61
+00:04:06.820 --> 00:04:10.480
+Here is a spot on example of a rock solid hypothesis from Velokes.
+
+62
+00:04:10.480 --> 00:04:11.940
+Listen to how specific this is.
+
+63
+00:04:12.300 --> 00:04:15.400
+We believe smart reminders will cause team leads to close tasks on time.
+
+64
+00:04:15.720 --> 00:04:18.280
+Right there, you have the change, the audience, and the behavior.
+
+65
+00:04:18.780 --> 00:04:24.320
+Then it says, we'll know when on-time completion rises from 62% to 70% in three weeks.
+
+66
+00:04:24.760 --> 00:04:30.400
+Notice the super specific baseline of 62%, the clear target of 70%, and that strict three-week
+
+67
+00:04:30.400 --> 00:04:30.740
+deadline.
+
+68
+00:04:30.740 --> 00:04:34.420
+It is fully measurable, and more importantly, it's completely falsifiable.
+
+69
+00:04:35.080 --> 00:04:37.500
+So how do you actually test that without burning cash?
+
+70
+00:04:37.500 --> 00:04:41.200
+You deploy cheap validation methods before writing a single line of code.
+
+71
+00:04:41.700 --> 00:04:45.900
+You might use a fake door test, which measures raw demand by just putting up a button for
+
+72
+00:04:45.900 --> 00:04:48.240
+a feature that doesn't exist yet to see who clicks it.
+
+73
+00:04:48.460 --> 00:04:52.320
+Or maybe a Wizard of Oz setup, where you make the user think a process is fully automated
+
+74
+00:04:52.320 --> 00:04:56.060
+when in reality, a human is frantically pulling the levers behind the scenes.
+
+75
+00:04:56.440 --> 00:05:00.840
+In that Veloc Smart Reminders case, they just used a simple fake door test, literally a
+
+76
+00:05:00.840 --> 00:05:03.280
+button that said, Smart Reminders, coming soon.
+
+77
+00:05:03.360 --> 00:05:06.540
+And they captured a massive 41% click rate in the first week.
+
+78
+00:05:06.540 --> 00:05:09.280
+Only then did they give the green light to actually build it.
+
+79
+00:05:09.720 --> 00:05:13.960
+Which brings us to Section 4, Validation as Business Insurance.
+
+80
+00:05:14.620 --> 00:05:20.400
+Before you write a massive check for development, your product absolutely must pass four critical
+
+81
+00:05:20.400 --> 00:05:20.960
+tests.
+
+82
+00:05:21.600 --> 00:05:22.320
+Value risk.
+
+83
+00:05:22.600 --> 00:05:24.360
+Does the market actually want it?
+
+84
+00:05:24.800 --> 00:05:25.740
+Usability risk.
+
+85
+00:05:25.980 --> 00:05:28.200
+Can users even figure out how to use it?
+
+86
+00:05:28.620 --> 00:05:29.540
+Feasibility risk.
+
+87
+00:05:29.800 --> 00:05:32.960
+Can our engineering team actually build this in a reasonable time?
+
+88
+00:05:32.960 --> 00:05:38.760
+and viability risk, does it actually make financial sense for the business? You have to think of this
+
+89
+00:05:38.760 --> 00:05:45.340
+as paying a very, very small premium in validation days to mitigate a massive, uninsured loss against
+
+90
+00:05:45.340 --> 00:05:51.640
+these four risk categories. But, and this is a massive but, remember the hierarchy here. Value
+
+91
+00:05:51.640 --> 00:05:57.580
+has to come first. I'll say that again, value always comes first. A brilliant, frictionless user
+
+92
+00:05:57.580 --> 00:06:02.100
+experience will never save a feature that no one actually wants in the first place. And an incredible,
+
+93
+00:06:02.100 --> 00:06:06.660
+perfectly feasible tech architecture isn't going to pay the bills if it has zero market viability.
+
+94
+00:06:06.660 --> 00:06:09.780
+You always, always test for value before you test for feasibility.
+
+95
+00:06:10.420 --> 00:06:14.420
+Let's look at another quick VALOX risk audit to see this in action.
+
+96
+00:06:14.420 --> 00:06:18.100
+The team wanted to build this fancy new AI recommendation engine.
+
+97
+00:06:18.100 --> 00:06:22.420
+They scored their risks and realized their feasibility risk was dangerously high.
+
+98
+00:06:22.420 --> 00:06:27.300
+We're talking a score of 20 out of 25. So they executed a one-week technical spike,
+
+99
+00:06:27.300 --> 00:06:30.260
+which is essentially a fast deep dive by the engineers.
+
+100
+00:06:30.260 --> 00:06:34.660
+What did they find? The client data in their small accounts was way too sparse to actually
+
+101
+00:06:34.660 --> 00:06:39.380
+train the AI, so they immediately pivoted and re-scoped the feature to be exclusively for
+
+102
+00:06:39.380 --> 00:06:44.020
+their enterprise accounts. That single week of validation saved an entire quarter of engineering
+
+103
+00:06:44.020 --> 00:06:50.610
+work that was, frankly, doomed to fail. All right, Section 5, Segmenting Data to Find Value.
+
+104
+00:06:51.250 --> 00:06:55.490
+Consider these activation rates for a new onboarding flow at Velox. If you're just
+
+105
+00:06:55.490 --> 00:07:01.810
+glancing at that overall average of 48%, it looks, well, mediocre. Maybe it's a minor improvement,
+
+106
+00:07:01.810 --> 00:07:06.210
+but it doesn't really seem worth the ongoing effort. But look what happens the second you
+
+107
+00:07:06.210 --> 00:07:12.130
+segment that data. For enterprise clients, it was a complete failure at 42%, but for small teams,
+
+108
+00:07:12.130 --> 00:07:18.050
+it was a massive win, surging all the way to 56%. Which leads us to a golden rule of executive
+
+109
+00:07:18.050 --> 00:07:25.140
+review. Segment before you kill. A mediocre overall result can easily hide a massive,
+
+110
+00:07:25.580 --> 00:07:31.400
+wildly profitable success inside a very specific cohort. If the Velux team hadn't segmented that
+
+111
+00:07:31.400 --> 00:07:35.520
+onboarding data, they would have just thrown away a highly successful feature for their small
+
+112
+00:07:35.520 --> 00:07:41.020
+business clients. As an executive, you absolutely must demand segmented data before you authorize
+
+113
+00:07:41.020 --> 00:07:45.720
+the death of any project. Of course, to make those calls, you need pristine data integrity.
+
+114
+00:07:45.720 --> 00:07:50.340
+You have to ensure statistical significance. You want 95% confidence that the result wasn't
+
+115
+00:07:50.340 --> 00:07:55.360
+just some random fluke. Always run full cycles. A user on a Tuesday acts very differently than a
+
+116
+00:07:55.360 --> 00:07:59.660
+user on a Saturday, so you have to measure a full week. Watch out for the novelty effect,
+
+117
+00:07:59.740 --> 00:08:04.280
+where users click a button just because it's new and shiny. And finally, you have to enforce a strict
+
+118
+00:08:04.280 --> 00:08:08.640
+no-peaking rule. Never let your team stop and experiment early just because the numbers look
+
+119
+00:08:08.640 --> 00:08:15.100
+temporarily amazing on day two. Let the test run. Finally, section six, strategic decisions,
+
+120
+00:08:15.540 --> 00:08:21.740
+pivot or persevere. Once that data is actually in front of you, you're looking at a strict binary
+
+121
+00:08:21.740 --> 00:08:28.220
+choice, pivot or persevere. If the data refutes your hypotheses, you pivot. And we need to reframe
+
+122
+00:08:28.220 --> 00:08:33.320
+this. A pivot is not a failure. It is a course correction based on real radar data. You're just
+
+123
+00:08:33.320 --> 00:08:38.060
+steering the plane away from a storm. Think about Instagram pivoting away from a cluttered check-in
+
+124
+00:08:38.060 --> 00:08:43.060
+app or slack pivoting from a failed video game they survived and thrived because they read the
+
+125
+00:08:43.060 --> 00:08:48.440
+data and pivoted now if the data confirms the hypothesis you persevere you double down you
+
+126
+00:08:48.440 --> 00:08:54.420
+fund it and you build the real thing so in your strategic review meetings every single validation
+
+127
+00:08:54.420 --> 00:09:00.220
+cycle has to end in one of three definitive actions otherwise you end up with zombie projects
+
+128
+00:09:00.220 --> 00:09:07.040
+draining your resources one you ship it because the data is undeniably positive two you iterate
+
+129
+00:09:07.040 --> 00:09:11.140
+Because the signal is a bit mixed, so you tweak the prototype and test it again.
+
+130
+00:09:11.500 --> 00:09:13.560
+Or three, you forcefully kill it.
+
+131
+00:09:14.000 --> 00:09:21.560
+The hypothesis was totally disproven, so you shut it down, you document exactly what you learned, and you happily save that capital for something better.
+
+132
+00:09:22.020 --> 00:09:23.940
+I'm going to leave you with this final thought.
+
+133
+00:09:24.160 --> 00:09:28.820
+It's a provocative question, and honestly, you should be asking it at your very next board meeting.
+
+134
+00:09:29.260 --> 00:09:33.920
+Are we measuring how much we built this month, or are we measuring how fast we learned?
+
+135
+00:09:33.920 --> 00:09:38.860
+because in today's landscape, the team that learns the fastest wins for sure.
+
+136
+00:09:39.180 --> 00:09:42.180
+If you demand speed of learning over sheer volume of output,
+
+137
+00:09:42.180 --> 00:09:46.840
+you are going to watch your company's risk drop while your business value absolutely soars.
+
+138
+00:09:47.200 --> 00:09:49.040
+Thank you for joining me for this explainer.
+
