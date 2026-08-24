@@ -820,6 +820,13 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 .intro-rate.on{background:var(--p);color:#fff;font-weight:700}
 .intro-btn{border:1px solid rgba(108,99,255,.35);background:rgba(108,99,255,.1);color:var(--t1);font-size:.76rem;padding:.25rem .55rem;border-radius:8px;cursor:pointer;font-family:Heebo}
 .intro-cc.on{background:var(--p);color:#fff;border-color:var(--p)}
+.adm-tbl-ctrl{position:sticky;top:52px;z-index:60;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;padding:.6rem .7rem;margin:.4rem 0 .5rem;background:rgba(15,14,23,.94);backdrop-filter:blur(10px);border:1px solid rgba(108,99,255,.25);border-radius:12px}
+.adm-search{flex:1;min-width:180px;padding:.45rem .7rem;border-radius:9px;border:1px solid rgba(108,99,255,.3);background:rgba(255,255,255,.05);color:var(--t1);font-family:Heebo;font-size:.82rem}
+.adm-chip-row{display:flex;gap:.35rem;align-items:center;flex-wrap:wrap}
+.adm-fchip{border:1px solid rgba(108,99,255,.35);background:rgba(108,99,255,.08);color:var(--t1);font-size:.75rem;padding:.3rem .6rem;border-radius:999px;cursor:pointer;font-family:Heebo;transition:.2s}
+.adm-fchip.on{background:var(--p);color:#fff;font-weight:700}
+.adm-fcount{font-size:.74rem;color:var(--t2);white-space:nowrap}
+body.light .adm-tbl-ctrl{background:rgba(240,240,245,.95)}
 .intro-resume{margin-top:.45rem;font-size:.78rem;color:var(--t2)}
 .intro-resume a{color:var(--p);font-weight:700}
 .vpc-fig{margin:.8rem 0 1rem}
@@ -4009,6 +4016,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
         [['v','_avPos'],['n','_narrPos'],['i','_introPos']].forEach(function(pr){var src=_pg[pr[0]];if(src&&typeof src==='object'){if(!G[pr[1]])G[pr[1]]={};Object.keys(src).forEach(function(k){if(G[pr[1]][k]==null)G[pr[1]][k]=src[k];});}});
       }
     }catch(e){}
+    try{_retroCompleteStages()}catch(e){}/* credit stages stuck by missing read-marks (Yonatan report) */
     // Merge satisfaction-skip log from cloud (#sat) — dedupe by timestamp
     try{
       const cloudSk=JSON.parse(d.data.satSkipsJSON||'[]');
@@ -5569,6 +5577,7 @@ function _avStop(){_av.on=false;_avHush();}
 function _avClose(){try{_avSavePos()}catch(e){}_avStop();if(_av.ov){try{_av.ov.remove()}catch(e){}_av.ov=null;}}
 function _avRender(){
   if(!_av.ov)return;
+  try{if(_av.slides&&_av.slides.length>1&&_av.i===_av.slides.length-1&&window._avDoneKey)_markTopicConsumed(window._avDoneKey)}catch(e){}/* reaching the final slide counts as consuming the topic (manual paging included) */
   var slide=_av.ov.querySelector('#avSlide'),cnt=_av.ov.querySelector('#avCount'),bar=_av.ov.querySelector('#avBar'),pp=_av.ov.querySelector('#avPlay');
   var amb=_av.ov.querySelector('#avAmb');if(amb)amb.style.setProperty('--avh',((_av.i*43)%360));
   var sl=_av.slides[_av.i]||{t:''};
@@ -5891,6 +5900,16 @@ let _secScrollRaf=0;
 function _onSecScroll(){if(!_secScrollRaf)_secScrollRaf=requestAnimationFrame(()=>{_secScrollRaf=0;_markSeenByScroll();});}
 function initSecObserver(){
   if(!window._secScrollInstalled){window.addEventListener('scroll',_onSecScroll,{passive:true});window._secScrollInstalled=true;}
+  try{
+    if(window._secIO)window._secIO.disconnect();
+    window._secIO=new IntersectionObserver(function(ents){ents.forEach(function(en){
+      if(!en.isIntersecting)return;var sec=en.target.closest('.csec[data-idx]');if(!sec)return;
+      var body=sec.querySelector('.pf-acc-body');if(body&&!body.classList.contains('open'))return;
+      if(!G._seenSec)G._seenSec={};var key=G.st+'_'+sec.dataset.idx;
+      if(G._seenSec[key])return;G._seenSec[key]=true;sec.classList.add('sec-seen');_updateReadProgress();
+    });},{threshold:0.6});
+    document.querySelectorAll('#tc .pf-acc-close').forEach(function(b){window._secIO.observe(b)});
+  }catch(e){}
   // initial passes after layout settles (marks topics already on screen)
   setTimeout(_markSeenByScroll,150);setTimeout(_markSeenByScroll,600);
 }
@@ -6022,6 +6041,33 @@ function stagePartsStatus(s){
   const caseSeen=s.cs?!!tv.c:true;
   const quizAll=(s.q&&s.q.length)?(G.qa[s.id]&&Object.keys(G.qa[s.id]).length===s.q.length):true;
   return {readAll,caseSeen,quizAll,full:readAll&&caseSeen&&quizAll};
+}
+function _retroCompleteStages(){
+  try{
+    if(!G||!G.done||!Array.isArray(S))return;
+    var credited=[];
+    S.forEach(function(s){
+      if(G.done.has(s.id))return;
+      try{if(_stageHidden(s))return}catch(e){}
+      var qn=(s.q&&s.q.length)||0;if(!qn)return;
+      var qa=(G.qa&&G.qa[s.id])?Object.keys(G.qa[s.id]).length:0;if(qa<qn)return;
+      var tv=(G._tabVisits&&G._tabVisits[s.id])||{};if(s.cs&&!tv.c)return;
+      var topics=(s.th&&s.th.length)||0;
+      var tl=parseInt((G.stageTime||{})[s.id+'_l'])||0;
+      if(topics&&tl<Math.min(240,40*topics))return;/* demand real reading time: 40s/topic, capped at 4 min */
+      if(!G._seenSec)G._seenSec={};
+      for(var i=0;i<topics;i++)G._seenSec[s.id+'_'+i]=true;
+      G.done.add(s.id);credited.push(s.id);
+      try{logActivity('completeStage','שלב '+s.id+' הושלם (זיכוי רטרואקטיבי) · '+(G.sc[s.id]||0)+' נק\'',(G.sc[s.id]||0))}catch(e){}
+    });
+    if(credited.length){
+      sv();try{uh()}catch(e){}
+      try{if(G.v==='m'&&typeof rg==='function')rg()}catch(e){}
+      try{showAchievement('🎉',_enLang()?'Progress restored!':'ההתקדמות שלך נספרה!',(_enLang()?'Stages completed: ':'שלבים שהושלמו: ')+credited.join(', '))}catch(e){}
+      setTimeout(function(){try{checkTitleCeremony()}catch(e){}},1200);
+      try{trackEvent('progress','retroComplete',credited.join('_'))}catch(e){}
+    }
+  }catch(e){}
 }
 function tryCompleteStage(sid,showHint){
   const s=S.find(x=>x.id===sid);if(!s)return false;
@@ -6982,7 +7028,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.6.65';
+const APP_VERSION='1.6.66';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -7635,6 +7681,7 @@ function _satSubmit(){
 // chance when they return to the map — at most once per session.
 const _origMpSat=mp;
 mp=function(){_origMpSat();if(G.satisfactionRating>0)return;if((G.done?G.done.size:0)>=_satNextThreshold()){setTimeout(_showSatIfReady,2500)}};
+const _origMpRetro=mp;mp=function(){_origMpRetro();try{_retroCompleteStages()}catch(e){}};
 
 // ========== FEATURE 5: BUG REPORT ==========
 function showBugReport(){
@@ -7852,30 +7899,42 @@ fetch(DB_URL+'&action=leaderboard')
 }
 
 var _admStatFilter=null;
+var _admSearchQ='';
 function _getFilteredUsers(){
   var approved=_admUsers.filter(function(u){var s=String(u.status||'');return s!=='pending'&&s!=='pending_admin'&&s!=='pending_email'});
-  if(!_admStatFilter||_admStatFilter==='all')return approved;
-  if(_admStatFilter==='today')return approved.filter(function(u){return _isToday(u.lastLogin)});
-  if(_admStatFilter==='month')return approved.filter(function(u){return _isThisMonth({lastLogin:u.lastLogin})});
-  if(_admStatFilter==='core')return approved.filter(function(u){return(parseInt(u.stagesCount)||0)>=21});
-  if(_admStatFilter==='rated')return approved.filter(function(u){return parseInt(u.satisfaction)>0});
-  return approved;
+  var list=approved;
+  /* SAME source as the dashboard tiles (lastActivity, absolute ms). Filtering by the localized lastLogin
+     string made the tile number and the click-filtered list disagree (owner report). */
+  if(_admStatFilter==='today')list=approved.filter(function(u){return _isTodayMs(parseInt(u.lastActivity)||0)});
+  else if(_admStatFilter==='month')list=approved.filter(function(u){return _isThisMonthMs(parseInt(u.lastActivity)||0)});
+  else if(_admStatFilter==='core')list=approved.filter(function(u){return(parseInt(u.stagesCount)||0)>=21});
+  else if(_admStatFilter==='rated')list=approved.filter(function(u){return parseInt(u.satisfaction)>0});
+  if(_admSearchQ){var q=_admSearchQ;list=list.filter(function(u){return String(u.userName||'').toLowerCase().indexOf(q)>=0||String(u.email||'').toLowerCase().indexOf(q)>=0})}
+  return list;
 }
 function admStatFilter(type){
-  _admStatFilter=(_admStatFilter===type)?null:type;
+  _admStatFilter=(_admStatFilter===type||type==='all')?null:type;
+  admApplyUserFilter(true);
+}
+function admApplyUserFilter(scrollToTable){
+  var inp=$('admUserSearch');if(inp)_admSearchQ=String(inp.value||'').trim().toLowerCase();
   var filtered=_getFilteredUsers();
   var wrap=$('admTableWrap');if(wrap)wrap.innerHTML=buildAdmTable(filtered);
-  var lbl=$('admFilterLbl');if(lbl)lbl.textContent=filtered.length+' משתמשים';
-  // Update active stat highlight
+  var txt=filtered.length+' משתמשים'+(_admSearchQ?' · חיפוש: "'+_admSearchQ+'"':'');
+  var l1=$('admFilterLbl');if(l1)l1.textContent=txt;
+  var l2=$('admFilterLbl2');if(l2)l2.textContent=txt;
+  var act=_admStatFilter||'all';
+  document.querySelectorAll('.adm-fchip').forEach(function(c){c.classList.toggle('on',c.dataset.f===act)});
   var boxes=document.querySelectorAll('.adm-stat');
   boxes.forEach(function(b){b.style.borderColor=''});
   if(_admStatFilter){
     var idx={all:0,today:1,month:2,core:5,rated:6}[_admStatFilter];
     if(idx!==undefined&&boxes[idx])boxes[idx].style.borderColor='var(--a)';
   }
+  if(scrollToTable===true){var c0=$('admTblCtrl');if(c0)try{c0.scrollIntoView({behavior:'smooth',block:'start'})}catch(e){}}
 }
 function renderAdminDashboard(){
-_admStatFilter=null;
+_admStatFilter=null;_admSearchQ='';
 const users=_admUsers;
 const total=users.length;
 // Pending approval = legacy 'pending' OR new 'pending_admin' (email already verified, waiting for admin)
@@ -8091,6 +8150,16 @@ h+='<span style="background:rgba(0,201,167,.15);color:#00C9A7;padding:2px 9px;bo
 h+='<span style="background:rgba(108,99,255,.18);color:#a89cff;padding:2px 9px;border-radius:8px;font-weight:700">🌐 '+_lEn+' English</span>';
 if(_lUnk>0)h+='<span style="background:rgba(255,193,7,.12);color:#FFC107;padding:2px 9px;border-radius:8px" title="עדיין לא דיווחו שפה — כנראה לא ריעננו מאז העדכון">❔ '+_lUnk+' טרם דווח</span>';
 h+='</div>';
+h+='<div class="adm-tbl-ctrl" id="admTblCtrl">'
+ +'<input id="admUserSearch" class="adm-search" type="search" placeholder="🔎 חיפוש משתמש לפי שם או מייל..." oninput="admApplyUserFilter()">'
+ +'<div class="adm-chip-row">'
+ +'<button class="adm-fchip on" data-f="all" onclick="admStatFilter(\'all\')">הכל</button>'
+ +'<button class="adm-fchip" data-f="today" onclick="admStatFilter(\'today\')">פעילים היום</button>'
+ +'<button class="adm-fchip" data-f="month" onclick="admStatFilter(\'month\')">החודש</button>'
+ +'<button class="adm-fchip" data-f="core" onclick="admStatFilter(\'core\')">סיימו ליבה</button>'
+ +'<button class="adm-fchip" data-f="rated" onclick="admStatFilter(\'rated\')">דירגו</button>'
+ +'<span id="admFilterLbl2" class="adm-fcount">'+approvedUsers.length+' משתמשים</span>'
+ +'</div></div>';
 h+='<div style="overflow-x:auto;border-radius:12px;border:1px solid rgba(108,99,255,.15)" id="admTableWrap">'+buildAdmTable(approvedUsers)+'</div>';
 
 // Notify emails section
@@ -8605,6 +8674,7 @@ function _fmtChipDate(ts){
 // Stages grouped by section
 h+='<div style="margin-top:1rem"><strong style="color:var(--p);font-size:.9rem">שלבים לפי נושא:</strong>';
 h+='<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin:.4rem 0 .6rem;font-size:.7rem;color:var(--t2)"><span><span class="adm-stage-chip" style="margin:0;padding:.1rem .4rem">✓</span> הושלם</span><span><span class="adm-stage-chip started" style="margin:0;padding:.1rem .4rem">◐</span> התחיל</span><span><span class="adm-stage-chip not-done" style="margin:0;padding:.1rem .4rem">○</span> לא נגע</span></div>';
+let _pjAdm=null;try{_pjAdm=JSON.parse(u.progressJSON||'')||null}catch(e){_pjAdm=null}
 const secOrder=['טרום הבסיס','בסיסי','ביניים','מתקדם','מתקדם מאוד','התמחות','בונוס מיוחד','בונוס - ספר'];
 const _secEmojis2={'טרום הבסיס':'🧭','בסיסי':'🎯','ביניים':'⚡','מתקדם':'🚀','מתקדם מאוד':'🔥','התמחות':'🎓','בונוס מיוחד':'🌟','בונוס - ספר':'📚'};
 secOrder.forEach(sec=>{
@@ -8629,7 +8699,14 @@ secOrder.forEach(sec=>{
       clickable=true;
     }
     const onClick=clickable?' onclick="showStageHistory('+s.id+')" style="cursor:pointer"':'';
-    const title=clickable?' title="לחץ להיסטוריה מלאה"':'';
+    let _bd='';
+    if(_pjAdm){try{
+      const _tt=(s.th&&s.th.length)||0;let _rd=0;for(let _i2=0;_i2<_tt;_i2++)if(_pjAdm.s&&_pjAdm.s[s.id+'_'+_i2])_rd++;
+      const _cv=!!(_pjAdm.t&&_pjAdm.t[s.id]&&_pjAdm.t[s.id].c);
+      const _an=(_pjAdm.q&&_pjAdm.q[s.id])?Object.keys(_pjAdm.q[s.id]).length:0;
+      if(_rd||_cv||_an||done||started)_bd='📚 קריאה '+_rd+'/'+_tt+' · 📋 קייס '+(_cv?'✓':'✗')+' · ❓ תשובות '+_an+'/'+((s.q&&s.q.length)||0);
+    }catch(e){_bd=''}}
+    const title=' title="'+(_bd?(_bd+(clickable?' · לחץ להיסטוריה':'')):(clickable?'לחץ להיסטוריה מלאה':''))+'"';
     const credited=adminCreditedStages.has(s.id);
     const credBadge=credited?'<span class="chip-meta" style="color:var(--g)" title="סומן כהושלם ע״י מנהל">🛡️ זוכה ע״י מנהל</span>':'';
     h+='<span class="adm-stage-chip'+cls+'"'+onClick+title+'>'+prefix+(s.ic||'')+' '+s.id+': '+esc(s.t)+extra+credBadge+'</span>';
