@@ -1475,6 +1475,34 @@ body.light .w5g-en{background:var(--cardh)}
 @keyframes w5g-hit{from{transform:scale(.94)}to{transform:none}}
 @media(prefers-reduced-motion:reduce){.w5g-cardx,.w5g-fl.ok,.w5g-fl.bad,.w5g-time.hot,.w5g-btn.hit{animation:none}.w5g-bar i,.w5g-combo,.w5g-card{transition:none}.w5g-card:hover{transform:none}.w5g-delta{display:none}}
 @media(prefers-reduced-motion:reduce){html .welcome .ws-box,html .welcome .ws-lang,html .ws-box,html .welcome .btn-go,html .btn-go,html #wsLang{animation:none!important;opacity:1!important;transform:none!important}}
+/* ===== W5: token economy (אסימונים) — header chip + Today-hub shop. Rendered only when the economy is ON ===== */
+.w5eco-chip{font-family:inherit;color:inherit;line-height:inherit;margin:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.w5eco-chip:hover{border-color:var(--g)}
+.w5eco-chip .w5eco-coin:not(.w5i-bd){display:inline-block}
+.w5eco-coin-svg{color:var(--g)}.w5eco-coin-svg .w5i{fill:currentColor;fill-opacity:.22}
+.w5eco-chip.w5eco-bump{animation:w5ecoBump .65s cubic-bezier(.22,1,.36,1)}
+.w5eco-chip.w5eco-bump .w5eco-coin{animation:w5ecoSpin .65s cubic-bezier(.22,1,.36,1)}
+@keyframes w5ecoBump{0%{transform:scale(1)}30%{transform:scale(1.13)}100%{transform:scale(1)}}
+@keyframes w5ecoSpin{0%{transform:rotateY(0) translateY(0)}45%{transform:rotateY(180deg) translateY(-2px)}100%{transform:rotateY(360deg) translateY(0)}}
+#w5ecoShop{margin-top:1.1rem;padding-top:1rem;border-top:1px solid var(--line)}
+.w5eco-sh-h{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-bottom:.35rem}
+.w5eco-sh-h h3{font-size:.95rem;margin:0;color:var(--t1)}
+.w5eco-sh-bal{font-size:.78rem;color:var(--t2);background:var(--cardh);border:1px solid var(--line);border-radius:12px;padding:.22rem .65rem;white-space:nowrap}
+.w5eco-sh-bal b{color:var(--g);font-variant-numeric:tabular-nums;unicode-bidi:plaintext}
+.w5eco-sh-sub{font-size:.74rem;color:var(--t2);line-height:1.5;margin-bottom:.7rem}
+.w5eco-item{display:flex;align-items:center;gap:.7rem;background:var(--cardh);border:1px solid var(--line);border-radius:12px;padding:.6rem .8rem;margin-bottom:.5rem;transition:border-color .2s}
+.w5eco-ic{font-size:1.35rem;line-height:1;flex-shrink:0}
+.w5eco-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:.1rem}
+.w5eco-nm{font-size:.85rem;font-weight:700;color:var(--t1)}
+.w5eco-ds{font-size:.72rem;color:var(--t2);line-height:1.45}
+.w5eco-buy{flex-shrink:0;font-family:inherit;font-size:.8rem;font-weight:700;border-radius:10px;padding:.42rem .75rem;min-width:66px;cursor:pointer;border:1px solid transparent;background:var(--gr1);color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums;transition:opacity .2s,background .2s}
+.w5eco-buy.w5eco-short{background:transparent;color:var(--t1);border-color:var(--line)}
+.w5eco-buy:disabled{cursor:default;background:transparent;color:var(--t2);border-color:var(--line);opacity:.8}
+.w5eco-buy.w5eco-pend{opacity:.6}
+.w5eco-item.w5eco-lock .w5eco-ic{filter:saturate(.6)}
+.w5eco-item.w5eco-got{border-color:var(--g);animation:w5ecoGot .9s ease}
+@keyframes w5ecoGot{0%{transform:scale(1)}35%{transform:scale(1.025)}100%{transform:scale(1)}}
+@media(max-width:430px){.w5eco-item{padding:.55rem .65rem;gap:.55rem}.w5eco-buy{min-width:58px;padding:.4rem .6rem;font-size:.76rem}.w5eco-sh-h h3{font-size:.9rem}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.6.1/chart.umd.min.js" defer></script>
@@ -5806,7 +5834,7 @@ function pfVideo(stageId,topicIdx){
 // STAGE_INTRO['<stageId>_<lang>'] = video URL. Self-hosted .mp4 (deploy/av/intro/...) renders an
 // inline <video>; Drive/YouTube links render an embed iframe. The card sits at the TOP of the
 // stage's theory tab — watch first, then read. Monitored as video/intro_play.
-var STAGE_INTRO={'0_en':'av/intro/stage-00-en.mp4','0_he':'av/intro/stage-00-he.mp4','1_en':'av/intro/stage-01-en.mp4','1_he':'av/intro/stage-01-he.mp4','2_en':'av/intro/stage-02-en.mp4','2_he':'av/intro/stage-02-he.mp4','3_en':'av/intro/stage-03-en.mp4','3_he':'av/intro/stage-03-he.mp4','4_en':'av/intro/stage-04-en.mp4','4_he':'av/intro/stage-04-he.mp4','5_en':'av/intro/stage-05-en.mp4','5_he':'av/intro/stage-05-he.mp4','6_en':'av/intro/stage-06-en.mp4','6_he':'av/intro/stage-06-he.mp4','7_en':'av/intro/stage-07-en.mp4','7_he':'av/intro/stage-07-he.mp4','8_en':'av/intro/stage-08-en.mp4','8_he':'av/intro/stage-08-he.mp4','9_en':'av/intro/stage-09-en.mp4','9_he':'av/intro/stage-09-he.mp4','10_en':'av/intro/stage-10-en.mp4','10_he':'av/intro/stage-10-he.mp4','11_en':'av/intro/stage-11-en.mp4','11_he':'av/intro/stage-11-he.mp4','12_en':'av/intro/stage-12-en.mp4','12_he':'av/intro/stage-12-he.mp4','13_en':'av/intro/stage-13-en.mp4','13_he':'av/intro/stage-13-he.mp4','14_en':'av/intro/stage-14-en.mp4','14_he':'av/intro/stage-14-he.mp4','15_en':'av/intro/stage-15-en.mp4','15_he':'av/intro/stage-15-he.mp4','16_en':'av/intro/stage-16-en.mp4','16_he':'av/intro/stage-16-he.mp4','17_en':'av/intro/stage-17-en.mp4','17_he':'av/intro/stage-17-he.mp4','18_en':'av/intro/stage-18-en.mp4','18_he':'av/intro/stage-18-he.mp4','19_en':'av/intro/stage-19-en.mp4','19_he':'av/intro/stage-19-he.mp4','20_en':'av/intro/stage-20-en.mp4','20_he':'av/intro/stage-20-he.mp4','21_en':'av/intro/stage-21-en.mp4','21_he':'av/intro/stage-21-he.mp4','22_en':'av/intro/stage-22-en.mp4','22_he':'av/intro/stage-22-he.mp4','23_en':'av/intro/stage-23-en.mp4','23_he':'av/intro/stage-23-he.mp4','24_en':'av/intro/stage-24-en.mp4','24_he':'av/intro/stage-24-he.mp4','25_en':'av/intro/stage-25-en.mp4','25_he':'av/intro/stage-25-he.mp4'};
+var STAGE_INTRO={'0_en':'av/intro/stage-00-en.mp4','0_he':'av/intro/stage-00-he.mp4','1_en':'av/intro/stage-01-en.mp4','1_he':'av/intro/stage-01-he.mp4','2_en':'av/intro/stage-02-en.mp4','2_he':'av/intro/stage-02-he.mp4','3_en':'av/intro/stage-03-en.mp4','3_he':'av/intro/stage-03-he.mp4','4_en':'av/intro/stage-04-en.mp4','4_he':'av/intro/stage-04-he.mp4','5_en':'av/intro/stage-05-en.mp4','5_he':'av/intro/stage-05-he.mp4','6_en':'av/intro/stage-06-en.mp4','6_he':'av/intro/stage-06-he.mp4','7_en':'av/intro/stage-07-en.mp4','7_he':'av/intro/stage-07-he.mp4','8_en':'av/intro/stage-08-en.mp4','8_he':'av/intro/stage-08-he.mp4','9_en':'av/intro/stage-09-en.mp4','9_he':'av/intro/stage-09-he.mp4','10_en':'av/intro/stage-10-en.mp4','10_he':'av/intro/stage-10-he.mp4','11_en':'av/intro/stage-11-en.mp4','11_he':'av/intro/stage-11-he.mp4','12_en':'av/intro/stage-12-en.mp4','12_he':'av/intro/stage-12-he.mp4','13_en':'av/intro/stage-13-en.mp4','13_he':'av/intro/stage-13-he.mp4','14_en':'av/intro/stage-14-en.mp4','14_he':'av/intro/stage-14-he.mp4','15_en':'av/intro/stage-15-en.mp4','15_he':'av/intro/stage-15-he.mp4','16_en':'av/intro/stage-16-en.mp4','16_he':'av/intro/stage-16-he.mp4','17_en':'av/intro/stage-17-en.mp4','17_he':'av/intro/stage-17-he.mp4','18_en':'av/intro/stage-18-en.mp4','18_he':'av/intro/stage-18-he.mp4','19_en':'av/intro/stage-19-en.mp4','19_he':'av/intro/stage-19-he.mp4','20_en':'av/intro/stage-20-en.mp4','20_he':'av/intro/stage-20-he.mp4','21_en':'av/intro/stage-21-en.mp4','21_he':'av/intro/stage-21-he.mp4','22_en':'av/intro/stage-22-en.mp4','22_he':'av/intro/stage-22-he.mp4','23_en':'av/intro/stage-23-en.mp4','23_he':'av/intro/stage-23-he.mp4','24_en':'av/intro/stage-24-en.mp4','24_he':'av/intro/stage-24-he.mp4','25_en':'av/intro/stage-25-en.mp4','100_he':'av/intro/stage-100-he.mp4','100_en':'av/intro/stage-100-en.mp4','25_he':'av/intro/stage-25-he.mp4'};
 function enhanceIntroVideo(){
   var tc=document.getElementById('tc');if(!tc)return;
   if(tc.querySelector('.stage-intro-card'))return;
@@ -8106,7 +8134,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.9.2';
+const APP_VERSION='1.9.3';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -11636,6 +11664,241 @@ try{
 /* ---- wrappers (after the originals; the originals are never re-declared) ---- */
 if(typeof showTodayHub==='function'){const _w5gOrigHub=showTodayHub;showTodayHub=function(){try{_w5gStop()}catch(e){}var r=_w5gOrigHub.apply(this,arguments);try{_w5gPicker()}catch(e){}return r}}
 if(typeof _tgEnd==='function'){const _w5gOrigTgEnd=_tgEnd;_tgEnd=function(){var r=_w5gOrigTgEnd.apply(this,arguments);try{_w5gMark('tg')}catch(e){}try{_w5gTgBack()}catch(e){}return r}}
+/* ===== W5: token economy — "אסימונים" (נפל האסימון) · CLIENT side =====
+   Source of truth = the server ledger (getEconomy / economyEarn / economySpend). The client never invents or
+   adjusts a balance: it only shows the number the server last returned (newest request wins).
+   Capability-gated: ON only when getEconomy answers with a numeric balance. Localhost (DB_URL empty), a backend
+   without these actions ('Unknown action'), a malformed reply or a network error ⇒ OFF ⇒ nothing new renders.
+   Earn = fire-and-forget POST with a per-event idempotency key in meta, recorded per user in localStorage
+   'pm_eco_sent' BEFORE sending, so a reload or a re-fired event never claims twice. No retries on purpose:
+   the ledger appends blindly, so a retry after an ambiguous network error could double-credit. ===== */
+window._w5ecoOn=false;
+var _w5eco={user:'',probing:false,probed:'',bal:null,pend:{},queue:[],seq:0,applied:0,refT:0,bt:0,seen:{}};
+var _W5ECO_FREEZE_MAX=2;
+var _W5ECO_ITEMS=[
+  {id:'freeze',ic:'🧊',cost:15,he:'הקפאת רצף',en:'Streak freeze',dhe:'שומרת על הרצף ביום שמפספסים',den:'Keeps your streak alive on a day you miss'},
+  {id:'seal',ic:'🎨',cost:300,he:'חותם זהב לתעודה',en:'Gold certificate seal',dhe:'חותם זהב על תעודת הסיום שלכם',den:'A gold seal stamped on your completion certificate'},
+  {id:'ticket',ic:'🎟️',cost:10,he:'פרס נוסף במשחק היומי',en:'Extra daily-game reward',dhe:'סבב נוסף היום שמזכה בנקודות',den:'One more rewarded play of the daily game today'}
+];
+var _W5ECO_WHY={stage:['השלמת שלב','Stage completed'],quest:['משימה יומית הושלמה','Daily quest done'],game:['המשחק היומי','Daily game'],perfect:['ציון מושלם במבחן','Perfect quiz score']};
+var _W5ECO_DONE={
+  freeze:['הקפאת רצף נוספה!','הרצף שלכם מוגן','Streak freeze added!','Your streak is protected'],
+  seal:['חותם הזהב שלכם!','יוטבע על תעודת הסיום','Your gold seal!','It will be stamped on your certificate'],
+  ticket:['כרטיס בונוס פעיל!','הסבב הבא היום יזכה בנקודות','Bonus ticket active!','Your next play today earns points']
+};
+/* monitoring (standing directive: every new control is tracked + shows in the admin feature analytics) */
+try{if(TRACKED_FEATURES.indexOf('economy')<0)TRACKED_FEATURES.push('economy');if(!FEAT_META.economy)FEAT_META.economy={ic:'🪙',name:'אסימונים (חנות)',col:'#E8C45C'};if(!FEAT_ACT_NAMES.buy)FEAT_ACT_NAMES.buy='רכישה';if(!FEAT_ACT_NAMES.buy_denied)FEAT_ACT_NAMES.buy_denied='אין מספיק אסימונים';if(!FEAT_ACT_NAMES.buy_fail)FEAT_ACT_NAMES.buy_fail='רכישה נכשלה'}catch(e){}
+function _w5ecoEn(){try{return _enLang()}catch(e){return false}}
+function _w5ecoUser(){return (G&&G.userName&&G.userName!=='אנונימי')?String(G.userName):''}
+function _w5ecoTok(){var t=G.sessionToken||'';if(!t){try{t=localStorage.getItem('pm_session_token_'+G.userName)||''}catch(e){}}return t}
+function _w5ecoHasBal(d){return !!(d&&typeof d.balance==='number'&&isFinite(d.balance))}
+function _w5ecoPost(body){var my=++_w5eco.seq;return fetch(DB_URL,{method:'POST',body:JSON.stringify(body),headers:{'Content-Type':'text/plain'}}).then(function(r){return r.json()}).then(function(d){if(d&&typeof d==='object')d._w5seq=my;return d})}
+/* show the server's balance; a reply to an OLDER request never overwrites a newer one */
+function _w5ecoApply(d){if(!_w5ecoHasBal(d))return;var my=d._w5seq||0;if(my&&my<_w5eco.applied)return;if(my)_w5eco.applied=my;_w5ecoSetBal(d.balance)}
+/* claimed-event ledger (per user). Returns false when the key was already claimed or storage is unusable ⇒ caller must NOT send */
+function _w5ecoMark(u,key){
+  try{
+    var a=null;try{a=JSON.parse(localStorage.getItem('pm_eco_sent')||'{}')}catch(e){a=null}
+    if(!a||typeof a!=='object'||Array.isArray(a))a={};
+    var m=(a[u]&&typeof a[u]==='object')?a[u]:{};
+    if(m[key])return false;
+    m[key]=Date.now();
+    var cut=Date.now()-30*864e5;Object.keys(m).forEach(function(k){if(/^(quest|game):/.test(k)&&m[k]<cut)delete m[k]});/* dated keys can never recur; stage/perfect keys are permanent */
+    a[u]=m;localStorage.setItem('pm_eco_sent',JSON.stringify(a));
+    return true;
+  }catch(e){return false}
+}
+function _w5ecoEarn(amount,kind,key){
+  try{
+    var u=_w5ecoUser();if(!u||!key||!DB_URL)return;
+    if(!window._w5ecoOn){if(_w5eco.probing&&_w5eco.queue.length<20)_w5eco.queue.push([amount,kind,key,u]);return}
+    if(_w5eco.user!==u||_w5eco.seen[u+'|'+key])return;
+    _w5eco.seen[u+'|'+key]=1;/* in-memory fast path; the durable guard is pm_eco_sent */
+    if(!_w5ecoMark(u,key))return;
+    _w5ecoPost({action:'economyEarn',userName:u,sessionToken:_w5ecoTok(),amount:amount,event:'earn_'+kind,meta:key,appVersion:APP_VERSION}).then(function(d){
+      if(!window._w5ecoOn||u!==_w5ecoUser())return;
+      _w5ecoApply(d);
+      var dl=(d&&typeof d.delta==='number')?d.delta:0;
+      if(d&&d.success===true&&!d.denied&&dl>0){var w=_W5ECO_WHY[kind]||['',''],en=_w5ecoEn();showAchievement('🪙',(en?'Token earned! +':'נפל האסימון! +')+dl,en?w[1]:w[0])}
+    }).catch(function(){});
+  }catch(e){}
+}
+/* capability probe — once per user per page session */
+function _w5ecoProbe(){
+  var u=_w5ecoUser();if(!u||!DB_URL||_w5eco.probing||_w5eco.probed===u)return;
+  _w5eco.probing=true;
+  var fin=function(){_w5eco.probing=false;_w5eco.probed=u;var q=_w5eco.queue;_w5eco.queue=[];return q};
+  _w5ecoPost({action:'getEconomy',userName:u}).then(function(d){
+    var q=fin();
+    if(u!==_w5ecoUser()){_w5ecoProbe();return}
+    if(!_w5ecoHasBal(d))return;/* not deployed / Unknown action / malformed ⇒ stay OFF, render nothing */
+    _w5eco.user=u;window._w5ecoOn=true;_w5ecoApply(d);
+    try{if($('todayHub'))_w5ecoShop()}catch(e){}
+    q.forEach(function(it){if(it[3]===u)_w5ecoEarn(it[0],it[1],it[2])});
+  }).catch(function(){fin()});
+}
+function _w5ecoOff(){window._w5ecoOn=false;_w5eco.user='';_w5eco.bal=null;_w5eco.pend={};_w5eco.queue=[];['w5ecoChip','w5ecoShop'].forEach(function(id){var e=$(id);if(e&&e.parentNode)e.parentNode.removeChild(e)})}
+function _w5ecoSync(){var u=_w5ecoUser();if(window._w5ecoOn&&_w5eco.user!==u)_w5ecoOff();if(window._w5ecoOn)_w5ecoChip();else _w5ecoProbe()}
+function _w5ecoRefresh(force){
+  var u=_w5ecoUser();if(!window._w5ecoOn||_w5eco.user!==u)return;
+  var now=Date.now();if(!force&&now-_w5eco.refT<30000)return;_w5eco.refT=now;
+  _w5ecoPost({action:'getEconomy',userName:u}).then(function(d){if(window._w5ecoOn&&u===_w5ecoUser())_w5ecoApply(d)}).catch(function(){});
+}
+function _w5ecoSetBal(n){
+  var prev=_w5eco.bal;_w5eco.bal=n;
+  var c=_w5ecoChip();
+  if(c&&prev!==null&&prev!==n){c.classList.remove('w5eco-bump');void c.offsetWidth;c.classList.add('w5eco-bump');clearTimeout(_w5eco.bt);_w5eco.bt=setTimeout(function(){c.classList.remove('w5eco-bump')},700)}
+  if(prev!==n&&$('w5ecoShop'))_w5ecoShop();
+}
+/* header chip — idempotent: one node, always directly after the ⭐ points badge */
+function _w5ecoChip(){
+  if(!window._w5ecoOn||_w5eco.bal===null)return null;
+  var ts=$('ts'),badge=(ts&&ts.closest)?ts.closest('.badge'):null;if(!badge||!badge.parentNode)return null;
+  var c=$('w5ecoChip');
+  if(!c){
+    c=document.createElement('button');c.type='button';c.id='w5ecoChip';c.className='badge w5eco-chip';
+    /* match the header's icon language: line-SVG badges when the header is iconized (.w5i), the 🪙 emoji otherwise */
+    var ic=badge.querySelector('svg.w5i')?'<span class="w5i-bd w5eco-coin w5eco-coin-svg" aria-hidden="true"><svg class="w5i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></svg></span>':'<span class="w5eco-coin" aria-hidden="true">🪙</span>';
+    c.innerHTML=ic+'<span class="v" id="w5ecoBal"></span>';c.onclick=_w5ecoOpenShop;
+  }
+  if(badge.nextElementSibling!==c)badge.parentNode.insertBefore(c,badge.nextSibling);
+  var v=$('w5ecoBal'),t=String(_w5eco.bal);if(v&&v.textContent!==t)v.textContent=t;
+  var tt=_w5ecoEn()?('Tokens: '+t+' · open the token shop'):('אסימונים: '+t+' · לחנות האסימונים');
+  if(c.title!==tt){c.title=tt;c.setAttribute('aria-label',tt)}
+  return c;
+}
+function _w5ecoOpenShop(){try{trackEvent('economy','open','chip')}catch(e){}try{showTodayHub();var s=$('w5ecoShop');if(s&&s.scrollIntoView)s.scrollIntoView({block:'nearest'})}catch(e){}}
+function _w5ecoTicket(){var t=G._w5ecoTicket;return (t&&typeof t==='object'&&t.u===G.userName&&t.d===_dayKey())?t:null}
+function _w5ecoLock(id){
+  var en=_w5ecoEn();
+  if(id==='freeze')return (G.streakFreezes||0)>=_W5ECO_FREEZE_MAX?(en?'Max 2 held':'מקסימום 2'):'';
+  if(id==='seal')return G.certFlair?(en?'Owned ✓':'ברשותכם ✓'):'';
+  if(id==='ticket'){var tk=_w5ecoTicket();return tk?(tk.used?(en?'Used today':'נוצל היום'):(en?'Active today':'פעיל היום')):''}
+  return '';
+}
+/* shop section — appended to the Today hub box (never touches #tdGame) */
+function _w5ecoShop(){
+  if(!window._w5ecoOn)return;
+  var box=document.querySelector('#todayHub .hub-box');if(!box)return;
+  var en=_w5ecoEn(),busy=Object.keys(_w5eco.pend).length>0,bal=_w5eco.bal;
+  var sec=$('w5ecoShop');
+  if(!sec){sec=document.createElement('div');sec.id='w5ecoShop';sec.onclick=_w5ecoShopClick}
+  if(sec.parentNode!==box)box.appendChild(sec);
+  var dir=en?'ltr':'rtl';if(sec.getAttribute('dir')!==dir)sec.setAttribute('dir',dir);/* own dir: the hub's CSS pins direction:rtl even in EN */
+  var h='<div class="w5eco-sh-h"><h3>🪙 '+(en?'Token shop':'חנות האסימונים')+'</h3><span class="w5eco-sh-bal">'+(en?'Balance':'יתרה')+' <b id="w5ecoShopBal">'+esc(String(bal))+'</b></span></div>'
+   +'<div class="w5eco-sh-sub">'+(en?'Earn tokens by completing stages, daily quests, the daily game and perfect quizzes — up to 25 a day.':'אוספים אסימונים על השלמת שלבים, משימות יומיות, המשחק היומי וציון מושלם — עד 25 ביום.')+'</div>';
+  _W5ECO_ITEMS.forEach(function(it){
+    var lock=_w5ecoLock(it.id),pend=!!_w5eco.pend[it.id],short=!lock&&typeof bal==='number'&&bal<it.cost;
+    var nm=en?it.en:it.he,ds=en?it.den:it.dhe;
+    if(it.id==='freeze')ds+=(en?' · you hold ':' · ברשותכם ')+(G.streakFreezes||0)+'/'+_W5ECO_FREEZE_MAX;
+    var lbl=pend?'…':(lock||('🪙 '+it.cost));
+    var aria=nm+' — '+(lock||((en?'buy for ':'קנייה ב-')+it.cost+(en?' tokens':' אסימונים')));
+    h+='<div class="w5eco-item'+(lock?' w5eco-lock':'')+'" data-w5eco-it="'+it.id+'"><span class="w5eco-ic" aria-hidden="true">'+it.ic+'</span><span class="w5eco-txt"><span class="w5eco-nm">'+nm+'</span><span class="w5eco-ds">'+ds+'</span></span>'
+      +'<button type="button" class="w5eco-buy'+(short?' w5eco-short':'')+(pend?' w5eco-pend':'')+'" data-w5eco-buy="'+it.id+'" aria-label="'+esc(aria)+'"'+((lock||busy)?' disabled':'')+'>'+lbl+'</button></div>';
+  });
+  sec.innerHTML=h;
+}
+function _w5ecoShopClick(e){try{var b=(e.target&&e.target.closest)?e.target.closest('[data-w5eco-buy]'):null;if(b&&!b.disabled)_w5ecoBuy(b.getAttribute('data-w5eco-buy'))}catch(x){}}
+function _w5ecoGrant(id){
+  if(id==='freeze'){G.streakFreezes=(G.streakFreezes||0)+1;try{document.querySelectorAll('#todayHub .hub-stat').forEach(function(st){if(/🧊|freeze|הקפא/.test(st.textContent)){var b=st.querySelector('b');if(b)b.textContent=String(G.streakFreezes)}})}catch(e){}}
+  else if(id==='seal'){G.certFlair=true}
+  else if(id==='ticket'){G._w5ecoTicket={u:G.userName,d:_dayKey(),used:0}}
+  try{sv()}catch(e){}
+}
+function _w5ecoBuy(id){
+  var it=null;_W5ECO_ITEMS.forEach(function(x){if(x.id===id)it=x});
+  var u=_w5ecoUser();if(!it||!u||!window._w5ecoOn||_w5eco.user!==u)return;
+  if(Object.keys(_w5eco.pend).length||_w5ecoLock(id))return;
+  _w5eco.pend[id]=1;_w5ecoShop();
+  var en=_w5ecoEn();
+  var settle=function(){delete _w5eco.pend[id];try{_w5ecoShop()}catch(e){}};
+  _w5ecoPost({action:'economySpend',userName:u,sessionToken:_w5ecoTok(),amount:it.cost,event:'buy_'+id,meta:'buy:'+id+':'+_dayKey()+':'+Date.now().toString(36),appVersion:APP_VERSION}).then(function(d){
+    if(!window._w5ecoOn||u!==_w5ecoUser()){delete _w5eco.pend[id];return}
+    _w5ecoApply(d);
+    if(d&&d.success===true&&!d.denied){
+      _w5ecoGrant(id);settle();
+      try{var row=document.querySelector('#w5ecoShop [data-w5eco-it="'+id+'"]');if(row){row.classList.add('w5eco-got');setTimeout(function(){row.classList.remove('w5eco-got')},950)}}catch(e){}
+      try{playSfx('bonus')}catch(e){}
+      var m=_W5ECO_DONE[id];showAchievement(it.ic,en?m[2]:m[0],(en?m[3]:m[1])+' · '+(en?'balance ':'יתרה ')+_w5eco.bal);
+      try{trackEvent('economy','buy',id)}catch(e){}
+    }else if(d&&d.denied==='insufficient'){
+      settle();
+      showAchievement('🪙',en?'Not enough tokens':'אין מספיק אסימונים',(en?'Your balance: ':'היתרה שלכם: ')+(_w5ecoHasBal(d)?d.balance:_w5eco.bal)+(en?' · needed: ':' · נדרשים: ')+it.cost);
+      try{trackEvent('economy','buy_denied',id)}catch(e){}
+    }else{
+      settle();
+      showAchievement('⚠️',en?'Purchase not completed':'הרכישה לא הושלמה',en?'Nothing was charged — try again in a moment':'לא ירדו אסימונים — נסו שוב בעוד רגע');
+      try{trackEvent('economy','buy_fail',id+':'+String((d&&(d.error||d.denied))||'?').slice(0,30))}catch(e){}
+    }
+  }).catch(function(){
+    settle();
+    showAchievement('📴',en?'Could not confirm the purchase':'לא הצלחנו לאשר את הרכישה',en?'Check your connection — balance refreshed':'בדקו את החיבור — היתרה רועננה');
+    _w5ecoRefresh(true);
+    try{trackEvent('economy','buy_fail',id+':network')}catch(e){}
+  });
+}
+/* the attempt that just finished is flawless: every answer right, no 50/50 or hint (speed bonus allowed) */
+function _w5ecoFlawless(sid,s){
+  var n=(s&&s.q&&s.q.length)||0,a=G.qa&&G.qa[sid];if(!n||!a||Object.keys(a).length!==n)return false;
+  for(var i=0;i<n;i++){if(a[i]!==s.q[i].c)return false}
+  var pu=(G._pu&&G._pu[sid])||{};if((pu.f&&Object.keys(pu.f).length)||(pu.h&&Object.keys(pu.h).length))return false;
+  return (parseInt(G.sc&&G.sc[sid],10)||0)>=n*10;
+}
+/* certificate seal: stamp the bought seal onto the certificate document after generateCert renders it */
+function _w5ecoSeal(doc){
+  if(!doc||doc.getElementById('w5ecoSeal'))return;var c=doc.querySelector('.cert');if(!c)return;
+  var el=doc.createElement('div');el.id='w5ecoSeal';
+  el.setAttribute('style','position:absolute;top:26px;left:26px;width:92px;height:92px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:radial-gradient(circle at 32% 30%,#FFF4C2 0%,#E8C45C 45%,#B08A2E 100%);box-shadow:0 0 0 4px #fff,0 0 0 6px #C9A13E,0 8px 22px rgba(176,138,46,.45);color:#5A4210;font-weight:900;text-align:center;line-height:1.05;transform:rotate(-12deg);z-index:2;font-family:Heebo,sans-serif');
+  el.innerHTML='<div style="font-size:1.6rem">★</div><div style="font-size:.6rem;letter-spacing:.08em">GOLD SEAL</div><div style="font-size:.62rem">חותם זהב</div>';
+  c.appendChild(el);
+}
+/* ---- wrappers (all defined after the originals; each is a pass-through when the economy is OFF) ---- */
+const _w5ecoOrigMp=mp;mp=function(){var r=_w5ecoOrigMp.apply(this,arguments);try{_w5ecoSync()}catch(e){}return r};
+const _w5ecoOrigUh=uh;uh=function(){var r=_w5ecoOrigUh.apply(this,arguments);try{if(window._w5ecoOn)_w5ecoChip()}catch(e){}return r};
+const _w5ecoOrigHub=showTodayHub;showTodayHub=function(){var r=_w5ecoOrigHub.apply(this,arguments);try{if(window._w5ecoOn){_w5ecoShop();_w5ecoRefresh(false)}}catch(e){}return r};
+const _w5ecoOrigTcs=tryCompleteStage;tryCompleteStage=function(sid){var was=!!(G.done&&G.done.has(sid));var r=_w5ecoOrigTcs.apply(this,arguments);try{if(!was&&G.done&&G.done.has(sid))_w5ecoEarn(5,'stage','stage:'+sid)}catch(e){}return r};
+/* daily game: the first COUNTED play of the day (any daily game — they share _todayState().game) earns +2 once */
+function _w5ecoGameCheck(){try{if(!window._w5ecoOn)return;var t=_todayState();if((t.game||0)>0)_w5ecoEarn(2,'game','game:'+t.k)}catch(e){}}
+/* both daily games bump _todayState().game and then call _questMaybeReward() — one hook covers quests + the game earn */
+const _w5ecoOrigQmr=_questMaybeReward;_questMaybeReward=function(){var b={};try{Object.keys(G._qRewarded||{}).forEach(function(k){b[k]=1})}catch(e){}var r=_w5ecoOrigQmr.apply(this,arguments);try{Object.keys(G._qRewarded||{}).forEach(function(k){if(!b[k])_w5ecoEarn(3,'quest','quest:'+k)})}catch(e){}_w5ecoGameCheck();return r};
+const _w5ecoOrigSa=sa;sa=function(sid,qi,sel){
+  var s0=null,n=0,pre=0,was=true;
+  try{s0=S.find(function(x){return x.id===sid});n=(s0&&s0.q&&s0.q.length)||0;pre=(G.qa&&G.qa[sid])?Object.keys(G.qa[sid]).length:0;was=(parseInt(G.sc&&G.sc[sid],10)||0)>=n*10}catch(e){}
+  var r=_w5ecoOrigSa.apply(this,arguments);
+  try{if(n&&!was&&pre<n&&_w5ecoFlawless(sid,s0))_w5ecoEarn(3,'perfect','perfect:'+sid)}catch(e){}
+  return r;
+};
+/* ticket = one more rewarded play today: the game's end sees a "first play" and pays + announces its OWN points
+   reward itself (#tdGame markup is never touched here). Consumed only if that end really counted the play. */
+function _w5ecoGameWrap(orig){return function(){
+  var t=null,g0=0,tk=null;
+  try{t=_todayState();g0=t.game||0;tk=g0>0?_w5ecoTicket():null;if(tk&&tk.used)tk=null;if(tk)t.game=0}catch(e){}
+  var r;
+  try{r=orig.apply(this,arguments)}
+  finally{try{if(tk&&t){var counted=(t.game||0)>0;t.game=g0+(counted?1:0);if(counted)tk.used=1;sv();try{if($('w5ecoShop'))_w5ecoShop()}catch(e){}}}catch(e){}}
+  _w5ecoGameCheck();
+  return r;
+}}
+_tgEnd=_w5ecoGameWrap(_tgEnd);
+/* the parallel "True or False" daily game (wave 5) shares the same daily reward — cover it when present */
+if(typeof _w5gEnd==='function')_w5gEnd=_w5ecoGameWrap(_w5gEnd);
+/* purchased freezes survive the weekly refresh (the refresh hard-resets the count to 1; >1 is only reachable by buying) */
+const _w5ecoOrigUpdStreak=updateStreak;updateStreak=function(){
+  var f0=G.streakFreezes||0,wk0=G.lastFreezeWeek;
+  var r=_w5ecoOrigUpdStreak.apply(this,arguments);
+  try{if(f0>1&&G.lastFreezeWeek!==wk0){var used=Math.max(0,1-(G.streakFreezes||0));G.streakFreezes=Math.max(0,Math.min(_W5ECO_FREEZE_MAX,f0)-used);sv()}}catch(e){}
+  return r;
+};
+const _w5ecoOrigCert=generateCert;generateCert=function(){
+  if(!G.certFlair)return _w5ecoOrigCert.apply(this,arguments);
+  var ow=window.open,win=null,r;
+  window.open=function(){win=ow.apply(window,arguments);return win};
+  try{r=_w5ecoOrigCert.apply(this,arguments)}finally{window.open=ow}
+  try{if(win&&win.document)_w5ecoSeal(win.document)}catch(e){}
+  try{if(!win){var fr=document.querySelector('#certOverlay iframe');if(fr)fr.addEventListener('load',function(){try{_w5ecoSeal(fr.contentDocument)}catch(e){}})}}catch(e){}
+  return r;
+};
+/* ===== /W5 token economy ===== */
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
