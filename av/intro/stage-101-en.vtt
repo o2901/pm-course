@@ -1,0 +1,412 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:30.260
+Alright, let's jump right into this explainer for your next core stage. We're going to unpack the absolute ultimate skill that makes or breaks a product manager. If you've ever felt like you're doing literally everything right on paper, but you still just can't get your team to move in the same direction, well, you're definitely in the right place. Today, we're talking about influence without authority. This breakdown completely shatters the myth that logic and perfect product specs win the day. It reveals a pretty shocking finding from the early 20th century about what actually
+
+2
+00:00:30.260 --> 00:00:36.020
+drives professional success. Even in highly technical engineering fields, a mere 15% of
+
+3
+00:00:36.020 --> 00:00:41.980
+financial success was attributed to technical knowledge. A massive 85% came down to skill in
+
+4
+00:00:41.980 --> 00:00:46.340
+handling people. I mean, we often think that if our data is flawless, people will just naturally
+
+5
+00:00:46.340 --> 00:00:51.840
+fall in line. But human beings don't run purely on logic, right? They run on emotion. If you try
+
+6
+00:00:51.840 --> 00:00:56.020
+to persuade your teen using only cold, hard facts, you've probably lost the battle before the
+
+7
+00:00:56.020 --> 00:01:01.150
+discussion even starts. So let's look at the product manager's dilemma. Brilliant specs,
+
+8
+00:01:01.510 --> 00:01:06.830
+stalled teams. As a PM, you're sitting in what might just be the most political role in the
+
+9
+00:01:06.830 --> 00:01:11.710
+entire building. You carry massive responsibility for the success of the product, but you have
+
+10
+00:01:11.710 --> 00:01:16.210
+absolute zero command authority over the developers, the designers, or the stakeholders
+
+11
+00:01:16.210 --> 00:01:21.860
+you rely on every single day. Take our running case study for this stage of the course. Meet
+
+12
+00:01:21.860 --> 00:01:27.260
+Mahal, a product manager at a company called Velox. On paper, she's doing everything by the
+
+13
+00:01:27.260 --> 00:01:33.620
+book. Excellent analytical skills? Check. Incredibly tidy documentation? Check. Solid data? You bet.
+
+14
+00:01:34.180 --> 00:01:38.680
+But despite all that, her team is dragging their feet, and she's getting some pretty stinging peer
+
+15
+00:01:38.680 --> 00:01:45.160
+feedback, saying she's, quite simply, hard to work with. It hit her hard. But Mahal had a crucial
+
+16
+00:01:45.160 --> 00:01:51.570
+realization. Her massive gap wasn't analytical. It was human. To figure this out, Mahal turned to
+
+17
+00:01:51.570 --> 00:01:57.650
+a nearly century-old guide by a public speaking instructor named Dale Carnegie. Now, you might be
+
+18
+00:01:57.650 --> 00:02:03.110
+wondering, why does such an old book open a modern product course? Well, because without even knowing
+
+19
+00:02:03.110 --> 00:02:07.930
+it, Carnegie wrote the original playbook for leading without authority. For this course,
+
+20
+00:02:08.050 --> 00:02:13.070
+we've completely revamped his insights into modern PM terminology. It's basically a foundational
+
+21
+00:02:13.070 --> 00:02:18.210
+toolkit built entirely on trust, listening, and understanding the other side's motivation,
+
+22
+00:02:18.210 --> 00:02:23.050
+rather than relying on a corporate hierarchy that, frankly, you don't even have access to anyway.
+
+23
+00:02:24.130 --> 00:02:25.610
+Connection before persuasion.
+
+24
+00:02:26.030 --> 00:02:30.030
+The real trick here is understanding the foundational techniques Michael applied
+
+25
+00:02:30.030 --> 00:02:32.290
+to start fixing those broken team dynamics.
+
+26
+00:02:32.670 --> 00:02:37.630
+Because before you can persuade anyone to build your roadmap, you have to build a real connection.
+
+27
+00:02:38.310 --> 00:02:42.990
+People decide if they want to cooperate with you way before they ever evaluate the quality of your arguments.
+
+28
+00:02:43.730 --> 00:02:47.390
+So Michael put three modernized influence principles into practice.
+
+29
+00:02:47.850 --> 00:02:50.230
+First up, you have to stop criticizing the past.
+
+30
+00:02:50.830 --> 00:02:55.170
+Criticism just makes people defensive and completely blocks any chance of meaningful change.
+
+31
+00:02:55.510 --> 00:02:57.230
+You've got to focus entirely on the future.
+
+32
+00:02:57.870 --> 00:03:00.630
+Second, offer specific fact-based appreciation.
+
+33
+00:03:01.250 --> 00:03:03.170
+And we're not talking about generic flattery here.
+
+34
+00:03:03.370 --> 00:03:05.290
+People can spot fake interest a mile away.
+
+35
+00:03:05.490 --> 00:03:11.690
+If you can't point to a specific factual thing you appreciate about a team member's work, honestly, it's better to just stay silent.
+
+36
+00:03:12.310 --> 00:03:15.790
+And third, tie your requests directly to the team's internal motivations.
+
+37
+00:03:16.470 --> 00:03:19.010
+Figure out what your developers actually want to learn or achieve.
+
+38
+00:03:19.550 --> 00:03:23.010
+Maybe a new feature is their chance to play with a technology they've been eager to try out.
+
+39
+00:03:23.570 --> 00:03:26.830
+Internal motivation beats external persuasion every single time.
+
+40
+00:03:27.490 --> 00:03:32.170
+You can see this play out perfectly during a rather embarrassing situation for McCall.
+
+41
+00:03:32.810 --> 00:03:35.830
+Velox accidentally shipped a release with a glaring bug.
+
+42
+00:03:36.290 --> 00:03:38.550
+Now, the natural urge there is to point fingers, right?
+
+43
+00:03:38.850 --> 00:03:40.790
+Asking things like, how did you miss this bug?
+
+44
+00:03:40.930 --> 00:03:43.750
+But during the retro, McCall swallowed that urge.
+
+45
+00:03:44.290 --> 00:03:47.210
+Instead, she used a process-focused approach.
+
+46
+00:03:47.730 --> 00:03:50.710
+She asked, which step in our process would have caught this in time?
+
+47
+00:03:51.470 --> 00:03:55.630
+By asking a future-oriented process question instead of playing the blame game,
+
+48
+00:03:56.090 --> 00:03:58.370
+she completely eliminated defensiveness in the room.
+
+49
+00:03:58.830 --> 00:03:59.350
+And the result?
+
+50
+00:03:59.770 --> 00:04:03.970
+The team actually proposed implementing automated tests entirely on their own.
+
+51
+00:04:04.450 --> 00:04:07.050
+And she even publicly praised the developer who traced the root cause.
+
+52
+00:04:07.640 --> 00:04:10.860
+Next up, let's dive into connecting and persuading.
+
+53
+00:04:11.320 --> 00:04:12.280
+Winning without arguing.
+
+54
+00:04:13.080 --> 00:04:18.840
+Being pleasant is all well and good, but what happens when an executive makes a demand that will completely wreck your timeline?
+
+55
+00:04:19.280 --> 00:04:23.340
+How do you push back without resorting to exhausting, bridge-burning logic battles?
+
+56
+00:04:23.560 --> 00:04:30.000
+Because remember, if you win an argument purely on logic but make the other person feel inferior, you've actually lost.
+
+57
+00:04:30.920 --> 00:04:38.500
+Let's see how Michal handled a total crisis when her VP of sales demanded a massive roadmap derailing feature just to close a quarter.
+
+58
+00:04:39.240 --> 00:04:43.560
+The traditional approach would be to build a counter deck filled with logic and data to prove him wrong,
+
+59
+00:04:43.960 --> 00:04:47.280
+which, let's face it, almost always results in a defensive argument.
+
+60
+00:04:48.060 --> 00:04:49.660
+But Mahal used the new playbook.
+
+61
+00:04:50.080 --> 00:04:50.620
+She didn't argue.
+
+62
+00:04:51.200 --> 00:04:56.960
+First, she validated his strategic goal, agreeing that closing the quarter and pleasing the customer absolutely mattered.
+
+63
+00:04:57.560 --> 00:05:00.080
+Then she asked a brilliant trade-off question.
+
+64
+00:05:00.660 --> 00:05:06.160
+If we push other features back for this one, what do we tell the 10 customers waiting on the original plan?
+
+65
+00:05:06.800 --> 00:05:07.800
+She didn't tell him he was wrong.
+
+66
+00:05:07.800 --> 00:05:09.700
+She just helped him see the whole board.
+
+67
+00:05:10.180 --> 00:05:12.240
+The stakeholder reaction was amazing.
+
+68
+00:05:12.780 --> 00:05:18.780
+The VP paused, recalculated, and ended up proposing a much smaller, scoped-down interim solution himself.
+
+69
+00:05:19.480 --> 00:05:23.400
+Let's move to changing behavior, turning resistors into partners.
+
+70
+00:05:23.900 --> 00:05:27.720
+Because what happens when you face the absolute hardest challenge in product management?
+
+71
+00:05:28.200 --> 00:05:34.140
+I'm talking about changing the behavior of a stubborn veteran team member who pushes back on absolutely everything you propose.
+
+72
+00:05:34.770 --> 00:05:40.410
+This is exactly what Mahal faced with Amir, a stubborn veteran developer who constantly
+
+73
+00:05:40.410 --> 00:05:43.850
+questioned her prioritization and complained any time the direction changed.
+
+74
+00:05:44.330 --> 00:05:47.510
+So for their next meeting, Mahal did something totally radical.
+
+75
+00:05:48.030 --> 00:05:52.310
+She completely ditched her prepared product requirements document and held a one-on-one
+
+76
+00:05:52.310 --> 00:05:54.530
+focused entirely on three simple steps.
+
+77
+00:05:55.270 --> 00:05:59.950
+Step one, she asked what was bothering him and listened without interrupting for a full
+
+78
+00:05:59.950 --> 00:06:00.770
+20 minutes.
+
+79
+00:06:01.570 --> 00:06:03.610
+Step two, she showed honest appreciation,
+
+80
+00:06:04.070 --> 00:06:07.810
+telling him his experience with the product's architecture was worth its weight in gold.
+
+81
+00:06:08.310 --> 00:06:12.430
+And step three, she shared her retention challenge with him as a partner asking for help,
+
+82
+00:06:12.610 --> 00:06:14.490
+rather than a boss handing down a speck.
+
+83
+00:06:15.350 --> 00:06:19.010
+Because she made him feel like a respected partner and protected his dignity,
+
+84
+00:06:19.490 --> 00:06:21.230
+Amir completely opened up.
+
+85
+00:06:21.250 --> 00:06:25.590
+In fact, he proposed three brand new technical solutions to the retention problem
+
+86
+00:06:25.590 --> 00:06:27.150
+that Michal hadn't even considered.
+
+87
+00:06:27.910 --> 00:06:31.230
+In the next team meeting, she gave Amir full public credit for the ideas.
+
+88
+00:06:31.650 --> 00:06:36.990
+And within just two weeks, Amir transformed from her absolute biggest critic into her strongest champion.
+
+89
+00:06:37.710 --> 00:06:38.950
+She realized a powerful lesson.
+
+90
+00:06:39.410 --> 00:06:41.810
+As a PM, you don't need to win every interaction.
+
+91
+00:06:42.170 --> 00:06:43.550
+You just need to share the ownership.
+
+92
+00:06:44.130 --> 00:06:49.990
+So as you get ready to dive into the reading material for this stage and truly master these exact frameworks,
+
+93
+00:06:50.450 --> 00:06:52.650
+I want you to ask yourself a critical question.
+
+94
+00:06:53.430 --> 00:06:56.670
+When you face resistance in your next sprint, and trust me, you will,
+
+95
+00:06:57.190 --> 00:06:58.130
+How are you going to react?
+
+96
+00:06:58.670 --> 00:07:01.310
+Are you going to try to win the argument and prove you're right?
+
+97
+00:07:01.650 --> 00:07:05.730
+Or will you stop, listen, and try to understand what your team truly wants?
+
+98
+00:07:06.450 --> 00:07:08.510
+Influence is basically compound interest.
+
+99
+00:07:09.110 --> 00:07:13.170
+Every conversation you handle well builds the capital you're going to need for the next crisis.
+
+100
+00:07:14.030 --> 00:07:17.090
+Dive into the stage materials, start practicing these habits tomorrow morning,
+
+101
+00:07:17.230 --> 00:07:19.590
+and watch how quickly your team dynamics transform.
+
+102
+00:07:20.150 --> 00:07:20.850
+See you in the course.
+
