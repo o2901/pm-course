@@ -1980,6 +1980,98 @@ body.light .wk-card .wk-sub strong{color:#8A6A1E!important}
 .ach-toast .w6sk-x{display:inline-block;margin-inline-start:.4rem;padding:0 .42rem;border-radius:999px;background:rgba(26,26,46,.14);color:#1a1a2e;font-size:.7rem;font-weight:800;line-height:1.55;font-variant-numeric:tabular-nums;vertical-align:1px;white-space:nowrap}
 @media(max-width:480px){.ach-toast{width:max-content;max-width:calc(100vw - 24px);white-space:normal}}
 [data-w6sk-f]:focus{outline:none}
+/* ===== w6 red-team (w6rt) ===== */
+/* #2 a dismissed duel challenge only slid 200px up: a tall card stayed half on screen with a live accept button (nothing covers it on the welcome screen) → invisible + untappable once slid out */
+.duel-notif:not(.show){visibility:hidden;pointer-events:none;transition:transform .4s cubic-bezier(.34,1.56,.64,1),visibility 0s linear .4s}
+.duel-notif.show{visibility:visible;transition:transform .4s cubic-bezier(.34,1.56,.64,1),visibility 0s}
+/* #11 admin password screen: no learner header / progress bar ("0 נק' 0/52") */
+body:has(#adv:not(.hid) #admPass) #hd,body:has(#adv:not(.hid) #admPass) #pb{display:none!important}
+/* #5 lobby chip without a remembered email: friendly inline hint instead of the error modal */
+#w6rtLobbyHint{max-width:280px;width:100%;margin:-.15rem auto .1rem;font-size:.8rem;line-height:1.45;color:var(--t1);background:var(--cardh);border:1px solid var(--line);border-radius:10px;padding:.45rem .7rem;text-align:center}
+#emailInput.w6rt-need{border-color:var(--p)!important;box-shadow:0 0 0 3px rgba(139,133,255,.22)!important}
+html[data-acc="amber"] #emailInput.w6rt-need{box-shadow:0 0 0 3px rgba(228,181,75,.24)!important}
+/* ===== /w6rt ===== */
+/* ===== W6 dock: phone bottom navigation (≤640px) — replaces the floating-button columns ===== */
+#w6dkDock,#w6dkSheet{display:none}
+@media (max-width:640px){
+:root{--w6dk-h:64px}
+/* the round FABs retire on phones — only once the dock is alive (html.w6dk-ready), so a failed boot never strands the user */
+html.w6dk-ready body button[id$="Fab"]{display:none!important}
+#w6dkDock{display:block;position:fixed;left:0;right:0;bottom:0;z-index:175;margin:0;background:var(--card);border-top:1px solid var(--line);box-shadow:0 -12px 32px rgba(0,0,0,.30);padding:0 env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);transform:translateY(calc(100% + 14px));visibility:hidden;transition:transform .18s cubic-bezier(.4,0,1,1),visibility 0s linear .18s;-webkit-tap-highlight-color:transparent}
+@supports ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))) and (background:color-mix(in srgb,red 50%,transparent)){
+#w6dkDock{background:color-mix(in srgb,var(--card) 80%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(20px);backdrop-filter:saturate(1.6) blur(20px)}
+}
+body.light #w6dkDock{box-shadow:0 -8px 24px rgba(42,39,33,.10)}
+#w6dkDock.w6dk-show{transform:none;visibility:visible;transition:transform .18s cubic-bezier(0,0,.2,1),visibility 0s}
+#w6dkDock .w6dk-row{display:flex;align-items:stretch;height:calc(var(--w6dk-h) - 1px);max-width:560px;margin:0 auto}/* + the 1px hairline = exactly --w6dk-h */
+#w6dkDock .w6dk-it{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;margin:0;padding:6px 2px 7px;background:none;border:0;border-radius:0;box-shadow:none;color:var(--t2);font-family:inherit;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transform:none}
+#w6dkDock .w6dk-it:active{transform:none}
+#w6dkDock .w6dk-ic{position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:30px;border-radius:15px;transition:background-color .18s ease,transform .12s ease}
+#w6dkDock .w6dk-ic svg{width:22px;height:22px;display:block;flex:none}
+#w6dkDock .w6dk-lb{display:block;max-width:100%;font-size:11.5px;line-height:14px;font-weight:600;letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#w6dkDock .w6dk-it.w6dk-act{color:var(--p)}
+#w6dkDock .w6dk-it.w6dk-act .w6dk-lb{font-weight:800}
+#w6dkDock .w6dk-it.w6dk-act .w6dk-ic{background:rgba(139,133,255,.16)}
+#w6dkDock .w6dk-it:active .w6dk-ic{transform:scale(.9);background:rgba(169,173,190,.16)}
+@supports (background:color-mix(in srgb,red 50%,transparent)){
+#w6dkDock .w6dk-it.w6dk-act .w6dk-ic{background:color-mix(in srgb,var(--p) 17%,transparent)}
+#w6dkDock .w6dk-it:active .w6dk-ic{background:color-mix(in srgb,var(--t2) 18%,transparent)}
+}
+@media (hover:hover){#w6dkDock .w6dk-it:hover{color:var(--t1)}#w6dkDock .w6dk-it.w6dk-act:hover{color:var(--p)}}
+#w6dkDock .w6dk-it:focus-visible{outline:none;box-shadow:none}
+#w6dkDock .w6dk-it:focus-visible .w6dk-ic{box-shadow:0 0 0 2px var(--p)}
+#w6dkDock .w6dk-bd,#w6dkSheet .w6dk-bd{position:absolute;top:-5px;inset-inline-end:0;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--s);color:#fff;font-size:10px;line-height:17px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;box-shadow:0 0 0 2px var(--card);pointer-events:none;box-sizing:border-box}
+#w6dkDock .w6dk-bd.w6dk-bd-a,#w6dkSheet .w6dk-bd.w6dk-bd-a{background:var(--a);color:#05221a}
+#w6dkDock .w6dk-dot,#w6dkSheet .w6dk-dot{position:absolute;top:1px;inset-inline-end:7px;width:9px;height:9px;border-radius:50%;background:var(--s);box-shadow:0 0 0 2px var(--card);pointer-events:none}
+/* More sheet: rises out of the dock's top edge (the clip box ends where the dock begins), so the dock stays visible,
+   un-dimmed and live underneath — More shows active and toggles it closed */
+#w6dkSheet{display:block;position:fixed;left:0;right:0;top:0;bottom:calc(var(--w6dk-h) + env(safe-area-inset-bottom,0px));z-index:240;overflow:hidden;visibility:hidden;pointer-events:none;transition:visibility 0s linear .22s}
+#w6dkSheet.w6dk-open{visibility:visible;pointer-events:auto;transition:visibility 0s}
+#w6dkSheet .w6dk-bk{position:absolute;inset:0;background:rgba(5,6,10,.56);opacity:0;transition:opacity .2s ease;touch-action:none}
+body.light #w6dkSheet .w6dk-bk{background:rgba(42,39,33,.30)}
+#w6dkSheet.w6dk-open .w6dk-bk{opacity:1}
+#w6dkSheet .w6dk-sh{position:absolute;left:0;right:0;bottom:0;max-width:560px;margin:0 auto;max-height:calc(100% - 56px);overflow-y:auto;overscroll-behavior:contain;background:var(--card);border:1px solid var(--line);border-bottom:0;border-radius:24px 24px 0 0;padding:0 16px 18px;box-shadow:0 -18px 48px rgba(0,0,0,.40);transform:translateY(calc(100% + 40px));transition:transform .22s cubic-bezier(.22,1,.36,1);outline:none;box-sizing:border-box}
+body.light #w6dkSheet .w6dk-sh{box-shadow:0 -12px 36px rgba(42,39,33,.14)}
+#w6dkSheet.w6dk-open .w6dk-sh{transform:none}
+#w6dkDock.w6dk-solid{background:var(--card)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+#w6dkSheet .w6dk-grab{display:flex;justify-content:center;padding:10px 0 8px;cursor:grab;touch-action:none}
+#w6dkSheet .w6dk-hdl{display:block;width:40px;height:5px;border-radius:3px;background:var(--t2);opacity:.42}
+#w6dkSheet .w6dk-shh{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 2px 16px}
+#w6dkSheet .w6dk-sht{font-size:16px;line-height:22px;font-weight:800;color:var(--t1);margin:0;text-align:start}
+#w6dkSheet .w6dk-x{display:flex;align-items:center;justify-content:center;flex:none;width:32px;height:32px;margin:0;padding:0;border:0;border-radius:50%;background:var(--cardh);color:var(--t2);box-shadow:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#w6dkSheet .w6dk-x svg{width:16px;height:16px;display:block}
+#w6dkSheet .w6dk-x:focus-visible{outline:none;box-shadow:0 0 0 2px var(--p)}
+#w6dkSheet .w6dk-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 4px}
+#w6dkSheet .w6dk-tile{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:7px;min-width:0;margin:0;padding:2px 0 0;background:none;border:0;border-radius:14px;box-shadow:none;color:var(--t1);font-family:inherit;font-size:12px;line-height:15px;font-weight:600;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transform:none}
+#w6dkSheet .w6dk-tile:active{transform:none}
+#w6dkSheet .w6dk-tile:focus-visible{outline:none;box-shadow:none}
+#w6dkSheet .w6dk-ti{position:relative;display:flex;align-items:center;justify-content:center;flex:none;width:54px;height:54px;border-radius:18px;background:rgba(139,133,255,.15);color:var(--p);transition:transform .12s ease}
+@supports (background:color-mix(in srgb,red 50%,transparent)){#w6dkSheet .w6dk-ti{background:color-mix(in srgb,var(--p) 15%,transparent)}}
+#w6dkSheet .w6dk-tile:active .w6dk-ti{transform:scale(.92)}
+#w6dkSheet .w6dk-tile.w6dk-act .w6dk-ti{box-shadow:inset 0 0 0 2px var(--p)}
+#w6dkSheet .w6dk-tile:focus-visible .w6dk-ti{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--p)}
+#w6dkSheet .w6dk-ti svg{width:24px;height:24px;display:block}
+#w6dkSheet .w6dk-ti .w6dk-bd{top:-5px;inset-inline-end:-6px}
+#w6dkSheet .w6dk-ti .w6dk-dot{top:-1px;inset-inline-end:-1px}
+#w6dkSheet .w6dk-tl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:100%;padding:0 2px;overflow-wrap:anywhere}
+/* content is never covered: the page reserves the dock's height while the dock owns the bottom edge */
+html.w6dk-on body{padding-bottom:calc(var(--w6dk-h) + env(safe-area-inset-bottom,0px))!important}
+html.w6dk-on body:has(#updateBanner){padding-bottom:calc(var(--w6dk-h) + env(safe-area-inset-bottom,0px) + var(--w6f-bb,64px))!important}
+/* bottom-anchored layers sit above the dock */
+html.w6dk-on body #updateBanner{bottom:calc(var(--w6dk-h) + env(safe-area-inset-bottom,0px))!important}
+html.w6dk-on body .hook-banner{bottom:calc(var(--w6dk-h) + env(safe-area-inset-bottom,0px) + 12px)!important;max-width:calc(100vw - 32px)!important}
+html.w6dk-on body .chat-panel{bottom:calc(var(--w6dk-h) + env(safe-area-inset-bottom,0px) + 10px)!important;max-height:calc(100vh - var(--w6dk-h) - 80px)!important}
+html.w6dk-on body .duel-panel{left:8px!important;right:8px!important;width:auto!important;max-width:none!important;bottom:calc(var(--w6dk-h) + env(safe-area-inset-bottom,0px) + 8px)!important;border-radius:18px!important;max-height:calc(100vh - var(--w6dk-h) - 80px)!important}
+html.w6dk-on body .duel-panel .duel-panel-body{max-height:calc(100vh - var(--w6dk-h) - 136px)!important}
+/* sync chip: never a tap target; while the dock shows it lives INSIDE the dock, between the last two slots (x measured by JS) */
+html.w6dk-on body #syncStatus{pointer-events:none!important}
+html.w6dk-on:not(.w6dk-show) body #syncStatus{visibility:hidden!important}
+html.w6dk-show body #syncStatus{left:var(--w6dk-sx,20%)!important;right:auto!important;top:auto!important;bottom:calc(env(safe-area-inset-bottom,0px) + var(--w6dk-h) - 31px)!important;translate:-50% 0!important;z-index:176!important;font-size:12px!important;line-height:16px!important;padding:2px 5px!important;border-radius:999px!important;background:var(--cardh)!important;border:1px solid var(--line)!important;box-shadow:none!important}
+}
+/* very narrow phones (≤360px, 5 slots of ≤72px): slimmer icon pill + chip so the chip still clears both neighbours */
+@media (max-width:360px){#w6dkDock .w6dk-ic{width:40px}html.w6dk-show body #syncStatus{font-size:11px!important;line-height:15px!important;padding:1px 3px!important}}
+@media (max-width:640px) and (prefers-reduced-motion:reduce){#w6dkDock,#w6dkDock.w6dk-show,#w6dkSheet,#w6dkSheet .w6dk-sh,#w6dkSheet .w6dk-bk,#w6dkDock .w6dk-ic,#w6dkSheet .w6dk-tile{transition:none!important}}
+/* ===== /W6 dock ===== */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.6.1/chart.umd.min.js" defer></script>
@@ -5130,6 +5222,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
         try{if(typeof _w6fMergeW==='function')_w6fMergeW(_pg.w)}catch(e){}/* W6: token purchases made on other devices (f = max bought, cf = OR) */
       }
     }catch(e){}
+    try{if(typeof _w6rtScLoad==='function')_w6rtScLoad(d.data.progressJSON)}catch(e){}/* W6 red-team: per-stage best scores (progressJSON.p) */
     try{_retroCompleteStages()}catch(e){}/* credit stages stuck by missing read-marks (Yonatan report) */
     // Merge satisfaction-skip log from cloud (#sat) — dedupe by timestamp
     try{
@@ -7133,9 +7226,9 @@ function sa(sid,qi,sel){if(!G.qa[sid])G.qa[sid]={};if(G.qa[sid][qi]!==undefined)
 if(_correct){G.combo=(G.combo||0)+1;if(G.combo>(G.maxCombo||0))G.maxCombo=G.combo;
   playSfx('correct');
   // Combo bonus every 3 in a row
-  if(G.combo>0&&G.combo%3===0){G.ts+=5;playSfx('bonus');showAchievement('🔥','קומבו!',(_enLang()?'+5 bonus points · ':'+5 נקודות בונוס · ')+G.combo+(_enLang()?' correct in a row':' נכונות ברצף'))}
+  if(G.combo>0&&G.combo%3===0&&_w6rtBonusOk(sid,qi)){G.ts+=5;playSfx('bonus');showAchievement('🔥','קומבו!',(_enLang()?'+5 bonus points · ':'+5 נקודות בונוס · ')+G.combo+(_enLang()?' correct in a row':' נכונות ברצף'))}
   // Golden question bonus
-  if(isGoldenQuestion(sid,qi)){G.ts+=10;playSfx('bonus');setTimeout(()=>showAchievement('⚡','שאלה זהובה!','+10 נקודות בונוס · נצנוצים זהובים'),300)}
+  if(isGoldenQuestion(sid,qi)&&_w6rtBonusOk(sid,qi)){G.ts+=10;playSfx('bonus');setTimeout(()=>showAchievement('⚡','שאלה זהובה!','+10 נקודות בונוס · נצנוצים זהובים'),300)}
   // Easter egg checks on activity
   _checkEasterEgg('answer');
 }else{G.combo=0;playSfx('wrong')}
@@ -7870,7 +7963,7 @@ function showProfile(){
 }
 
 function renderProfile(){
-  const totalStages=S.length;
+  const totalStages=_totalVisible();/* w6rt: reachable total — civilians never see the 2 navy stages */
   const doneCount=G.done.size;
   const pctComplete=Math.round(doneCount/totalStages*100);
   const totalScore=G.ts;
@@ -8297,7 +8390,7 @@ function generateCert(){
   const score=G.ts;
   const title=getTitle();
   const dateStr=new Date().toLocaleDateString(_enLang()?'en-US':'he-IL',{timeZone:'Asia/Jerusalem',year:'numeric',month:'long',day:'numeric'});
-  const stagesCompleted=G.done.size;
+  const stagesCompleted=_w6rtCounts().main.done;/* w6rt: journey stages (welcome "שלבים"); books are bonus chapters */
   const certId=(function(){var h=0,src=(G.userName||'')+'|'+new Date().toISOString().slice(0,10);for(var i=0;i<src.length;i++){h=((h<<5)-h+src.charCodeAt(i))|0}return 'PM-'+Math.abs(h).toString(36).toUpperCase()})();
 
   /* W5: server-side issuance record + public verification link (fire-and-forget; the backend endpoint may lag) */
@@ -8546,7 +8639,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.9.7';
+const APP_VERSION='1.9.8';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -8632,6 +8725,7 @@ function _doSync(){
   // stored values (both are '!= null'-guarded there). A stale phone whose load failed once replaced a
   // user's synced quiz answers with a near-empty snapshot (עומר דיין, 10/2026). Score/stages stay in
   // the payload — they are max/union-guarded server-side.
+  try{if(typeof _w6rtPayload==='function')_w6rtPayload(payload)}catch(e){}/* W6 red-team: per-stage best scores → progressJSON.p (server max-merges; an old server drops it) */
   if(!G._cloudVerified){delete payload.progressJSON;delete payload.reflectionsJSON;}
   fetch(DB_URL,{method:'POST',body:JSON.stringify(payload),headers:{'Content-Type':'text/plain'}})
   .then(r=>r.json())
@@ -14092,6 +14186,462 @@ document.addEventListener('click',function(){if(_w6skClkT)return;_w6skClkT=setTi
 /* toasts queued by the original before this pack loaded join the new queue */
 try{while(_achQueue.length){var _w6skA0=_achQueue.shift();if(_w6skA0)_w6skAdd(_w6skA0.icon,_w6skA0.title,_w6skA0.sub)}}catch(e){}
 /* ===== /wave 6 notification queue + modal stack ===== */
+/* ===== W6 RED-TEAM fixes (_w6rt) — duel popup after logout · ceremony Back to map · no point farming on retakes +
+   per-stage best in the cloud · lobby email · About never stuck · welcome language choice wins · clean welcome after 🏠 ·
+   mock-exam timer + shuffle · one stage-count helper. Wrappers only (pass-through on error); no observers. ===== */
+var _w6rt={langPick:null,loginAt:0,le:null,cerNext:false};
+function _w6rtVis(id){var e=$(id);return !!e&&!e.classList.contains('hid')}
+function _w6rtOnWelcome(){try{return _w6rtVis('ws')}catch(e){return false}}
+function _w6rtLoggedIn(){try{return !!(G&&G.s&&G.userName&&G.userName!=='אנונימי'&&G.v!=='w'&&!_w6rtOnWelcome())}catch(e){return false}}
+/* per-user mark maps kept in G (persisted by sv); another account on this browser starts empty */
+function _w6rtMarks(k){var u=String(G.userName||''),o=G[k];if(!o||typeof o!=='object'||o.u!==u||!o.m||typeof o.m!=='object'){o=G[k]={u:u,m:{}}}return o.m}
+/* ---------- #10 one stage-count helper ---------- */
+/* core = PM_IDS (certification track) · main = visible journey stages (intro + core [+ navy]) · books = book chapters · all = everything visible */
+function _w6rtCounts(){
+  var main=[],books=[],vis=[];
+  try{S.forEach(function(s){if(_stageHidden(s))return;vis.push(s);if(s.tg==='בונוס - ספר')books.push(s);else main.push(s)})}catch(e){}
+  var dn=function(a){var n=0;a.forEach(function(s){if(G.done&&G.done.has(s.id))n++});return n};
+  var cd=0;try{cd=PM_IDS.filter(function(i){return G.done.has(i)}).length}catch(e){}
+  return {core:{done:cd,total:PM_IDS.length},main:{done:dn(main),total:main.length},books:{done:dn(books),total:books.length},all:{done:dn(vis),total:vis.length}};
+}
+function _w6rtXpFix(){
+  var el=$('xp-area');if(!el)return;var c=_w6rtCounts().core;
+  var d=el.querySelector('.xp-detail');if(d)d.textContent=c.done+'/'+c.total+(_enLang()?' core stages':' שלבי ליבה');
+  var pct=c.total?Math.min(100,Math.round(c.done/c.total*100)):0;
+  var lb=el.querySelector('.xp-label');if(lb)lb.textContent=pct+'%';
+  var fg=el.querySelector('.xp-circle-fg');if(fg){var C=2*Math.PI*28;fg.setAttribute('stroke-dashoffset',String(C-pct/100*C))}
+}
+function _w6rtHeroFix(){
+  var l=document.querySelector('#continue-hero .ch-label');if(!l)return;var c=_w6rtCounts().core;
+  l.textContent=_t('▶ המשך המסע שלך')+' ('+c.done+'/'+c.total+' '+(_enLang()?'core stages':'שלבי ליבה')+')';
+}
+function _w6rtWelcomeCounts(){
+  try{var c=_w6rtCounts();document.querySelectorAll('#ws .ws-stat').forEach(function(st){var l=st.querySelector('.ws-stat-lbl'),v=st.querySelector('.ws-stat-val');if(!l||!v)return;var k=l.getAttribute('data-i18n');if(k==='שלבים')v.textContent=String(c.main.total);else if(k==='ספרי בונוס')v.textContent=String(c.books.total)})}catch(e){}
+}
+const _w6rtOrigXP=renderXPArea;renderXPArea=function(){var r=_w6rtOrigXP.apply(this,arguments);try{_w6rtXpFix()}catch(e){}return r};
+const _w6rtOrigHero=renderContinueHero;renderContinueHero=function(){var r=_w6rtOrigHero.apply(this,arguments);try{_w6rtHeroFix()}catch(e){}return r};
+/* ---------- #6 About is exclusive · #9 the mock-exam timer only runs while the exam is the active view ---------- */
+function _w6rtViewSync(){
+  try{
+    var ab=$('ab');
+    if(ab&&!ab.classList.contains('hid')&&['ws','mv','sv','miv','glv','pv','lbv','adv','pendingView','duelView'].some(_w6rtVis))ab.classList.add('hid');
+    if(typeof _miTimer!=='undefined'&&_miTimer&&(G.v!=='mi'||!_w6rtVis('miv'))){clearInterval(_miTimer);_miTimer=null}
+  }catch(e){}
+}
+['mp','ss','showGlossary','showProfile','startSpacedRepetition','exitSR','showLeaderboard','showAdmin','hideAdmin','_enterDuelGame','_showPendingScreen'].forEach(function(n){
+  var o=window[n];if(typeof o!=='function')return;
+  window[n]=function(){var r=o.apply(this,arguments);_w6rtViewSync();return r};
+});
+const _w6rtOrigShowAbout=showAbout;showAbout=function(){
+  var keep=[];try{['adv','pendingView','duelView'].forEach(function(id){if(_w6rtVis(id))keep.push(id)})}catch(e){}
+  var r=_w6rtOrigShowAbout.apply(this,arguments);
+  try{_w6rt.abKeep=keep;keep.forEach(function(id){$(id).classList.add('hid')})}catch(e){}
+  return r;
+};
+const _w6rtOrigHideAbout=hideAbout;hideAbout=function(){
+  var keep=_w6rt.abKeep||[];_w6rt.abKeep=null;
+  if(keep.length){try{$('ab').classList.add('hid');keep.forEach(function(id){$(id).classList.remove('hid')});window.scrollTo(0,0);return}catch(e){}}
+  return _w6rtOrigHideAbout.apply(this,arguments);
+};
+/* any click that switched screens through a path not wrapped above (read-only class checks, after the handlers ran) */
+try{document.addEventListener('click',function(){setTimeout(_w6rtViewSync,0)},true)}catch(e){}
+/* #9 answer order shuffled per exam (copies only — S is untouched; c is remapped to the new position) */
+const _w6rtOrigMI=startMockInterview;startMockInterview=function(){
+  var r=_w6rtOrigMI.apply(this,arguments);
+  try{
+    if(G.v==='mi'&&Array.isArray(_miQuestions)&&_miQuestions.length&&!Object.keys(_miAnswers||{}).length){
+      _miQuestions=_miQuestions.map(function(q){
+        if(!q||!Array.isArray(q.o)||q.o.length<2)return q;
+        var ord=q.o.map(function(_,j){return j});
+        for(var i=ord.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=ord[i];ord[i]=ord[j];ord[j]=t}
+        var n=Object.assign({},q);n.o=ord.map(function(j){return q.o[j]});n.c=ord.indexOf(q.c);return n;
+      });
+      renderMI();
+    }
+  }catch(e){}
+  _w6rtViewSync();
+  return r;
+};
+/* ---------- #2 duel challenge popup: never on the welcome screen, never answerable while logged out ---------- */
+const _w6rtOrigDuelNotif=_showDuelNotif;_showDuelNotif=function(){if(!_w6rtLoggedIn())return;return _w6rtOrigDuelNotif.apply(this,arguments)};
+const _w6rtOrigRespond=_respondToDuel;_respondToDuel=function(){
+  if(!_w6rtLoggedIn()){try{var n=$('duelNotif');if(n){n.classList.remove('show');n.innerHTML=''}}catch(e){}return}
+  return _w6rtOrigRespond.apply(this,arguments);
+};
+/* ---------- #3 ceremony: Back to map = the map (W4's _cerClose wrapper flags _justDone first → mp() plays the return) ---------- */
+const _w6rtOrigCerNext=_cerNext;_cerNext=function(){_w6rt.cerNext=true;try{return _w6rtOrigCerNext.apply(this,arguments)}finally{_w6rt.cerNext=false}};
+const _w6rtOrigCerClose=_cerClose;_cerClose=function(){
+  var had=!!$('stageCerem');
+  var r=_w6rtOrigCerClose.apply(this,arguments);
+  try{if(had&&!_w6rt.cerNext&&!$('stageCerem')&&G.v==='s'&&_w6rtVis('sv')){mp();window.scrollTo(0,0)}}catch(e){}
+  return r;
+};
+const _w6rtOrigCerAll=_cerShowAll;_cerShowAll=function(){
+  try{var st=document.querySelectorAll('#stageCerem .cer-in>*'),all=st.length>0;for(var i=0;i<st.length;i++)if(!st[i].classList.contains('on')){all=false;break}if(all){_cerClose();return}}catch(e){}
+  return _w6rtOrigCerAll.apply(this,arguments);
+};
+/* ---------- #4 retakes: bonuses once per question; improvement-only stage points everywhere ---------- */
+/* called from sa() (two in-place guards): true only for a question never answered correctly before */
+function _w6rtBonusOk(sid,qi){
+  try{
+    if(_w6rtMarks('_w6rtQE')[sid+'_'+qi])return false;
+    var at=G.quizAttempts&&G.quizAttempts[sid],has=Array.isArray(at)&&at.length>0;
+    if(has){for(var i=0;i<at.length;i++){var a=at[i];if(a&&Array.isArray(a.wrong)&&(a.total==null||qi<a.total)&&a.wrong.indexOf(qi)<0)return false}}
+    else if(G.done&&G.done.has(sid))return false;/* completed with no recorded attempt: its bonuses were paid back then */
+    return true;
+  }catch(e){return true}
+}
+/* best score a completed stage must already have earned: quiz-attempt history (synced) / complete synced answers / null */
+function _w6rtScGuess(s,useQa){
+  var best=null,n=(s.q&&s.q.length)||0;
+  try{var at=G.quizAttempts&&G.quizAttempts[s.id];if(Array.isArray(at))at.forEach(function(a){if(a&&a.ok!=null){var v=(parseInt(a.ok)||0)*10;if(best==null||v>best)best=v}})}catch(e){}
+  try{var qa=useQa&&G.qa&&G.qa[s.id];if(qa&&n&&Object.keys(qa).length>=n){var ok=0;s.q.forEach(function(q,i){if(qa[i]===q.c)ok++});if(best==null||ok*10>best)best=ok*10}}catch(e){}
+  return best;
+}
+/* login hook (in _tryLogin, before _retroCompleteStages): cloud per-stage best (progressJSON.p, max-merged) + derive missing */
+function _w6rtScLoad(pj){
+  try{
+    if(!G.sc||typeof G.sc!=='object')G.sc={};
+    var dm=_w6rtMarks('_w6rtScD'),o=null;try{o=JSON.parse(pj||'')}catch(e){o=null}
+    var c=o&&o.p&&typeof o.p==='object'?o.p:null;
+    if(c)Object.keys(c).forEach(function(k){var v=parseInt(c[k]);if(isNaN(v)||v<0)return;var l=G.sc[k];if(l==null||dm[k]||v>(parseInt(l)||0)){G.sc[k]=v;delete dm[k]}});
+    S.forEach(function(s){if(!G.done||!G.done.has(s.id)||G.sc[s.id]!=null||!(s.q&&s.q.length))return;var g=_w6rtScGuess(s,true);if(g!=null){G.sc[s.id]=g;dm[s.id]=1}});
+  }catch(e){}
+}
+/* save hook (in _doSync, before the read-before-write guard): progressJSON.p = real per-stage bests (derived ones stay local) */
+function _w6rtPayload(p){
+  try{
+    if(!p||typeof p.progressJSON!=='string')return;
+    var o=JSON.parse(p.progressJSON);if(!o||typeof o!=='object')return;
+    var dm=_w6rtMarks('_w6rtScD'),m={};Object.keys(G.sc||{}).forEach(function(k){var v=parseInt(G.sc[k]);if(!isNaN(v)&&v>0&&!dm[k])m[k]=v});
+    o.p=m;var js=JSON.stringify(o);if(js.length<=45000)p.progressJSON=js;
+  }catch(e){}
+}
+const _w6rtOrigSa=sa;sa=function(sid,qi,sel){
+  var fresh=false,correct=false,sc0;
+  try{
+    var s=S.find(function(x){return x.id===sid}),n=s&&s.q?s.q.length:0;
+    fresh=!!n&&!(G.qa[sid]&&G.qa[sid][qi]!==undefined);correct=fresh&&!!s.q[qi]&&sel===s.q[qi].c;
+    /* a retake completing on a device with no best score for an already-completed stage: never re-credit it from 0 */
+    if(fresh&&G.done&&G.done.has(sid)&&G.sc&&G.sc[sid]==null&&(G.qa[sid]?Object.keys(G.qa[sid]).length:0)===n-1){var g=_w6rtScGuess(s,false);G.sc[sid]=(g==null?n*10:g);_w6rtMarks('_w6rtScD')[sid]=1}
+    sc0=G.sc?G.sc[sid]:undefined;
+  }catch(e){}
+  var r=_w6rtOrigSa.apply(this,arguments);
+  try{
+    if(fresh&&correct){var m=_w6rtMarks('_w6rtQE');if(!m[sid+'_'+qi]){m[sid+'_'+qi]=1;sv()}}
+    if(G.sc&&G.sc[sid]!==sc0)delete _w6rtMarks('_w6rtScD')[sid];/* a real best was recorded */
+  }catch(e){}
+  return r;
+};
+/* ---------- #5 lobby: remember the account email per profile (this device) ---------- */
+function _w6rtProfEmail(n){var e='';try{JSON.parse(localStorage.getItem('pm_profiles')||'[]').forEach(function(p){if(p&&p.n===n&&p.e)e=String(p.e)})}catch(x){}return e}
+const _w6rtOrigProf=_profilesTouch;_profilesTouch=function(){
+  var prev='';try{prev=_w6rtProfEmail(G.userName)}catch(e){}
+  var r=_w6rtOrigProf.apply(this,arguments);
+  try{
+    if(G.userName&&G.userName!=='אנונימי'){
+      var typed=(_w6rt.le&&_w6rt.le.n===G.userName)?_w6rt.le.e:'';
+      var em=String(G.cloudEmail||typed||prev||'').trim().toLowerCase();
+      if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){var reg=JSON.parse(localStorage.getItem('pm_profiles')||'[]'),ch=false;reg.forEach(function(p){if(p&&p.n===G.userName&&p.e!==em){p.e=em;ch=true}});if(ch)localStorage.setItem('pm_profiles',JSON.stringify(reg))}
+    }
+  }catch(e){}
+  return r;
+};
+function _w6rtHint(name){
+  var em=$('emailInput'),h=$('w6rtLobbyHint');
+  if(!name){if(h)h.remove();if(em)em.classList.remove('w6rt-need');return}
+  if(!em)return;
+  if(!h){h=document.createElement('div');h.id='w6rtLobbyHint';h.setAttribute('role','status');em.parentNode.insertBefore(h,em.nextSibling)}
+  h.dir=_enLang()?'ltr':'rtl';
+  h.textContent=_enLang()?('👋 Hi '+name+'! Enter your account email to continue — next time this button signs you in with one tap.'):('👋 היי '+name+'! הזינו את המייל של החשבון כדי להמשיך — בפעם הבאה הכפתור יכניס אתכם בלחיצה אחת.');
+  em.classList.add('w6rt-need');
+  if(!em._w6rtIn){em._w6rtIn=1;em.addEventListener('input',function(){if(String(em.value||'').trim())_w6rtHint(null)})}
+}
+const _w6rtOrigLobbyGo=_lobbyGo;_lobbyGo=function(btn){
+  try{
+    var n=btn&&btn.getAttribute('data-n')||'',e=_w6rtProfEmail(n),em=$('emailInput');
+    if(e&&em){em.value=e;_w6rtHint(null)}
+    else if(DB_URL&&em&&!String(em.value||'').trim()){
+      var ni=$('nameInput');if(ni){ni.value=n;try{updateNamePreview()}catch(x){}}
+      _w6rtHint(n);try{em.focus()}catch(x){}
+      return;
+    }
+  }catch(x){}
+  return _w6rtOrigLobbyGo.apply(this,arguments);
+};
+/* ---------- #7 a language picked on the welcome screen in this session wins over the account's saved one ---------- */
+const _w6rtOrigTry=_tryLogin;_tryLogin=function(name,email){
+  try{_w6rt.loginAt=Date.now();_w6rt.le={n:String(name||''),e:String(email||'').trim().toLowerCase()}}catch(e){}
+  return _w6rtOrigTry.apply(this,arguments);
+};
+const _w6rtOrigLang=applyLanguage;applyLanguage=function(lang,opts){
+  var o=opts||{};
+  try{
+    var L=(lang==='en')?'en':'he';
+    if(!o.boot&&!o.noCloud&&_w6rtOnWelcome())_w6rt.langPick=L;
+    else if(o.noCloud&&_w6rt.langPick&&_w6rt.loginAt&&Date.now()-_w6rt.loginAt<120000&&L!==_w6rt.langPick){
+      /* the login is applying the account's language: keep the explicit choice; G.lang = pick → sv() → the next save stores it */
+      return _w6rtOrigLang.call(this,_w6rt.langPick,opts);
+    }
+  }catch(e){}
+  return _w6rtOrigLang.apply(this,arguments);
+};
+/* ---------- #8 + #2 + #10: a clean welcome screen after 🏠 ---------- */
+function _w6rtToastsClear(){
+  /* W6 stack queue (toast lane + parked hook banner): its own API if it ever gets one, else its own take-down primitives */
+  try{
+    if(typeof _w6skClear==='function')_w6skClear();
+    else if(typeof _w6skQ!=='undefined'&&Array.isArray(_w6skQ)){_w6skQ.length=0;if(typeof _w6skHk!=='undefined')_w6skHk=null;if(typeof _w6skCur!=='undefined'&&_w6skCur&&_w6skCur.el&&typeof _w6skHide==='function')_w6skHide(_w6skCur.el);if(typeof _w6skArm==='function')_w6skArm()}
+  }catch(e){}
+  try{if(typeof _achQueue!=='undefined'&&Array.isArray(_achQueue))_achQueue.length=0}catch(e){}/* legacy queue (pre-stack builds) */
+  try{document.querySelectorAll('.ach-toast').forEach(function(e){e.remove()})}catch(e){}
+}
+function _w6rtHomeClean(){
+  try{var n=$('duelNotif');if(n){n.classList.remove('show');n.innerHTML=''}}catch(e){}
+  _w6rtToastsClear();_w6rtViewSync();_w6rtWelcomeCounts();
+}
+const _w6rtOrigGoHome=goHome;goHome=function(){var r=_w6rtOrigGoHome.apply(this,arguments);try{_w6rtHomeClean()}catch(e){}return r};
+/* the login finished (every success path ends in mp()): the welcome-screen language choice is consumed */
+const _w6rtOrigMp=mp;mp=function(){var r=_w6rtOrigMp.apply(this,arguments);try{if(_w6rt.loginAt&&G.s){_w6rt.loginAt=0;_w6rt.langPick=null;_w6rtHint(null)}}catch(e){}return r};
+try{_w6rtWelcomeCounts()}catch(e){}
+/* ===== /W6 RED-TEAM ===== */
+/* ===== W6 dock: phone bottom navigation (≤640px) — replaces the floating-button columns =====
+   Render layer only: every dock/sheet item forwards to the original FAB's click(), so behaviour + analytics stay identical.
+   State is READ from the FABs (hid class, badge elements); the one MutationObserver watches the FABs (whole subtree), the
+   views (class/style) and <body>'s direct child list; the sync it schedules only ever writes to the dock, the sheet and
+   <html> — never to anything it observes.
+   Badge updaters + applyLanguage are wrapped at DOMContentLoaded (after every inline wrapper is installed). */
+var _w6dkS={raf:0,sig:'',row:'',mo:null,seen:(typeof WeakSet!=='undefined')?new WeakSet():null,mq:null,maxH:0,maxW:0,open:false,wrapped:false,ready:false,pin:{}};
+var _w6dkPRI=['todayFab','dailyFab','duelFab','lbFab'];
+var _w6dkFILL=['glossaryFab','chatFab','srFab'];
+var _w6dkMORE=['glossaryFab','srFab','certFab','chatFab','bugFab','adminFab','adminMsgFab','jumpCurFab'];
+var _w6dkLBL={todayFab:['היום שלי','My day'],dailyFab:['שאלה יומית','Daily'],duelFab:['דו-קרב','Duel'],lbFab:['דירוג','Ranks'],more:['עוד','More'],
+  glossaryFab:['מילון מונחים','Glossary'],srFab:['חזרה על טעויות','Review mistakes'],certFab:['תעודת סיום','Certificate'],chatFab:['בחינה רב‑תחומית','Practice exam'],
+  bugFab:['דיווח על תקלה','Report a bug'],adminFab:['ניהול המערכת','Admin panel'],adminMsgFab:['הודעה מהמנהל','Admin message'],jumpCurFab:['לשלב הנוכחי','Current stage']};
+var _w6dkXIC={jumpCurFab:'<circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/>',
+  more:'<rect width="7" height="7" x="3" y="3" rx="1.5"/><rect width="7" height="7" x="14" y="3" rx="1.5"/><rect width="7" height="7" x="14" y="14" rx="1.5"/><rect width="7" height="7" x="3" y="14" rx="1.5"/>'};
+var _w6dkOVSEL='#stageCerem,#todayHub,#wbOv,#goalOv,#legalOv,#pwOv,#certOverlay,.daily-modal,.modal-overlay,.bug-modal,.adm-modal-overlay,.duel-config,.lang-pop,.dvo,[data-takeover]';
+function _w6dkEn(){try{return typeof _enLang==='function'&&!!_enLang()}catch(e){return false}}
+function _w6dkL(id,en){var l=_w6dkLBL[id]||[id,id];return en?l[1]:l[0]}
+function _w6dkEsc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function _w6dkSvg(id){
+  var p='';try{p=(typeof _FAB_ICONS!=='undefined'&&_FAB_ICONS&&_FAB_ICONS[id])||''}catch(e){}
+  if(!p)p=_w6dkXIC[id]||'';
+  if(!p){var b=document.getElementById(id),v=b&&b.querySelector('svg');if(v)p=v.innerHTML}
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+p+'</svg>';
+}
+/* availability = the source FAB is currently shown by the app (the jump chip uses .on instead of .hid) */
+function _w6dkHas(id){var b=document.getElementById(id);if(!b)return false;return id==='jumpCurFab'?b.classList.contains('on'):!b.classList.contains('hid')}
+function _w6dkV(id){var e=document.getElementById(id);return !!e&&!e.classList.contains('hid')}
+function _w6dkShown(e){if(!e||e.hidden||(e.style&&e.style.display==='none'))return false;var cs=getComputedStyle(e);return cs.display!=='none'&&cs.visibility!=='hidden'&&parseFloat(cs.opacity)!==0}
+/* badge mirror: read whatever badge/dot elements the FAB carries (any patch's), never their exact markup: every shown
+   non-SVG descendant with a numeric text is a count (0 = none), an empty shown leaf is a dot, text labels are ignored */
+function _w6dkBadge(id){
+  var o={n:'',d:false},b=document.getElementById(id);if(!b)return o;
+  var els=b.querySelectorAll('*');
+  for(var i=0;i<els.length;i++){
+    var e=els[i];if(e.closest('svg')||!_w6dkShown(e))continue;
+    var t=String(e.textContent||'').replace(/\s+/g,'');
+    if(!t){if(!e.children.length)o.d=true}else if(/^\d+$/.test(t)){if(+t>0)o.n=(+t>99)?'99+':String(+t)}
+  }
+  if(id==='adminMsgFab'&&_w6dkHas(id))o.d=true;/* an unread message is the whole point of that button */
+  if(o.n)o.d=false;
+  return o;
+}
+function _w6dkOverlay(){
+  try{if(document.fullscreenElement||document.webkitFullscreenElement)return true}catch(e){}
+  var l=document.querySelectorAll(_w6dkOVSEL),i,e;
+  for(i=0;i<l.length;i++){e=l[i];if(e.classList.contains('hid')||e.classList.contains('dvo-out'))continue;if(e.getClientRects().length&&_w6dkShown(e))return true}
+  /* generic: any fixed, interactive, (near) full-viewport layer at modal height */
+  var W=innerWidth,H=innerHeight,k=document.body?document.body.children:[];
+  for(i=0;i<k.length;i++){
+    e=k[i];if(e.id==='w6dkDock'||e.id==='w6dkSheet'||/^(SCRIPT|STYLE|LINK|TEMPLATE|NOSCRIPT)$/.test(e.tagName)||e.classList.contains('hid'))continue;
+    var r=e.getBoundingClientRect();if(r.width<W*.9||r.height<H*.8)continue;/* geometry first: computed style only for viewport-sized layers */
+    var cs=getComputedStyle(e);
+    if(cs.position!=='fixed'||cs.display==='none'||cs.visibility==='hidden'||cs.pointerEvents==='none'||parseFloat(cs.opacity)<.05||(parseInt(cs.zIndex,10)||0)<190)continue;
+    return true;
+  }
+  return false;
+}
+function _w6dkMeasure(){var vv=window.visualViewport,w=innerWidth,h=Math.max(innerHeight,vv?vv.height:0);if(w!==_w6dkS.maxW){_w6dkS.maxW=w;_w6dkS.maxH=h}else if(h>_w6dkS.maxH)_w6dkS.maxH=h}
+function _w6dkKb(){
+  var a=document.activeElement;if(!a||a===document.body)return false;var t=a.tagName;
+  if(!(a.isContentEditable||t==='TEXTAREA'||t==='SELECT'||(t==='INPUT'&&!/^(checkbox|radio|button|submit|reset|range|color|file|image|hidden)$/i.test(a.type||''))))return false;
+  var vv=window.visualViewport,h=vv?vv.height:innerHeight;return (_w6dkS.maxH-h)>120;
+}
+function _w6dkModel(){
+  var mob=!!(_w6dkS.mq&&_w6dkS.mq.matches),en=_w6dkEn();
+  var inApp=['todayFab','dailyFab','lbFab','glossaryFab','bugFab','chatFab','duelFab'].some(_w6dkHas);
+  var on=mob&&inApp&&!_w6dkV('ws')&&!_w6dkV('adv')&&!_w6dkV('duelView')&&!_w6dkV('pendingView');
+  var m={on:on,show:false,en:en,w:innerWidth,items:[],more:[],ma:false,md:false,open:_w6dkS.open};
+  if(!on){_w6dkS.pin={};return m}
+  m.show=!_w6dkOverlay()&&!_w6dkKb();
+  /* primary slots are sticky for the in-app session: e.g. showLeaderboard() hides 🏆 while the board is open (and it stays
+     hidden on the profile until the next map paint) — the Ranks tab must not vanish under the user's thumb */
+  _w6dkPRI.forEach(function(id){if(_w6dkHas(id))_w6dkS.pin[id]=1});
+  var pri=_w6dkPRI.filter(function(id){return !!_w6dkS.pin[id]}),fill=_w6dkFILL.filter(function(id){return _w6dkHas(id)&&pri.indexOf(id)<0});
+  while(pri.length<4&&fill.length)pri.push(fill.shift());
+  var dp=document.getElementById('duelPanel');
+  var act={lbFab:_w6dkV('lbv'),duelFab:!!(dp&&dp.classList.contains('open')),glossaryFab:_w6dkV('glv'),chatFab:_w6dkV('miv'),todayFab:!!document.getElementById('todayHub'),dailyFab:_w6dkV('dailyModal')};
+  pri.forEach(function(id){var b=_w6dkBadge(id);m.items.push({id:id,n:b.n,d:b.d,a:!!act[id]})});
+  /* More carries a dot only for "new" signals (e.g. an unread admin message) — a standing count such as the review
+     backlog is shown on its own tile instead of turning More into a permanent red dot */
+  _w6dkMORE.forEach(function(id){if(pri.indexOf(id)>=0||!_w6dkHas(id))return;var b=_w6dkBadge(id);m.more.push({id:id,n:b.n,d:b.d,a:!!act[id]});if(b.d)m.md=true;if(act[id])m.ma=true});
+  return m;
+}
+function _w6dkBdg(it){return it.n?'<span class="w6dk-bd'+(it.id==='duelFab'?' w6dk-bd-a':'')+'" aria-hidden="true">'+_w6dkEsc(it.n)+'</span>':(it.d?'<span class="w6dk-dot" aria-hidden="true"></span>':'')}
+function _w6dkAria(it,en){var l=_w6dkL(it.id,en);if(it.n)l+=' ('+it.n+')';else if(it.d)l+=en?' (new)':' (חדש)';return _w6dkEsc(l)}
+function _w6dkBtn(it,en){
+  var more=it.id==='more';
+  return '<button type="button" class="w6dk-it'+(it.a?' w6dk-act':'')+'" data-w6dk="'+it.id+'" aria-label="'+_w6dkAria(it,en)+'"'
+    +(more?' aria-haspopup="dialog" aria-controls="w6dkSheet" aria-expanded="'+(_w6dkS.open?'true':'false')+'"':(it.a?' aria-current="page"':''))
+    +'><span class="w6dk-ic">'+_w6dkSvg(it.id)+_w6dkBdg(it)+'</span><span class="w6dk-lb">'+_w6dkEsc(_w6dkL(it.id,en))+'</span></button>';
+}
+function _w6dkFill(m){
+  var sh=document.getElementById('w6dkSheet');if(!sh)return;
+  var t=sh.querySelector('.w6dk-sht'),g=sh.querySelector('.w6dk-grid');if(!t||!g)return;
+  t.textContent=m.en?'More tools':'כלים נוספים';
+  var x=sh.querySelector('.w6dk-x');if(x)x.setAttribute('aria-label',m.en?'Close':'סגירה');
+  var key=JSON.stringify([m.en,m.more]);if(g._w6dkK===key)return;
+  var a=document.activeElement,fid=(a&&g.contains(a))?a.getAttribute('data-w6dk'):null,h='';
+  m.more.forEach(function(it){h+='<button type="button" class="w6dk-tile'+(it.a?' w6dk-act':'')+'" data-w6dk="'+it.id+'" aria-label="'+_w6dkAria(it,m.en)+'"><span class="w6dk-ti">'+_w6dkSvg(it.id)+_w6dkBdg(it)+'</span><span class="w6dk-tl">'+_w6dkEsc(_w6dkL(it.id,m.en))+'</span></button>'});
+  g.innerHTML=h;g._w6dkK=key;
+  if(fid){var nf=g.querySelector('[data-w6dk="'+fid+'"]')||g.querySelector('.w6dk-tile');if(nf)try{nf.focus({preventScroll:true})}catch(e){}}
+}
+function _w6dkChipX(dock){
+  var its=dock.querySelectorAll('.w6dk-it');if(its.length<2)return;
+  var a=its[its.length-1].getBoundingClientRect(),b=its[its.length-2].getBoundingClientRect();
+  document.documentElement.style.setProperty('--w6dk-sx',Math.round((a.left+a.width/2+b.left+b.width/2)/2)+'px');
+}
+function _w6dkSync(){
+  _w6dkS.raf=0;
+  var dock=document.getElementById('w6dkDock'),sh=document.getElementById('w6dkSheet');if(!dock||!sh)return;
+  try{
+    _w6dkWatch();_w6dkMeasure();
+    var m=_w6dkModel();
+    if(_w6dkS.open&&(!m.on||!m.show||!m.more.length)){_w6dkClose(false);m.open=false}
+    var vis=m.on&&m.show,root=document.documentElement,rc=root.classList;
+    /* <html> flags are re-asserted every pass (only written when they differ), so nothing can strand the page */
+    if(!rc.contains('w6dk-ready'))rc.add('w6dk-ready');if(rc.contains('w6dk-on')!==m.on)rc.toggle('w6dk-on',m.on);if(rc.contains('w6dk-show')!==vis)rc.toggle('w6dk-show',vis);
+    var sig=JSON.stringify(m);if(sig===_w6dkS.sig)return;_w6dkS.sig=sig;
+    dock.classList.toggle('w6dk-show',vis);dock.classList.toggle('w6dk-solid',vis&&_w6dkS.open);dock.setAttribute('aria-hidden',vis?'false':'true');
+    if(vis)dock.removeAttribute('inert');else dock.setAttribute('inert','');
+    var dir=m.en?'ltr':'rtl';if(dock.getAttribute('dir')!==dir){dock.setAttribute('dir',dir);sh.setAttribute('dir',dir)}
+    dock.setAttribute('aria-label',m.en?'Main navigation':'ניווט ראשי');
+    if(m.on){
+      var items=m.items.slice();if(m.more.length)items.push({id:'more',n:'',d:m.md,a:m.ma||_w6dkS.open});
+      var row=JSON.stringify([m.en,items,_w6dkS.open]);
+      if(row!==_w6dkS.row){
+        var r=dock.querySelector('.w6dk-row'),a=document.activeElement,fid=(a&&dock.contains(a))?a.getAttribute('data-w6dk'):null,h='';
+        items.forEach(function(it){h+=_w6dkBtn(it,m.en)});
+        r.innerHTML=h;_w6dkS.row=row;
+        if(fid){var nf=r.querySelector('[data-w6dk="'+fid+'"]');if(nf)try{nf.focus({preventScroll:true})}catch(e){}}
+      }
+      if(_w6dkS.open)_w6dkFill(m);
+      if(vis)_w6dkChipX(dock);
+    }
+  }catch(e){}
+}
+function _w6dkQ(){if(!_w6dkS.ready||_w6dkS.raf)return;_w6dkS.raf=(window.requestAnimationFrame||setTimeout)(_w6dkSync)}
+/* observe (read-only): <body> child list, class/style of the views, and each FAB's whole subtree (badge text/dots of any
+   patch); (re)attached for nodes created later. Writes go only to the dock, the sheet and <html> — none of them observed. */
+function _w6dkWatch(){
+  if(typeof MutationObserver==='undefined')return;
+  if(!_w6dkS.mo){_w6dkS.mo=new MutationObserver(function(){_w6dkQ()});_w6dkS.mo.observe(document.body,{childList:true})}
+  var t=document.querySelectorAll('button[id$="Fab"],#ws,#mv,#sv,#pv,#glv,#lbv,#adv,#miv,#ab,#duelView,#pendingView,#dailyModal,#duelConfig,#duelPanel');
+  for(var i=0;i<t.length;i++){var e=t[i];if(_w6dkS.seen){if(_w6dkS.seen.has(e))continue;_w6dkS.seen.add(e)}_w6dkS.mo.observe(e,/Fab$/.test(e.id)?{attributes:true,attributeFilter:['class','style','hidden'],subtree:true,childList:true,characterData:true}:{attributes:true,attributeFilter:['class','style','hidden']})}
+}
+function _w6dkBuzz(){try{if(navigator.vibrate&&(!navigator.userActivation||navigator.userActivation.isActive))navigator.vibrate(8)}catch(e){}}
+function _w6dkFire(id){var f=document.getElementById(id);if(f)f.click();_w6dkQ()}
+function _w6dkOpen(){
+  var sh=document.getElementById('w6dkSheet');if(!sh)return;
+  var m=_w6dkModel();if(!m.on||!m.more.length)return;
+  _w6dkS.open=true;m.open=true;_w6dkFill(m);
+  sh.removeAttribute('inert');sh.setAttribute('aria-hidden','false');sh.classList.add('w6dk-open');
+  _w6dkS.sig='';_w6dkSync();
+  var f=sh.querySelector('.w6dk-tile')||sh.querySelector('.w6dk-sh');
+  try{f.focus({preventScroll:true})}catch(e){}/* focus moves in first, so the modal stack (below) keeps it there */
+  _w6dkStack();
+  setTimeout(function(){try{var a=document.activeElement;if(_w6dkS.open&&f&&!(a&&sh.contains(a)))f.focus({preventScroll:true})}catch(e){}},30);
+}
+function _w6dkClose(restore){
+  var sh=document.getElementById('w6dkSheet'),was=_w6dkS.open;_w6dkS.open=false;
+  if(sh){sh.classList.remove('w6dk-open');sh.setAttribute('aria-hidden','true');var p=sh.querySelector('.w6dk-sh');if(p){p.style.transform='';p.style.transition=''}
+    var a=document.activeElement;if(a&&sh.contains(a)&&!restore)try{a.blur()}catch(e){}
+    sh.setAttribute('inert','')}
+  if(restore){var mb=document.querySelector('#w6dkDock [data-w6dk="more"]');if(mb)try{mb.focus({preventScroll:true})}catch(e){}}
+  if(was)_w6dkStack();/* release the stack's scroll lock BEFORE a tile's action runs (e.g. jump-to-current scrolls) */
+  _w6dkQ();
+}
+/* W6 modal stack (_w6sk*, when present): the sheet registers as a stack overlay — html scroll lock, z 400+10×depth, hook
+   banners / toasts wait, and the stack's Escape (top-most only) closes it through _w6dkClose instead of removing the node */
+function _w6dkStack(){try{if(typeof _w6skSync==='function'){_w6skSync();if(typeof _w6skPump==='function')_w6skPump()}}catch(e){}}
+function _w6dkStackHook(){
+  try{if(typeof _W6SK_OV==='string'&&_W6SK_OV.indexOf('#w6dkSheet')<0)_W6SK_OV+=',#w6dkSheet.w6dk-open'}catch(e){}
+  try{var c=window._w6skClose;if(typeof c==='function'&&!c._w6dkW){var w=function(el){if(el&&el.id==='w6dkSheet'){_w6dkClose(true);return}return c.apply(this,arguments)};w._w6dkW=1;window._w6skClose=w}}catch(e){}
+}
+function _w6dkOnDock(e){
+  var b=e.target&&e.target.closest?e.target.closest('[data-w6dk]'):null;if(!b)return;
+  var id=b.getAttribute('data-w6dk');_w6dkBuzz();
+  if(id==='more'){if(_w6dkS.open)_w6dkClose(true);else _w6dkOpen();return}
+  if(_w6dkS.open)_w6dkClose(false);
+  _w6dkFire(id);
+}
+function _w6dkOnSheet(e){
+  var t=e.target;if(!t||!t.closest)return;
+  if(t.closest('.w6dk-bk')||t.closest('.w6dk-x')){_w6dkClose(true);return}
+  var b=t.closest('[data-w6dk]');if(!b)return;
+  var id=b.getAttribute('data-w6dk');_w6dkBuzz();_w6dkClose(false);_w6dkFire(id);
+}
+function _w6dkKey(e){
+  if(!_w6dkS.open)return;
+  if(e.key==='Escape'||e.key==='Esc'){e.preventDefault();e.stopPropagation();_w6dkClose(true);return}
+  if(e.key==='Tab'){
+    var sh=document.getElementById('w6dkSheet'),f=[].slice.call(sh.querySelectorAll('.w6dk-x,.w6dk-tile'));if(!f.length)return;
+    var i=f.indexOf(document.activeElement);
+    if(e.shiftKey){if(i<=0){e.preventDefault();f[f.length-1].focus()}}else if(i<0||i===f.length-1){e.preventDefault();f[0].focus()}
+  }
+}
+/* swipe the handle down to dismiss */
+function _w6dkGrab(sh){
+  var p=sh.querySelector('.w6dk-sh'),g=sh.querySelector('.w6dk-grab');if(!p||!g||!window.PointerEvent)return;
+  var y0=null,dy=0;
+  g.addEventListener('pointerdown',function(e){y0=e.clientY;dy=0;try{g.setPointerCapture(e.pointerId)}catch(x){}p.style.transition='none'});
+  g.addEventListener('pointermove',function(e){if(y0===null)return;dy=Math.max(0,e.clientY-y0);p.style.transform=dy?'translateY('+dy+'px)':''});
+  var end=function(){if(y0===null)return;y0=null;p.style.transition='';if(dy>60)_w6dkClose(true);else p.style.transform=''};
+  g.addEventListener('pointerup',end);g.addEventListener('pointercancel',end);
+}
+function _w6dkWrap(){
+  if(_w6dkS.wrapped)return;_w6dkS.wrapped=true;
+  ['updateDailyFab','updateSrFab','updateCertFab','updateAdminMsgFab','_updateDuelFab','applyLanguage'].forEach(function(n){
+    try{var f=window[n];if(typeof f!=='function'||f._w6dkW)return;var w=function(){try{return f.apply(this,arguments)}finally{_w6dkQ()}};w._w6dkW=1;window[n]=w}catch(e){}
+  });
+  _w6dkStackHook();
+}
+function _w6dkBoot(){
+  if(_w6dkS.ready||!document.body||document.getElementById('w6dkDock'))return;
+  try{
+    var d=document.createElement('nav');d.id='w6dkDock';d.setAttribute('aria-hidden','true');d.setAttribute('inert','');d.setAttribute('dir',_w6dkEn()?'ltr':'rtl');
+    d.innerHTML='<div class="w6dk-row"></div>';
+    var s=document.createElement('div');s.id='w6dkSheet';s.setAttribute('aria-hidden','true');s.setAttribute('inert','');s.setAttribute('dir',_w6dkEn()?'ltr':'rtl');s.setAttribute('role','dialog');s.setAttribute('aria-modal','true');s.setAttribute('aria-labelledby','w6dkSheetT');
+    s.innerHTML='<div class="w6dk-bk"></div><div class="w6dk-sh" tabindex="-1"><div class="w6dk-grab" aria-hidden="true"><span class="w6dk-hdl"></span></div><div class="w6dk-shh"><div class="w6dk-sht" id="w6dkSheetT"></div><button type="button" class="w6dk-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div><div class="w6dk-grid"></div></div>';
+    document.body.appendChild(d);document.body.appendChild(s);
+    d.addEventListener('click',_w6dkOnDock);s.addEventListener('click',_w6dkOnSheet);_w6dkGrab(s);
+    window.addEventListener('keydown',_w6dkKey,true);
+    _w6dkS.mq=window.matchMedia?matchMedia('(max-width: 640px)'):null;
+    if(_w6dkS.mq){if(_w6dkS.mq.addEventListener)_w6dkS.mq.addEventListener('change',_w6dkQ);else if(_w6dkS.mq.addListener)_w6dkS.mq.addListener(_w6dkQ)}
+    window.addEventListener('resize',_w6dkQ,{passive:true});window.addEventListener('orientationchange',_w6dkQ,{passive:true});
+    if(window.visualViewport)window.visualViewport.addEventListener('resize',_w6dkQ,{passive:true});
+    document.addEventListener('focusin',_w6dkQ,true);document.addEventListener('focusout',function(){setTimeout(_w6dkQ,60)},true);
+    document.addEventListener('fullscreenchange',_w6dkQ);document.addEventListener('webkitfullscreenchange',_w6dkQ);
+    _w6dkWrap();
+    _w6dkS.ready=true;
+    document.documentElement.classList.add('w6dk-ready');
+    _w6dkQ();
+  }catch(e){}
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',_w6dkBoot);else setTimeout(_w6dkBoot,0);
+/* ===== /W6 dock ===== */
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
