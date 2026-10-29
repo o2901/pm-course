@@ -4031,12 +4031,12 @@ for(i=0;i<3;i++){b=_bl[i];x=(b.bx+Math.sin(t*b.sp+b.ph)*.1)*_W;y=(b.by+Math.cos(
 function _loop(){if(!_run)return;_tm=setTimeout(function(){_raf=requestAnimationFrame(_loop)},33);try{_draw()}catch(e){_run=false}}
 function _wsEl(){return document.getElementById('ws')}
 function _visWs(){var w=_wsEl();return!!(w&&!w.classList.contains('hid'))}
-function _start(){if(_run||_rm()||document.hidden||!_visWs())return;if(!_mk())return;_readCols();_size();_run=true;var w=_wsEl();if(w)w.classList.add('aur-on');requestAnimationFrame(function(){if(_cv&&_run)_cv.classList.add('on')});_loop()}
-function _stop(){_run=false;if(_tm){clearTimeout(_tm);_tm=0}if(_raf){cancelAnimationFrame(_raf);_raf=0}if(_cv){_cv.classList.remove('on');try{_cx.clearRect(0,0,_W,_H)}catch(e){}}var w=_wsEl();if(w)w.classList.remove('aur-on')}
+function _start(){if(_run||_rm()||document.hidden||!_visWs())return;if(!_mk())return;_readCols();_size();_run=true;var w=_wsEl();if(w&&!w.classList.contains('aur-on'))w.classList.add('aur-on');requestAnimationFrame(function(){if(_cv&&_run)_cv.classList.add('on')});_loop()}
+function _stop(){_run=false;if(_tm){clearTimeout(_tm);_tm=0}if(_raf){cancelAnimationFrame(_raf);_raf=0}if(_cv){_cv.classList.remove('on');try{_cx.clearRect(0,0,_W,_H)}catch(e){}}var w=_wsEl();if(w&&w.classList.contains('aur-on'))w.classList.remove('aur-on')}/* guarded: the #ws class observer calls _stop, and an unguarded remove() queues a mutation record even when the class is absent — infinite loop that froze the page right after login */
 function _esc(x){return x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function _words(el,base,step){try{if(!el||el.dataset.w4s)return;var txt=el.textContent;if(!txt||!txt.trim())return;var parts=txt.split(/(\s+)/),h='',n=0,k,w;for(k=0;k<parts.length;k++){w=parts[k];if(!w)continue;if(!w.trim()){h+=w;continue}h+='<span class="ws-w" style="animation-delay:'+(base+n*step)+'ms">'+_esc(w)+'</span>';n++}if(!n)return;el.dataset.w4s='1';el.classList.add('ws-split');el.classList.add('ws-splitting');el.innerHTML=h;setTimeout(function(){try{if(el.querySelector('.ws-w'))el.textContent=txt;el.classList.remove('ws-splitting');delete el.dataset.w4s}catch(e){}},base+n*step+640)}catch(e){}}
 function _entrance(){if(_rm())return;var w=_wsEl();if(!w||w.classList.contains('hid'))return;_words(w.querySelector('h1'),40,95);_words(w.querySelector('.sub'),300,70)}
-function _sync(){var v=_visWs();if(v&&!_wasWs){try{_entrance()}catch(e){}}_wasWs=v;if(document.hidden||!v||_rm()){_stop()}else{_start()}}
+function _sync(){var v=_visWs();if(v&&!_wasWs){try{_entrance()}catch(e){}}_wasWs=v;if(document.hidden||!v||_rm()){if(_run||(_wsEl()&&_wsEl().classList.contains('aur-on')))_stop()}else{_start()}}
 function _boot(){
 try{var w=_wsEl();if(w)new MutationObserver(_sync).observe(w,{attributes:true,attributeFilter:['class']})}catch(e){}
 try{new MutationObserver(_readCols).observe(document.documentElement,{attributes:true,attributeFilter:['data-acc']})}catch(e){}
@@ -7933,7 +7933,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.9.0';
+const APP_VERSION='1.9.1';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
