@@ -1,0 +1,292 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:30.160
+Welcome to this explainer. Today, we're diving into why the absolute best product managers out there, you know, the ones who always seem to crush it, don't just set goals. Instead, they literally engineer daily operational machines to guarantee their success. If you've ever felt like your product metrics are just completely stuck, no matter how incredibly hard you're pushing, well, you're exactly in the right place. So, let's just jump right in. OK, check out this number, 37.8X. The math behind tiny changes is just a little bit different.
+
+2
+00:00:30.160 --> 00:00:36.160
+wildly fascinating. If you can design a system that makes you or your product just 1% better
+
+3
+00:00:36.160 --> 00:00:40.900
+every single day, this staggering number is exactly how much your improvement compounds
+
+4
+00:00:40.900 --> 00:00:47.540
+over a single year. Seriously, almost 38 times better. It's kind of imperceptible on a random
+
+5
+00:00:47.540 --> 00:00:53.540
+Tuesday, right? But by December, it's completely transformational. So section one is all about
+
+6
+00:00:53.540 --> 00:00:58.480
+choosing systems over static goals and why it's time for us to finally ditch the slogans.
+
+7
+00:00:59.400 --> 00:01:06.600
+You see, hitting that kind of exponential growth, it requires a pretty massive mental shift in how we approach our daily work as product leaders.
+
+8
+00:01:07.020 --> 00:01:11.460
+We're all constantly surrounded by these massive, frankly daunting objectives.
+
+9
+00:01:11.980 --> 00:01:19.700
+But to actually move the needle, we have to stop relying on sheer motivation and start looking closely at the mechanics of our day-to-day operations.
+
+10
+00:01:20.600 --> 00:01:21.360
+I mean, think about it.
+
+11
+00:01:21.740 --> 00:01:25.340
+Every competitor in your space has the exact same massive targets, right?
+
+12
+00:01:25.340 --> 00:01:29.900
+So the goal itself absolutely cannot be the thing that guarantees victory.
+
+13
+00:01:30.520 --> 00:01:36.240
+It's the ones who stop obsessing over the final outcome and instead build rock-solid daily systems.
+
+14
+00:01:36.900 --> 00:01:39.480
+They are the ones who actually achieve those grand ambitions.
+
+15
+00:01:40.100 --> 00:01:42.530
+Now, this is absolutely crucial.
+
+16
+00:01:42.890 --> 00:01:49.210
+Without a reliable daily system, you're going to inevitably hit this frustrating wall known as the plateau of latent potential.
+
+17
+00:01:49.910 --> 00:01:50.350
+Picture this.
+
+18
+00:01:50.630 --> 00:01:57.790
+It's like an ice cube sitting in a freezing room that is slowly, painstakingly warming up, just degree by degree.
+
+19
+00:01:58.170 --> 00:02:01.230
+For a really long time, absolutely nothing happens.
+
+20
+00:02:01.230 --> 00:02:04.530
+You're putting in all this work, but you're seeing literally zero results.
+
+21
+00:02:05.390 --> 00:02:09.690
+A good system is what keeps you from throwing in the towel during that agonizing phase.
+
+22
+00:02:10.110 --> 00:02:13.810
+It pushes you right up until that breakthrough moment finally melts the ice.
+
+23
+00:02:14.830 --> 00:02:18.970
+The four-stage habit loop, or as I like to call it, the architecture of behavior.
+
+24
+00:02:19.270 --> 00:02:24.670
+So what does this actually look like? How do we construct these systems so we actually cross that breakthrough line?
+
+25
+00:02:25.390 --> 00:02:35.030
+Well, instead of just white-knuckling it with discipline, we have to look at the underlying machinery driving almost everything our users, and honestly, our teams, do on total autopilot.
+
+26
+00:02:35.810 --> 00:02:39.670
+Every single automatic action we take runs through four specific stages.
+
+27
+00:02:40.250 --> 00:02:47.850
+First, there's a trigger to act, then an urge or desire, third is the actual friction of doing the task, and finally, the payoff.
+
+28
+00:02:48.450 --> 00:02:49.510
+The huge takeaway here?
+
+29
+00:02:49.830 --> 00:02:52.970
+If we can manipulate that trigger to make it super obvious,
+
+30
+00:02:53.450 --> 00:02:55.170
+pump up the urge to make it attractive,
+
+31
+00:02:55.690 --> 00:02:58.050
+reduce the friction to make it ridiculously easy,
+
+32
+00:02:58.230 --> 00:03:00.570
+and ensure the payoff is instantly satisfying,
+
+33
+00:03:00.990 --> 00:03:03.050
+well, we entirely control the behavior.
+
+34
+00:03:03.430 --> 00:03:04.690
+It's like having a master key.
+
+35
+00:03:05.280 --> 00:03:07.660
+Let's see this in the real world in Section 3,
+
+36
+00:03:08.040 --> 00:03:08.880
+Velox in Action,
+
+37
+00:03:09.360 --> 00:03:12.300
+focusing on a really cool dual application of this idea.
+
+38
+00:03:12.680 --> 00:03:15.480
+Meet Michelle, a PM at a company called Velox.
+
+39
+00:03:16.060 --> 00:03:21.380
+She was staring down this stubborn, static retention metric that just would not budge, no matter what she tried.
+
+40
+00:03:22.310 --> 00:03:29.090
+Now, instead of just, you know, shouting the improve retention slogan louder in her meetings, Michal completely flipped her strategy.
+
+41
+00:03:29.690 --> 00:03:31.990
+She decided to focus strictly on habit engineering.
+
+42
+00:03:32.550 --> 00:03:37.790
+She realized that just crossing her fingers and hoping users would remember to come back was a total losing game.
+
+43
+00:03:37.790 --> 00:03:40.050
+She didn't need a quarterly cheerleading session.
+
+44
+00:03:40.470 --> 00:03:42.690
+She needed a reliable daily engine.
+
+45
+00:03:43.680 --> 00:03:44.800
+Check out how brilliant this is.
+
+46
+00:03:44.800 --> 00:03:48.860
+she deployed this four-stage loop across two fronts at the exact same time.
+
+47
+00:03:49.520 --> 00:03:53.820
+Over on the product side, she made the trigger obvious using smart push notifications.
+
+48
+00:03:54.420 --> 00:03:56.440
+She created that craving with street counters,
+
+49
+00:03:57.020 --> 00:04:00.400
+made the response incredibly easy by introducing one-tap completions,
+
+50
+00:04:00.700 --> 00:04:04.040
+and added these fun, satisfying celebration animations for the payoff.
+
+51
+00:04:04.580 --> 00:04:05.780
+But wait, she didn't stop there.
+
+52
+00:04:06.160 --> 00:04:09.180
+At the very same time, she engineered her own team's habits.
+
+53
+00:04:09.840 --> 00:04:11.260
+She anchored a brand new routine,
+
+54
+00:04:11.260 --> 00:04:14.680
+where they'd read a daily user quote right after their existing morning stand-up,
+
+55
+00:04:14.800 --> 00:04:21.680
+it's habit stacking at its finest. And the results? Absolutely massive. By simply stripping
+
+56
+00:04:21.680 --> 00:04:26.400
+away the friction and injecting some immediate satisfaction, her product's daily adoption
+
+57
+00:04:26.400 --> 00:04:33.740
+surged by 40%. 40%! And internally, without ever giving a single grand speech, her team just
+
+58
+00:04:33.740 --> 00:04:38.720
+naturally transformed into this incredibly customer-centric, data-driven machine.
+
+59
+00:04:39.120 --> 00:04:44.560
+Which brings us to our final part, Section 4, Engineer Your Next Step, which is all about the
+
+60
+00:04:44.560 --> 00:04:51.190
+identity shift. Here is what's absolutely vital to understand. Mikal didn't score these massive
+
+61
+00:04:51.190 --> 00:04:57.130
+wins by just working 80-hour weeks or using sheer willpower. No, she committed to a fundamental shift
+
+62
+00:04:57.130 --> 00:05:02.710
+in how she saw herself. She literally adopted the identity of a PM who engineers small,
+
+63
+00:05:02.710 --> 00:05:07.030
+automatic improvements, rather than one who just stresses out over lagging outcomes.
+
+64
+00:05:07.790 --> 00:05:11.690
+We've really only just scratched the surface here of how tiny daily shifts,
+
+65
+00:05:11.690 --> 00:05:17.150
+when applied through a solid system can completely reinvent your product and honestly your entire
+
+66
+00:05:17.150 --> 00:05:22.690
+career from harnessing that magical one percent compounding rule to using the four-stage loop to
+
+67
+00:05:22.690 --> 00:05:28.270
+design entirely new user behaviors guys this is the foundational playbook for a modern product
+
+68
+00:05:28.270 --> 00:05:34.590
+manager so i'm going to leave you with this one question to chew on how will you engineer your own
+
+69
+00:05:34.590 --> 00:05:39.890
+one percent improvement today seriously think about it now there are some really great advanced
+
+70
+00:05:39.890 --> 00:05:44.390
+tactics like identity design and friction audits waiting for you in the reading right below. I
+
+71
+00:05:44.390 --> 00:05:49.270
+highly, highly encourage you to dive straight into this upcoming stage of the course and discover
+
+72
+00:05:49.270 --> 00:05:54.710
+how to design your very first true habit loop. Go ahead, enjoy the read, and let's start engineering.
+
