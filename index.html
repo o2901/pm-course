@@ -7210,8 +7210,9 @@ function _iconizeFabs(){
 }
 function _ensureTodayFab(){
   try{
-    if($('todayFab'))return;
-    var ref=$('dailyFab');if(!ref||!ref.parentNode)return;
+    var ref=$('dailyFab');var tf=$('todayFab');
+    if(tf){if(ref){var h=ref.classList.contains('hid');if(tf.classList.contains('hid')!==h)tf.classList.toggle('hid',h)}return}
+    if(!ref||!ref.parentNode)return;
     var b=document.createElement('button');b.id='todayFab';b.title=_enLang()?'My day — streak, quests & daily game':'היום שלי — רצף, משימות ומשחק יומי';
     b.className=ref.className;b.onclick=showTodayHub;
     ref.parentNode.insertBefore(b,ref);
@@ -8134,7 +8135,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.9.4';
+const APP_VERSION='1.9.5';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -8380,7 +8381,7 @@ function chatSearch(query){
 const _origMp2=mp;
 mp=function(){_origMp2();$('chatFab').classList.remove('hid');$('dailyFab').classList.remove('hid');$('bugFab').classList.remove('hid');if($('glossaryFab'))$('glossaryFab').classList.remove('hid');if($('lbFab'))$('lbFab').classList.remove('hid');if($('adminFab'))$('adminFab').classList.toggle('hid',!G.isAdmin);updateSrFab();updateAdminMsgFab();updateCertFab()};
 const _origGoHome2=goHome;
-goHome=function(){_origGoHome2();$('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');$('srFab').classList.add('hid');$('adminMsgFab').classList.add('hid');$('certFab').classList.add('hid');$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');if($('lbFab'))$('lbFab').classList.add('hid');if($('adminFab'))$('adminFab').classList.add('hid');const dm=$('dailyModal');if(dm&&!dm.classList.contains('hid')){dm.classList.add('hid');dm.innerHTML=''}};
+goHome=function(){_origGoHome2();$('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');if($('todayFab'))$('todayFab').classList.add('hid');$('srFab').classList.add('hid');$('adminMsgFab').classList.add('hid');$('certFab').classList.add('hid');$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');if($('lbFab'))$('lbFab').classList.add('hid');if($('adminFab'))$('adminFab').classList.add('hid');const dm=$('dailyModal');if(dm&&!dm.classList.contains('hid')){dm.classList.add('hid');dm.innerHTML=''}};
 
 // ========== FEATURE: NEW-VERSION REFRESH PROMPT ==========
 // The app is a single-file SPA that's opened once and left open. Without this, a user who never
@@ -8913,7 +8914,7 @@ $('ws').classList.add('hid');$('mv').classList.add('hid');$('sv').classList.add(
 $('adv').classList.remove('hid');$('hd').classList.remove('hid');$('pb').classList.remove('hid');
 // Show admin indicator instead of user data in header
 const tb=$('tb');if(tb)tb.innerHTML='<div style="font-size:.7rem;color:var(--a);white-space:nowrap">🔧 מנהל מערכת</div>';
-$('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');$('srFab').classList.add('hid');$('adminMsgFab').classList.add('hid');$('certFab').classList.add('hid');$('duelFab').classList.add('hid');$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');if($('lbFab'))$('lbFab').classList.add('hid');if($('adminFab'))$('adminFab').classList.add('hid');
+$('chatFab').classList.add('hid');$('dailyFab').classList.add('hid');if($('todayFab'))$('todayFab').classList.add('hid');$('srFab').classList.add('hid');$('adminMsgFab').classList.add('hid');$('certFab').classList.add('hid');$('duelFab').classList.add('hid');$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');if($('lbFab'))$('lbFab').classList.add('hid');if($('adminFab'))$('adminFab').classList.add('hid');
 try{_closeDuelPanel()}catch(e){}renderAdminGate();window.scrollTo(0,0);
 }
 
@@ -10923,7 +10924,7 @@ function _enterDuelGame(duelData){
   _duelQuestions=JSON.parse(duelData.questionsJSON||'[]');
   _duelQIdx=0;_duelMyScore=0;_duelId=duelData.duelId;
   ['ws','mv','sv','hd','pb','ib','miv','glv','pv','lbv','pendingView'].forEach(v=>{if($(v))$(v).classList.add('hid')});
-  _closeDuelPanel();$('duelFab').classList.add('hid');$('srFab').classList.add('hid');$('dailyFab').classList.add('hid');$('chatFab').classList.add('hid');
+  _closeDuelPanel();$('duelFab').classList.add('hid');$('srFab').classList.add('hid');$('dailyFab').classList.add('hid');if($('todayFab'))$('todayFab').classList.add('hid');$('chatFab').classList.add('hid');
   if($('adminMsgFab'))$('adminMsgFab').classList.add('hid');if($('certFab'))$('certFab').classList.add('hid');if($('bugFab'))$('bugFab').classList.add('hid');if($('glossaryFab'))$('glossaryFab').classList.add('hid');if($('lbFab'))$('lbFab').classList.add('hid');if($('adminFab'))$('adminFab').classList.add('hid');
   $('duelView').classList.remove('hid');
   _duelPost('duelReady',{duelId:_duelId,userName:G.userName}).then(d=>{
