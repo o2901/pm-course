@@ -932,7 +932,61 @@ button:focus-visible,.opt:focus-visible,.tab:focus-visible,.qq .opt:focus-visibl
 button:active:not(:disabled){transform:scale(.97)}
 .bp:active,.bs:active,.btn-go:active{transform:scale(.97)!important}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* ===== wave 2: the visible layer ===== */
+/* ambience: film grain + one quiet aurora, bokeh retired */
+.particles{display:none!important}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+.welcome::before{animation:none;background:radial-gradient(640px 440px at 50% -10%,rgba(139,133,255,.17),transparent 66%),radial-gradient(540px 400px at 84% 30%,rgba(232,196,92,.07),transparent 62%)}
+html[data-acc="amber"] .welcome::before{background:radial-gradient(640px 440px at 50% -10%,rgba(228,181,75,.16),transparent 66%),radial-gradient(540px 400px at 84% 30%,rgba(139,133,255,.06),transparent 62%)}
+body.light .welcome::before{opacity:.8}
+/* welcome: type + surfaces + tactile CTA, faster entrance */
+.welcome h1{letter-spacing:0;text-shadow:none;font-size:clamp(2.6rem,7vw,4.1rem);animation-duration:.5s}
+.welcome .sub{animation-duration:.5s;animation-delay:.08s}
+.ws-box{background:var(--card);border:1px solid var(--line);backdrop-filter:none;border-radius:18px;animation-duration:.5s!important;animation-delay:.12s!important}
+.ws-stat{background:var(--cardh);border:1px solid var(--line);border-radius:12px}
+.ws-feat{background:var(--cardh);border:1px solid var(--line);color:var(--t2)}
+.ws-rank{background:var(--cardh);border:1px solid var(--line)}
+.ws-rank:hover{background:var(--cardh);border-color:var(--p)}
+.btn-go{background:var(--p);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 2px 0 var(--pd),0 12px 30px rgba(0,0,0,.35);animation-delay:.18s;border-radius:16px}
+.btn-go::after{display:none}
+.btn-go:hover{transform:translateY(-2px) scale(1.01);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 3px 0 var(--pd),0 16px 36px rgba(0,0,0,.42)}
+body.light .btn-go{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 2px 0 var(--pd),0 10px 24px rgba(42,39,33,.18)}
+#nameInput,#emailInput{border-radius:12px;border:1px solid var(--line)!important;background:var(--card)!important}
+/* header + info bar: quiet surface, hairline */
+.hdr{background:rgba(16,18,24,.92);border-bottom:1px solid var(--line)}
+body.light .hdr{background:rgba(246,243,234,.95);border-bottom:1px solid var(--line)}
+.badge{background:var(--card);border:1px solid var(--line)}
+.info-bar{background:rgba(16,18,24,.88);border-bottom:1px solid var(--line)}
+body.light .info-bar{background:rgba(246,243,234,.92)}
+/* map: cards become objects, the current stage is the single loudest thing */
+.j-node{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 0 rgba(255,255,255,.03) inset}
+.j-node:hover{border-color:var(--p);transform:translateY(-2px)}
+body.light .j-node{box-shadow:none}
+.j-tag{border:1px solid var(--line)}
+/* floating buttons: one family instead of a rainbow */
+[id$="Fab"]{width:48px!important;height:48px!important;background:var(--card)!important;border:1px solid var(--line)!important;border-radius:50%!important;box-shadow:0 8px 20px rgba(0,0,0,.38)!important}
+[id$="Fab"]:hover{border-color:var(--p)!important;transform:translateY(-2px)}
+body.light [id$="Fab"]{box-shadow:0 8px 20px rgba(42,39,33,.16)!important}
+/* stage-complete ceremony */
+#stageCerem{position:fixed;inset:0;z-index:400;background:rgba(10,11,16,.93);backdrop-filter:blur(14px);display:grid;place-items:center;padding:1.5rem;direction:rtl}
+body.light #stageCerem{background:rgba(246,243,234,.95)}
+#stageCerem .cer-in{text-align:center;max-width:420px;width:100%}
+#stageCerem .cer-in>*{opacity:0;transform:translateY(12px);transition:all .32s cubic-bezier(.22,1,.36,1)}
+#stageCerem .cer-in>.on{opacity:1;transform:none}
+.cer-k{font-size:.78rem;letter-spacing:.14em;color:var(--p);font-weight:700;margin-bottom:.4rem}
+.cer-t{font-size:1.45rem;font-weight:800;margin-bottom:.9rem;color:var(--t1)}
+.cer-pts{font-size:3.4rem;font-weight:800;color:var(--p);font-variant-numeric:tabular-nums;line-height:1.1;direction:ltr}
+.cer-pts-lbl{font-size:.8rem;color:var(--t2);margin-bottom:.4rem}
+.cer-ring{position:relative;width:112px;height:112px;margin:.7rem auto}
+.cer-ring .tr{stroke:var(--cardh);fill:none;stroke-width:8}
+.cer-ring .fl{stroke:var(--p);fill:none;stroke-width:8;stroke-linecap:round;stroke-dasharray:264;stroke-dashoffset:264}
+.cer-acc{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;color:var(--t1);font-variant-numeric:tabular-nums}
+.cer-streak{color:var(--g);font-weight:700;margin:.5rem 0 1.1rem}
+.cer-btns{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap}
+
 </style>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 <div class="particles" id="pts"></div>
@@ -6080,6 +6134,41 @@ function _retroCompleteStages(){
     }
   }catch(e){}
 }
+function showStageCeremony(s,sid){
+  var pts=G.sc[sid]||0,max=(s.q&&s.q.length?s.q.length*10:0);
+  var acc=max?Math.round(Math.min(100,pts/max*100)):0;
+  var next=null;try{var vis=sortStages(S).filter(function(x){return !_stageHidden(x)});var i=vis.findIndex(function(x){return x.id===sid});next=vis[i+1]||null}catch(e){}
+  var rm=false;try{rm=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+  var old=$('stageCerem');if(old)old.remove();
+  var ov=document.createElement('div');ov.id='stageCerem';ov.dir=_enLang()?'ltr':'rtl';
+  ov.innerHTML='<div class="cer-in">'
+   +'<div class="cer-k">'+(_enLang()?'STAGE COMPLETE':'· השלב הושלם ·')+'</div>'
+   +'<div class="cer-t">'+esc(s.t)+'</div>'
+   +'<div><div class="cer-pts" id="cerPts">0</div><div class="cer-pts-lbl">'+(_enLang()?'points earned':'נקודות שנצברו')+'</div></div>'
+   +'<div class="cer-ring"><svg viewBox="0 0 96 96"><circle class="tr" cx="48" cy="48" r="42"/><circle class="fl" id="cerRing" cx="48" cy="48" r="42" transform="rotate(-90 48 48)"/></svg><div class="cer-acc" id="cerAcc">0%</div></div>'
+   +'<div class="cer-streak">🔥 '+(_enLang()?'Streak: ':'רצף: ')+(G.streak||1)+(_enLang()?(((G.streak||1)===1)?' day':' days'):(((G.streak||1)===1)?' יום':' ימים'))+'</div>'
+   +'<div class="cer-btns">'+(next?'<button class="bp" onclick="_cerNext('+next.id+')">'+(_enLang()?'Next stage':'לשלב הבא ←')+'</button>':'')+'<button class="bs" onclick="_cerClose()">'+(_enLang()?'Back to map':'חזרה למפה')+'</button></div>'
+   +'</div>';
+  ov.onclick=function(e){if(e.target===ov)_cerShowAll()};
+  document.body.appendChild(ov);
+  var steps=ov.querySelectorAll('.cer-in>*');var D=rm?0:1;
+  steps.forEach(function(el,i){setTimeout(function(){el.classList.add('on')},(100+i*240)*D)});
+  setTimeout(function(){
+    var t0=Date.now(),dur=rm?1:850;
+    (function tick(){var p=Math.min(1,(Date.now()-t0)/dur),e2=1-Math.pow(1-p,3);
+      var el=$('cerPts');if(!el)return;
+      el.textContent='+'+Math.round(pts*e2);
+      var a=$('cerAcc');if(a)a.textContent=Math.round(acc*e2)+'%';
+      var r=$('cerRing');if(r)r.style.strokeDashoffset=264-(264*acc/100)*e2;
+      if(p<1)requestAnimationFrame(tick)})();
+  },420*D);
+  try{playSfx('complete')}catch(e){}
+  try{cf()}catch(e){}
+  try{trackEvent('ceremony','viewed',String(sid))}catch(e){}
+}
+function _cerShowAll(){document.querySelectorAll('#stageCerem .cer-in>*').forEach(function(el){el.classList.add('on')})}
+function _cerClose(){var o=$('stageCerem');if(o)o.remove()}
+function _cerNext(id){_cerClose();try{ss(id);window.scrollTo(0,0)}catch(e){mp()}}
 function tryCompleteStage(sid,showHint){
   const s=S.find(x=>x.id===sid);if(!s)return false;
   if(G.done.has(sid))return true;
@@ -6096,14 +6185,15 @@ function tryCompleteStage(sid,showHint){
   playSfx('complete');
   const _today=new Date().toDateString();if(!G._dailyDone)G._dailyDone={};G._dailyDone[_today]=(G._dailyDone[_today]||0)+1;
   if(G._dailyDone[_today]===1){G.ts+=20;setTimeout(()=>showAchievement('🎯','יעד יומי הושלם!','+20 נק׳ · המשך לעוד שלב!'),1400)}
-  cf();uh();
-  setTimeout(()=>checkTitleCeremony(),800);setTimeout(()=>checkSectionAchievements(sid),1200);setTimeout(()=>maybeShowReflection(sid),1800);
+  uh();try{showStageCeremony(S.find(x=>x.id===sid)||{t:'',q:[]},sid)}catch(e){try{cf()}catch(_){}}
+  setTimeout(()=>checkTitleCeremony(),2600);setTimeout(()=>checkSectionAchievements(sid),3000);setTimeout(()=>maybeShowReflection(sid),3600);
   sv();
   try{maybeShowSatisfaction()}catch(e){}
   return true;
 }
 function rr(sid){delete G.qa[sid];if(G._pu)delete G._pu[sid];S.find(x=>x.id===sid).q.forEach((_,i)=>{delete _shuffleCache[sid+'_'+i]});sv();rq(S.find(x=>x.id===sid))}
-function cf(){const cols=['#6C63FF','#FF6584','#00C9A7','#FFD700','#FF9800','#E91E63'];for(let i=0;i<40;i++){const p=document.createElement('div');p.className='confp';p.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${cols[Math.floor(Math.random()*cols.length)]};border-radius:${Math.random()>.5?'50%':'0'};width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;animation-delay:${Math.random()*.5}s;animation-duration:${1+Math.random()*1.5}s`;document.body.appendChild(p);setTimeout(()=>p.remove(),3000)}}
+function cf(){if(window.confetti){try{confetti({particleCount:110,spread:75,startVelocity:38,origin:{y:.4},disableForReducedMotion:true,colors:['#8B85FF','#E8C45C','#35C9A3','#F06A7E','#EDEEF4']});return}catch(e){}}
+const cols=['#8B85FF','#F06A7E','#35C9A3','#E8C45C','#FF9800','#E91E63'];for(let i=0;i<40;i++){const p=document.createElement('div');p.className='confp';p.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${cols[Math.floor(Math.random()*cols.length)]};border-radius:${Math.random()>.5?'50%':'0'};width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;animation-delay:${Math.random()*.5}s;animation-duration:${1+Math.random()*1.5}s`;document.body.appendChild(p);setTimeout(()=>p.remove(),3000)}}
 
 // ========== MOCK INTERVIEW MODE ==========
 function updateSrFab(){const fab=$('srFab');if(!fab)return;const wrongCount=Object.keys(G.wrongQ).length;if(wrongCount>0){fab.classList.remove('hid');const badge=$('srFabBadge');if(badge)badge.textContent=wrongCount}else{fab.classList.add('hid')}}
@@ -7044,7 +7134,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.7.0';
+const APP_VERSION='1.7.1';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
