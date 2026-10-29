@@ -644,7 +644,7 @@ html[dir="ltr"] .about-page,html[dir="ltr"] .q-fact,html[dir="ltr"] .chat-panel,
 
 /* ========== LIGHT MODE ========== */
 body.light{--bg:#F6F3EA;--card:#FFFFFF;--cardh:#F2EEE2;--t1:#2A2721;--t2:#6E6A5E;--p:#6A5FE0;--pd:#574DC2;--s:#D95468;--a:#1FA583;--g:#B08A2E;--line:rgba(42,39,33,.12);--tx:var(--t1);--pk:var(--s);--c1:var(--card);--gr1:linear-gradient(135deg,var(--p),var(--pd));--gr2:linear-gradient(135deg,var(--a),var(--p))}
-html[data-acc="amber"] body.light{--p:#A4761F;--pd:#8A5F12}
+html[data-acc="amber"] body.light{--p:#8F6618;--pd:#7A5612}
 body.light .hdr{background:rgba(240,240,245,.95);border-bottom-color:rgba(0,0,0,.08)}
 body.light .info-bar{background:linear-gradient(180deg,rgba(240,240,245,.95),rgba(240,240,245,.9))}
 body.light .particle{opacity:.05}
@@ -963,6 +963,7 @@ body.light #stageCerem{background:rgba(246,243,234,.95)}
 
 /* ===== wave 3: features ===== */
 #todayHub,#wbOv,#goalOv,#legalOv,#pwOv{position:fixed;inset:0;z-index:380;background:rgba(10,11,16,.93);backdrop-filter:blur(12px);display:grid;place-items:center;padding:1.2rem;overflow:auto;direction:rtl}
+#todayHub[dir="ltr"],#wbOv[dir="ltr"],#goalOv[dir="ltr"],#pwOv[dir="ltr"]{direction:ltr}
 body.light #todayHub,body.light #wbOv,body.light #goalOv,body.light #legalOv,body.light #pwOv{background:rgba(246,243,234,.95)}
 .hub-box{background:var(--card);border:1px solid var(--line);border-radius:20px;max-width:460px;width:100%;padding:1.3rem;max-height:92vh;overflow:auto}
 .hub-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
@@ -1331,6 +1332,149 @@ html[dir="ltr"] .expl.sh:not([style])::before{content:'Why?'}
 /* responsive: 2 cols on tablets, single column at phone width */
 @media(max-width:700px){.pv-bento{grid-template-columns:repeat(2,1fr)}.pv-tile-big,.pv-tile-med{grid-column:span 2}.pv-tile-sm{grid-column:span 1}}
 @media(max-width:430px){.pv-bento{grid-template-columns:1fr;gap:.6rem}.pv-tile-big,.pv-tile-med,.pv-tile-sm{grid-column:span 1}.pv-tile-big{gap:.9rem;padding:1rem .8rem}.pv-ring{width:108px;height:108px}.pv-hero{padding:1rem .9rem;gap:.8rem}.pv-hero-ic{font-size:2.1rem}.pv-hero-name{font-size:1.12rem}}
+/* ===== wave 5: UI-chrome icons (stroke SVG, currentColor) ===== */
+.w5i{display:block;flex:0 0 auto;width:18px;height:18px;pointer-events:none}
+[dir="rtl"] .icon-dir{transform:scaleX(-1)}
+/* header icon buttons — home / about / profile / theme */
+.hdr .w5i-hb{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;margin:0;border:none;border-radius:9px;background:transparent;color:var(--t2);opacity:1;line-height:0;font:inherit;cursor:pointer;flex-shrink:0;transition:color .18s,background .18s}
+.hdr .w5i-hb:hover{color:var(--t1);background:var(--cardh);opacity:1;transform:none}
+.hdr .w5i-hb .w5i{width:18px;height:18px}
+@media(max-width:600px){.hdr .w5i-hb{width:26px;height:26px;border-radius:8px}}
+/* header stat glyphs — numbers (.badge .v) untouched */
+.w5i-bd{display:inline-flex;align-items:center;line-height:0;flex:0 0 auto}
+.w5i-bd .w5i{width:14px;height:14px}
+.w5i-star{color:var(--g)}.w5i-trophy{color:var(--p)}.w5i-flame{color:#FF9800}
+.w5i-star .w5i,.w5i-flame .w5i{fill:currentColor;fill-opacity:.22}
+@media(max-width:600px){.w5i-bd .w5i{width:12px;height:12px}}
+/* back-to-map ghost button (same family as the stage screen's .sv-back) */
+.bbtn.w5i-back{gap:.45rem;border:1px solid var(--line);border-radius:12px;padding:.42rem .85rem;color:var(--t2);font-size:.85rem;font-weight:600;line-height:1.2;transition:color .18s,border-color .18s,background .18s}
+.bbtn.w5i-back:hover{color:var(--t1);border-color:var(--p);background:var(--cardh)}
+.bbtn.w5i-back .w5i{width:16px;height:16px}
+.bbtn.w5i-back+.bbtn.w5i-back{margin-inline-start:.5rem}
+/* ===== wave 5: mastery meter (w5m) ===== */
+.w5m-meter{display:inline-flex;align-items:center;gap:3px;line-height:1;vertical-align:middle;flex-shrink:0}
+.w5m-pip{display:block;width:10px;height:5px;border-radius:3px;background:color-mix(in srgb,var(--t2) 30%,transparent);transition:background-color .35s ease,box-shadow .35s ease}
+.w5m-pip.on{background:var(--a)}
+.w5m-l1 .w5m-pip.on{background:color-mix(in srgb,var(--a) 55%,var(--t2))}
+.w5m-l4 .w5m-pip.on{background:var(--g);box-shadow:0 0 5px color-mix(in srgb,var(--g) 55%,transparent)}
+/* map: inline-end of the score/tag line, directly below the title (float keeps the node height unchanged) */
+.j-node .j-info>.w5m-meter{float:right;height:1rem;margin:.12rem 0 0 .45rem}
+html[dir="rtl"] .j-node .j-info>.w5m-meter{float:left;margin:.12rem .45rem 0 0}
+.j-node .j-info>.w5m-meter.w5m-l0{opacity:.7}
+/* stage screen chip + one-line next-level hint */
+.stage-reward .w5m-chip{gap:.45rem}
+.stage-reward .w5m-chip .w5m-meter .w5m-pip{width:13px;height:6px}
+.stage-reward .w5m-chip b{color:var(--t1);font-weight:700}
+.stage-reward .w5m-chip.w5m-c4{border-color:color-mix(in srgb,var(--g) 55%,transparent);background:color-mix(in srgb,var(--g) 10%,var(--cardh))}
+.w5m-hint{margin:.5rem auto 0;max-width:34rem;font-size:.76rem;line-height:1.45;color:var(--t2);text-align:center;text-wrap:balance}
+.w5m-hint.w5m-h4{color:var(--g);font-weight:600}
+.stage-reward .w5m-chip.w5m-pop{animation:w5mPop .6s cubic-bezier(.34,1.56,.64,1)}
+@keyframes w5mPop{0%{transform:scale(1)}40%{transform:scale(1.1)}100%{transform:scale(1)}}
+@media(max-width:430px){.w5m-hint{font-size:.72rem;padding:0 .4rem}}
+@media(prefers-reduced-motion:reduce){.stage-reward .w5m-chip.w5m-pop{animation:none}.w5m-pip{transition:none}}
+/* ===== w5 game: daily-game picker + True or False ===== */
+.w5g-root{text-align:start}
+.w5g-root[dir="rtl"]{direction:rtl}
+.w5g-root[dir="ltr"]{direction:ltr}
+/* picker: two cards side by side, stacked under 380px */
+.w5g-pick{display:grid;gap:.6rem}
+.w5g-ph{display:flex;justify-content:space-between;align-items:baseline;gap:.3rem .8rem;flex-wrap:wrap}
+.w5g-ph h4{margin:0;font-size:.95rem;font-weight:800;color:var(--t1)}
+.w5g-rw{font-size:.72rem;color:var(--t2)}
+.w5g-rw.got{color:var(--a);font-weight:700}
+.w5g-cards{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.w5g-card{--w5g-c:var(--p);position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:.22rem;min-height:128px;min-width:0;padding:.85rem .9rem .8rem;text-align:start;background:var(--cardh);border:1px solid var(--line);border-radius:16px;color:var(--t1);font:inherit;cursor:pointer;transition:transform .18s cubic-bezier(.22,1,.36,1),border-color .18s,box-shadow .18s}
+.w5g-card[data-g="tg"]{--w5g-c:var(--g)}
+.w5g-card:hover{border-color:var(--w5g-c);transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.28)}
+body.light .w5g-card:hover{box-shadow:0 10px 24px rgba(42,39,33,.12)}
+.w5g-card .w5g-ic{display:grid;place-items:center;width:2.5rem;height:2.5rem;margin-bottom:.2rem;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:1.35rem;line-height:1}
+.w5g-card .w5g-nm{font-weight:800;font-size:.98rem;line-height:1.25}
+.w5g-card .w5g-ds{font-size:.74rem;color:var(--t2);line-height:1.4}
+.w5g-card .w5g-st{margin-top:auto;padding-top:.4rem;font-size:.72rem;font-weight:700;color:var(--w5g-c)}
+.w5g-card .w5g-st.done{color:var(--a)}
+@media(max-width:379.98px){.w5g-cards{grid-template-columns:1fr}.w5g-card{display:grid;grid-template-columns:auto 1fr;column-gap:.75rem;row-gap:.1rem;align-items:center;min-height:0}.w5g-card .w5g-ic{grid-row:1/span 3;margin:0}.w5g-card .w5g-st{margin-top:0;padding-top:.1rem}}
+/* run */
+.w5g-run{display:grid;gap:.6rem;overflow:hidden;padding:4px;margin:-4px}
+.w5g-top{display:flex;align-items:center;gap:.6rem;min-height:2rem;font-size:.8rem;color:var(--t2)}
+.w5g-top b{color:var(--t1);font-size:.95rem;font-variant-numeric:tabular-nums}
+.w5g-quit{background:var(--cardh);border:1px solid var(--line);border-radius:10px;color:var(--t2);font:inherit;font-size:.76rem;padding:.25rem .6rem;cursor:pointer}
+.w5g-quit:hover{color:var(--t1);border-color:var(--p)}
+.w5g-sp{flex:1}
+.w5g-combo{font-weight:800;color:var(--g);white-space:nowrap;font-variant-numeric:tabular-nums;opacity:0;transform:scale(.8);transition:opacity .2s,transform .22s cubic-bezier(.34,1.56,.64,1)}
+.w5g-combo.on{opacity:1;transform:none}
+.w5g-combo.x2{text-shadow:0 0 14px rgba(232,196,92,.55)}
+.w5g-scw{position:relative;white-space:nowrap}
+.w5g-delta{position:absolute;top:-.6rem;inset-inline-end:-.3rem;font-size:.72rem;font-weight:800;pointer-events:none;animation:w5g-up .6s ease-out forwards}
+.w5g-delta.up{color:var(--a)}
+.w5g-delta.dn{color:var(--s)}
+.w5g-time{white-space:nowrap;font-variant-numeric:tabular-nums}
+.w5g-time.warn b{color:var(--s)}
+.w5g-time.hot{animation:w5g-pulse .5s ease-in-out infinite alternate}
+.w5g-bar{height:6px;border-radius:99px;background:var(--cardh);border:1px solid var(--line);overflow:hidden}
+.w5g-bar i{display:block;height:100%;background:var(--p);transform-origin:0 50%;transition:transform .22s linear,background-color .3s}
+.w5g-root[dir="rtl"] .w5g-bar i{transform-origin:100% 50%}
+.w5g-bar i.warn{background:var(--s)}
+.w5g-stage{position:relative;display:grid;min-height:178px}
+.w5g-stage::before{content:'';grid-area:1/1;margin:0 .75rem;transform:translateY(8px);border-radius:18px;background:var(--cardh);border:1px solid var(--line);opacity:.55}
+.w5g-cardx{grid-area:1/1;position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:.45rem;padding:1.2rem 1rem;text-align:center;background:var(--cardh);border:1.5px solid var(--line);border-radius:18px;box-shadow:0 12px 28px rgba(0,0,0,.3);touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab;animation:w5g-in var(--w5g-in,260ms) cubic-bezier(.22,1,.36,1) backwards;transition:border-color .12s,box-shadow .12s}
+.w5g-cardx.drag{cursor:grabbing}
+.w5g-cardx.ok{border-color:var(--a);box-shadow:0 0 0 3px rgba(53,201,163,.3),0 12px 28px rgba(0,0,0,.3)}
+.w5g-cardx.bad{border-color:var(--s);box-shadow:0 0 0 3px rgba(240,106,126,.3),0 12px 28px rgba(0,0,0,.3)}
+body.light .w5g-cardx{background:var(--card);box-shadow:0 12px 26px rgba(42,39,33,.13)}
+body.light .w5g-cardx.ok{box-shadow:0 0 0 3px rgba(31,165,131,.25),0 12px 26px rgba(42,39,33,.13)}
+body.light .w5g-cardx.bad{box-shadow:0 0 0 3px rgba(217,84,104,.25),0 12px 26px rgba(42,39,33,.13)}
+.w5g-cterm{font-size:1.14rem;font-weight:800;line-height:1.35;color:var(--t1)}
+.w5g-en{display:inline-block;margin-inline-start:.4rem;padding:.06rem .45rem;border-radius:7px;border:1px solid var(--line);background:var(--card);color:var(--p);font-size:.8rem;font-weight:700;vertical-align:.12em;unicode-bidi:isolate}
+body.light .w5g-en{background:var(--cardh)}
+.w5g-dash{color:var(--t2);font-size:.9rem;line-height:1;opacity:.7}
+.w5g-cdef{font-size:.93rem;line-height:1.55;color:var(--t1)}
+.w5g-stamp{position:absolute;top:.5rem;left:50%;transform:translateX(-50%) rotate(-8deg);padding:0 .55rem;border:2px solid;border-radius:8px;font-size:.95rem;font-weight:900;opacity:0;pointer-events:none}
+.w5g-stamp.yes{color:var(--a)}
+.w5g-stamp.no{color:var(--s)}
+.w5g-fl{position:absolute;inset:-2px;z-index:2;border-radius:20px;pointer-events:none;opacity:0}
+.w5g-fl.ok{background:var(--a);animation:w5g-fl .34s ease-out}
+.w5g-fl.bad{background:var(--s);animation:w5g-fl .34s ease-out}
+.w5g-q{margin-top:.35rem;text-align:center;font-size:.8rem;color:var(--t2)}
+.w5g-btns{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.w5g-btn{display:flex;align-items:center;justify-content:center;gap:.45rem;min-height:56px;padding:.5rem .6rem;border-radius:14px;border:1.5px solid var(--line);background:var(--cardh);color:var(--t1);font:inherit;font-size:1rem;font-weight:800;cursor:pointer;touch-action:manipulation;transition:border-color .15s,background-color .15s}
+.w5g-btn .w5g-g{font-size:1.3rem;line-height:1}
+.w5g-btn.yes .w5g-g{color:var(--a)}
+.w5g-btn.no .w5g-g{color:var(--s)}
+.w5g-btn.yes:hover,.w5g-btn.yes.hit{border-color:var(--a)}
+.w5g-btn.no:hover,.w5g-btn.no.hit{border-color:var(--s)}
+.w5g-btn.hit{animation:w5g-hit .24s ease-out}
+.w5g-kbd{padding:0 .3rem;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;font-size:.64rem;font-weight:700;line-height:1.5;color:var(--t2);direction:ltr;unicode-bidi:isolate}
+@media(hover:none),(pointer:coarse){.w5g-kbd{display:none}}
+.w5g-hint{text-align:center;font-size:.7rem;color:var(--t2)}
+.w5g-last{min-height:1.15rem;text-align:center;font-size:.78rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.w5g-last.ok{color:var(--a)}
+.w5g-last.bad{color:var(--s)}
+/* end screen */
+.w5g-end{display:grid;gap:.65rem;padding:.2rem 0;text-align:center}
+.w5g-eic{font-size:2.2rem;line-height:1}
+.w5g-eh{font-size:1.05rem;font-weight:800;color:var(--t1)}
+.w5g-nb{justify-self:center;padding:.18rem .7rem;border-radius:99px;background:var(--g);color:#1d1606;font-size:.74rem;font-weight:800}
+.w5g-big{font-size:2.7rem;font-weight:800;line-height:1;color:var(--p);font-variant-numeric:tabular-nums}
+.w5g-sub{margin-top:-.3rem;font-size:.78rem;color:var(--t2)}
+.w5g-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem}
+.w5g-stats>div{display:grid;gap:.1rem;min-width:0;padding:.55rem .3rem;background:var(--cardh);border:1px solid var(--line);border-radius:12px}
+.w5g-stats b{font-size:1.08rem;color:var(--t1);font-variant-numeric:tabular-nums}
+.w5g-stats span{font-size:.68rem;color:var(--t2)}
+.w5g-rew{font-size:.84rem;color:var(--t2)}
+.w5g-rew.got{color:var(--a);font-weight:800}
+.w5g-miss{display:grid;gap:.35rem;text-align:start}
+.w5g-miss h5{margin:0;font-size:.78rem;font-weight:700;color:var(--t2)}
+.w5g-mi{padding:.45rem .65rem;border-radius:10px;background:var(--cardh);border-inline-start:3px solid var(--s);font-size:.76rem;line-height:1.5;color:var(--t2)}
+.w5g-mi b{color:var(--t1)}
+.w5g-ebtn{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem}
+.w5g-tgback{margin-top:.4rem}
+@keyframes w5g-in{from{opacity:0;transform:translateY(12px) scale(.96)}}
+@keyframes w5g-fl{from{opacity:.24}to{opacity:0}}
+@keyframes w5g-up{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-14px)}}
+@keyframes w5g-pulse{from{opacity:1}to{opacity:.45}}
+@keyframes w5g-hit{from{transform:scale(.94)}to{transform:none}}
+@media(prefers-reduced-motion:reduce){.w5g-cardx,.w5g-fl.ok,.w5g-fl.bad,.w5g-time.hot,.w5g-btn.hit{animation:none}.w5g-bar i,.w5g-combo,.w5g-card{transition:none}.w5g-card:hover{transform:none}.w5g-delta{display:none}}
+@media(prefers-reduced-motion:reduce){html .welcome .ws-box,html .welcome .ws-lang,html .ws-box,html .welcome .btn-go,html .btn-go,html #wsLang{animation:none!important;opacity:1!important;transform:none!important}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.6.1/chart.umd.min.js" defer></script>
@@ -1385,7 +1529,7 @@ html[dir="ltr"] .expl.sh:not([style])::before{content:'Why?'}
 <label style="display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--t2);cursor:pointer;max-width:280px;line-height:1.4"><input id="emailConsent" type="checkbox" style="width:18px;height:18px;accent-color:var(--p);cursor:pointer;flex-shrink:0"><span data-i18n="אני מסכים לקבל מיילים מאת Product Master">אני מסכים לקבל מיילים מאת Product Master</span></label>
 <button class="btn-go" onclick="go()" data-i18n="התחל את המסע ←">התחל את המסע &larr;</button>
 </div>
-<div class="legal-foot">יוזמה פרטית ללימוד עצמי · ללא זיקה לצה"ל או לחיל הים · <a onclick="showLegal('tos')">תנאי שימוש</a>·<a onclick="showLegal('priv')">פרטיות</a></div>
+<div class="legal-foot"><span data-i18n="יוזמה פרטית ללימוד עצמי · ללא זיקה לצה&quot;ל או לחיל הים">יוזמה פרטית ללימוד עצמי · ללא זיקה לצה"ל או לחיל הים</span> · <a onclick="showLegal('tos')" data-i18n="תנאי שימוש">תנאי שימוש</a>·<a onclick="showLegal('priv')" data-i18n="פרטיות">פרטיות</a></div>
 <!-- admin entry: pushed far down + faint so new users don't notice it (password-gated) -->
 <div style="margin-top:4rem;text-align:center;opacity:.22">
 <button onclick="showAdmin()" data-i18n="🔧 ניהול" style="background:none;border:none;color:var(--t2);font-size:.68rem;cursor:pointer;font-family:inherit;padding:.3rem">🔧 ניהול</button>
@@ -1430,11 +1574,11 @@ html[dir="ltr"] .expl.sh:not([style])::before{content:'Why?'}
 </div>
 <div class="pbar hid" id="pb"><div class="pfill" id="pf" style="width:0%"></div></div>
 <div class="hdr hid" id="hd">
-<div style="display:flex;align-items:center;gap:.6rem"><div class="hdr-logo" onclick="_logoClick()">Product Master<span class="navy-only"> ⚓</span></div><div id="hdr-user-group" style="display:flex;align-items:center;gap:.35rem;flex-wrap:nowrap;min-width:0;flex:1;justify-content:center"><div id="hdr-user" style="font-size:.65rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"></div><div id="tb"></div></div><div class="hdr-home navy-only" onclick="showAbout()" title="על היוצר" aria-label="על היוצר">👨‍💻</div><div class="hdr-home" onclick="goHomeSmart()" title="חזרה למפה / מסך הכניסה">🏠</div></div>
+<div style="display:flex;align-items:center;gap:.6rem"><div class="hdr-logo" onclick="_logoClick()">Product Master<span class="navy-only"> ⚓</span></div><div id="hdr-user-group" style="display:flex;align-items:center;gap:.35rem;flex-wrap:nowrap;min-width:0;flex:1;justify-content:center"><div id="hdr-user" style="font-size:.65rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"></div><div id="tb"></div></div><button type="button" class="hdr-home navy-only w5i-hb" onclick="showAbout()" title="על היוצר" aria-label="על היוצר" data-w5i-l="על היוצר"><svg class="w5i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></button><button type="button" class="hdr-home w5i-hb" onclick="goHomeSmart()" title="חזרה למפה / מסך הכניסה" aria-label="חזרה למפה / מסך הכניסה" data-w5i-l="חזרה למפה / מסך הכניסה"><svg class="w5i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></button></div>
 <div class="hdr-stats">
-<div class="badge"><span>⭐</span><span class="v" id="ts">0</span><span>נק'</span></div>
-<div class="badge"><span>🏆</span><span class="v" id="cs">0</span><span>/52</span></div>
-<div class="streak-badge" id="stb" style="display:none"><span>🔥</span><span class="v" id="stv">0</span></div>
+<div class="badge"><span class="w5i-bd w5i-star" aria-hidden="true"><svg class="w5i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="v" id="ts">0</span><span>נק'</span></div>
+<div class="badge"><span class="w5i-bd w5i-trophy" aria-hidden="true"><svg class="w5i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></span><span class="v" id="cs">0</span><span>/52</span></div>
+<div class="streak-badge" id="stb" style="display:none"><span class="w5i-bd w5i-flame" aria-hidden="true"><svg class="w5i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span><span class="v" id="stv">0</span></div>
 </div>
 </div>
 <div class="info-bar hid" id="ib"><div class="ib-item" id="ib-tip"></div><div class="ib-sep"></div><div class="ib-item" id="ib-chal"></div></div>
@@ -3730,8 +3874,11 @@ function trackEvent(feat,act,meta){
 const LS='pmV7';
 /* lightweight error telemetry: first 5 unique errors per session reach the Events sheet */
 window._errSeen={};window._errN=0;
-window.addEventListener('error',function(e){try{if(window._errN>=5)return;var sig=String(e.message||'err').slice(0,80)+'@'+String(e.lineno||0);if(window._errSeen[sig])return;window._errSeen[sig]=1;window._errN++;trackEvent('js_error',sig,String((e.filename||'').split('/').pop()).slice(0,40))}catch(_){}});
-window.addEventListener('unhandledrejection',function(e){try{if(window._errN>=5)return;var sig='promise:'+String(e.reason&&e.reason.message||e.reason||'').slice(0,80);if(window._errSeen[sig])return;window._errSeen[sig]=1;window._errN++;trackEvent('js_error',sig,'')}catch(_){}});
+/* W5: the same first-5-unique errors also POST to the Errors sheet (action:'logError'). Fire-and-forget — the endpoint may
+   not be deployed yet, and an error before DB_URL is initialised just throws into the catch. */
+function _w5fLogErr(sig,msg,file){try{if(!DB_URL)return;var f=String(file||'').split('#')[0].split('?')[0].split('/').pop().slice(0,80);fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'logError',sig:String(sig||'').slice(0,120),msg:String(msg==null?'':msg).slice(0,300),file:f,appVersion:APP_VERSION,userName:(G&&G.userName)||''}),headers:{'Content-Type':'text/plain'},keepalive:true}).catch(function(){})}catch(_){}}
+window.addEventListener('error',function(e){try{if(window._errN>=5)return;var sig=String(e.message||'err').slice(0,80)+'@'+String(e.lineno||0);if(window._errSeen[sig])return;window._errSeen[sig]=1;window._errN++;trackEvent('js_error',sig,String((e.filename||'').split('/').pop()).slice(0,40));_w5fLogErr(sig,e.message,e.filename)}catch(_){}});
+window.addEventListener('unhandledrejection',function(e){try{if(window._errN>=5)return;var sig='promise:'+String(e.reason&&e.reason.message||e.reason||'').slice(0,80);if(window._errSeen[sig])return;window._errSeen[sig]=1;window._errN++;trackEvent('js_error',sig,'');_w5fLogErr(sig,(e.reason&&e.reason.message)||e.reason,'')}catch(_){}});
 function ti(el){const myTp=el.nextElementSibling;document.querySelectorAll('.tp.show').forEach(t=>{if(t===myTp)return;if(t.contains(el))return;t.classList.remove('show')});myTp.classList.toggle('show');if(myTp.classList.contains('show')){const r=el.getBoundingClientRect();const tw=320;let left=r.left+r.width/2-tw/2;if(left<10)left=10;if(left+tw>window.innerWidth-10)left=window.innerWidth-tw-10;let top=r.top-10;myTp.style.left=left+'px';myTp.style.bottom=(window.innerHeight-top)+'px';myTp.style.top='auto'}}
 document.addEventListener('click',e=>{if(!e.target.classList.contains('ib')&&!e.target.closest('.tp')){document.querySelectorAll('.tp.show').forEach(t=>t.classList.remove('show'))}});
 // === One-time renumber migration (HTML v1.1.0) ===
@@ -3990,7 +4137,7 @@ const UI_EN={"הכרת המסע":"Getting to know the journey","מבנה ומת�
 function _t(he){if(G.lang!=='en')return he;var v=UI_EN[he];return v==null?he:v;}
 function _grp(tg){return(G.lang==='en'&&GROUP_EN[tg])?GROUP_EN[tg]:tg;}
 function _applyStageLang(lang){for(var i=0;i<S.length;i++){var s=S[i],he=_HE_SNAP[s.id],en=(lang==='en')?S_EN_DATA[s.id]:null;if(!he)continue;s.t=(en&&en.t!=null)?en.t:he.t;s.d=(en&&en.d!=null)?en.d:he.d;s.th=(en&&en.th)?en.th:he.th;s.cs=(en&&en.cs)?en.cs:he.cs;s.q=(en&&en.q)?en.q:he.q;}}
-Object.assign(UI_EN,{'מזל טוב!':'Congratulations!','מזל טוב, מפקד!':'Congratulations, Commander!','אגדה!':'Legend!','כל הכבוד, מוסמך!':'Well done!','ברוכים הבאים!':'Welcome!','על היוצר':'About the creator','חזרה למפה / מסך הכניסה':'Back to the map / home screen','טבלת מובילים':'Leaderboard','ניהול המערכת':'Admin panel','למדו והגיעו לראש הטבלה החודשית':'Learn your way to the top of the monthly table','צבע המערכת':'Brand color'});
+Object.assign(UI_EN,{'מזל טוב!':'Congratulations!','מזל טוב, מפקד!':'Congratulations, Commander!','אגדה!':'Legend!','כל הכבוד, מוסמך!':'Well done!','ברוכים הבאים!':'Welcome!','על היוצר':'About the creator','חזרה למפה / מסך הכניסה':'Back to the map / home screen','טבלת מובילים':'Leaderboard','ניהול המערכת':'Admin panel','למדו והגיעו לראש הטבלה החודשית':'Learn your way to the top of the monthly table','צבע המערכת':'Brand color','היום':'Today','יוזמה פרטית ללימוד עצמי · ללא זיקה לצה"ל או לחיל הים':'A private self-study initiative · not affiliated with the IDF or the Navy','תנאי שימוש':'Terms of use','פרטיות':'Privacy'});
 function _i18nStatic(){var en=(G.lang==='en');document.querySelectorAll('[data-i18n]').forEach(function(el){var he=el.getAttribute('data-i18n');el.textContent=en?(UI_EN[he]||he):he;});document.querySelectorAll('[data-i18n-ph]').forEach(function(el){var he=el.getAttribute('data-i18n-ph');el.setAttribute('placeholder',en?(UI_EN[he]||he):he);});var bh=document.getElementById('wsLangHe'),be=document.getElementById('wsLangEn');if(bh)bh.classList.toggle('active',!en);if(be)be.classList.toggle('active',en);}
 function _rerenderCurrentView(){if(G.v==='w'){_i18nStatic();return;}try{if(typeof uh==='function')uh();}catch(e){}try{if(G.v==='s'&&typeof rs==='function'){rs();}else if(G.v==='m'&&typeof rg==='function'){rg();}}catch(e){}try{if(typeof renderInfoBar==='function')renderInfoBar();}catch(e){}_i18nStatic();}
 function _cloudSyncLang(){try{if(typeof syncToCloud==='function'&&G.userName&&G.userName!=='אנונימי')syncToCloud();}catch(e){}}
@@ -4008,6 +4155,8 @@ function _initI18nObserver(){if(window._i18nObs||!document.body)return;try{windo
 /* =================== end i18n ENGINE =================== */
 ld();
 try{window._lapseDays=(function(){if(!G.lastDay)return 0;var ms=Date.now()-new Date(G.lastDay).getTime();var d=Math.round(ms/864e5);return(d>0&&d<400)?d:0})()}catch(e){}
+/* W5: boot-time snapshot of this device's last active day + owner (login runs updateStreak before mp, so it must be read here) */
+try{window._w5fLocalLastMs=G.lastDay?(new Date(G.lastDay).getTime()||0):0;window._w5fLocalUser=G.userName||''}catch(e){}
 try{document.documentElement.dataset.acc=(G.accent==='amber')?'amber':''}catch(e){}
 var _abOrigHTML='';try{var _ab0=document.getElementById('ab');if(_ab0)_abOrigHTML=_ab0.innerHTML;}catch(e){}
 applyLanguage(G.lang||'he',{boot:1});
@@ -4369,6 +4518,8 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
     const _cloudBlank=cloudScore===0&&!cloudStagesList&&cloudStreak===0;
     const isNewUser=_cloudBlank&&!_localHasProgress;
     const _recoverLocal=_cloudBlank&&_localHasProgress;
+    /* W5: the account's last activity on ANY device (absolute ms) — read by maybeWelcomeBack; window-scoped = this session only */
+    try{var _w5fLa=d.data.lastActivity,_w5fN=Number(_w5fLa);if(isNaN(_w5fN))_w5fN=Date.parse(String(_w5fLa))||0;window._w5cloudLastAct=(_w5fN>1e12&&_w5fN<4e12)?Math.round(_w5fN):0}catch(e){window._w5cloudLastAct=0}
     G._cloudVerified=true;// a load succeeded → empty-save guard in _doSync may proceed
     // CRITICAL: Clear per-user state if (a) different user or (b) genuinely new user with leftover data
     if((G.userName && G.userName!==name) || isNewUser){
@@ -5126,10 +5277,10 @@ const hdrStats=document.querySelector('.hdr-stats');
 if(hdrStats && !$('btn-profile')){
   const btnWrap=document.createElement('div');
   btnWrap.style.cssText='display:flex;gap:.3rem;align-items:center';
-  btnWrap.innerHTML='<button id="btn-profile" class="hdr-btn" onclick="showProfile()" title="הפרופיל שלי">📊</button><button id="btn-theme" class="hdr-btn" onclick="toggleTheme()" title="מצב בהיר/כהה">'+(document.body.classList.contains('light')?'☀️':'🌙')+'</button>';
+  btnWrap.innerHTML='<button id="btn-profile" class="hdr-btn w5i-hb" type="button" onclick="showProfile()" title="הפרופיל שלי" aria-label="הפרופיל שלי" data-w5i-l="הפרופיל שלי">'+_w5icon('chart')+'</button><button id="btn-theme" class="hdr-btn w5i-hb" type="button" onclick="toggleTheme()" title="מצב בהיר/כהה" aria-label="מצב בהיר/כהה" data-w5i-l="מצב בהיר/כהה">'+_w5icon(document.body.classList.contains('light')?'sun':'moon')+'</button>';
   hdrStats.insertBefore(btnWrap,hdrStats.firstChild);
 }
-if($('btn-theme')){$('btn-theme').textContent=document.body.classList.contains('light')?'☀️':'🌙'}
+_w5iHdrSync();/* w5: SVG theme glyph (sun=light, moon=dark) + HE/EN title/aria-label refresh */
 // Streak display
 const stb=$('stb'),stv=$('stv');if(G.streak>=2){stb.style.display='flex';stv.textContent=G.streak}else{stb.style.display='none'}
 // Map subtitle with context
@@ -6746,7 +6897,7 @@ _miTimer=setInterval(()=>{_miSec++;const el=$('mi-clock');if(el)el.textContent=f
 renderMI()}
 function renderMI(){const miv=$('miv');const answered=Object.keys(_miAnswers).length;
 if(answered===_miQuestions.length){finishMI();return}
-let h=`<button class="bbtn" onclick="exitMI()">${_t('→ חזרה למפה')}</button>`;
+let h=_w5iBack('exitMI()');
 h+=`<div style="text-align:center"><h2>${_t('🎤 בחינה רב תחומית')}</h2><div class="mi-timer" id="mi-clock">${fmtTimer(_miSec)}</div><div class="mi-q-count">${answered}/${_miQuestions.length} ${_t('שאלות')}</div></div>`;
 h+=`<div class="quiz-bar"><div class="quiz-bar-fill" style="width:${Math.round(answered/_miQuestions.length*100)}%"></div></div>`;
 _miQuestions.forEach((q,i)=>{const ans=_miAnswers[i],ok=ans!==undefined&&ans===q.c;
@@ -6761,7 +6912,7 @@ const msg=_enLang()?(pct===100?'🏆 Perfect! Ready for any interview!':pct>=80?
 G.miHistory.push({date:new Date().toISOString(),score:pct,time:_miSec,correct:ok,total:_miQuestions.length});sv();
 trackEvent('interview','complete',pct+'%');
 const miv=$('miv');
-let h=`<button class="bbtn" onclick="exitMI()">→ חזרה למפה</button>`;
+let h=_w5iBack('exitMI()');
 h+=`<div class="mi-result"><h2>🎤 סיכום בחינה רב תחומית</h2><div class="sc">${pct}%</div><div style="color:var(--t2);margin:.5rem 0">${ok}/${_miQuestions.length} ${_enLang()?'correct':'נכונות'} | ⏱ ${timeStr}</div><div style="margin:1rem 0">${msg}</div>`;
 if(G.miHistory.length>1){const prev=G.miHistory[G.miHistory.length-2];h+=`<div style="font-size:.85rem;color:var(--t2);margin:.5rem 0">${_enLang()?'Previous exam':'בחינה קודמת'}: ${prev.score}% ${_enLang()?'in ':'ב-'}${fmtTimer(prev.time)}</div>`}
 h+=`<div style="margin-top:1.5rem"><button class="bp" onclick="startMockInterview()">ראיון נוסף</button> <button class="bs" onclick="exitMI()">למפה</button></div></div>`;
@@ -6807,7 +6958,7 @@ for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order
 _srShuffle[qi]=order;return order}
 function renderSR(){const miv=$('miv');const answered=Object.keys(_srAnswers).length;
 if(answered===_srQuestions.length){finishSR();return}
-let h=`<button class="bbtn" onclick="exitSR()">→ חזרה למפה</button>`;
+let h=_w5iBack('exitSR()');
 h+=`<div style="text-align:center"><h2>${_enLang()?'🔄 Mistake Review':'🔄 חזרה על טעויות'}</h2><div style="color:var(--t2);margin:.5rem 0">${_srQuestions.length} ${_enLang()?'questions you previously got wrong':'שאלות שטעית בהן בעבר'}</div><div class="mi-q-count">${answered}/${_srQuestions.length} ${_enLang()?'answered':'נענו'}</div></div>`;
 h+=`<div class="quiz-bar"><div class="quiz-bar-fill" style="width:${Math.round(answered/_srQuestions.length*100)}%"></div></div>`;
 _srQuestions.forEach((q,i)=>{const ans=_srAnswers[i],ok=ans!==undefined&&ans===q.c;
@@ -6825,7 +6976,7 @@ const pct=Math.round(ok/_srQuestions.length*100);
 const remaining=Object.keys(G.wrongQ).length;
 const msg=_enLang()?(pct===100?'🏆 Perfect! All mistakes fixed!':pct>=80?'🌟 Excellent! Most mistakes fixed.':'📚 Keep practicing — that is how knowledge is built!'):(pct===100?'🏆 מושלם! כל הטעויות תוקנו!':pct>=80?'🌟 מצוין! רוב הטעויות תוקנו.':'📚 ממשיכים לתרגל - ככה בונים ידע!');
 const miv=$('miv');
-let h=`<button class="bbtn" onclick="exitSR()">→ ${_enLang()?'Back to map':'חזרה למפה'}</button>`;if(G.lastStageVisited!=null){h+=`<button class="bbtn" onclick="exitSRToStage()">📝 ${_enLang()?'Back to my quiz':'חזרה למבחן שהייתי בו'}</button>`;}
+let h=_w5iBack('exitSR()');if(G.lastStageVisited!=null){h+=`<button type="button" class="bbtn w5i-back" onclick="exitSRToStage()">${_w5icon('quiz')}<span>${_enLang()?'Back to my quiz':'חזרה למבחן שהייתי בו'}</span></button>`;}
 h+=`<div class="mi-result"><h2>${_enLang()?'🔄 Review Summary':'🔄 סיכום חזרה'}</h2><div class="sc">${pct}%</div><div style="color:var(--t2);margin:.5rem 0">${ok}/${_srQuestions.length} ${_enLang()?'fixed':'תוקנו'}</div><div style="margin:1rem 0">${msg}</div>`;
 if(remaining>0){h+=`<div style="font-size:.85rem;color:var(--s);margin:.5rem 0">${_enLang()?(remaining+' more questions waiting for next time'):('עוד '+remaining+' שאלות ממתינות לחזרה בפעם הבאה')}</div>`}
 h+=`<div style="margin-top:1.5rem"><button class="bp" onclick="exitSR()">למפה</button></div></div>`;
@@ -6887,7 +7038,7 @@ function _tgRound(pool){
   var el=$('tdGame');if(!el)return;
   el.innerHTML='<div class="tg-top"><span>'+(_enLang()?'Round':'סבב')+' <b>'+_tg.round+'/3</b></span><span>'+(_enLang()?'Score':'ניקוד')+' <b id="tgScore">'+_tg.score+'</b></span></div>'
    +'<div class="tg-cols"><div class="tg-c">'+terms.map(function(g,i3){return '<button class="tg-b" data-k="'+esc(g.term)+'" data-s="t" onclick="_tgPick(this)" dir="ltr">'+esc(g.term)+'</button>'}).join('')+'</div>'
-   +'<div class="tg-c">'+defs.map(function(g){return '<button class="tg-b" data-k="'+esc(g.term)+'" data-s="d" onclick="_tgPick(this)">'+esc(g.heb||g.desc)+'</button>'}).join('')+'</div></div>';
+   +'<div class="tg-c">'+defs.map(function(g){return '<button class="tg-b" data-k="'+esc(g.term)+'" data-s="d" onclick="_tgPick(this)">'+esc((_enLang()&&typeof GLOSSARY_EN!=='undefined'&&GLOSSARY_EN[GLOSSARY.indexOf(g)])?GLOSSARY_EN[GLOSSARY.indexOf(g)].desc:(g.heb||g.desc))+'</button>'}).join('')+'</div></div>';
 }
 function _tgPick(btn){
   if(!_tg.on)return;
@@ -6946,14 +7097,22 @@ function renderLibraryWing(){
 /* --- welcome-back for lapsed users --- */
 function maybeWelcomeBack(){
   try{
-    if(!window._lapseDays||window._lapseDays<7)return;
-    var k='wb_'+_dayKey();if(G._wbShown===k)return;G._wbShown=k;window._lapseDays=0;
+    /* W5 fix: "lapsed" = >=7 days since the user's last activity on ANY device = max(cloud lastActivity captured at load,
+       this device's boot-time lastDay for the same user). Requires a cloud load that succeeded THIS session (window flag,
+       never persisted) — offline/localhost, or a stale device whose cloud read failed, never shows it. */
+    if(!G._cloudVerified||typeof window._w5cloudLastAct!=='number'||window._w5fWbDone)return;
+    var _w5fLoc=(window._w5fLocalUser&&window._w5fLocalUser===G.userName)?(window._w5fLocalLastMs||0):0;
+    var _w5fLast=Math.max(window._w5cloudLastAct||0,_w5fLoc);if(!_w5fLast)return;
+    var _w5fDays=Math.floor((Date.now()-_w5fLast)/864e5);
+    if(!(_w5fDays>=7&&_w5fDays<400))return;
+    var k='wb_'+_dayKey();if(G._wbShown===k)return;G._wbShown=k;window._w5fWbDone=true;
     G.ts+=50;sv();try{uh()}catch(e){}
     var last=G.lastStageVisited?parseInt(G.lastStageVisited):null;
     var ov=document.createElement('div');ov.id='wbOv';ov.dir=_enLang()?'ltr':'rtl';
     ov.innerHTML='<div class="hub-box" style="text-align:center;max-width:400px"><div style="font-size:3rem">👋</div><h3 style="font-size:1.3rem;font-weight:800;color:var(--t1);margin:.4rem 0">'+(_enLang()?'Welcome back!':'ברוך שובך!')+'</h3><p style="color:var(--t2);font-size:.9rem;margin:0 0 .8rem">'+(_enLang()?'We saved your spot. Here is a small gift for showing up:':'שמרנו לך את המקום. מתנה קטנה על עצם החזרה:')+'</p><div style="font-size:1.6rem;font-weight:800;color:var(--p);margin-bottom:1rem">+50 '+(_enLang()?'pts':'נק\'')+'</div><div class="cer-btns">'+(last!=null?'<button class="bp" onclick="$(\'wbOv\').remove();try{ss('+last+')}catch(e){mp()}">'+(_enLang()?'Continue where I left off':'המשך מאיפה שעצרתי')+'</button>':'')+'<button class="bs" onclick="$(\'wbOv\').remove()">'+(_enLang()?'To the map':'למפה')+'</button></div></div>';
     document.body.appendChild(ov);
-    try{trackEvent('welcomeBack','shown',String(window._lapseDays))}catch(e){}
+    try{trackEvent('welcomeBack','shown',String(_w5fDays))}catch(e){}
+    window._lapseDays=0;
   }catch(e){}
 }
 /* --- daily-goal commitment (once, for fresh users) --- */
@@ -7241,7 +7400,7 @@ function renderGlossary(filter){
   ):_glist;
   const sorted=[...filtered].sort((a,b)=>a.term.localeCompare(b.term));
   let h='<div class="glv-wrap">';
-  h+='<button class="bbtn" onclick="hideGlossary()">'+_t('→ חזרה למפה')+'</button>';
+  h+=_w5iBack('hideGlossary()');
   h+='<h2 style="text-align:center;font-size:2rem;font-weight:800;margin-bottom:.5rem">'+_t('📖 מילון מונחים')+'</h2>';
   h+='<p style="text-align:center;color:var(--t2);margin-bottom:1.5rem">'+_t('כל המונחים המקצועיים בניהול מוצר - לחצו לקפיצה לשלב הרלוונטי')+'</p>';
   h+='<input class="glv-search" type="text" placeholder="'+(_gEN?'🔍 Search a term...':'🔍 חיפוש מונח... (עברית או אנגלית)')+'" value="'+filter.replace(/"/g,'&quot;')+'" oninput="renderGlossary(this.value)">';
@@ -7354,7 +7513,7 @@ function renderProfile(){
   });
 
   let h='<div class="pv-wrap">';
-  h+='<button class="bbtn" onclick="hideProfile()">→ חזרה למפה</button>';
+  h+=_w5iBack('hideProfile()');
   h+='<h2 style="text-align:center;font-size:2rem;font-weight:800;margin-bottom:.5rem">📊 הפרופיל שלי</h2>';
   h+='<div style="text-align:center;margin-bottom:.7rem">'+_versionBadgeHtml()+'</div>';
   // ===== Preferences strip (language + sound) — moved here from the header =====
@@ -7595,7 +7754,7 @@ function toggleTheme(){
   G.darkMode=!G.darkMode;
   document.body.classList.toggle('light',G.darkMode);
   const btn=$('btn-theme');
-  if(btn) btn.textContent=G.darkMode?'☀️':'🌙';
+  if(btn) _w5iSetTheme(btn);
   trackEvent('theme','toggle',G.darkMode?'light':'dark');
   sv();
 }
@@ -7714,6 +7873,9 @@ function generateCert(){
   const stagesCompleted=G.done.size;
   const certId=(function(){var h=0,src=(G.userName||'')+'|'+new Date().toISOString().slice(0,10);for(var i=0;i<src.length;i++){h=((h<<5)-h+src.charCodeAt(i))|0}return 'PM-'+Math.abs(h).toString(36).toUpperCase()})();
 
+  /* W5: server-side issuance record + public verification link (fire-and-forget; the backend endpoint may lag) */
+  const _w5fVerUrl=(typeof _DB_BASE!=='undefined'&&_DB_BASE)?(_DB_BASE+'?action=verifyCert&id='+encodeURIComponent(certId)):'';
+  try{if(DB_URL){let _w5fTok='';try{_w5fTok=G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||''}catch(e){}fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'issueCert',userName:G.userName||'',sessionToken:_w5fTok,certId:certId,title:(title?title.name:'מנהל מוצר מוסמך'),score:score,stages:stagesCompleted}),headers:{'Content-Type':'text/plain'},keepalive:true}).catch(function(){})}}catch(e){}
   const certHTML=`<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -7747,12 +7909,22 @@ body{font-family:'Heebo',sans-serif;background:#f5f5f7;display:flex;align-items:
 .cert-logo{font-weight:800;color:#6C63FF;font-size:1.1rem}
 .no-print{text-align:center;margin-top:1.5rem}
 .no-print button{padding:.8rem 2rem;font-size:1rem;font-weight:700;border:none;border-radius:50px;cursor:pointer;background:linear-gradient(135deg,#6C63FF,#FF6584);color:#fff;font-family:'Heebo'}
+/* W5: verification line + optional gold seal (G.certFlair) */
+.cert-verify{color:#6e6e80;font-size:.82rem;margin-top:.35rem}
+.cert-verify a{color:#5A52D5;font-weight:700;text-decoration:underline;text-underline-offset:2px}
+.cert-seal{position:absolute;top:22px;right:22px;width:74px;height:74px;z-index:2;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.cert-seal::before,.cert-seal::after{content:'';position:absolute;top:50px;width:18px;height:40px;background:linear-gradient(180deg,#E8C45C,#A07A22);clip-path:polygon(0 0,100% 0,100% 100%,50% 80%,0 100%);z-index:-1}
+.cert-seal::before{left:13px;transform:rotate(16deg)}
+.cert-seal::after{right:13px;transform:rotate(-16deg)}
+.cert-seal span{display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF3C4 0%,#F2D06B 38%,#C9A13B 75%,#A07A22 100%);box-shadow:0 0 0 3px #fff,0 0 0 5px #C9A13B,0 6px 14px rgba(160,122,34,.35);color:#7A5A12;font-size:1.9rem;line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+@media(max-width:560px){.cert-seal{top:14px;right:14px;transform:scale(.72);transform-origin:top right}}
+@media print{.cert-verify{color:#444}.cert-verify a{color:#3F37B0}}
 @media print{.no-print{display:none}.cert{box-shadow:none;border:3px solid #6C63FF}}
 </style>
 </head>
 <body>
 <div>
-<div class="cert">
+<div class="cert">${G.certFlair===true?'<div class="cert-seal" aria-hidden="true"><span>★</span></div>':''}
 <div class="cert-top">
 <div class="cert-icon">${G.navyArm?'⚓':'🎖️'}</div>
 <div class="cert-sub">תעודת השלמה · Certificate of Completion</div>
@@ -7768,6 +7940,7 @@ body{font-family:'Heebo',sans-serif;background:#f5f5f7;display:flex;align-items:
 <div class="cert-stat"><div class="cs-val">${Math.max(G.maxStreak||0,G.streak||0)}</div><div class="cs-label">ימי רצף</div></div>
 </div>
 <div class="cert-date">תאריך: ${dateStr} · מזהה: ${certId}</div>
+${_w5fVerUrl?'<div class="cert-verify">אימות התעודה: <a href="'+_w5fVerUrl.replace(/&/g,'&amp;')+'" target="_blank" rel="noopener">לחצו לאימות</a></div>':''}
 <div style="font-size:.66rem;color:#8e8e99;margin-top:.5rem;line-height:1.5">תכנית לימוד פרטית ועצמאית · אינה תעודה אקדמית או הסמכה מקצועית מוכרת · ללא זיקה לצה"ל או לחיל הים</div>
 </div>
 <div class="cert-footer">
@@ -7864,7 +8037,7 @@ h+='<td style="padding:.6rem;font-size:.8rem">'+esc(e.title||'—')+'</td>';
 h+='<td style="padding:.6rem">'+(parseInt(e.streak)>0?'🔥'+parseInt(e.streak):'—')+'</td>';
 h+='</tr>'});
 h+='</tbody></table></div>'}
-h+='<div style="text-align:center;margin:1.4rem 0 .5rem"><button class="bbtn" onclick="hideLeaderboard()" style="background:rgba(108,99,255,.16);border:1px solid var(--p);border-radius:10px;padding:.6rem 1.4rem;color:var(--p);font-weight:700;margin:0">'+_t('🗺️ חזרה למפה')+'</button></div>';
+h+='<div style="text-align:center;margin:1.4rem 0 .5rem">'+_w5iBack('hideLeaderboard()',' style="margin:0"')+'</div>';
 h+='</div>';
 lbv.innerHTML=h;_i18nDynamic(lbv)}
 
@@ -7933,7 +8106,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.9.1';
+const APP_VERSION='1.9.2';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -11052,6 +11225,417 @@ function _w4MapReturn(){
 /* chip re-arms on every map rebuild (language switch, retro-credit and navy sync call rg() directly, not mp()) */
 const _origRgW4=rg;rg=function(){_origRgW4.apply(this,arguments);try{_w4JumpChip()}catch(e){}};
 const _origMpW4map=mp;mp=function(){_origMpW4map.apply(this,arguments);try{_w4MapReturn()}catch(e){}};
+/* ===== wave 5: UI-chrome icon registry (two-tier emoji policy — content keeps emoji, chrome gets stroke SVG) =====
+   Function declarations only: hoisted, so uh()/render paths that run before this point already see them. */
+function _w5icon(name,cls){var P={'home':'<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>','info':'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>','chart':'<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>','sun':'<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>','moon':'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>','arrow-left':'<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>','quiz':'<path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/><path d="m15 5 3 3"/>','star':'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>','trophy':'<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>','flame':'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>'};var p=P[name];if(!p)return '';return '<svg class="w5i'+(cls?' '+cls:'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+p+'</svg>';}
+/* one ghost "back to map" button for every non-stage screen; arrow is directional → mirrored in RTL via .icon-dir */
+function _w5iBack(fn,extra){return '<button type="button" class="bbtn w5i-back" onclick="'+fn+'"'+(extra||'')+'>'+_w5icon('arrow-left','icon-dir')+'<span>'+(_enLang()?'Back to map':'חזרה למפה')+'</span></button>';}
+/* theme glyph: sun while light mode is on, moon while dark (same semantics as the old ☀️/🌙); re-renders only on change */
+function _w5iSetTheme(btn){if(!btn)return;var m=document.body.classList.contains('light')?'sun':'moon';if(btn.getAttribute('data-w5i-t')===m&&btn.querySelector('svg.w5i'))return;btn.setAttribute('data-w5i-t',m);btn.innerHTML=_w5icon(m);}
+/* header chrome sync (called from uh()): theme glyph + bilingual title/aria-label from the Hebrew key in data-w5i-l */
+function _w5iHdrSync(){try{_w5iSetTheme($('btn-theme'));var hd=$('hd');if(!hd)return;hd.querySelectorAll('[data-w5i-l]').forEach(function(el){var v=_t(el.getAttribute('data-w5i-l'));if(el.getAttribute('title')!==v)el.setAttribute('title',v);if(el.getAttribute('aria-label')!==v)el.setAttribute('aria-label',v)})}catch(e){}}
+/* ===== wave 5: MASTERY LEVELS (w5m) — render-layer only; reads G, never writes it ===== */
+/* Level rule per stage — _w5mLevel(sid) → 0..4 (pure; no writes):
+   score = best share of correct answers over full quiz passes (G.quizAttempts, the current complete G.qa,
+   G.sc/10 as legacy fallback; G.sc is points, 10 per correct, so power-up penalties can only understate it).
+   0 none        — no answers at all
+   1 Attempted   — any answer (a retake in progress keeps the best level reached)
+   2 Familiar    — every question answered (a full pass exists) and score ≥70%
+   3 Proficient  — score ≥90%
+   4 Mastered    — ≥90% AND zero outstanding G.wrongQ entries for this stage AND stage in G.done AND durable:
+                   the first timestamped full pass (G.quizAttempts[].t) is ≥3 days old, OR a later pass (a retake)
+                   also scored ≥90%. Without timestamped attempts (legacy data): ≥90% + no wrongQ + G.done.
+   Level-up toast fires only for levels ≥2 ("Attempted" is not an achievement). */
+var _W5M_DAY=864e5,_W5M_SPACING=3;
+function _w5mStage(sid){try{for(var i=0;i<S.length;i++){if(String(S[i].id)===String(sid))return S[i]}}catch(e){}return null}
+function _w5mWrongN(st){var n=0;try{var w=G.wrongQ||{};Object.keys(w).forEach(function(k){var m=/^(-?\d+)_(\d+)$/.exec(k),ws,wi;if(m){ws=m[1];wi=+m[2]}else if(w[k]){ws=w[k].stage;wi=+w[k].qi}if(String(ws)===String(st.id)&&st.q[wi])n++})}catch(e){}return n}
+function _w5mInfo(sid){
+  var st=_w5mStage(sid),r={sid:sid,level:0,n:0,best:0,answered:0,full:false,wrong:0,done:false,durable:false,daysLeft:0};
+  if(!st||!st.q||!st.q.length)return r;
+  var n=st.q.length,qa=(G.qa&&G.qa[st.id])||{},ans=0,cor=0;r.n=n;
+  Object.keys(qa).forEach(function(k){var i=+k;if(i>=0&&i<n&&qa[k]!==undefined&&qa[k]!==null){ans++;if(qa[k]===st.q[i].c)cor++}});
+  r.answered=ans;
+  var att0=G.quizAttempts&&G.quizAttempts[st.id],att=(Array.isArray(att0)?att0:[]).filter(function(a){return a&&typeof a==='object'});
+  var best=0,full=false;
+  if(ans>=n){full=true;best=cor}
+  att.forEach(function(a){var c=Math.round(Math.min(1,(+a.ok||0)/((+a.total)||n))*n);full=true;if(c>best)best=c});
+  var sc=+((G.sc&&G.sc[st.id])||0)||0;
+  if(sc>0){full=true;var c2=Math.floor(Math.min(sc,n*10)/10);if(c2>best)best=c2}
+  r.done=!!(G.done&&typeof G.done.has==='function'&&G.done.has(st.id));
+  if(r.done)full=true;
+  r.full=full;r.best=best;r.wrong=_w5mWrongN(st);
+  if(!ans&&!full)return r;
+  var p=best/n,lv=1;
+  if(full&&p>=0.7-1e-9)lv=2;
+  if(full&&p>=0.9-1e-9)lv=3;
+  if(lv===3&&!r.wrong&&r.done){
+    var ta=att.filter(function(a){return +a.t>0}).sort(function(a,b){return a.t-b.t});
+    if(ta.length){
+      var age=Date.now()-ta[0].t;
+      var retake=ta.slice(1).some(function(a){return (+a.ok||0)/((+a.total)||n)>=0.9-1e-9});
+      r.durable=age>=_W5M_SPACING*_W5M_DAY||retake;
+      if(!r.durable)r.daysLeft=Math.max(1,Math.ceil((_W5M_SPACING*_W5M_DAY-age)/_W5M_DAY));
+    }else r.durable=true;
+    if(r.durable)lv=4;
+  }
+  r.level=lv;return r;
+}
+function _w5mLevel(sid){try{return _w5mInfo(sid).level}catch(e){return 0}}
+function _w5mName(lv){var en=_enLang();return [en?'Not started':'טרם התחלתי',en?'Attempted':'ניסיתי',en?'Familiar':'מכיר',en?'Proficient':'שולט',en?'Mastered':'מאסטר'][lv]||''}
+function _w5mHint(r){
+  var en=_enLang(),lv=r.level,k;
+  if(lv>=4)return en?'Top level — fully mastered 🏆':'רמה מרבית — שליטה מלאה 🏆';
+  if(lv===0)return en?'Answer a quiz question to get started':'ענו על שאלה במבחן כדי להתחיל';
+  if(lv===1&&!r.full){k=Math.max(1,r.n-r.answered);return en?('Answer '+k+' more question'+(k===1?'':'s')+' on the way to Familiar'):('עוד '+(k===1?'שאלה אחת':k+' שאלות')+' לסיום המבחן, בדרך ל\'מכיר\'')}
+  if(lv<=2){var tgt=lv===1?0.7:0.9,nm=_w5mName(lv+1);k=Math.max(1,Math.ceil(tgt*r.n-1e-9)-r.best);
+    return en?(k+' more correct answer'+(k===1?'':'s')+' to reach '+nm):('עוד '+k+' '+(k===1?'תשובה נכונה':'תשובות נכונות')+' ל\''+nm+'\'')}
+  if(r.wrong>0){k=r.wrong;return en?('Fix '+k+' review question'+(k===1?'':'s')+' to reach Mastered'):('תקנו '+k+' '+(k===1?'שאלת חזרה':'שאלות חזרה')+' ל\'מאסטר\'')}
+  if(!r.done)return en?'Finish the reading and the case to reach Mastered':'השלימו את הקריאה והקייס ל\'מאסטר\'';
+  k=r.daysLeft||1;
+  return en?('Retake the quiz, or come back in '+k+' day'+(k===1?'':'s')+', to reach Mastered'):('מבחן חוזר, או חזרו '+(k===1?'מחר':k===2?'בעוד יומיים':'בעוד '+k+' ימים')+' ל\'מאסטר\'');
+}
+function _w5mPaint(el,lv,decorative){
+  var h='';for(var i=1;i<=4;i++)h+='<i class="w5m-pip'+(i<=lv?' on':'')+'"></i>';
+  var cls='w5m-meter w5m-l'+lv;if(el.className!==cls)el.className=cls;
+  if(el.getAttribute('data-lv')!==String(lv)||!el.firstChild){el.innerHTML=h;el.setAttribute('data-lv',String(lv))}
+  var lab=(_enLang()?'Mastery: ':'רמת שליטה: ')+_w5mName(lv);
+  if(decorative){el.setAttribute('aria-hidden','true');el.removeAttribute('title');el.removeAttribute('role');el.removeAttribute('aria-label')}
+  else{el.setAttribute('title',lab);el.setAttribute('role','img');el.setAttribute('aria-label',lab)}
+}
+function _w5mDecorateMap(){
+  var nodes=document.querySelectorAll('.j-node[data-sid]');
+  for(var i=0;i<nodes.length;i++){try{
+    var nd=nodes[i],inf=nd.querySelector('.j-info');if(!inf)continue;
+    var m=inf.querySelector(':scope>.w5m-meter'),r=_w5mInfo(nd.getAttribute('data-sid'));
+    if(!r.n){if(m)m.remove();continue}
+    if(!m){m=document.createElement('span');var t=inf.querySelector(':scope>.j-title');if(t&&t.nextSibling)inf.insertBefore(m,t.nextSibling);else inf.appendChild(m)}
+    _w5mPaint(m,r.level,false);
+  }catch(e){}}
+}
+function _w5mDecorateStage(pop){
+  if(G.v!=='s'||G.st==null)return;var v=$('sv');if(!v||v.classList.contains('hid'))return;
+  var hdr=v.querySelector('.shdr'),row=hdr&&hdr.querySelector('.stage-reward');if(!row)return;
+  var r=_w5mInfo(G.st),chip=row.querySelector('.w5m-chip'),hint=hdr.querySelector('.w5m-hint');
+  if(!r.n){if(chip)chip.remove();if(hint)hint.remove();return}
+  var lab=(_enLang()?'Mastery: ':'רמת שליטה: ');
+  if(!chip){chip=document.createElement('div');chip.innerHTML='<span class="w5m-meter"></span><span class="w5m-ct"></span>';row.appendChild(chip)}
+  chip.className='sr-item w5m-chip w5m-c'+r.level+(chip.classList.contains('w5m-pop')?' w5m-pop':'');
+  chip.setAttribute('title',lab+_w5mName(r.level));
+  _w5mPaint(chip.querySelector('.w5m-meter'),r.level,true);
+  var ct=chip.querySelector('.w5m-ct');ct.textContent=lab;var b=document.createElement('b');b.textContent=_w5mName(r.level);ct.appendChild(b);
+  if(!hint){hint=document.createElement('div');row.parentNode.insertBefore(hint,row.nextSibling)}
+  hint.className='w5m-hint'+(r.level>=4?' w5m-h4':'');
+  var tx=_w5mHint(r);if(hint.textContent!==tx)hint.textContent=tx;
+  if(pop){chip.classList.remove('w5m-pop');void chip.offsetWidth;chip.classList.add('w5m-pop');setTimeout(function(){try{chip.classList.remove('w5m-pop')}catch(e){}},700)}
+}
+/* toast via the shared achievement queue; the stage ceremony (z-index above toasts) owns its moment, so wait it out */
+function _w5mLevelUp(sid,lv){
+  var tries=0;
+  (function fire(){
+    if(document.getElementById('stageCerem')&&tries++<150){setTimeout(fire,400);return}
+    try{var st=_w5mStage(sid),en=_enLang();
+      showAchievement('⬆️',(en?'Mastery: ':'רמת שליטה: ')+_w5mName(lv)+'!',st?((en?'Stage ':'שלב ')+st.id+' · '+st.t):'')}catch(e){}
+  })();
+}
+const _w5mOrigRg=rg;rg=function(){var r=_w5mOrigRg.apply(this,arguments);try{_w5mDecorateMap()}catch(e){}return r};
+const _w5mOrigRs=rs;rs=function(){var r=_w5mOrigRs.apply(this,arguments);try{requestAnimationFrame(function(){try{_w5mDecorateStage(false)}catch(e){}})}catch(e){}return r};
+const _w5mOrigSa=sa;sa=function(sid,qi,v){
+  var b=-1;try{b=_w5mLevel(sid)}catch(e){}
+  var res=_w5mOrigSa.apply(this,arguments);
+  try{var a=_w5mLevel(sid),up=b>=0&&a>b;
+    if(up&&a>=2)_w5mLevelUp(sid,a);
+    if(G.v==='s'&&String(G.st)===String(sid))_w5mDecorateStage(up&&a>=2);
+  }catch(e){}
+  return res;
+};
+/* fixing a review question (spaced repetition) is the usual last step to Mastered — same toast */
+const _w5mOrigSr=srAnswer;srAnswer=function(qi,sel){
+  var sid=null,b=-1;try{var q=_srQuestions&&_srQuestions[qi];if(q&&_srAnswers[qi]===undefined){sid=q.stageId;b=_w5mLevel(sid)}}catch(e){}
+  var res=_w5mOrigSr.apply(this,arguments);
+  try{if(sid!=null){var a=_w5mLevel(sid);if(b>=0&&a>b&&a>=2)_w5mLevelUp(sid,a)}}catch(e){}
+  return res;
+};
+/* ===== /wave 5 mastery ===== */
+/* ===== w5 game: Today-hub game picker + "True or False" (startTfGame) ===== */
+/* Only #tdGame is touched. Everything renders synchronously; no observers. Abandoned runs (quit / hub closed /
+   another game took #tdGame) never count. The first counted play of the day (either game) gets the reward. */
+var _w5gMS=45000;
+var _w5g={on:false,id:0};
+var _w5gSeq=0;
+function _w5gRM(){try{return !!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)}catch(e){return false}}
+function _w5gCoarse(){try{return !!(window.matchMedia&&(window.matchMedia('(pointer: coarse)').matches||window.matchMedia('(hover: none)').matches))}catch(e){return false}}
+function _w5gDay(){var k=_dayKey(),o=null;try{o=JSON.parse(localStorage.getItem('pm_games_day')||'null')}catch(e){o=null}if(!o||typeof o!=='object'||o.d!==k)o={d:k,tg:0,tf:0};return o}
+function _w5gMark(g){try{var o=_w5gDay();o[g]=(parseInt(o[g],10)||0)+1;localStorage.setItem('pm_games_day',JSON.stringify(o))}catch(e){}}
+function _w5gBest(){var b=0;try{b=parseInt(localStorage.getItem('pm_tf_best'),10)||0}catch(e){b=0}return b>0?b:0}
+function _w5gSetBest(v){try{localStorage.setItem('pm_tf_best',String(v))}catch(e){}}
+/* ---- picker ---- */
+function _w5gPicker(){
+  var el=$('tdGame');if(!el)return;
+  var en=_enLang(),d=_w5gDay(),best=_w5gBest(),claimed=false;
+  try{claimed=(_todayState().game||0)>0}catch(e){}
+  var tgDone=(parseInt(d.tg,10)||0)>0,tfDone=(parseInt(d.tf,10)||0)>0;
+  var played=en?'✓ Played today':'✓ שוחק היום',play=en?'▶ Play':'▶ שחקו';
+  var bestTxt=best>0?((en?'🏆 Best ':'🏆 שיא ')+best):'';
+  var tfSt=tfDone?(played+(bestTxt?' · '+bestTxt:'')):(bestTxt||play);
+  el.innerHTML='<div class="w5g-pick w5g-root" id="w5gPick" dir="'+(en?'ltr':'rtl')+'">'
+   +'<div class="w5g-ph"><h4>🎮 '+(en?'Daily games':'המשחקים היומיים')+'</h4><span class="w5g-rw'+(claimed?' got':'')+'">'+(claimed?(en?'✓ Daily reward claimed · play for fun':'✓ הפרס היומי נאסף · שחקו להנאה'):(en?'🎁 Your first game today earns points':'🎁 המשחק הראשון היום מזכה בנקודות'))+'</span></div>'
+   +'<div class="w5g-cards">'
+   +'<button type="button" class="w5g-card" data-g="tg" onclick="startTermGame()"><span class="w5g-ic" aria-hidden="true">🪙</span><span class="w5g-nm">'+(en?'Token Drop':'נפל האסימון')+'</span><span class="w5g-ds">'+(en?'Match terms to definitions · 3 rounds':'התאימו מונחים להגדרות · 3 סבבים')+'</span><span class="w5g-st'+(tgDone?' done':'')+'">'+(tgDone?played:play)+'</span></button>'
+   +'<button type="button" class="w5g-card" data-g="tf" onclick="startTfGame()"><span class="w5g-ic" aria-hidden="true">⚡</span><span class="w5g-nm">'+(en?'True or False':'אמת או בדיה')+'</span><span class="w5g-ds">'+(en?'45 seconds · right definition or not?':'45 שניות · ההגדרה נכונה או לא?')+'</span><span class="w5g-st'+(tfDone?' done':'')+'">'+tfSt+'</span></button>'
+   +'</div></div>';
+}
+function _w5gBack(src){_w5gStop();try{trackEvent('minigame','back',src||'picker')}catch(e){}_w5gPicker()}
+function _w5gQuit(){var n=_w5g.n||0;_w5gStop();try{trackEvent('minigame','quit','trueFalse·'+n)}catch(e){}_w5gPicker()}
+/* ---- deck: glossary statements, 50% true, false ones borrow a definition from the same/adjacent stage ---- */
+function _w5gPool(){
+  var out=[];
+  try{
+    var GL=(typeof GLOSSARY!=='undefined'&&GLOSSARY)||[],GE=(typeof GLOSSARY_EN!=='undefined'&&GLOSSARY_EN)||[];
+    for(var i=0;i<GL.length;i++){
+      var g=GL[i];if(!g||!g.term||!g.desc)continue;
+      var sid=parseInt(g.stage,10)||0,hid=false;
+      try{var st=S.find(function(x){return x.id===sid});hid=!!(st&&_stageHidden(st))}catch(e){}
+      if(hid)continue;/* navy-only stage terms stay navy-only, like the glossary */
+      var e2=(GE[i]&&GE[i].desc)?GE[i]:null,fullHe=String(g.desc),fullEn=e2?String(e2.desc):'';
+      var en1=fullEn?_w5gStrip(fullEn,g.term):'';if(en1&&en1!==fullEn)en1=en1.charAt(0).toUpperCase()+en1.slice(1);
+      out.push({term:String(g.term),heb:String(g.heb||g.term),desc:_w5gStrip(fullHe,g.term),stage:sid,enTerm:String((e2&&e2.term)||g.term),enDesc:en1,fullHe:fullHe,fullEn:fullEn,raw:fullHe+' '+fullEn});
+    }
+  }catch(e){}
+  return out;
+}
+/* "Objectives and Key Results - a framework…" spells the answer out (OKR): the card shows only the meaning after the
+   expansion — true cards stop being giveaways, borrowed ones stop naming their real owner. The review list keeps the full text. */
+function _w5gAcr(x){return String(x||'').split(/[\s\/,\-]+/).filter(function(w){return /^[A-Z]/.test(w)}).map(function(w){return w.charAt(0)}).join('')}
+function _w5gCaps(x){return String(x||'').replace(/[^A-Z]/g,'')}
+function _w5gSubseq(a,b){var j=0;for(var i=0;i<b.length&&j<a.length;i++)if(b.charAt(i)===a.charAt(j))j++;return j===a.length}
+function _w5gStrip(desc,term){
+  desc=String(desc||'');var m=desc.match(/^([A-Za-z][A-Za-z0-9 ,'&\/().\-]{1,48}?) - /);if(!m)return desc;
+  var p=m[1],rest=desc.slice(m[0].length);if(rest.length<12)return desc;
+  var ta=_w5gCaps(String(term).split(/\s+/)[0]),pa=_w5gAcr(p);
+  if(ta.length>=2&&pa.length>=2&&pa.charAt(0)===ta.charAt(0)&&_w5gSubseq(pa,ta))return rest;/* expansion of the acronym */
+  var pc=p.replace(/[^A-Za-z]/g,'');if(pc.length>=2&&pc===_w5gCaps(pc)&&pc===_w5gAcr(term))return rest;/* the acronym of the term */
+  return desc;
+}
+function _w5gShuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function _w5gNorm(x){return ' '+String(x||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()+' '}
+/* a borrowed definition that names the target term ("...in the Scrum methodology" for Scrum) would be ambiguous */
+function _w5gMentions(o,t){
+  var hay=_w5gNorm(o.raw),ws=[t.term,t.enTerm];
+  for(var i=0;i<ws.length;i++){var w=_w5gNorm(ws[i]).trim();if(w.length>=2&&hay.indexOf(' '+w+' ')>=0)return true}
+  var h=String(t.heb||'').trim();return h.length>=3&&o.raw.indexOf(h)>=0;
+}
+function _w5gDistractor(t){
+  var P=_w5g.pool||[],R=[1,3,999];
+  for(var r=0;r<R.length;r++){
+    var lim=R[r],c=P.filter(function(o){return o!==t&&o.desc!==t.desc&&Math.abs(o.stage-t.stage)<=lim&&!_w5gMentions(o,t)});
+    if(c.length>=(r<R.length-1?2:1))return c[Math.floor(Math.random()*c.length)];
+  }
+  return null;
+}
+function _w5gNext(){if(!_w5g.deck||_w5g.di>=_w5g.deck.length){_w5g.deck=_w5gShuffle(_w5g.pool.slice());_w5g.di=0}return _w5g.deck[_w5g.di++]}
+function _w5gDeal(){
+  var st=$('w5gStage');if(!st||!st.isConnected){_w5gStop();return}
+  var t=_w5gNext(),h=_w5g.hist,truth=Math.random()<.5;
+  if(h.length>=3&&h[h.length-1]===h[h.length-2]&&h[h.length-2]===h[h.length-3])truth=!h[h.length-1];/* no 4-in-a-row of the same answer */
+  var shown=truth?t:_w5gDistractor(t);if(!shown){shown=t;truth=true}
+  h.push(truth);if(h.length>6)h.shift();
+  _w5g.cur={t:t,d:shown,truth:truth};
+  var en=_w5g.en,def=en?(shown.enDesc||shown.desc):shown.desc,term;
+  if(en)term='<span dir="ltr">'+esc(t.enTerm)+'</span>';
+  else term='<span class="w5g-heb">'+esc(t.heb)+'</span>'+(t.heb.trim().toLowerCase()===t.term.trim().toLowerCase()?'':'<span class="w5g-en" dir="ltr">'+esc(t.term)+'</span>');
+  var inMs=Math.max(120,260-_w5g.n*7);/* the pace ramps: each card lands a little faster */
+  st.innerHTML='<div class="w5g-cardx" id="w5gCard" style="--w5g-in:'+inMs+'ms"><span class="w5g-stamp yes" aria-hidden="true">✓</span><span class="w5g-stamp no" aria-hidden="true">✗</span>'
+   +'<div class="w5g-cterm">'+term+'</div><div class="w5g-dash" aria-hidden="true">—</div>'
+   +'<div class="w5g-cdef"'+(en?' dir="auto"':'')+'>'+esc(def)+'</div></div><div class="w5g-fl" id="w5gFl"></div>';
+  ['w5gYes','w5gNo'].forEach(function(id){var b=$(id);if(b)b.classList.remove('hit')});
+}
+/* "toward the ✓ button" is true — measured, so RTL/LTR mirroring can never invert the meaning */
+function _w5gTrueRight(){
+  try{var y=$('w5gYes'),n=$('w5gNo');if(y&&n){var a=y.getBoundingClientRect(),b=n.getBoundingClientRect();if(a.width&&b.width&&a.left!==b.left)return a.left>b.left}}catch(e){}
+  var r=$('w5gRun');return !(r&&r.getAttribute('dir')==='rtl');
+}
+/* ---- run ---- */
+function startTfGame(){
+  _w5gStop();
+  var el=$('tdGame');if(!el)return;
+  var pool=_w5gPool();if(pool.length<6)return;
+  try{trackEvent('minigame','start','trueFalse')}catch(e){}
+  var en=_enLang(),now=Date.now(),tr=!!en;/* ✓ is the 2nd button: right in LTR, left in RTL */
+  _w5g={on:true,id:++_w5gSeq,en:en,pool:pool,deck:null,di:0,hist:[],cur:null,score:0,n:0,correct:0,streak:0,best:0,miss:[],lock:false,over:false,t0:now,end:now+_w5gMS,sec:-1,timer:0,drag:null};
+  var kY=tr?'→':'←',kN=tr?'←':'→';
+  el.innerHTML='<div class="w5g-run w5g-root" id="w5gRun" dir="'+(en?'ltr':'rtl')+'">'
+   +'<div class="w5g-top"><button type="button" class="w5g-quit" onclick="_w5gQuit()">'+(en?'← Games':'→ משחקים')+'</button><span class="w5g-sp"></span>'
+   +'<span class="w5g-combo" id="w5gCombo"></span>'
+   +'<span class="w5g-scw" id="w5gScW">'+(en?'Score':'ניקוד')+' <b id="w5gScore">0</b></span>'
+   +'<span class="w5g-time" id="w5gTime">⏱ <b id="w5gSec">'+Math.round(_w5gMS/1000)+'</b></span></div>'
+   +'<div class="w5g-bar" aria-hidden="true"><i id="w5gBar"></i></div>'
+   +'<div class="w5g-stage" id="w5gStage" aria-live="polite"></div>'
+   +'<div class="w5g-q">'+(en?'Is this the right definition?':'זו ההגדרה הנכונה?')+'</div>'
+   +'<div class="w5g-btns">'
+   +'<button type="button" class="w5g-btn no" id="w5gNo" onclick="_w5gAnswer(false)" aria-label="'+(en?'False':'בדיה')+'"><span class="w5g-g" aria-hidden="true">✗</span><span>'+(en?'False':'בדיה')+'</span><span class="w5g-kbd" aria-hidden="true">'+kN+' N</span></button>'
+   +'<button type="button" class="w5g-btn yes" id="w5gYes" onclick="_w5gAnswer(true)" aria-label="'+(en?'True':'אמת')+'"><span class="w5g-g" aria-hidden="true">✓</span><span>'+(en?'True':'אמת')+'</span><span class="w5g-kbd" aria-hidden="true">'+kY+' Y</span></button>'
+   +'</div>'
+   +'<div class="w5g-hint">'+(_w5gCoarse()?(en?'Swipe the card toward ✓ or ✗':'החליקו את הכרטיס לכיוון ✓ או ✗'):(en?'Arrow keys toward ✓ / ✗ · Y / N · or drag the card':'חיצים לכיוון ✓ / ✗ · Y / N · או גררו את הכרטיס'))+'</div>'
+   +'<div class="w5g-last" id="w5gLast" role="status"></div>'
+   +'</div>';
+  var st=$('w5gStage');if(st)_w5gBindSwipe(st);
+  try{document.removeEventListener('keydown',_w5gKey)}catch(e){}
+  document.addEventListener('keydown',_w5gKey);
+  _w5gDeal();
+  _w5g.timer=setInterval(_w5gTick,200);_w5gTick();
+  try{el.scrollIntoView({block:'nearest',behavior:_w5gRM()?'auto':'smooth'})}catch(e){}
+  try{playSfx('open')}catch(e){}
+}
+function _w5gStop(){
+  if(_w5g.timer){try{clearInterval(_w5g.timer)}catch(e){}}
+  _w5g.timer=0;_w5g.on=false;_w5g.drag=null;
+  try{document.removeEventListener('keydown',_w5gKey)}catch(e){}
+}
+function _w5gTick(){
+  if(!_w5g.on){_w5gStop();return}
+  var run=$('w5gRun');if(!run||!run.isConnected){_w5gStop();return}/* hub closed / another game took #tdGame: abandon, no reward */
+  var left=Math.max(0,_w5g.end-Date.now()),sec=Math.ceil(left/1000);
+  var bar=$('w5gBar');if(bar)bar.style.transform='scaleX('+(left/_w5gMS).toFixed(4)+')';
+  if(sec!==_w5g.sec){
+    _w5g.sec=sec;
+    var se=$('w5gSec');if(se)se.textContent=sec;
+    var tw=$('w5gTime');if(tw){tw.classList.toggle('warn',sec<=10);tw.classList.toggle('hot',sec<=5&&sec>0)}
+    if(bar)bar.classList.toggle('warn',sec<=10);
+    if(sec<=3&&sec>0){try{playSfx('tap')}catch(e){}}
+  }
+  if(left<=0){_w5g.over=true;if(!_w5g.lock)_w5gEnd()}
+}
+function _w5gKey(e){
+  if(!_w5g.on){try{document.removeEventListener('keydown',_w5gKey)}catch(x){}return}
+  if(e.ctrlKey||e.metaKey||e.altKey||e.repeat)return;
+  var tg=e.target;if(tg&&(tg.tagName==='INPUT'||tg.tagName==='TEXTAREA'||tg.tagName==='SELECT'||tg.isContentEditable))return;
+  if(!$('w5gRun')){_w5gStop();return}
+  var k=e.key,c=e.code,say=null;
+  if(k==='ArrowLeft'||k==='ArrowRight')say=((k==='ArrowRight')===_w5gTrueRight());
+  else if(c==='KeyY'||k==='y'||k==='Y')say=true;
+  else if(c==='KeyN'||k==='n'||k==='N')say=false;
+  if(say===null)return;
+  e.preventDefault();
+  _w5gAnswer(say);
+}
+function _w5gBindSwipe(st){
+  st.addEventListener('pointerdown',function(e){
+    if(!_w5g.on||_w5g.lock||_w5g.over)return;
+    var c=e.target&&e.target.closest?e.target.closest('.w5g-cardx'):null;if(!c)return;
+    if(e.pointerType==='mouse'&&e.button!==0)return;
+    _w5g.drag={id:e.pointerId,x:e.clientX,y:e.clientY,dx:0,dy:0,on:false,c:c,tr:true};
+    try{c.setPointerCapture(e.pointerId)}catch(x){}
+  });
+  st.addEventListener('pointermove',function(e){
+    var d=_w5g.drag;if(!d||d.id!==e.pointerId||_w5g.lock)return;
+    d.dx=e.clientX-d.x;d.dy=e.clientY-d.y;
+    if(!d.on){if(Math.abs(d.dx)>8&&Math.abs(d.dx)>Math.abs(d.dy)){d.on=true;d.tr=_w5gTrueRight();d.c.style.animation='none';d.c.style.transition='none';d.c.classList.add('drag')}else return}
+    d.c.style.transform='translateX('+d.dx+'px) rotate('+(d.dx/18).toFixed(2)+'deg)';
+    var toYes=(d.dx>0)===d.tr,o=Math.min(1,Math.abs(d.dx)/60).toFixed(2);
+    var ys=d.c.querySelector('.w5g-stamp.yes'),ns=d.c.querySelector('.w5g-stamp.no');
+    if(ys)ys.style.opacity=toYes?o:'0';if(ns)ns.style.opacity=toYes?'0':o;
+  });
+  var up=function(e){
+    var d=_w5g.drag;if(!d||d.id!==e.pointerId)return;
+    _w5g.drag=null;if(!d.on)return;
+    if(e.type==='pointerup'&&Math.abs(d.dx)>=60&&Math.abs(d.dx)>Math.abs(d.dy)&&_w5g.on&&!_w5g.lock&&d.c===$('w5gCard')){_w5gAnswer((d.dx>0)===d.tr);return}
+    d.c.classList.remove('drag');d.c.style.transition='transform .18s cubic-bezier(.22,1,.36,1)';d.c.style.transform='';
+    var ss=d.c.querySelectorAll('.w5g-stamp');for(var i=0;i<ss.length;i++)ss[i].style.opacity='';
+  };
+  st.addEventListener('pointerup',up);st.addEventListener('pointercancel',up);
+}
+function _w5gAnswer(say){
+  if(!_w5g.on||_w5g.lock||_w5g.over||!_w5g.cur)return;
+  var run=$('w5gRun');if(!run||!run.isConnected){_w5gStop();return}
+  if(Date.now()>=_w5g.end){_w5g.over=true;_w5gEnd();return}
+  var c=_w5g.cur,ok=(say===c.truth),delta,sfx='correct';
+  _w5g.lock=true;_w5g.n++;
+  if(ok){delta=_w5g.streak>=5?20:10;_w5g.streak++;_w5g.correct++;if(_w5g.streak>_w5g.best)_w5g.best=_w5g.streak;if(_w5g.streak===5)sfx='combo'}
+  else{delta=-Math.min(3,_w5g.score);_w5g.streak=0;sfx='wrong';_w5g.miss.push(c);try{if(navigator.vibrate&&navigator.userActivation&&navigator.userActivation.hasBeenActive)navigator.vibrate(24)}catch(x){}}
+  _w5g.score=Math.max(0,_w5g.score+delta);
+  try{playSfx(sfx)}catch(x){}
+  _w5gHud(delta,ok,c);
+  var card=$('w5gCard'),sign=(say===_w5gTrueRight())?1:-1,id=_w5g.id,rm=_w5gRM();
+  var b=$(say?'w5gYes':'w5gNo');if(b){b.classList.remove('hit');void b.offsetWidth;b.classList.add('hit')}
+  var fl=$('w5gFl');if(fl){fl.className='w5g-fl';void fl.offsetWidth;fl.className='w5g-fl '+(ok?'ok':'bad')}
+  if(card){
+    card.classList.remove('drag');card.classList.add(ok?'ok':'bad');
+    if(!rm){card.style.animation='none';card.style.transition='transform 180ms cubic-bezier(.5,0,.9,.6),opacity 180ms linear';card.style.transform='translateX('+(sign*125)+'%) rotate('+(sign*14)+'deg)';card.style.opacity='0'}
+  }
+  setTimeout(function(){
+    if(id!==_w5g.id||!_w5g.on)return;
+    _w5g.lock=false;
+    if(_w5g.over||Date.now()>=_w5g.end){_w5g.over=true;_w5gEnd();return}
+    _w5gDeal();
+  },rm?140:180);
+}
+function _w5gHud(delta,ok,c){
+  var en=_w5g.en,s=$('w5gScore');if(s)s.textContent=_w5g.score;
+  var cb=$('w5gCombo');if(cb){var on=_w5g.streak>=2;cb.textContent=on?('🔥 '+_w5g.streak+(_w5g.streak>=5?' ×2':'')):'';cb.classList.toggle('on',on);cb.classList.toggle('x2',_w5g.streak>=5)}
+  var sw=$('w5gScW');if(sw&&delta){var dl=document.createElement('span');dl.className='w5g-delta '+(delta>0?'up':'dn');dl.setAttribute('aria-hidden','true');dl.textContent=(delta>0?'+':'−')+Math.abs(delta);sw.appendChild(dl);setTimeout(function(){try{dl.remove()}catch(e){}},650)}
+  var L=$('w5gLast');
+  if(L){
+    var tx;
+    if(ok)tx=_w5g.streak===5?(en?'🔥 5 in a row — double points!':'🔥 5 ברצף — ניקוד כפול!'):(en?'✓ Correct':'✓ נכון');
+    else if(!c.truth)tx=(en?'✗ That was the definition of ':'✗ זו ההגדרה של ')+(en?c.d.enTerm:c.d.heb);
+    else tx=en?'✗ Actually, that one was right':'✗ דווקא זו הייתה ההגדרה הנכונה';
+    L.textContent=tx;L.className='w5g-last '+(ok?'ok':'bad');
+  }
+}
+function _w5gEnd(){
+  if(!_w5g.on)return;
+  var el=$('tdGame'),run=$('w5gRun');
+  _w5gStop();
+  if(!el||!run||!run.isConnected)return;
+  var en=_w5g.en,sc=_w5g.score,n=_w5g.n,ok=_w5g.correct,acc=n?Math.round(ok/n*100):0,pts=0,counted=n>0;
+  if(counted){/* same daily-reward contract as _tgEnd — shared across both games */
+    var t=_todayState();var firstToday=!(t.game>0);t.game=(t.game||0)+1;
+    pts=firstToday?Math.max(10,Math.round(sc/3)):0;
+    if(pts)G.ts+=pts;
+    try{sv()}catch(e){}try{_questMaybeReward()}catch(e){}try{uh()}catch(e){}
+    _w5gMark('tf');
+  }
+  var prev=_w5gBest(),nb=sc>0&&sc>prev;if(nb)_w5gSetBest(sc);
+  var best=Math.max(prev,sc);
+  try{trackEvent('minigame','end','trueFalse·'+sc+'·'+acc+'%')}catch(e){}
+  var rew=pts?('+'+pts+(en?' points earned!':' נקודות נוספו!')):(counted?(en?'Daily reward already claimed — play for fun!':'הפרס היומי כבר נאסף — שיחקו להנאה!'):(en?'No cards answered — the daily reward is still waiting':'לא נענו כרטיסים — הפרס היומי עדיין מחכה'));
+  var seen={},ms=[];
+  for(var i=_w5g.miss.length-1;i>=0&&ms.length<3;i--){var m=_w5g.miss[i].t;if(seen[m.term])continue;seen[m.term]=1;ms.push(m)}
+  var mh=ms.length?('<div class="w5g-miss"><h5>'+(en?'Review — the right definitions':'לחזרה — ההגדרות הנכונות')+'</h5>'+ms.map(function(m){
+    return '<div class="w5g-mi">'+(en?('<b dir="ltr">'+esc(m.enTerm)+'</b> — <span dir="auto">'+esc(m.fullEn||m.fullHe)+'</span>'):('<b>'+esc(m.heb)+'</b> <span dir="ltr">('+esc(m.term)+')</span> — '+esc(m.fullHe)))+'</div>'}).join('')+'</div>'):'';
+  el.innerHTML='<div class="w5g-end w5g-root" id="w5gEnd" dir="'+(en?'ltr':'rtl')+'">'
+   +'<div class="w5g-eic" aria-hidden="true">'+(nb?'🏆':'⚡')+'</div>'
+   +'<div class="w5g-eh">'+(en?"Time's up!":'נגמר הזמן!')+'</div>'
+   +(nb?'<div class="w5g-nb">'+(en?'New personal best!':'שיא אישי חדש!')+'</div>':'')
+   +'<div class="w5g-big" id="w5gFinal">'+sc+'</div>'
+   +'<div class="w5g-sub">'+ok+'/'+n+' '+(en?'correct':'נכונות')+'</div>'
+   +'<div class="w5g-stats"><div><b id="w5gAcc">'+acc+'%</b><span>'+(en?'Accuracy':'דיוק')+'</span></div><div><b id="w5gStreak">'+_w5g.best+'</b><span>'+(en?'Best streak':'רצף שיא')+'</span></div><div><b id="w5gBestV">'+best+'</b><span>'+(en?'Personal best':'שיא אישי')+'</span></div></div>'
+   +'<div class="w5g-rew'+(pts?' got':'')+'" id="w5gRew">'+rew+'</div>'
+   +mh
+   +'<div class="w5g-ebtn"><button type="button" class="bp" id="w5gAgain" onclick="startTfGame()">'+(en?'Play again':'שחקו שוב')+'</button><button type="button" class="bs" id="w5gBackBtn" onclick="_w5gBack(\'trueFalse\')">'+(en?'Back':'חזרה')+'</button></div>'
+   +'</div>';
+  try{el.scrollIntoView({block:'nearest',behavior:_w5gRM()?'auto':'smooth'})}catch(e){}
+  try{playSfx(nb?'win':'complete')}catch(e){}
+  if(nb){try{cf()}catch(e){}}
+}
+/* ---- Token Drop end: per-game "played today" mark + a way back to the picker ---- */
+function _w5gTgBack(){
+  var el=$('tdGame');if(!el||el.querySelector('.w5g-tgback'))return;
+  var host=el.firstElementChild||el;
+  var b=document.createElement('button');b.type='button';b.className='bs w5g-tgback';
+  b.textContent=_enLang()?'← All games':'→ כל המשחקים';
+  b.onclick=function(){_w5gBack('termMatch')};
+  host.appendChild(b);
+}
+/* ---- monitoring: register the minigame feature for the admin analytics (idempotent) ---- */
+try{
+  if(typeof TRACKED_FEATURES!=='undefined'&&TRACKED_FEATURES.indexOf('minigame')<0){TRACKED_FEATURES.push('minigame');if(typeof OTHER_FEATURES!=='undefined'&&OTHER_FEATURES.indexOf('minigame')<0)OTHER_FEATURES.push('minigame')}
+  if(typeof FEAT_META!=='undefined'&&!FEAT_META.minigame)FEAT_META.minigame={ic:'🎮',name:'משחקים יומיים',col:'#E8C45C'};
+  if(typeof FEAT_ACT_NAMES!=='undefined'){var _w5gActs={start:'משחק התחיל',end:'משחק הסתיים',quit:'יציאה באמצע משחק',back:'חזרה לבחירת משחק'};Object.keys(_w5gActs).forEach(function(k){if(!FEAT_ACT_NAMES[k])FEAT_ACT_NAMES[k]=_w5gActs[k]})}
+}catch(e){}
+/* ---- wrappers (after the originals; the originals are never re-declared) ---- */
+if(typeof showTodayHub==='function'){const _w5gOrigHub=showTodayHub;showTodayHub=function(){try{_w5gStop()}catch(e){}var r=_w5gOrigHub.apply(this,arguments);try{_w5gPicker()}catch(e){}return r}}
+if(typeof _tgEnd==='function'){const _w5gOrigTgEnd=_tgEnd;_tgEnd=function(){var r=_w5gOrigTgEnd.apply(this,arguments);try{_w5gMark('tg')}catch(e){}try{_w5gTgBack()}catch(e){}return r}}
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
