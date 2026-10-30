@@ -1,0 +1,248 @@
+WEBVTT
+Kind: captions
+Language: en
+
+1
+00:00:00.000 --> 00:00:14.000
+Welcome to This Explainer. If you're stepping into this core stage, get ready, because we are about to tackle the single biggest trap in product management. We're going to learn how to stop acting like a factory worker, just churning out features, and start acting a lot more like a scientist.
+
+2
+00:00:14.000 --> 00:00:29.030
+The Product Management Trap. The ultimate fear of building in the dark. OK, let's dive right into a scenario literally every PM dreads. Picture this. You spend months designing the absolute perfect product. You write a flawless spec, get engineering totally aligned.
+
+3
+00:00:29.030 --> 00:00:35.050
+aligned, you launch the whole shebang, and then crickets. Absolutely nobody uses it. It's that
+
+4
+00:00:35.050 --> 00:00:40.640
+ultimate fear of just building in the dark. And man, it happens way more often than you'd think.
+
+5
+00:00:40.640 --> 00:00:46.520
+A famous analysis actually showed that 42% of startups fail for one incredibly simple,
+
+6
+00:00:46.940 --> 00:00:50.860
+kind of heartbreaking reason. There was just zero market need for what they built.
+
+7
+00:00:51.320 --> 00:00:56.940
+Nobody actually wanted it. So the real tragedy here isn't running out of cash or some massive
+
+8
+00:00:56.940 --> 00:01:02.340
+technical collapse. The great waste of our era is having super talented people build things
+
+9
+00:01:02.340 --> 00:01:08.140
+perfectly. Totally on time, perfectly on budget, but it's for a feature that shouldn't even exist
+
+10
+00:01:08.140 --> 00:01:15.030
+in the first place. That is exactly what we need to fix. The lean mindset. From spec writer to
+
+11
+00:01:15.030 --> 00:01:21.150
+scientist. To escape this trap, we need a massive paradigm shift. Your main job is no longer just
+
+12
+00:01:21.150 --> 00:01:26.070
+writing docs to hand off to engineering. Your job is now to run structured experiments that
+
+13
+00:01:26.070 --> 00:01:31.570
+aggressively kill uncertainty. Now, this shift is powered by a continuous loop you've probably
+
+14
+00:01:31.570 --> 00:01:37.070
+heard of. Build, measure, learn. But here's the real trick to making it work. You actually have
+
+15
+00:01:37.070 --> 00:01:42.530
+to plan it completely backward. You don't just start building. First, you pinpoint exactly what
+
+16
+00:01:42.530 --> 00:01:47.370
+you need to learn. Next, you figure out how you're going to measure it. And only then do you build
+
+17
+00:01:47.370 --> 00:01:53.090
+the absolute smallest possible thing required to test it. And there is a huge difference in how we
+
+18
+00:01:53.090 --> 00:01:57.950
+measure success here. When you're looking at your results, you have got to ignore those flattering
+
+19
+00:01:57.950 --> 00:02:03.710
+vanity metrics. You know the ones. Total downloads, page views. They might stroke your ego and look
+
+20
+00:02:03.710 --> 00:02:09.290
+amazing on a slide deck, but they're basically an illusion. Instead, you need to laser focus
+
+21
+00:02:09.290 --> 00:02:14.730
+entirely on actionable metrics. Things like cohort retention or actual conversion rates.
+
+22
+00:02:15.150 --> 00:02:20.270
+Because those are the numbers that actually tell you what to do next. Okay, section three. Frameworks
+
+23
+00:02:20.270 --> 00:02:26.530
+in daily action. Meet Michal from VLOX. So concepts are great, right? But how does this
+
+24
+00:02:26.530 --> 00:02:31.090
+actually play out in reality? Throughout this core stage, we're going to follow a running example
+
+25
+00:02:31.090 --> 00:02:37.050
+with Michal, a PM at a company called VLOX. Right now, she's staring down a massive executive
+
+26
+00:02:37.050 --> 00:02:42.700
+request for a really complex three-month Google Calendar integration. So how does this actually
+
+27
+00:02:42.700 --> 00:02:48.060
+look on a random Tuesday morning when the pressure is really on? The team's pumped, the devs are
+
+28
+00:02:48.060 --> 00:02:52.600
+ready to start writing code. But instead of just blindly typing up some specs and tossing them over
+
+29
+00:02:52.600 --> 00:02:58.600
+the fence to engineering, Michal hits pause. She stops her excited team and asks a totally critical
+
+30
+00:02:58.600 --> 00:03:05.210
+question. How can we test our assumption first before we spend an entire quarter coding? She
+
+31
+00:03:05.210 --> 00:03:10.750
+decides to use an MVP, a minimum viable product. And hey, let's clear up a massive misconception
+
+32
+00:03:10.750 --> 00:03:17.250
+right now. An MVP is not just a shrunken down half-baked version of your final product. Not at
+
+33
+00:03:17.250 --> 00:03:22.650
+all. It is literally the cheapest, fastest experiment possible that is designed specifically
+
+34
+00:03:22.650 --> 00:03:27.790
+to test a guess about your customers. She has a few tools she could pull from her toolkit for this.
+
+35
+00:03:28.230 --> 00:03:33.210
+For example, she could gauge pure interest with a fake door test, which is basically just putting up
+
+36
+00:03:33.210 --> 00:03:37.950
+a dummy button to see if anyone actually clicks it. Or she could go deep on customer needs with
+
+37
+00:03:37.950 --> 00:03:42.810
+a concierge test, where you provide a super manual one-on-one service behind the scenes to
+
+38
+00:03:42.810 --> 00:03:47.930
+really understand the user's problem. Michael decides to go with a fake door test. Her team
+
+39
+00:03:47.930 --> 00:03:52.670
+drops in a fake connect to Google calendar button that just opens a coming soon page and asks for an
+
+40
+00:03:52.670 --> 00:04:00.170
+email. It takes exactly one day of development. And the result? Shockingly low interest. Only 3.2%
+
+41
+00:04:00.170 --> 00:04:05.390
+of users even bothered to click the button. Boom. By doing that one day test, she just saved her team
+
+42
+00:04:05.390 --> 00:04:10.100
+three months of coding a feature that literally nobody wanted. But she doesn't stop there.
+
+43
+00:04:10.100 --> 00:04:14.280
+She actually takes the time to interview that tiny handful of users who did click.
+
+44
+00:04:14.920 --> 00:04:15.860
+And you know what she realizes?
+
+45
+00:04:16.400 --> 00:04:18.440
+They didn't want calendar synchronization at all.
+
+46
+00:04:18.760 --> 00:04:21.220
+They just wanted simple reminders for approaching deadlines.
+
+47
+00:04:22.060 --> 00:04:24.880
+This real, validated learning triggers a pivot.
+
+48
+00:04:25.400 --> 00:04:31.560
+And a pivot is just a structured course correction designed to test a brand new hypothesis based on what you actually learned.
+
+49
+00:04:32.430 --> 00:04:33.470
+And check out this impact.
+
+50
+00:04:33.470 --> 00:04:40.610
+By pivoting away from that huge, heavy calendar sync, and instead quickly whipping up a simple push notification system for deadlines,
+
+51
+00:04:41.170 --> 00:04:46.510
+Velox's weekly active users absolutely skyrocketed by 28% in just two weeks.
+
+52
+00:04:46.910 --> 00:04:49.690
+I mean, that is the true magic of evidence-based building.
+
+53
+00:04:50.340 --> 00:04:53.220
+Ready to dive in? Your new daily reality.
+
+54
+00:04:53.840 --> 00:05:00.260
+As we wrap up this intro and get you prepped for the actual core stage, let's talk about what this means for your actual day-to-day workflow.
+
+55
+00:05:00.870 --> 00:05:08.430
+Your new reality as a PM is all about faster learning, zero wasted sprints, and making decisions that are grounded purely in evidence.
+
+56
+00:05:09.050 --> 00:05:12.530
+So, before you write your very next spec, remember the routine.
+
+57
+00:05:13.270 --> 00:05:20.590
+Formulate a clear hypothesis, design a super cheap experiment to test it, and let real-world data completely dictate your roadmap.
+
+58
+00:05:21.420 --> 00:05:28.760
+As you get ready to jump right into this core stage and explore all these frameworks in depth, I want to leave you with one absolutely critical question.
+
+59
+00:05:29.560 --> 00:05:31.200
+Look at your own work right now.
+
+60
+00:05:31.760 --> 00:05:34.640
+What is the riskiest assumption currently hiding in your backlog?
+
+61
+00:05:35.240 --> 00:05:39.420
+Hold on to that thought, dive into the course material, and let's learn exactly how to test it.
+
