@@ -3792,6 +3792,209 @@ body.light #w9plGoalOv{background:rgba(246,243,234,.95)}
   .w9pl-c,.w9pl-rh,.w9pl-n,.w9pl-pv,.w9pl-tile,.w9pl-gbar i{animation:none!important;transition:none!important}
 }
 /* ===== /W9 polish ===== */
+/* ===== W9 onboarding (w9ob): welcome hero · instinct check · sign-up / sign-in card · waiting room · first map ===== */
+[id^="w9ob"][hidden],.w9ob-saved[hidden]{display:none!important}
+/* ---- welcome layout (every rule that hides an old element is scoped to #ws.w9ob-on = a complete build) ---- */
+#ws.w9ob-on{justify-content:flex-start;padding:max(12px,env(safe-area-inset-top)) 16px 2.4rem}
+/* .welcome::before (the aurora wash, inset -50%) makes #ws taller than its box; with overflow:hidden every scrollIntoView /
+   input focus scrolled #ws itself and the top of the welcome became unreachable. clip = same painting, never scrollable. */
+#ws.w9ob-on{overflow:clip}
+#ws.w9ob-on>.ws-anchor,#ws.w9ob-on>.sub,#ws.w9ob-on>.w9ob-feat,#ws.w9ob-on #namePreview{display:none!important}
+#ws.w9ob-ret1 #lobbyRow{display:none!important}
+.w9ob-top{width:100%;max-width:1120px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem .75rem;margin:0 auto;position:relative;z-index:1}
+#ws.w9ob-on .w9ob-top h1{font-size:1.32rem;line-height:1.25;margin:0;letter-spacing:0;white-space:nowrap;text-align:start}
+.w9ob-tgrp{display:flex;align-items:center;gap:.45rem;flex-wrap:nowrap;margin-inline-start:auto}
+#ws.w9ob-on .w9ob-top .ws-lang{margin:0;gap:.4rem;flex-wrap:nowrap}
+#ws.w9ob-on .w9ob-top .ws-lang-btn{min-height:40px;padding:.3rem .95rem;font-size:.84rem}
+.w9ob-tb{min-height:40px;padding:.3rem 1rem;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--t1);font:inherit;font-size:.86rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.w9ob-tb:hover{border-color:var(--p);color:var(--p)}
+.w9ob-tb:focus-visible,.w9ob-link:focus-visible,.w9ob-inl:focus-visible,.w9ob-chip:focus-visible,.w9ob-tile:focus-visible,.w9ob-x:focus-visible,.w9ob-later:focus-visible{outline:2px solid var(--p);outline-offset:2px}
+@media(max-width:600px){#ws.w9ob-on .w9ob-top .ws-lang-btn.active{display:none}}
+/* ---- hero (S1) ---- */
+.w9ob-hero{width:100%;max-width:1120px;margin:1.1rem auto 0;display:grid;grid-template-columns:minmax(0,1fr);gap:1.2rem;text-align:start;position:relative;z-index:1;animation:fiu .5s ease .05s both}
+@media(min-width:960px){.w9ob-hero{grid-template-columns:minmax(0,1.06fr) minmax(360px,.94fr);gap:2.6rem;align-items:center;margin-top:1.8rem}}
+.w9ob-eyebrow{margin:0 0 .5rem;color:var(--a);font-size:.82rem;font-weight:800;letter-spacing:.01em}
+body.light .w9ob-eyebrow,body.light .w9ob-kick{color:#0E7A5F}
+.w9ob-h{margin:0 0 .7rem;font-size:clamp(1.6rem,6.2vw,2.7rem);line-height:1.2;font-weight:900;color:var(--t1);letter-spacing:-.01em;text-wrap:balance}
+.w9ob-sub{margin:0 0 1.1rem;font-size:1rem;line-height:1.6;color:var(--t2);max-width:36em}
+.w9ob-ctas{display:flex;flex-wrap:wrap;gap:.6rem;margin:0 0 .75rem}
+.w9ob-ctas .bp,.w9ob-ctas .bs{margin:0;min-height:50px;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.7rem 1.4rem;font-size:1rem;border-radius:16px}
+.w9ob-ctas .bp svg{flex:0 0 auto}
+@media(max-width:600px){.w9ob-ctas .bp,.w9ob-ctas .bs{flex:1 1 100%}}
+.w9ob-micro{margin:0 0 1rem;font-size:.8rem;line-height:1.55;color:var(--t2)}
+.w9ob-stats .ws-stats{justify-content:flex-start;margin:0 0 .75rem;flex-wrap:wrap}
+.w9ob-proof{margin:0;display:flex;align-items:flex-start;gap:.45rem;font-size:.84rem;line-height:1.5;color:var(--t1)}
+.w9ob-proof svg{flex:0 0 auto;margin-top:.1rem;color:var(--g)}
+/* ---- the 3-question card (instinct check · warm-up) ---- */
+.w9ob-check{display:none;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:1rem 1.05rem 1.1rem;box-shadow:0 18px 44px rgba(0,0,0,.26);text-align:start;scroll-margin-top:12px}
+body.light .w9ob-check{box-shadow:0 14px 34px rgba(42,39,33,.12)}
+@media(min-width:960px){.w9ob-check{display:block}}
+.w9ob-hero.w9ob-chk-on .w9ob-check{display:block}
+@media(max-width:959px){.w9ob-hero.w9ob-chk-on .w9ob-main{display:none}}
+.w9ob-qtop{display:flex;align-items:center;justify-content:space-between;gap:.5rem;min-height:40px}
+.w9ob-qk{font-size:.78rem;font-weight:800;color:var(--a)}
+body.light .w9ob-qk{color:#0E7A5F}
+.w9ob-x{flex:0 0 auto;width:40px;height:40px;display:grid;place-items:center;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--t2);cursor:pointer;padding:0}
+.w9ob-x:hover{color:var(--t1);border-color:var(--t2)}
+@media(min-width:960px){.w9ob-qx{display:none}}
+.w9ob-prog{position:relative;height:6px;border-radius:99px;background:var(--cardh);margin:.45rem 0 .9rem}
+.w9ob-prog>i{position:absolute;top:0;bottom:0;inset-inline-start:0;border-radius:inherit;background:var(--p);transition:width .3s ease}
+.w9ob-qq{margin:0;font-size:1.02rem;line-height:1.55;font-weight:700;color:var(--t1)}
+.w9ob-opts{display:grid;gap:.5rem;margin:.8rem 0 0}
+.w9ob-opt{display:flex;align-items:center;gap:.65rem;width:100%;min-height:50px;margin:0;padding:.6rem .8rem;border-radius:14px;border:1px solid var(--line);background:var(--cardh);color:var(--t1);font:inherit;font-size:.92rem;line-height:1.45;text-align:start;cursor:pointer;transition:border-color .15s ease,background-color .15s ease,opacity .15s ease}
+.w9ob-opt:hover:not([disabled]){border-color:var(--p)}
+.w9ob-opt:focus-visible{outline:2px solid var(--p);outline-offset:2px}
+.w9ob-opt[disabled]{cursor:default}
+.w9ob-l{flex:0 0 auto;width:1.65rem;height:1.65rem;border-radius:50%;display:grid;place-items:center;font-size:.74rem;font-weight:800;border:1px solid var(--line);color:var(--t2)}
+.w9ob-ot{flex:1 1 auto;min-width:0}
+.w9ob-opt.is-ok{border-color:var(--a);background:rgba(53,201,163,.13)}
+.w9ob-opt.is-ok .w9ob-l{background:var(--a);border-color:var(--a);color:#06231B}
+.w9ob-opt.is-no{border-color:var(--s);background:rgba(240,106,126,.13)}
+.w9ob-opt.is-no .w9ob-l{background:var(--s);border-color:var(--s);color:#2A070D}
+.w9ob-opt.is-dim{opacity:.55}
+.w9ob-fb{margin:.85rem 0 0;padding:.7rem .85rem;border-radius:14px;border-inline-start:3px solid var(--a);background:rgba(53,201,163,.08);font-size:.9rem;line-height:1.6;color:var(--t1)}
+.w9ob-fb.no{border-inline-start-color:var(--s);background:rgba(240,106,126,.08)}
+.w9ob-next{margin:.85rem 0 0;min-height:46px;border-radius:14px;padding:.6rem 1.4rem}
+.w9ob-foot{margin:.85rem 0 0;font-size:.75rem;color:var(--t2)}
+.w9ob-res{text-align:center}
+.w9ob-ring{width:84px;height:84px;display:block;margin:.2rem auto .5rem}
+.w9ob-ring circle{fill:none;stroke-width:6}
+.w9ob-ring-bg{stroke:var(--cardh)}
+.w9ob-ring-fg{stroke:var(--a);stroke-linecap:round;transition:stroke-dashoffset .6s ease}
+.w9ob-ring-t{fill:var(--t1);font-size:15px;font-weight:800;font-family:inherit}
+.w9ob-rt{margin:0 0 .45rem;font-size:1.12rem;line-height:1.4;font-weight:800;color:var(--t1)}
+.w9ob-rs{margin:0 0 .8rem;font-size:.9rem;line-height:1.6;color:var(--t2)}
+.w9ob-unl{list-style:none;margin:0 auto .9rem;padding:0;display:grid;gap:.4rem;text-align:start;max-width:30em}
+.w9ob-unl li{display:flex;align-items:flex-start;gap:.5rem;font-size:.88rem;line-height:1.5;color:var(--t1)}
+.w9ob-unl svg{flex:0 0 auto;margin-top:.2rem;color:var(--a)}
+.w9ob-res-cta{min-height:48px;border-radius:14px;padding:.65rem 1.4rem;margin:0}
+.w9ob-note{margin:.6rem 0 0;font-size:.76rem;line-height:1.5;color:var(--t2)}
+/* ---- who · how · FAQ · ranks ---- */
+.w9ob-info{width:100%;max-width:1120px;margin:2rem auto 0;display:grid;grid-template-columns:minmax(0,1fr);gap:.9rem;text-align:start;position:relative;z-index:1}
+@media(min-width:760px){.w9ob-info{grid-template-columns:1fr 1fr}}
+.w9ob-sec{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1rem 1.1rem}
+.w9ob-sh{margin:0 0 .7rem;font-size:1.02rem;font-weight:800;color:var(--t1)}
+.w9ob-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.45rem}
+.w9ob-chips li{padding:.4rem .8rem;border-radius:999px;border:1px solid var(--line);background:var(--cardh);font-size:.84rem;line-height:1.35;color:var(--t1)}
+.w9ob-steps{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+.w9ob-steps li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.6rem;align-items:start;font-size:.88rem;line-height:1.55;color:var(--t2)}
+.w9ob-steps b{color:var(--t1)}
+.w9ob-n{width:1.75rem;height:1.75rem;border-radius:50%;display:inline-grid;place-items:center;background:var(--cardh);border:1px solid var(--line);color:var(--p);font-weight:800;font-size:.8rem}
+.w9ob-faq{width:100%;max-width:760px;margin:1.6rem auto 0;text-align:start;position:relative;z-index:1}
+.w9ob-faq details{border-bottom:1px solid var(--line)}
+.w9ob-faq summary{min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:.75rem;cursor:pointer;list-style:none;font-weight:700;font-size:.94rem;color:var(--t1);padding:.35rem 0}
+.w9ob-faq summary::-webkit-details-marker{display:none}
+.w9ob-faq summary::after{content:"+";flex:0 0 auto;font-size:1.2rem;line-height:1;color:var(--p)}
+.w9ob-faq details[open] summary::after{content:"\2212"}
+.w9ob-faq summary:focus-visible{outline:2px solid var(--p);outline-offset:2px;border-radius:6px}
+.w9ob-faq p{margin:0 0 .9rem;font-size:.9rem;line-height:1.65;color:var(--t2)}
+#ws.w9ob-on>.w9ob-ranks{margin-top:1.6rem;max-width:560px}
+/* ---- returning device (S2) ---- */
+.w9ob-ret{width:100%;max-width:460px;margin:1rem auto .2rem;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1rem 1.05rem;display:grid;gap:.65rem;text-align:start;position:relative;z-index:1;box-shadow:0 14px 34px rgba(0,0,0,.22)}
+body.light .w9ob-ret{box-shadow:0 10px 26px rgba(42,39,33,.1)}
+.w9ob-ret-h{display:flex;align-items:center;gap:.75rem}
+.w9ob-av{flex:0 0 auto;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:1.15rem;color:#fff}
+.w9ob-ret-t{margin:0;font-size:1.05rem;font-weight:800;color:var(--t1)}
+.w9ob-ret-m{margin:.15rem 0 0;font-size:.82rem;color:var(--t2);line-height:1.45}
+.w9ob-ret-go{margin:0;min-height:48px;border-radius:14px;width:100%}
+.w9ob-ret #lobbyRow{margin:.2rem 0 0}
+/* ---- form card (S5 sign up · S6 sign in) ---- */
+#ws.w9ob-on .ws-login{align-items:stretch;text-align:start;gap:.3rem;max-width:460px;margin:1.6rem auto 0;scroll-margin-top:12px}
+.w9ob-fh{margin:0 0 .25rem}
+.w9ob-saved{display:flex;align-items:center;gap:.4rem;margin:0 0 .55rem;padding:.35rem .7rem;border-radius:999px;background:rgba(53,201,163,.12);border:1px solid rgba(53,201,163,.35);color:var(--t1);font-size:.8rem;font-weight:700;width:fit-content;max-width:100%}
+.w9ob-saved svg{color:var(--a);flex:0 0 auto}
+.w9ob-ft{margin:0;font-size:1.25rem;font-weight:900;color:var(--t1)}
+.w9ob-fs{margin:.2rem 0 0;font-size:.86rem;line-height:1.55;color:var(--t2)}
+.w9ob-lbl{display:block;margin:.55rem 0 .1rem;font-size:.86rem;font-weight:700;color:var(--t1);cursor:pointer}
+#ws.w9ob-on #nameInput,#ws.w9ob-on #emailInput{width:100%!important;max-width:100%;box-sizing:border-box;min-height:48px;text-align:start!important;font-size:1rem!important}
+#ws.w9ob-on #nameInput[aria-invalid="true"],#ws.w9ob-on #emailInput[aria-invalid="true"]{border-color:var(--s)!important}
+.w9ob-help{margin:.15rem 0 0;font-size:.76rem;line-height:1.5;color:var(--t2)}
+.w9ob-err{margin:0;font-size:.82rem;line-height:1.45;font-weight:700;color:var(--s)}
+.w9ob-err:empty{display:none}
+body.light .w9ob-err{color:#B4233A}
+.w9ob-typo{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem .5rem;margin:.3rem 0 0;padding:.4rem .7rem;border-radius:12px;background:rgba(232,196,92,.12);border:1px solid rgba(232,196,92,.38);font-size:.84rem;color:var(--t1)}
+#ws.w9ob-on .w9ob-consent{max-width:none!important;margin:.55rem 0 0;align-items:flex-start!important;line-height:1.5!important;min-height:40px;font-size:.82rem!important}
+#ws.w9ob-on .w9ob-consent input{margin-top:.1rem}
+.w9ob-legal{margin:.35rem 0 0;font-size:.76rem;line-height:1.55;color:var(--t2)}
+.w9ob-inl{background:none;border:0;padding:0;margin:0;font:inherit;color:var(--p);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.w9ob-linkrow{margin:.55rem 0 0;padding:.65rem .75rem;border-radius:14px;border:1px dashed var(--line);display:grid;gap:.45rem;justify-items:start}
+#wsLogin.w9ob-signin .w9ob-consent,#wsLogin.w9ob-signin .w9ob-legal{display:none!important}
+#wsLogin:not(.w9ob-signin) .w9ob-linkrow{display:none}
+.w9ob-sm{margin:0!important;min-height:42px;padding:.45rem 1.05rem!important;font-size:.86rem!important;border-radius:12px!important;display:inline-flex;align-items:center;gap:.45rem}
+.w9ob-alt{margin:.6rem 0 0;text-align:center;font-size:.86rem;color:var(--t2)}
+.w9ob-link{background:none;border:0;margin:0;padding:.35rem .3rem;min-height:40px;min-width:40px;font:inherit;font-size:inherit;font-weight:700;color:var(--p);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.w9ob-link:hover{color:var(--t1)}
+#ws.w9ob-on .ws-login .btn-go{width:100%;box-sizing:border-box;margin-top:.7rem}
+/* ---- waiting room (S7 · S8) ---- */
+#pendingView.w9ob-wait-on .pending-videos{display:none}
+.w9ob-wait{margin:1rem auto 0;display:grid;gap:.9rem;text-align:start}
+.w9ob-why{margin:0;padding:.65rem .85rem;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:.84rem;line-height:1.6;color:var(--t2)}
+.w9ob-why b{color:var(--t1)}
+.w9ob-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1rem 1.05rem}
+.w9ob-kick{margin:0 0 .35rem;font-size:.76rem;font-weight:800;color:var(--a)}
+.w9ob-ch{margin:0;font-size:1.06rem;line-height:1.45;font-weight:800;color:var(--t1)}
+.w9ob-vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.w9ob-ch[tabindex="-1"]:focus{outline:none}
+.w9ob-cs{margin:.4rem 0 0;font-size:.88rem;line-height:1.6;color:var(--t2)}
+.w9ob-chipq{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0 0}
+.w9ob-chip{min-height:44px;padding:.45rem .95rem;border-radius:14px;border:1px solid var(--line);background:var(--cardh);color:var(--t1);font:inherit;font-size:.88rem;font-weight:700;line-height:1.35;cursor:pointer;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.w9ob-chip small{display:block;font-size:.7rem;font-weight:500;color:var(--t2);margin-top:.1rem}
+.w9ob-chip:hover{border-color:var(--p)}
+.w9ob-chip.on{border-color:var(--p);background:rgba(139,133,255,.14)}
+.w9ob-tags{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:.6rem 0 0}
+.w9ob-tags span{padding:.3rem .7rem;border-radius:999px;background:var(--cardh);border:1px solid var(--line);font-size:.8rem;color:var(--t1)}
+.w9ob-plst{list-style:none;margin:.75rem 0 0;padding:0;display:grid;gap:.4rem}
+.w9ob-plst li{display:flex;align-items:center;gap:.6rem;font-size:.88rem;color:var(--t1)}
+.w9ob-qzw{margin-top:.2rem}
+/* ---- first map (S9) · first win → commitment (S10): inline cards, never modals ---- */
+#mv.w9ob-new #skill-badges{display:none}
+.w9ob-start,.w9ob-commit{position:relative;width:100%;max-width:520px;margin:.4rem auto 1rem;box-sizing:border-box;text-align:start}
+.w9ob-hello{margin:0 0 .55rem;font-size:.92rem;line-height:1.5;color:var(--t2);text-align:center}
+.w9ob-start-c{background:linear-gradient(160deg,rgba(139,133,255,.16),rgba(53,201,163,.08)),var(--card);border:1px solid rgba(139,133,255,.42);border-radius:20px;padding:1rem 1.05rem 1.1rem;box-shadow:0 14px 34px rgba(0,0,0,.24)}
+body.light .w9ob-start-c{box-shadow:0 10px 26px rgba(42,39,33,.1)}
+.w9ob-start .w9ob-ch,#w9obCommit .w9ob-ch{margin:0;font-size:1.14rem;line-height:1.45;font-weight:800;text-align:start;color:var(--t1)}
+.w9ob-go{margin:.85rem 0 0;min-height:48px;border-radius:14px;padding:.6rem 1.6rem}
+.w9ob-win{display:flex;align-items:flex-start;gap:.45rem;margin:.7rem 0 0;padding:.5rem .75rem;border-radius:14px;background:rgba(232,196,92,.1);border:1px solid rgba(232,196,92,.34);font-size:.86rem;line-height:1.5;color:var(--t1)}
+.w9ob-win svg{flex:0 0 auto;margin-top:.12rem;color:var(--g)}
+.w9ob-mini{margin:.6rem 0 0;font-size:.8rem;line-height:1.5;color:var(--t2);text-align:center}
+.w9ob-commit{background:var(--card);border:1px solid rgba(53,201,163,.45);border-radius:20px;padding:1rem 1.05rem 1.05rem;scroll-margin:90px 0 100px}
+#tc .w9ob-commit{max-width:none;margin:1rem 0}
+.w9ob-cmx{position:absolute;top:.6rem;inset-inline-end:.6rem}
+.w9ob-cm-ic{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(53,201,163,.16);color:var(--a);margin:0 0 .5rem}
+.w9ob-commit .w9ob-ch{padding-inline-end:2.8rem}
+.w9ob-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.45rem;margin:.8rem 0 0}
+.w9ob-tile{min-height:56px;padding:.45rem .3rem;border-radius:14px;border:1px solid var(--line);background:var(--cardh);color:var(--t1);font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;text-align:center}
+.w9ob-tile b{font-size:.95rem}
+.w9ob-tile small{font-size:.7rem;color:var(--t2)}
+.w9ob-tile.on{border-color:var(--p);background:rgba(139,133,255,.15)}
+.w9ob-cm-go{margin:.8rem 0 0;min-height:48px;border-radius:14px;width:100%}
+.w9ob-commit .w9ob-link{display:inline-flex;margin-top:.35rem}
+.w9ob-cm-f{display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .7rem;margin-top:.2rem}
+.w9ob-cm-f .w9ob-note{margin:0}
+.w9ob-later{display:inline-flex;align-items:center;gap:.5rem;min-height:44px;margin:0 0 1rem;padding:.45rem 1rem;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--t1);font:inherit;font-size:.86rem;font-weight:700;cursor:pointer}
+.w9ob-later svg{color:var(--p)}
+/* amber accent: dark text on the light primary (as every other surface does) */
+html[data-acc="amber"] body:not(.light) :is(#w9obHero,#w9obCheck,#w9obWait,#w9obStart,#w9obCommit,#w9obRet,#wsLogin) .bp{color:#1A1407}
+/* RTL / LTR: inline-direction-neutral content follows its own box */
+:is(.w9ob-hero,.w9ob-info,.w9ob-faq,.w9ob-ret,.w9ob-wait,.w9ob-start,.w9ob-commit,.w9ob-check,.w9ob-typo)[dir="ltr"] :not([dir]){direction:inherit}
+/* reduced motion: no entrance, no transitions, final states at once */
+@media(prefers-reduced-motion:reduce){.w9ob-hero{animation:none!important}.w9ob-opt,.w9ob-prog>i,.w9ob-ring-fg{transition:none!important}}
+/* ===== /W9 onboarding ===== */
+/* ===== W10 uxaudit (w10ux): header counter toggletips ===== */
+#hd [data-w10ux-k]{cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative}
+/* once a counter is a control it needs a phone-size hit area (UI sentinel: header row ≥ 30×40): the badge is ≥ 30 wide, so a
+   vertical-only slop (same idea as .w5i-hb::after); .hdr-stats clips x only, so nothing is cut and no neighbour is overlapped */
+#hd [data-w10ux-k]::after{content:"";position:absolute;left:0;right:0;top:50%;height:44px;margin-top:-22px}
+#hd [data-w10ux-k]:focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--p)}
+.w10ux-tip{position:fixed;z-index:120;top:56px;left:16px;box-sizing:border-box;width:max-content;max-width:min(300px,calc(100vw - 32px));padding:.65rem .8rem .7rem;border-radius:14px;background:var(--card);color:var(--t1);border:1px solid var(--line);box-shadow:0 12px 32px rgba(0,0,0,.34);font-size:.82rem;line-height:1.5;text-align:start}
+.w10ux-tip[hidden]{display:none}
+.w10ux-tip::before{content:"";position:absolute;top:-6px;left:var(--w10ux-ax,24px);width:10px;height:10px;background:var(--card);border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
+.w10ux-tt{display:block;font-weight:800;font-size:.9rem;margin-bottom:.15rem;color:var(--t1)}
+.w10ux-tt bdi{color:var(--p)}
+.w10ux-ta{display:block;margin:.35rem 0 0;padding:.3rem 0;min-height:32px;border:0;background:none;color:var(--p);font:inherit;font-weight:700;cursor:pointer;text-align:start}
+@media (prefers-reduced-motion:no-preference){.w10ux-tip:not([hidden]){animation:w10uxIn .16s ease-out}}
+@keyframes w10uxIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+/* ===== /W10 uxaudit ===== */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 </head>
@@ -7071,9 +7274,10 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
       G._achShown=[];G.interviewUnlocked=false;G.adminMessage='';G.adminMessageRead=true;
       G.titleShown2=false;G.titleShown9=false;G.titleShown15=false;G.titleShownAll=false;
     }
-    // New user — require email + consent
+    // New user — require an e-mail (W9OB: the reminders consent is optional — onboarding spec OB-4)
+    if(typeof _w9obNotFound==='function'&&_w9obNotFound(name,email,consent))return;
     if(!email){showModal('📧','נדרש מייל לרישום','כדי להירשם לקורס נא להזין כתובת מייל. נשלח קישור אימות, ולאחר אישור מנהל המערכת תוכלו להתחיל.','הבנתי');const btn=document.querySelector('.btn-go');if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}const emEl=$('emailInput');if(emEl)emEl.focus();return}
-    if(!consent){showModal('☑️','נדרש אישור','כדי להירשם נא לסמן את הסכמתכם לקבל תזכורות במייל. תוכלו לבטל בכל עת.','הבנתי');const btn=document.querySelector('.btn-go');if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}return}
+    if(!consent&&typeof _w9obNotFound!=='function'){showModal('☑️','נדרש אישור','כדי להירשם נא לסמן את הסכמתכם לקבל תזכורות במייל. תוכלו לבטל בכל עת.','הבנתי');const btn=document.querySelector('.btn-go');if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}return}
     _pendingEmail=email;_pendingConsent=consent;
     _requestApproval(name,email,consent);
   }
@@ -7720,7 +7924,7 @@ coreStages.forEach((s,idx)=>{
   n.dataset.sid=s.id;
   n.onclick=()=>ss(s.id);
   const milestoneLabel=isMilestone?(s.id===2?'🎓 '+_t('דרגה'):s.id===10?(G.navyArm?'⚓':'📜')+' '+_t('דרגה'):s.id===24?'🎖️ '+_t('התמחות'):'🎖️ '+_t('דרגה')):'';
-  n.innerHTML=`${isCurrent?'<div class="j-here">📍 '+_t('אתה כאן')+'</div>':''}<div class="j-ic">${s.ic}</div><div class="j-info"><div class="j-num">${_noNum(s)?'⚓ '+_grp(s.tg):_t('שלב')+' '+_dispNum(s)+(milestoneLabel?' | <span style="color:var(--g)">'+milestoneLabel+'</span>':'')}</div><div class="j-title">${s.t}</div>${d?'<div class="j-score">✓ '+sc+'/'+(s.q.length*10)+' '+_t('נק\'')+( isPerfect?' ⭐':'')+'</div>':'<span class="j-tag '+s.tc+'">'+_grp(s.tg)+'</span>'}</div>`;
+  n.innerHTML=`${isCurrent?'<div class="j-here">📍 '+_t('אתם כאן')+'</div>':''}<div class="j-ic">${s.ic}</div><div class="j-info"><div class="j-num">${_noNum(s)?'⚓ '+_grp(s.tg):_t('שלב')+' '+_dispNum(s)+(milestoneLabel?' | <span style="color:var(--g)">'+milestoneLabel+'</span>':'')}</div><div class="j-title">${s.t}</div>${d?'<div class="j-score">✓ '+sc+'/'+(s.q.length*10)+' '+_t('נק\'')+( isPerfect?' ⭐':'')+'</div>':'<span class="j-tag '+s.tc+'">'+_grp(s.tg)+'</span>'}</div>`;
   j.appendChild(n);
 });
 g.appendChild(j);
@@ -8777,7 +8981,7 @@ function _updateReadProgress(){
   var pct = Math.round(seenCount/total*100);
   var bar = document.querySelector('.learn-xp-fill'); if(bar) bar.style.width = pct+'%';
   var ptsLbl = document.querySelector('.learn-xp-pts'); if(ptsLbl) ptsLbl.textContent = pct+'% '+_t('הושלם');
-  var sub = document.querySelector('.learn-header-sub'); if(sub) sub.textContent = seenCount+'/'+total+' '+_t('נושאים נקראו')+(seenCount>0?' | +'+(seenCount*5)+' '+_t('XP קריאה'):'');
+  var sub = document.querySelector('.learn-header-sub'); if(sub) sub.textContent = seenCount+'/'+total+' '+_t('נושאים נקראו');
   document.querySelectorAll('.sec-dot').forEach(function(d,di){ if(G._seenSec[G.st+'_'+di]) d.classList.add('done-dot'); });
   if(seenCount===total){
     var ttl = document.querySelector('.learn-header-title'); if(ttl) ttl.innerHTML=_t('🎉 קראת הכל!');
@@ -8848,7 +9052,7 @@ const allRead=seenCount===total;
 // Learning header with progress
 let h='<div class="learn-header">';
 h+=`<div class="learn-header-title">${allRead?_t('🎉 קראת הכל!'):_t('📚 לומדים: שלב')+' '+s.id+' - '+s.t}</div>`;
-h+=`<div class="learn-header-sub">${seenCount}/${total} ${_t('נושאים נקראו')}${readXP>0?' | +'+readXP+' '+_t('XP קריאה'):''}</div>`;
+h+=`<div class="learn-header-sub">${seenCount}/${total} ${_t('נושאים נקראו')}</div>`;
 h+=`<div class="learn-xp-bar"><div class="learn-xp-fill" style="width:${readPct}%"></div></div>`;
 h+=`<div class="learn-xp-pts">${readPct}% ${_t('הושלם')}</div>`;
 h+='</div>';
@@ -9430,7 +9634,7 @@ function maybeAskGoal(){
     G._goalAsked=true;sv();
     var ov=document.createElement('div');ov.id='goalOv';ov.dir=_enLang()?'ltr':'rtl';
     function proj(min){var left=PM_IDS.filter(function(i){return !G.done.has(i)}).length;var days=Math.max(1,Math.ceil(left*35/min));var d=new Date(Date.now()+days*864e5);return d.toLocaleDateString(_enLang()?'en-GB':'he-IL',{day:'numeric',month:'long'})}
-    ov.innerHTML='<div class="hub-box" style="text-align:center;max-width:420px"><div style="font-size:2.6rem">🎯</div><h3 style="font-size:1.25rem;font-weight:800;color:var(--t1);margin:.4rem 0">'+(_enLang()?'How much time per day?':'כמה זמן ביום?')+'</h3><p style="color:var(--t2);font-size:.88rem;margin:0 0 1rem">'+(_enLang()?'Pick a pace — we will show you your projected finish date.':'בחרו קצב — ונראה לכם מתי תסיימו את ליבת הקורס.')+'</p><div class="cer-btns">'+[5,10,15].map(function(m){return '<button class="bp" style="min-width:96px" onclick="_setGoal('+m+')">'+m+' '+(_enLang()?'min':'דק\'')+'<div style="font-size:.66rem;font-weight:500;opacity:.85;margin-top:2px">'+(_enLang()?'finish by ':'סיום עד ')+proj(m)+'</div></button>'}).join('')+'</div><button class="bs" style="margin-top:.9rem" onclick="$(\'goalOv\').remove()">'+(_enLang()?'Later':'אחר-כך')+'</button></div>';
+    ov.innerHTML='<div class="hub-box" style="text-align:center;max-width:420px"><div style="font-size:2.6rem">🎯</div><h3 style="font-size:1.25rem;font-weight:800;color:var(--t1);margin:.4rem 0">'+(_enLang()?'How much time per day?':'כמה זמן ביום?')+'</h3><p style="color:var(--t2);font-size:.88rem;margin:0 0 1rem">'+(_enLang()?'Pick a pace — we will show you your projected finish date.':'בחרו קצב — ונראה לכם מתי תסיימו את ליבת הקורס.')+'</p><div class="cer-btns">'+[5,10,15].map(function(m){return '<button class="bp" style="min-width:96px" onclick="_setGoal('+m+')">'+m+' '+(_enLang()?'min':'דק\'')+'<div style="font-size:.66rem;font-weight:500;opacity:.85;margin-top:2px">'+(_enLang()?'finish by ':'סיום עד ')+proj(m)+'</div></button>'}).join('')+'</div><button class="bs" style="margin-top:.9rem" onclick="$(\'goalOv\').remove()">'+(_enLang()?'Later':'אחר כך')+'</button></div>';
     document.body.appendChild(ov);
   }catch(e){}
 }
@@ -10417,7 +10621,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.16';
+const APP_VERSION='1.10.17';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -10975,7 +11179,7 @@ function _showSatPopup(){
     '<textarea id="satNote" maxlength="100" placeholder="הערות נוספות (אופציונלי, עד 100 תווים)..." oninput="_satSanitizeNote(this)" style="width:100%;min-height:60px;border-radius:10px;border:1px solid rgba(108,99,255,.3);background:rgba(255,255,255,.05);color:var(--t1);padding:.6rem;font-family:Heebo;font-size:.85rem;resize:vertical;margin-bottom:.2rem"></textarea>'+
     '<div id="satCharCount" style="font-size:.7rem;color:var(--t2);text-align:left;margin-bottom:.6rem">0/100</div>'+
     '<div style="display:flex;gap:.6rem;justify-content:center">'+
-    '<button class="bs" onclick="_satSkip()">אח"כ</button>'+
+    '<button class="bs" onclick="_satSkip()">אחר כך</button>'+
     '<button class="bp" id="satSendBtn" disabled onclick="_satSubmit()">שלח דירוג</button>'+
     '</div>'+
     '</div>';
@@ -20075,10 +20279,10 @@ function _w8gmRwTxt(m,en){
 }
 function _w8gmFrReq(f,en){
   if(f==='aurora')return en?'Legendary chest':'מתיבה אגדית';
-  for(var i=0;i<_W8GM_ROAD.length;i++){var m=_W8GM_ROAD[i];for(var j=0;j<m.r.length;j++)if(m.r[j][0]==='f'&&m.r[j][1]===f)return _w8gmN(m.x)+'\u00A0XP'}
+  for(var i=0;i<_W8GM_ROAD.length;i++){var m=_W8GM_ROAD[i];for(var j=0;j<m.r.length;j++)if(m.r[j][0]==='f'&&m.r[j][1]===f)return _w8gmN(m.x)+'\u00A0'+_w10uxPt()}
   return '';
 }
-function _w8gmTtReq(t){for(var i=0;i<_W8GM_ROAD.length;i++){var m=_W8GM_ROAD[i];for(var j=0;j<m.r.length;j++)if(m.r[j][0]==='t'&&m.r[j][1]===t)return _w8gmN(m.x)+'\u00A0XP'}return ''}
+function _w8gmTtReq(t){for(var i=0;i<_W8GM_ROAD.length;i++){var m=_W8GM_ROAD[i];for(var j=0;j<m.r.length;j++)if(m.r[j][0]==='t'&&m.r[j][1]===t)return _w8gmN(m.x)+'\u00A0'+_w10uxPt()}return ''}
 function _w8gmAvHTML(px,fr){
   var u=_w8gmUN(),ini='?',bg='linear-gradient(135deg,#8B85FF,#5A52D5)';
   try{ini=(typeof _w6mcInitial==='function')?_w6mcInitial(u):((Array.from(u)[0]||'?').toUpperCase())}catch(e){}
@@ -20119,15 +20323,15 @@ function _w8gmRoadHTML(en){
   var st=_w8gmSt(),xp=_w8gmXP(),nx=null,i,prev=0;
   for(i=0;i<_W8GM_ROAD.length;i++){if(xp<_W8GM_ROAD[i].x){nx=_W8GM_ROAD[i];prev=i?_W8GM_ROAD[i-1].x:0;break}}
   var pct=nx?Math.max(0,Math.min(100,Math.round((xp-prev)/(nx.x-prev)*100))):100,tt=_w8gmTtEq();
-  var h='<div class="w8gm-me">'+_w8gmAvHTML(60)+'<div class="w8gm-me-t"><b dir="auto">'+_w8gmE(_w8gmUN())+'</b>'+(tt?'<span class="w8gm-ttl">'+_w8gmE(_w8gmTtName(tt,en))+'</span>':'')+'<span class="w8gm-xp">'+_w8gmB(_w8gmN(xp))+'<small>XP</small></span></div></div>';
-  h+='<div class="w8gm-nx">'+(nx?((en?'Next: ':'הפרס הבא: ')+_w8gmRwTxt(nx,en)+' · '+(en?_w8gmB(_w8gmN(nx.x-xp)+'&nbsp;XP')+' to go':'עוד '+_w8gmB(_w8gmN(nx.x-xp)+'&nbsp;XP')+'')):(en?'You reached the end of the road — legend!':'הגעתם לסוף המסלול — אגדה!'))+'</div>';
+  var h='<div class="w8gm-me">'+_w8gmAvHTML(60)+'<div class="w8gm-me-t"><b dir="auto">'+_w8gmE(_w8gmUN())+'</b>'+(tt?'<span class="w8gm-ttl">'+_w8gmE(_w8gmTtName(tt,en))+'</span>':'')+'<span class="w8gm-xp">'+_w8gmB(_w8gmN(xp))+'<small>'+_w10uxPt()+'</small></span></div></div>';
+  h+='<div class="w8gm-nx">'+(nx?((en?'Next: ':'הפרס הבא: ')+_w8gmRwTxt(nx,en)+' · '+(en?_w8gmB(_w8gmN(nx.x-xp)+'&nbsp;'+_w10uxPt())+' to go':'עוד '+_w8gmB(_w8gmN(nx.x-xp)+'&nbsp;'+_w10uxPt())+'')):(en?'You reached the end of the road — legend!':'הגעתם לסוף המסלול — אגדה!'))+'</div>';
   h+='<span class="w8gm-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'" aria-label="'+(en?'Progress to the next reward':'התקדמות לפרס הבא')+'"><i style="width:'+pct+'%"></i></span>';
-  h+='<p class="w8gm-note">'+(en?'XP is the highest points total you have reached — it never goes down. Quizzes, quests, games and chests all add points.':'XP הוא שיא הנקודות שהגעתם אליו — הוא אף פעם לא יורד. מבחנים, משימות, משחקים ותיבות מוסיפים נקודות.')+'</p><ol class="w8gm-road">';
+  h+='<p class="w8gm-note">'+(en?'The road counts your best-ever points total — it never goes down, even when you spend points. Quizzes, quests, games and chests all add points.':'המסלול נמדד בשיא הנקודות שלכם — הוא אף פעם לא יורד, גם כשמשתמשים בנקודות. מבחנים, משימות, משחקים ותיבות מוסיפים נקודות.')+'</p><ol class="w8gm-road">';
   var here=false;
   _W8GM_ROAD.forEach(function(m){
     var cl=!!st.c[m.id],re=xp>=m.x;
-    if(!here&&!re){here=true;h+='<li class="w8gm-here"><span>'+_w8gmAvHTML(24)+(en?'You are here · ':'אתם כאן · ')+_w8gmB(_w8gmN(xp)+'&nbsp;XP')+'</span></li>'}
-    h+='<li class="w8gm-ms '+(cl?'w8gm-got':(re?'w8gm-rdy':'w8gm-lck'))+'" data-ms="'+m.id+'"><span class="w8gm-nd">'+_w8gmMsIcon(m)+'</span><span class="w8gm-ms-t"><b>'+_w8gmRwTxt(m,en)+'</b><span>'+_w8gmB(_w8gmN(m.x)+'&nbsp;XP')+'</span></span>'+_w8gmMsAct(m,cl,re,en)+'</li>';
+    if(!here&&!re){here=true;h+='<li class="w8gm-here"><span>'+_w8gmAvHTML(24)+(en?'You are here · ':'אתם כאן · ')+_w8gmB(_w8gmN(xp)+'&nbsp;'+_w10uxPt())+'</span></li>'}
+    h+='<li class="w8gm-ms '+(cl?'w8gm-got':(re?'w8gm-rdy':'w8gm-lck'))+'" data-ms="'+m.id+'"><span class="w8gm-nd">'+_w8gmMsIcon(m)+'</span><span class="w8gm-ms-t"><b>'+_w8gmRwTxt(m,en)+'</b><span>'+_w8gmB(_w8gmN(m.x)+'&nbsp;'+_w10uxPt())+'</span></span>'+_w8gmMsAct(m,cl,re,en)+'</li>';
   });
   return h+'</ol>'+_w8gmCosHTML(en);
 }
@@ -20230,7 +20434,7 @@ function _w8gmChestOpen(src){
 function _w8gmOddsHTML(en){
   var h='<div class="w8gm-odds"><h4>'+(en?'What\'s inside — free, no purchases':'מה יש בתיבה — חינם, בלי רכישות')+'</h4>';
   for(var t=0;t<4;t++){var T=_W8GM_TIER[t],C=_W8GM_CH[t];
-    h+='<div class="w8gm-or">'+_w8gmImg(T.ic,22)+'<span><b>'+(en?T.en:T.he)+'</b> · '+_w8gmB('+'+C.p+'&nbsp;XP')+(C.f?'<small>'+(en?'+ the Aurora avatar frame (already yours: '+_w8gmB('+'+C.alt+'&nbsp;XP')+' instead)':'+ מסגרת "זוהר צפוני" לאווטאר (כבר אצלכם? '+_w8gmB('+'+C.alt+'&nbsp;XP')+' במקום)')+'</small>':'')+'</span><em>'+_w8gmB(C.o+'%')+'</em></div>'}
+    h+='<div class="w8gm-or">'+_w8gmImg(T.ic,22)+'<span><b>'+(en?T.en:T.he)+'</b> · '+_w8gmB('+'+C.p+'&nbsp;'+_w10uxPt())+(C.f?'<small>'+(en?'+ the Aurora avatar frame (already yours: '+_w8gmB('+'+C.alt+'&nbsp;'+_w10uxPt())+' instead)':'+ מסגרת "זוהר צפוני" לאווטאר (כבר אצלכם? '+_w8gmB('+'+C.alt+'&nbsp;'+_w10uxPt())+' במקום)')+'</small>':'')+'</span><em>'+_w8gmB(C.o+'%')+'</em></div>'}
   h+='<p>'+(en?'Bad-luck protection: your first chest is at least Rare · Rare or better at least every 4th chest · Epic or better at least every 10th · Legendary by the 30th at the latest. Each day\'s result is fixed in advance — reopening the app does not change it.':'הגנת מזל: התיבה הראשונה לפחות נדירה · נדיר ומעלה לפחות פעם ב-4 תיבות · אפי ומעלה לפחות פעם ב-10 · אגדי לכל המאוחר בתיבה ה-30. התוצאה של כל יום קבועה מראש — פתיחה מחדש של האפליקציה לא משנה אותה.')+'</p></div>';
   return h;
 }
@@ -20240,7 +20444,7 @@ function _w8gmChestHTML(en){
   var state=q.length?'ready':(rec?'done':'lock');
   var h='<div class="w8gm-chp"><div class="w8gm-gift w8gm-'+state+'">'+_w8gmImg('gift-256',138)+'</div>';
   if(state==='ready')h+='<b class="w8gm-cht">'+(q.length>1?(en?(q.length+' chests are waiting!'):(q.length+' תיבות מחכות לכם!')):(en?'Your chest is ready!':'התיבה שלכם מוכנה!'))+'</b><p class="w8gm-chs">'+(en?'You hit your daily goal — open it!':'עמדתם ביעד היומי — פתחו אותה!')+'</p><button type="button" class="bp" data-w8gm-a="chest">'+(en?'Open the chest':'פתחו את התיבה')+'</button>';
-  else if(state==='done'){var T=_W8GM_TIER[rec.r]||_W8GM_TIER[0];h+='<b class="w8gm-cht">'+(en?'Today\'s chest is open':'תיבת היום נפתחה')+'</b><p class="w8gm-chs">'+_w8gmImg(T.ic,20)+'<span>'+(en?T.en:T.he)+' · '+_w8gmB('+'+rec.p+'&nbsp;XP')+(rec.f?' · '+(en?'Aurora frame':'מסגרת זוהר צפוני'):'')+'</span></p><p class="w8gm-chs">'+(en?'Next chest: tomorrow, once you finish a stage':'התיבה הבאה: מחר, אחרי שתשלימו שלב')+'</p>'}
+  else if(state==='done'){var T=_W8GM_TIER[rec.r]||_W8GM_TIER[0];h+='<b class="w8gm-cht">'+(en?'Today\'s chest is open':'תיבת היום נפתחה')+'</b><p class="w8gm-chs">'+_w8gmImg(T.ic,20)+'<span>'+(en?T.en:T.he)+' · '+_w8gmB('+'+rec.p+'&nbsp;'+_w10uxPt())+(rec.f?' · '+(en?'Aurora frame':'מסגרת זוהר צפוני'):'')+'</span></p><p class="w8gm-chs">'+(en?'Next chest: tomorrow, once you finish a stage':'התיבה הבאה: מחר, אחרי שתשלימו שלב')+'</p>'}
   else h+='<b class="w8gm-cht">'+(en?'Earn today\'s chest':'הרוויחו את תיבת היום')+'</b><p class="w8gm-chs">'+(en?'Hit your daily goal — finish one stage — and the chest unlocks.':'עמדו ביעד היומי — השלימו שלב אחד — והתיבה תיפתח.')+'</p><button type="button" class="bs" data-w8gm-a="learn">'+(en?'Back to learning':'חזרה ללמידה')+'</button>';
   var e2=Math.max(1,10-_w8gmTrail(hist,2)),e3=Math.max(1,30-_w8gmTrail(hist,3));
   h+='<div class="w8gm-pity">'+(en?'Luck protection: Epic or better within '+_w8gmB(e2)+' chest'+(e2>1?'s':'')+' · Legendary within '+_w8gmB(e3):'הגנת מזל: אפי ומעלה בתוך '+_w8gmB(e2)+' תיבות לכל היותר · אגדי בתוך '+_w8gmB(e3))+'</div>';
@@ -20276,7 +20480,7 @@ function _w8gmFxChest(rec){
    +'<button type="button" class="w8gm-fx-gift" data-w8gm-a="tap" aria-label="'+(en?'Open the chest':'פתחו את התיבה')+'"><span class="w8gm-fx-glow" aria-hidden="true"></span>'+_w8gmImg('gift-256',170)+'</button>'
    +'<div class="w8gm-fx-hint" aria-live="polite">'+(en?'Tap the chest to open it':'הקישו על התיבה כדי לפתוח')+'</div>'
    +'<div class="w8gm-fx-rw" hidden><div class="w8gm-fx-tier">'+_w8gmImg(T.ic,42)+'<b>'+(en?T.en:T.he)+'!</b></div>'
-   +'<div class="w8gm-fx-pts">'+_w8gmImg('star-96',38)+_w8gmB('+<span class="w8gm-fx-n">0</span>')+'<small>XP</small></div>'
+   +'<div class="w8gm-fx-pts">'+_w8gmImg('star-96',38)+_w8gmB('+<span class="w8gm-fx-n">0</span>')+'<small>'+_w10uxPt()+'</small></div>'
    +(rec.f?'<div class="w8gm-fx-fr">'+_w8gmAvHTML(54,rec.f)+'<span>'+(en?'New avatar frame: ':'מסגרת חדשה לאווטאר: ')+'<b>'+_w8gmFrName(rec.f,en)+'</b></span></div>':'')
    +'<div class="w8gm-fx-sub">'+(en?'Next chest: tomorrow, once you finish a stage':'התיבה הבאה: מחר, אחרי שתשלימו שלב')+'</div>'
    +'<div class="w8gm-fx-act"><button type="button" class="bp" data-w8gm-a="fxdone">'+(en?'Nice!':'איזה יופי!')+'</button>'+(rec.f?'<button type="button" class="bs" data-w8gm-a="fxroad">'+(en?'Wear it':'לבחירת המסגרת')+'</button>':'')+'</div></div></div>';
@@ -20419,7 +20623,7 @@ function _w8gmHubHTML(en){
   var q=_w8gmOpenable(),st=_w8gmSt(),rec=st.ch[_w8gmDay()],nC=_w8gmClaimable().length,nN=_w8gmFresh().length,got=_w8gmGot(),N=_w8gmBooks().length,xp=_w8gmXP(),nx=null;
   for(var i=0;i<_W8GM_ROAD.length;i++)if(xp<_W8GM_ROAD[i].x){nx=_W8GM_ROAD[i];break}
   var cs=q.length?(q.length>1?(en?(q.length+' ready!'):(q.length+' מוכנות!')):(en?'Ready!':'מוכנה!')):(rec?(en?'Opened ✓':'נפתחה ✓'):(en?'Finish a stage':'השלימו שלב'));
-  var rs=nC?(en?(nC+' to claim!'):(nC+' לאיסוף!')):(nx?(en?(_w8gmB(_w8gmN(nx.x-xp)+'&nbsp;XP')+' to next'):('עוד '+_w8gmB(_w8gmN(nx.x-xp)+'&nbsp;XP')+'')):(en?'All claimed':'הכל נאסף'));
+  var rs=nC?(en?(nC+' to claim!'):(nC+' לאיסוף!')):(nx?(en?(_w8gmB(_w8gmN(nx.x-xp)+'&nbsp;'+_w10uxPt())+' to next'):('עוד '+_w8gmB(_w8gmN(nx.x-xp)+'&nbsp;'+_w10uxPt())+'')):(en?'All claimed':'הכל נאסף'));
   return '<div class="w8gm-hh">'+_w8gmImg('trophy-96',20)+'<h3>'+(en?'Rewards & collections':'פרסים ואוספים')+'</h3></div><div class="w8gm-tiles">'
    +'<button type="button" class="w8gm-tile'+(q.length?' w8gm-hot':'')+'" data-w8gm-a="open" data-tab="chest">'+_w8gmImg('gift-96',42)+'<b>'+(en?'Daily chest':'תיבה יומית')+'</b><span class="w8gm-ts">'+cs+'</span></button>'
    +'<button type="button" class="w8gm-tile" data-w8gm-a="open" data-tab="album">'+_w8gmImg('album-128',42)+'<b>'+(en?'Book album':'אלבום הספרים')+'</b><span class="w8gm-ts">'+_w8gmB(got+'/'+N)+'</span><span class="w8gm-bar" aria-hidden="true"><i style="width:'+(N?Math.round(got/N*100):0)+'%"></i></span>'+(nN?'<span class="w8gm-bd w8gm-bd-new">'+(en?'NEW':'חדש')+'</span>':'')+'</button>'
@@ -20444,7 +20648,7 @@ function _w8gmGoalRender(){
   var st=_w8gmSt(),en=_w8gmEn(),q=_w8gmOpenable(),rec=st.ch[_w8gmDay()],row=document.createElement('div');
   row.dir=en?'ltr':'rtl';
   if(q.length){row.className='w8gm-goal w8gm-ready';row.innerHTML=_w8gmImg('gift-96',36)+'<span class="w8gm-goal-t">'+(q.length>1?(en?(q.length+' chests are waiting for you!'):(q.length+' תיבות מחכות לכם!')):(en?'Today\'s chest is ready!':'תיבת היום מחכה לכם!'))+'<small>'+(en?'You earned it by hitting the goal':'הרווחתם אותה כשעמדתם ביעד')+'</small></span><button type="button" class="w8gm-gbtn" data-w8gm-a="chest">'+(en?'Open':'פתחו')+'</button>'}
-  else if(rec){var T=_W8GM_TIER[rec.r]||_W8GM_TIER[0];row.className='w8gm-goal';row.innerHTML=_w8gmImg(T.ic,36)+'<span class="w8gm-goal-t">'+(en?'Today\'s chest: ':'תיבת היום: ')+(en?T.en:T.he)+' · '+_w8gmB('+'+rec.p+'&nbsp;XP')+'<small>'+(en?'A new chest tomorrow':'תיבה חדשה מחר')+'</small></span><button type="button" class="w8gm-glink" data-w8gm-a="room">'+(en?'Rewards':'פרסים')+'</button>'}
+  else if(rec){var T=_W8GM_TIER[rec.r]||_W8GM_TIER[0];row.className='w8gm-goal';row.innerHTML=_w8gmImg(T.ic,36)+'<span class="w8gm-goal-t">'+(en?'Today\'s chest: ':'תיבת היום: ')+(en?T.en:T.he)+' · '+_w8gmB('+'+rec.p+'&nbsp;'+_w10uxPt())+'<small>'+(en?'A new chest tomorrow':'תיבה חדשה מחר')+'</small></span><button type="button" class="w8gm-glink" data-w8gm-a="room">'+(en?'Rewards':'פרסים')+'</button>'}
   else{row.className='w8gm-goal w8gm-off';row.innerHTML=_w8gmImg('gift-96',36)+'<span class="w8gm-goal-t">'+(en?'Hit the goal to unlock today\'s chest':'עמדו ביעד כדי לפתוח את תיבת היום')+'<small>'+(en?'A free reward — see what\'s inside':'פרס חינם — אפשר לראות מה בפנים')+'</small></span><button type="button" class="w8gm-glink" data-w8gm-a="room">'+(en?'What\'s inside?':'מה בפנים?')+'</button>'}
   row.addEventListener('click',function(e){var b=e.target.closest?e.target.closest('[data-w8gm-a]'):null;if(!b)return;if(b.getAttribute('data-w8gm-a')==='chest')_w8gmChestOpen('goal');else _w8gmOpen('chest','goal')});
   box.appendChild(row);
@@ -20455,10 +20659,10 @@ function _w8gmProfHTML(en){
   _w8gmBooks().forEach(function(b){var t=_w8gmTier(b.id);if(t>=0)cnt[t]++});
   var chev='<span class="w8gm-chev" aria-hidden="true">›</span>';
   return '<h3>'+_w8gmImg('trophy-96',22)+'<span>'+(en?'Rewards & collections':'פרסים ואוספים')+'</span></h3>'
-   +'<div class="w8gm-pf-me">'+_w8gmAvHTML(56)+'<span><b dir="auto">'+_w8gmE(_w8gmUN())+'</b>'+(tt?'<span class="w8gm-ttl">'+_w8gmE(_w8gmTtName(tt,en))+'</span>':'')+'<span class="w8gm-pf-xp">'+_w8gmB(_w8gmN(xp)+'&nbsp;XP')+'</span></span></div>'
+   +'<div class="w8gm-pf-me">'+_w8gmAvHTML(56)+'<span><b dir="auto">'+_w8gmE(_w8gmUN())+'</b>'+(tt?'<span class="w8gm-ttl">'+_w8gmE(_w8gmTtName(tt,en))+'</span>':'')+'<span class="w8gm-pf-xp">'+_w8gmB(_w8gmN(xp)+'&nbsp;'+_w10uxPt())+'</span></span></div>'
    +'<div class="w8gm-pf-rows">'
    +'<button type="button" class="w8gm-pf-row" data-w8gm-a="open" data-tab="album">'+_w8gmImg('album-128',34)+'<span class="w8gm-pf-tx"><b>'+(en?'Book album':'אלבום הספרים')+'</b><small>'+_w8gmNw(_w8gmB(got+'/'+N)+(en?' cards':' קלפים'))+' · '+_w8gmNw(cnt[3]+(en?' legendary':' אגדיים'))+' · '+_w8gmNw(cnt[2]+(en?' epic':' אפיים'))+'</small></span>'+(nN?'<span class="w8gm-bd w8gm-bd-new">'+(en?'NEW':'חדש')+'</span>':'')+chev+'</button>'
-   +'<button type="button" class="w8gm-pf-row" data-w8gm-a="open" data-tab="road">'+_w8gmImg('trophy-96',34)+'<span class="w8gm-pf-tx"><b>'+(en?'Trophy road':'מסלול גביעים')+'</b><small>'+(nx?(en?(_w8gmNw(_w8gmB(_w8gmN(nx.x-xp)+'&nbsp;XP')+' to')+' '+_w8gmNw('the next reward')):(_w8gmNw('עוד '+_w8gmB(_w8gmN(nx.x-xp)+'&nbsp;XP'))+' '+_w8gmNw('לפרס הבא'))):(en?'Every reward reached':'כל הפרסים הושגו'))+'</small></span>'+(nC?'<span class="w8gm-bd">'+_w8gmB(nC)+'</span>':'')+chev+'</button>'
+   +'<button type="button" class="w8gm-pf-row" data-w8gm-a="open" data-tab="road">'+_w8gmImg('trophy-96',34)+'<span class="w8gm-pf-tx"><b>'+(en?'Trophy road':'מסלול גביעים')+'</b><small>'+(nx?(en?(_w8gmNw(_w8gmB(_w8gmN(nx.x-xp)+'&nbsp;'+_w10uxPt())+' to')+' '+_w8gmNw('the next reward')):(_w8gmNw('עוד '+_w8gmB(_w8gmN(nx.x-xp)+'&nbsp;'+_w10uxPt()))+' '+_w8gmNw('לפרס הבא'))):(en?'Every reward reached':'כל הפרסים הושגו'))+'</small></span>'+(nC?'<span class="w8gm-bd">'+_w8gmB(nC)+'</span>':'')+chev+'</button>'
    +'<button type="button" class="w8gm-pf-row" data-w8gm-a="open" data-tab="chest">'+_w8gmImg('gift-96',34)+'<span class="w8gm-pf-tx"><b>'+(en?'Daily chest':'תיבה יומית')+'</b><small>'+(q.length?(en?'Ready to open!':'מוכנה לפתיחה!'):(rec?(en?_w8gmNw('Opened today')+' · '+_w8gmNw('a new one tomorrow'):_w8gmNw('נפתחה היום')+' · '+_w8gmNw('חדשה מחר')):(en?_w8gmNw('Finish a stage today')+' '+_w8gmNw('to earn it'):_w8gmNw('השלימו היום שלב')+' '+_w8gmNw('כדי להרוויח אותה'))))+'</small></span>'+(q.length?'<span class="w8gm-bd">'+_w8gmB(q.length)+'</span>':'')+chev+'</button></div>';
 }
 function _w8gmProfRender(){
@@ -24390,6 +24594,861 @@ const _w9rtOrigSuBoot=_w8suBoot;_w8suBoot=function(){
 function _w9rtInstall(){try{var f=window._w6skClose;if(typeof f==='function'&&!f._w9rt){var w=function(el){try{if(el&&el.id==='w8g3Ov'){var h=document.getElementById('w8g3Help');if(h){h.remove();return}}}catch(e){}return f.apply(this,arguments)};w._w9rt=1;window._w6skClose=w}}catch(e){}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(_w9rtInstall,0)});else setTimeout(_w9rtInstall,0);
 /* ===== /W9 RED-TEAM v3 ===== */
+/* ===== W9 onboarding (w9ob) — see _video_factory/_w9_onboard.js =====
+   Spec: _video_factory/_research_onboarding.md (S1–S10, §2.11). Owner decision 2026-10-30: everything approved; manual
+   approval stays. Builds on signupflow (w8su: verify / waiting states, sign-in link, deep links), copylegal (w8cl: computed
+   welcome numbers, ranks, legal) and retention (w8rn: stage path, part / round wins, map panel) — never re-implements them.
+   1 · Welcome (S1/S2): value-proposition hero · "Test your product instinct · 2 min" (3 questions, local only) · sign-in
+       separated from sign-up (a sign-in typo never registers) · labelled form, inline errors, e-mail typo suggestions ·
+       reminders consent optional (unbundled from the terms) · returning-device card · who / how / FAQ.
+   2 · Waiting room (S7/S8): 3 plan questions → "Your plan" · 3-question warm-up (set B) · both device-local; the answers
+       are credited ONCE on the first approved load (+10 per correct answer, cap 60, bound to the registering name, only
+       for an account with no progress; merge-safe: G.ts only grows, nothing stage-keyed, never twice).
+   3 · First session (S9/S10, auto-shown UI → off under navigator.webdriver like the W6 tour; ?ob=1 forces it on):
+       no goal pop-up on arrival · "Start here" card above the fold · locked-badge grid → one progress line · stage-0 opener
+       as a "watch later" chip on the first visit · the daily-goal commitment as an INLINE card right after the first win
+       (retention's part ✓ / round ✓, or the first stage) · map tour ≤ 3 steps, from the 2nd map visit.
+   4 · Funnel events (§2.11 names, metas = ids / enums / numbers only): before an account under the per-visit pseudo-user
+       '~<random>' (sessionStorage — not a device identifier; flushed only after a real interaction, ≤ 30 / day / device),
+       pending learners under their pending name (as w8su), learners via trackEvent. Admin analytics drop '~' users.
+   State: localStorage pm_w9ob_pre (check, warm-up, plan, registration name, claim marker; purged 30 days after the claim) ·
+   pm_w9ob_evn (daily event counter) · pm_w9ob_mapv_<name> (map visits) · sessionStorage pm_w9ob_sid. In G (device-local,
+   never synced, removed on a user switch): _w9obClaim · _w9obWin · _w9obFm · _w9obCal. Nothing here writes to the cloud
+   (the claimed points ride on the learner's next ordinary save, after the read-before-write gate). */
+
+/* OWNER: the one-line reason for the manual approval (welcome FAQ + waiting room). Edit freely — Hebrew and English. */
+var _W9OB_WHY={he:'כך אנחנו שומרים על קהילת לומדים ממוקדת — הליגה והדו־קרבות הם מול אנשים אמיתיים שבאו ללמוד.',en:'It keeps this a focused learning community — the league and the duels are with real people who came to learn.'};
+var _W9OB={PRE:'pm_w9ob_pre',EVN:'pm_w9ob_evn',SID:'pm_w9ob_sid',MAPV:'pm_w9ob_mapv_',CAP:30,PTS:10,PTS_CAP:60,KEEP_DAYS:30};
+var _w9ob={mode:'signup',built:false,q:[],acted:false,qz:{},planEdit:false,planQ:-1,warmOpen:false,s10:null,mapv:{},typoShown:'',introOk:{},boot:Date.now(),fmSent:{},faqMin:0};
+
+/* ---------- helpers ---------- */
+function _w9obEn(){try{return G.lang==='en'}catch(e){return false}}
+function _w9obT(he,en){return _w9obEn()?en:he}
+function _w9obE(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function _w9obB(x){return '<bdi dir="ltr">'+_w9obE(x)+'</bdi>'}
+function _w9obRM(){try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}}
+/* auto-shown first-session UI follows the W6 tour rule: off under automation (navigator.webdriver), ?ob=1 forces it on */
+function _w9obAuto(){try{if(/[?&]ob=1(&|$)/.test(location.search))return true;return navigator.webdriver!==true}catch(e){return true}}
+function _w9obSla(){try{return (typeof _W8SU!=='undefined'&&_W8SU&&_W8SU.SLA_H)||24}catch(e){return 24}}
+function _w9obNorm(n){return String(n==null?'':n).replace(/\s+/g,' ').trim().toLowerCase()}
+function _w9obDir(){return _w9obEn()?'ltr':'rtl'}
+function _w9obStage(id){try{for(var i=0;i<S.length;i++)if(S[i].id===id)return S[i]}catch(e){}return null}
+function _w9obTitle(s){var t=String((s&&s.t)||'');try{t=t.replace(new RegExp('^[^\\p{L}\\p{N}]+','u'),'')}catch(e){}return t.trim()}
+function _w9obStages(){try{return _w6rtCounts().all.total}catch(e){}try{return _totalVisible()}catch(e){}return 50}
+function _w9obQText(){try{if(typeof _w8clQText==='function')return _w8clQText()}catch(e){}return '750+'}
+function _w9obCore(){try{return PM_IDS.length}catch(e){return 23}}
+function _w9obProj(min,fresh){var left=_w9obCore();try{if(!fresh&&G&&G.s&&G.done)left=PM_IDS.filter(function(i){return !G.done.has(i)}).length}catch(e){}var days=Math.max(1,Math.ceil(left*35/min));var d=new Date(Date.now()+days*864e5);try{return _w9obEn()?d.toLocaleDateString('en-US',{month:'short',day:'numeric'}):d.toLocaleDateString('he-IL',{day:'numeric',month:'long'})}catch(e){return d.toDateString()}}
+function _w9obGo(fn){return function(e){try{fn(e)}catch(x){}}}
+var _W9OB_PLAY='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>';
+var _W9OB_BADGE='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>';
+var _W9OB_CHECK='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg>';
+var _W9OB_CROSS='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+
+/* ---------- device-local pre-account record (never inside pmV7, never synced) ---------- */
+function _w9obPre(){
+  try{var o=JSON.parse(localStorage.getItem(_W9OB.PRE)||'null');
+    if(o&&typeof o==='object'&&o.v===1){if(o.claimAt&&Date.now()-o.claimAt>_W9OB.KEEP_DAYS*864e5){localStorage.removeItem(_W9OB.PRE);return {v:1}}return o}}catch(e){}
+  return {v:1};
+}
+function _w9obPreSave(o){try{o.v=1;localStorage.setItem(_W9OB.PRE,JSON.stringify(o))}catch(e){}}
+function _w9obScore(r){return (r&&typeof r.score==='number')?r.score:-1}
+
+/* ---------- events (spec §2.11) ---------- */
+function _w9obSid(){var s='';try{s=sessionStorage.getItem(_W9OB.SID)||''}catch(e){}if(!/^[0-9a-z]{10}$/.test(s)){s='';try{var a=new Uint8Array(10);crypto.getRandomValues(a);for(var i=0;i<10;i++)s+=(a[i]%36).toString(36)}catch(e){while(s.length<10)s+=Math.random().toString(36).slice(2)}s=s.slice(0,10);try{sessionStorage.setItem(_W9OB.SID,s)}catch(e){}}return s}
+function _w9obCapOk(){try{var d=new Date().toISOString().slice(0,10),o=JSON.parse(localStorage.getItem(_W9OB.EVN)||'null');if(!o||o.d!==d)o={d:d,n:0};if(o.n>=_W9OB.CAP)return false;o.n++;localStorage.setItem(_W9OB.EVN,JSON.stringify(o));return true}catch(e){return true}}
+function _w9obPost(f,a,m,u){try{if(!DB_URL||!u)return;if(typeof _w6anEmit==='function'){_w6anEmit(f,a,m,u,'');return}fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'trackEvent',userName:u,feat:f,act:a,meta:m,device:(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)?'mobile':'desktop'),appVersion:APP_VERSION}),headers:{'Content-Type':'text/plain'},keepalive:true}).catch(function(){})}catch(e){}}
+function _w9obPendLive(){try{var pv=$('pendingView');return !!(pv&&!pv.classList.contains('hid')&&_pendingName)}catch(e){return false}}
+/* feat / act / meta (ids, enums and numbers only) → the right user: learner · pending name · anonymous visit */
+function _w9obEv(f,a,m){
+  try{
+    if(!DB_URL)return;m=(m==null)?'':String(m);
+    if(G&&G.s&&G.userName&&G.userName!=='אנונימי'&&!_w9obPendLive()){trackEvent(f,a,m);return}
+    if(_w9obPendLive()){_w9obPost(f,a,m,String(_pendingName));return}
+    _w9ob.q.push([f,a,m]);if(_w9ob.q.length>40)_w9ob.q.shift();
+    if(_w9ob.acted)_w9obFlush();
+  }catch(e){}
+}
+function _w9obEvU(f,a,m,u){try{if(DB_URL&&u)_w9obPost(f,a,m==null?'':String(m),String(u))}catch(e){}}
+function _w9obFlush(){try{if(!DB_URL)return;var q=_w9ob.q;_w9ob.q=[];var u='~'+_w9obSid();q.forEach(function(x){if(_w9obCapOk())_w9obPost(x[0],x[1],x[2],u)})}catch(e){}}
+function _w9obActed(){if(_w9ob.acted)return;_w9ob.acted=true;['pointerdown','keydown','touchstart'].forEach(function(t){try{document.removeEventListener(t,_w9obActed,true)}catch(e){}});_w9obFlush()}
+try{['pointerdown','keydown','touchstart'].forEach(function(t){document.addEventListener(t,_w9obActed,{capture:true,passive:true})})}catch(e){}
+/* monitoring registry (standing directive: every button monitored) */
+try{
+  if(TRACKED_FEATURES.indexOf('onboard')<0){TRACKED_FEATURES.push('onboard');if(typeof OTHER_FEATURES!=='undefined'&&OTHER_FEATURES.indexOf('onboard')<0)OTHER_FEATURES.push('onboard')}
+  if(TRACKED_FEATURES.indexOf('signup')<0)TRACKED_FEATURES.push('signup');
+  if(!FEAT_META.onboard)FEAT_META.onboard={ic:'🚀',name:'קליטה וכניסה ראשונה',col:'#E8C45C'};
+  if(!FEAT_META.signup)FEAT_META.signup={ic:'🪪',name:'הרשמה וזיהוי',col:'#35C9A3'};
+  var _w9obActs={welcome_view:'מסך פתיחה הוצג',cta:'לחיצה בפתיחה (בדיקה / הרשמה / כניסה)',check_start:'בדיקת חוש מוצר: התחלה',check_answer:'בדיקת חוש מוצר: תשובה',check_done:'בדיקת חוש מוצר: סיום',form_view:'טופס הרשמה / כניסה הוצג',form_error:'שגיאה בטופס',email_typo:'הצעת תיקון למייל',submit:'שליחת הרשמה',plan_answer:'שאלת התאמה (המתנה)',plan_done:'תוכנית אישית נבנתה',warmup_start:'חימום: התחלה',warmup_done:'חימום: סיום',link:'קישור ביקור אנונימי לחשבון',claim:'זיכוי בדיקה + חימום',first_map:'מפה ראשונה',start_here:'כרטיס מתחילים כאן',first_stage_open:'שלב ראשון נפתח',first_win:'ניצחון ראשון',commit:'התחייבות ליעד יומי',calendar:'תזכורת ביומן',later:'התחייבות: לא עכשיו',first_stage_done:'שלב ראשון הושלם',activated:'הופעל (שלב 2 הושלם)'};
+  Object.keys(_w9obActs).forEach(function(k){if(!FEAT_ACT_NAMES[k])FEAT_ACT_NAMES[k]=_w9obActs[k]});
+}catch(e){}
+
+/* ---------- questions: welcome set A (instinct check) · waiting-room set B (warm-up) — spec text verbatim;
+   'ord' = display order only (so the right answer is not always the 2nd button; the wording is untouched) ---------- */
+var _W9OB_Q={
+a:[
+ {id:'a1',c:1,ord:[0,1,2,3],
+  he:{q:'יש לכם ספרינט אחד ושלוש בקשות. במה מתחילים?',o:['הפיצ׳ר שהמנכ״ל ביקש','באג שחוסם 8% מההרשמות','להעתיק את הפיצ׳ר החדש של המתחרה','הצבעה בצוות'],x:'באג שחוסם 8% מההרשמות פוגע בכל מדד שבא אחריו — השפעה גדולה במאמץ קטן. מנהלי מוצר מתעדפים לפי השפעה מול מאמץ, לא לפי מי שביקש הכי חזק.'},
+  en:{q:'You have one sprint and three requests. Where do you start?',o:['The feature the CEO asked for','A bug that blocks 8% of sign-ups','Copy the competitor\'s new feature','Let the team vote'],x:'A bug that blocks 8% of sign-ups drags down every metric after it — big impact for small effort. PMs prioritize by impact versus effort, not by who asked loudest.'}},
+ {id:'a2',c:1,ord:[0,2,3,1],
+  he:{q:'משתמשים מבקשים ״מצב לילה״. מה הצעד הראשון?',o:['לבנות אותו — המשתמשים ביקשו','לברר מה הבעיה שמאחורי הבקשה','סקר: ״אתם רוצים מצב לילה?״','להתעלם — זה רק עיצוב'],x:'בקשה היא פתרון שהמשתמש כבר בחר. אולי משתמשים באפליקציה בחושך, ואולי המסך פשוט מסנוור. קודם מבינים את הבעיה, ואז בוחרים פתרון.'},
+  en:{q:'Users keep asking for "dark mode". What is your first step?',o:['Build it — users asked','Find out the problem behind the request','Run a survey: "Do you want dark mode?"','Ignore it — it is just styling'],x:'A request is a solution the user already picked. Maybe they use the app in the dark, maybe the screen is just too bright. Understand the problem first, then choose the solution.'}},
+ {id:'a3',c:1,ord:[1,0,2,3],
+  he:{q:'השקתם פיצ׳ר. ההורדות עלו ב-30%, אבל מספר המשתמשים הפעילים בשבוע לא זז. מה זה אומר?',o:['הצלחה — ההורדות עלו','הפיצ׳ר מושך סקרנות אבל לא ערך שנשאר — בודקים כמה חזרו אחרי שבוע','המדידה שבורה','צריך להשיק עוד פיצ׳רים'],x:'הורדות הן הבטחה; משתמשים שחוזרים הם הוכחה. מנהלי מוצר מסתכלים על שימור, לא רק על צמיחה.'},
+  en:{q:'You launched a feature. Downloads rose 30%, but weekly active users did not move. What does that tell you?',o:['Success — downloads are up','It sparks curiosity but not lasting value — check how many came back a week later','The tracking is broken','Ship more features'],x:'Downloads are a promise; returning users are proof. PMs watch retention, not just growth.'}}
+],
+b:[
+ {id:'b1',c:1,ord:[1,0,2,3],
+  he:{q:'בראיון משתמש, איזו שאלה תיתן את התובנה הכי אמינה?',o:['״פיצ׳ר שעושה X היה עוזר לך?״','״מתי בפעם האחרונה ניסית לעשות X, ואיך זה הלך?״','״כמה זה שווה לך בשקלים?״','״האפליקציה שלנו מוצאת חן בעיניך?״'],x:'אנשים לא טובים בניבוי ההתנהגות העתידית שלהם, אבל טובים בתיאור מה שבאמת עשו. שואלים על העבר, לא על ״מה היית עושה״.'},
+  en:{q:'In a user interview, which question gives the most reliable insight?',o:['"Would a feature that does X help you?"','"When did you last try to do X, and how did it go?"','"How much would that be worth to you?"','"Do you like our app?"'],x:'People are bad at predicting their own future behaviour but good at describing what they actually did. Ask about the past, not about "what would you do".'}},
+ {id:'b2',c:1,ord:[0,2,3,1],
+  he:{q:'רוצים לבדוק אם אנשים ישלמו על שירות לתכנון ארוחות. מה הדרך המהירה ביותר ללמוד?',o:['לבנות קודם את האפליקציה המלאה','דף נחיתה עם מחיר וכפתור הצטרפות — ולמדוד כמה נרשמים','לשאול חברים אם היו קונים','לשכור משרד פרסום גדול'],x:'MVP הוא הניסוי הקטן ביותר שעונה על השאלה המסוכנת ביותר. דף נחיתה עם מחיר אמיתי בודק ביקוש בתוך ימים, לא חודשים.'},
+  en:{q:'You want to test whether people would pay for a meal-planning service. What is the fastest way to learn?',o:['Build the full app first','A landing page with a price and a join button — and measure sign-ups','Ask friends if they would buy','Hire a big ad agency'],x:'An MVP is the smallest experiment that answers your riskiest question. A landing page with a real price tests demand in days, not months.'}},
+ {id:'b3',c:2,ord:[0,1,2,3],
+  he:{q:'איש מכירות בכיר מבקש להוסיף פיצ׳ר ללקוח גדול אחד עד שבוע הבא. זה לא במפת הדרכים. מה התגובה הנכונה?',o:['כן — לקוח גדול, הכנסה גדולה','לא, זה לא במפת הדרכים','להבין את הצורך ואת שווי העסקה, להחליט לפי נתונים — ולהסביר מה יידחה','להבטיח ״ברבעון הבא״ כדי לסגור את השיחה'],x:'מנהלי מוצר טובים לא אומרים כן או לא מתוך רפלקס. הם מבררים את הצורך, שוקלים אותו מול מה שיידחה בגללו, ומסבירים את הוויתור בגלוי.'},
+  en:{q:'A senior salesperson asks for a feature for one big client by next week. It is not on the roadmap. What is the right response?',o:['Yes — big client, big revenue','No, it is not on the roadmap','Understand the need and the deal\'s value, decide with data — and explain what gets pushed out','Promise "next quarter" to end the conversation'],x:'Good PMs do not say yes or no on reflex. They dig into the need, weigh it against what it would displace, and explain the trade-off openly.'}}
+]};
+/* the waiting room's three plan questions (spec S7 — answer codes as in the spec table) */
+var _W9OB_PLAN=[
+ {k:'goal',he:'מה הביא אתכם לכאן?',en:'What brings you here?',o:[['job','עבודה ראשונה בניהול מוצר','A first PM job'],['switch','מעבר מתפקיד אחר','Switching from another role'],['grow','צמיחה בתפקיד מוצר','Growing in a product role'],['interview','הכנה לראיונות','Interview prep'],['curious','סקרנות','Just curious']]},
+ {k:'level',he:'כמה ניסיון יש לכם במוצר?',en:'How much product experience do you have?',o:[['none','עוד לא','None yet'],['some','קצת, מהצד','Some, from the side'],['pm','אני כבר בתפקיד מוצר','I already work in product']]},
+ {k:'min',he:'כמה זמן ביום מתאים לכם?',en:'How much time a day suits you?',o:[['5','5 דק׳','5 min'],['10','10 דק׳','10 min'],['15','15 דק׳','15 min']]}
+];
+var _W9OB_SHORT={job:['עבודה ראשונה','First PM job'],switch:['מעבר תפקיד','Switching roles'],grow:['צמיחה בתפקיד','Growing in the role'],interview:['ראיונות','Interviews'],curious:['סקרנות','Curiosity'],none:['עוד לא','None yet'],some:['קצת','Some'],pm:['בתפקיד מוצר','In product']};
+var _W9OB_LINE={
+ job:['מתחילים מהבסיס: שלבים 0, 2 ו-3. כל שלב נגמר במבחן עם הסברים.','Start from the basics: stages 0, 2 and 3. Every stage ends with a quiz with explanations.'],
+ switch:['מגיעים מתפקיד אחר? שלב 3 משווה בין מנהל מוצר למנהל פרויקט.','Coming from another role? Stage 3 compares a product manager and a project manager.'],
+ grow:['כבר בתפקיד? אפשר להתחיל מכל שלב במפה — למשל שלב 7, תעדוף ומפת דרכים.','Already in the role? Start anywhere on the map — e.g. stage 7, Prioritisation & roadmap.'],
+ interview:['לראיונות: כל שלב מסתיים בסבב שאלות, ודו־קרבות מאפשרים תרגול מהיר.','For interviews: every stage ends in a question round, and duels give quick practice.'],
+ curious:['סקרנים? שלב 0 נותן את התמונה המלאה בכ-16 דקות.','Curious? Stage 0 gives the full picture in about 16 minutes.']
+};
+
+/* =============================== the 3-question card (instinct check · warm-up) =============================== */
+/* kind 'chk' → set A, stored in pre.check, host #w9obCheck · kind 'warm' → set B, pre.warm, host #w9obWarmQz */
+function _w9obQzKey(kind){return kind==='warm'?'warm':'check'}
+function _w9obQzSet(kind){return kind==='warm'?_W9OB_Q.b:_W9OB_Q.a}
+function _w9obQzRec(kind){var p=_w9obPre(),r=p[_w9obQzKey(kind)];return (r&&Array.isArray(r.ans))?r:{ans:[]}}
+function _w9obQzState(kind){
+  var st=_w9ob.qz[kind];if(st)return st;
+  var r=_w9obQzRec(kind),done=typeof r.score==='number';
+  st=_w9ob.qz[kind]={kind:kind,i:done?3:Math.min(r.ans.length,2),fb:false,t0:0,qt:0};
+  if(!done&&r.ans.length>=3)st.i=3;
+  return st;
+}
+function _w9obQzLet(i){return _w9obEn()?'ABCD'.charAt(i):'אבגד'.charAt(i)}
+function _w9obQzHtml(kind){
+  var en=_w9obEn(),st=_w9obQzState(kind),set=_w9obQzSet(kind),r=_w9obQzRec(kind),h='';
+  var title=kind==='warm'?_w9obT('חימום','Warm-up'):_w9obT('בדיקת חוש מוצר','Product instinct check'),kick=kind==='warm'?'':_w9obE(title)+' · ';
+  if(st.i>=3){/* result */
+    var sc=typeof r.score==='number'?r.score:r.ans.filter(function(a){return a&&a.ok}).length,C=2*Math.PI*26,off=C*(1-sc/3);
+    h+='<div class="w9ob-res" role="status"><svg class="w9ob-ring" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="26" class="w9ob-ring-bg"/><circle cx="32" cy="32" r="26" class="w9ob-ring-fg" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 32 32)"/><text x="32" y="37" text-anchor="middle" class="w9ob-ring-t">'+sc+'/3</text></svg>';
+    if(kind==='warm'){
+      h+='<h3 class="w9ob-rt">'+_w9obT('חימום: ','Warm-up: ')+_w9obB(sc+'/3')+_w9obT(' — נשמר',' — saved')+'</h3><p class="w9ob-note">'+_w9obT('התשובות נשמרות במכשיר ומתווספות לחשבון ביום האישור.','Answers are saved on this device and added to your account on approval day.')+'</p></div>';
+      return h;
+    }
+    var T=[[ '0 מתוך 3 — בדיוק בשביל זה יש קורס','0 of 3 — that is exactly what the course is for'],['1 מתוך 3 — התחלה טובה','1 of 3 — a good start'],['2 מתוך 3 — יש לכם חוש מוצר','2 of 3 — you have product instinct'],['3 מתוך 3 — חוש מוצר חד','3 of 3 — sharp product instinct']][sc];
+    h+='<h3 class="w9ob-rt" id="w9obResT">'+_w9obE(en?T[1]:T[0])+'</h3>';
+    h+='<p class="w9ob-rs">'+(sc>=2?_w9obT('בקורס מחכות לכם עוד '+_w9obB(_w9obQText())+' שאלות כאלה, עם קייסים, דו־קרבות ותרגול ראיונות.',_w9obB(_w9obQText())+' more questions like these are waiting in the course, with cases, duels and interview practice.'):_w9obT('השאלות האלה קשות בהתחלה. בקורס לומדים את הכלים שמאחוריהן, שלב אחרי שלב.','These questions are tricky at first. The course teaches the tools behind them, step by step.'))+'</p>';
+    h+='<ul class="w9ob-unl"><li>'+_W9OB_CHECK+'<span>'+_w9obT('מפה של '+_w9obB(_w9obStages())+' שלבים, מהבסיס ועד AI למנהלי מוצר','A '+_w9obB(_w9obStages())+'-stage map, from the basics to AI for PMs')+'</span></li><li>'+_W9OB_CHECK+'<span>'+_w9obT('ליגה שבועית ודו־קרבות מול לומדים אחרים','A weekly league and duels with other learners')+'</span></li><li>'+_W9OB_CHECK+'<span>'+_w9obT('תעודת השלמה עם קישור אימות','A completion certificate with a verification link')+'</span></li></ul>';
+    h+='<button type="button" class="bp w9ob-res-cta" data-w9a="save">'+_w9obT('שמרו את התוצאה — הרשמה בחינם','Save my score — sign up free')+'</button><p class="w9ob-note">'+_w9obT('התוצאה נשמרת במכשיר הזה ומתווספת לחשבון אחרי האישור.','Your score is saved on this device and added to your account once you are approved.')+'</p></div>';
+    return h;
+  }
+  var q=set[st.i],L=en?q.en:q.he,ans=r.ans[st.i],pick=ans?ans.pick:-1,fb=!!ans;
+  h+='<div class="w9ob-qtop"><span class="w9ob-qk">'+kick+_w9obT(kind==='warm'?'שאלה ':'שאלה ',kind==='warm'?'Question ':'question ')+_w9obB(st.i+1)+_w9obT(' מתוך 3',' of 3')+'</span>'
+    +(kind==='chk'?'<button type="button" class="w9ob-x w9ob-qx" data-w9a="close" aria-label="'+_w9obT('סגירה','Close')+'">'+_W9OB_CROSS+'</button>':'')+'</div>';
+  h+='<div class="w9ob-prog" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="'+(st.i+(fb?1:0))+'" aria-label="'+_w9obE(title)+'"><i style="width:'+Math.round((st.i+(fb?1:0))/3*100)+'%"></i></div>';
+  h+='<p class="w9ob-qq" id="w9obQq_'+kind+'">'+_w9obE(L.q)+'</p><div class="w9ob-opts" role="group" aria-labelledby="w9obQq_'+kind+'">';
+  q.ord.forEach(function(oi,pos){
+    var cls='w9ob-opt',mark='<span class="w9ob-l" aria-hidden="true">'+_w9obQzLet(pos)+'</span>';
+    if(fb){if(oi===q.c){cls+=' is-ok';mark='<span class="w9ob-l" aria-hidden="true">'+_W9OB_CHECK+'</span>'}else if(oi===pick){cls+=' is-no';mark='<span class="w9ob-l" aria-hidden="true">'+_W9OB_CROSS+'</span>'}else cls+=' is-dim'}
+    h+='<button type="button" class="'+cls+'" data-w9a="pick" data-i="'+oi+'"'+(fb?' disabled aria-disabled="true"':'')+(fb&&oi===pick?' aria-pressed="true"':'')+'>'+mark+'<span class="w9ob-ot">'+_w9obE(L.o[oi])+'</span></button>';
+  });
+  h+='</div>';
+  if(fb){
+    var ok=pick===q.c;
+    h+='<div class="w9ob-fb'+(ok?'':' no')+'" role="status"><b>'+(ok?_w9obT('נכון!','Right!'):_w9obT('לא בדיוק.','Not quite.'))+'</b> '+_w9obE(L.x)+'</div>';
+    h+='<button type="button" class="bp w9ob-next" data-w9a="next">'+(st.i===2?_w9obT('לתוצאה','See my result'):(st.i===1?_w9obT('לשאלה האחרונה','Last question'):_w9obT('לשאלה הבאה','Next question')))+'</button>';
+  }
+  if(kind==='chk')h+='<p class="w9ob-foot">'+_w9obT('בלי הרשמה · התשובות נשמרות רק במכשיר הזה','No sign-up needed · answers stay on this device')+'</p>';
+  return h;
+}
+function _w9obQzHost(kind){return $(kind==='warm'?'w9obWarmQz':'w9obCheck')}
+function _w9obQzRender(kind,focus){
+  var host=_w9obQzHost(kind);if(!host)return;
+  host.innerHTML=_w9obQzHtml(kind);host.setAttribute('dir',_w9obDir());host.setAttribute('lang',_w9obEn()?'en':'he');
+  if(!host._w9ob){host._w9ob=1;host.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('[data-w9a]'):null;if(!b||!host.contains(b))return;try{_w9obQzAct(kind,b.getAttribute('data-w9a'),b)}catch(x){}})}
+  if(focus){var f=host.querySelector(focus);if(f){try{f.focus({preventScroll:true})}catch(e){}}}
+}
+function _w9obQzAct(kind,act,b){
+  var st=_w9obQzState(kind),pre=_w9obPre(),key=_w9obQzKey(kind),r=pre[key];if(!r||!Array.isArray(r.ans))r=pre[key]={ans:[]};
+  if(act==='close'){_w9obChkView(false);return}
+  if(act==='save'){_w9obChkView(false);_w9obEv('signup','cta','which=signup,from=result');_w9obMode('signup','result',true);return}
+  if(act==='pick'){
+    if(st.i>=3||r.ans[st.i])return;
+    var set=_w9obQzSet(kind),q=set[st.i],oi=parseInt(b.getAttribute('data-i'),10);if(isNaN(oi))return;
+    if(st.i===0&&!r.ans.length){r.t0=Date.now();if(kind==='chk'){_w9obEv('signup','check_start','src='+(_w9ob.chkSrc||'demo'));_w9obChkView(true)}else _w9obEv('signup','warmup_start','')}
+    var ok=oi===q.c?1:0;r.ans[st.i]={q:q.id,pick:oi,ok:ok,t:Date.now()};
+    /* the score is final at the third answer (saved now — "See my result" only changes the view) */
+    var nA=r.ans.filter(Boolean).length,fin=nA>=3&&typeof r.score!=='number';
+    if(fin){r.score=r.ans.filter(function(a){return a&&a.ok}).length;r.at=Date.now();r.sec=Math.max(0,Math.round((Date.now()-(r.t0||Date.now()))/1000))}
+    _w9obPreSave(pre);
+    if(kind==='chk')_w9obEv('signup','check_answer','q='+q.id+',ok='+ok);
+    if(fin){if(kind==='chk'){_w9obEv('signup','check_done','score='+r.score+',sec='+r.sec);_w9obFormText()}else _w9obEv('signup','warmup_done','score='+r.score)}
+    try{if(typeof playSfx==='function'&&!_w9obRM())playSfx(ok?'correct':'wrong')}catch(e){}
+    _w9obQzRender(kind,'.w9ob-next');
+    var fbx=_w9obQzHost(kind);fbx=fbx&&fbx.querySelector('.w9ob-next');if(fbx){try{fbx.scrollIntoView({block:'nearest',behavior:_w9obRM()?'auto':'smooth'})}catch(e){}}
+    return;
+  }
+  if(act==='next'){
+    if(!r.ans[st.i])return;
+    st.i++;
+    if(st.i>=3){if(kind==='warm'){_w9obWaitRender();return}_w9obQzRender(kind,'.w9ob-res-cta')}
+    else _w9obQzRender(kind,'.w9ob-opt');
+    var host=_w9obQzHost(kind);if(host&&kind==='chk'&&window.innerWidth<960){try{host.scrollIntoView({block:'start',behavior:_w9obRM()?'auto':'smooth'})}catch(e){}}
+  }
+}
+/* phones: the check replaces the hero copy (inline, not an overlay); desktop: it lives in the right column */
+function _w9obChkView(on){
+  var hero=$('w9obHero');if(!hero)return;
+  if(!!on===hero.classList.contains('w9ob-chk-on'))return;
+  hero.classList.toggle('w9ob-chk-on',!!on);
+  if(!on){var b=$('w9obCheckBtn');if(b&&window.innerWidth<960){try{b.focus({preventScroll:true})}catch(e){}}}
+}
+function _w9obCheckGo(){
+  _w9ob.chkSrc='hero';_w9obEv('signup','cta','which=check,from=hero');
+  var st=_w9obQzState('chk');_w9obChkView(true);_w9obQzRender('chk',st.i>=3?'.w9ob-res-cta':'.w9ob-opt');
+  var host=$('w9obCheck');if(host){try{host.scrollIntoView({block:'start',behavior:_w9obRM()?'auto':'smooth'})}catch(e){}}
+}
+
+/* =============================== welcome (S1 · S2) =============================== */
+function _w9obWsBuild(){
+  if(_w9ob.built)return;var ws=$('ws');if(!ws)return;
+  var h1=ws.querySelector('h1'),lang=$('wsLang'),login=$('wsLogin'),boxes=ws.querySelectorAll('.ws-box');
+  if(!h1||!login||!$('nameInput')||!$('emailInput'))return;
+  /* top bar: wordmark + language switch + sign in */
+  var top=document.createElement('div');top.id='w9obTop';top.className='w9ob-top';
+  ws.insertBefore(top,h1);top.appendChild(h1);
+  var grp=document.createElement('div');grp.className='w9ob-tgrp';top.appendChild(grp);
+  if(lang)grp.appendChild(lang);
+  var si=document.createElement('button');si.type='button';si.id='w9obSignin';si.className='w9ob-tb';grp.appendChild(si);
+  si.addEventListener('click',_w9obGo(function(){_w9obEv('signup','cta','which=signin,from=top');_w9obMode('signin','top',true)}));
+  /* returning-device card (S2) */
+  var ret=document.createElement('section');ret.id='w9obRet';ret.className='w9ob-ret';ret.hidden=true;ws.insertBefore(ret,top.nextSibling);
+  /* hero */
+  var hero=document.createElement('section');hero.id='w9obHero';hero.className='w9ob-hero';hero.setAttribute('aria-labelledby','w9obH');
+  hero.innerHTML='<div class="w9ob-main" id="w9obMain"><p class="w9ob-eyebrow" id="w9obEye"></p><h2 class="w9ob-h" id="w9obH"></h2><p class="w9ob-sub" id="w9obSub"></p>'
+    +'<div class="w9ob-ctas"><button type="button" class="bp w9ob-cta1" id="w9obCheckBtn"></button><button type="button" class="bs w9ob-cta2" id="w9obSignupBtn"></button></div>'
+    +'<p class="w9ob-micro" id="w9obMicro"></p><div class="w9ob-stats" id="w9obStats"></div><p class="w9ob-proof" id="w9obProof"></p></div>'
+    +'<div class="w9ob-check" id="w9obCheck" role="region"></div>';
+  ws.insertBefore(hero,ret.nextSibling);
+  var stats=ws.querySelector('.ws-stats');if(stats)$('w9obStats').appendChild(stats);/* copylegal's computed numbers move into the hero (still inside #ws) */
+  if(boxes[0])boxes[0].classList.add('w9ob-feat');
+  $('w9obCheckBtn').addEventListener('click',_w9obGo(_w9obCheckGo));
+  $('w9obSignupBtn').addEventListener('click',_w9obGo(function(){_w9obEv('signup','cta','which=signup,from=hero');_w9obMode('signup','hero',true)}));
+  /* who it's for · how it works */
+  var info=document.createElement('section');info.id='w9obInfo';info.className='w9ob-info';
+  var lobby=$('lobbyRow');ws.insertBefore(info,lobby||login);
+  /* FAQ after the form card, then the rank path (kept: the renamed ranks stay visible on the welcome) */
+  var faq=document.createElement('section');faq.id='w9obFaq';faq.className='w9ob-faq';
+  login.parentNode.insertBefore(faq,login.nextSibling);
+  if(boxes[1]){boxes[1].classList.add('w9ob-ranks');faq.parentNode.insertBefore(boxes[1],faq.nextSibling)}
+  _w9obFormBuild(login);
+  /* browsers without overflow:clip: a programmatic inner scroll of #ws is undone at once (see the CSS pack) */
+  ws.addEventListener('scroll',function(){if(ws.scrollTop||ws.scrollLeft){ws.scrollTop=0;ws.scrollLeft=0}},{passive:true});
+  ws.classList.add('w9ob-on');_w9ob.built=true;
+  _w9obWsRender();
+  try{var pr=JSON.parse(localStorage.getItem('pm_profiles')||'[]');_w9obEv('signup','welcome_view','v='+((Array.isArray(pr)&&pr.length)?'return':'new')+',lang='+(_w9obEn()?'en':'he')+',dc='+(typeof _w6anDc==='function'?_w6anDc():'d'))}catch(e){}
+}
+function _w9obWsRender(){
+  if(!_w9ob.built)return;var en=_w9obEn(),sla=_w9obSla();
+  var set=function(id,html){var e=$(id);if(e&&e.innerHTML!==html)e.innerHTML=html};
+  set('w9obSignin',_w9obE(_w9obT('כניסה','Sign in')));
+  set('w9obEye',_w9obE(_w9obT('קורס ניהול מוצר · חינם · עברית ואנגלית','Product management course · Free · Hebrew & English')));
+  set('w9obH',_w9obE(_w9obT('ללמוד ניהול מוצר כמו משחק\u00a0— ולהגיע מוכנים לראיון','Learn product management like a game\u00a0— and walk into the interview ready')));
+  set('w9obSub',_w9obE(_w9obT('שלבים קצרים עם תיאוריה, קייס ומבחן, דו־קרבות וליגה שבועית, ותרגול שאלות ראיון. 10 דקות ביום, בקצב שלכם.','Short stages with theory, a real case and a quiz, duels and a weekly league, and interview practice. 10 minutes a day, at your pace.')));
+  set('w9obCheckBtn',_W9OB_PLAY+'<span>'+_w9obE(_w9obT('בדקו את חוש המוצר שלכם · 2 דק׳','Test your product instinct · 2 min'))+'</span>');
+  set('w9obSignupBtn',_w9obE(_w9obT('הרשמה בחינם','Sign up free')));
+  set('w9obMicro',_w9obT('בלי כרטיס אשראי · בלי שיחות מכירה · כל הרשמה מאושרת ידנית, בדרך כלל תוך '+_w9obB(sla)+' שעות','No credit card · No sales calls · Every sign-up is approved by hand, usually within '+_w9obB(sla)+' hours'));
+  set('w9obProof',_W9OB_BADGE+'<span>'+_w9obE(_w9obT('תעודת השלמה עם קישור אימות ציבורי — אפשר להוסיף ללינקדאין','Completion certificate with a public verification link — add it to LinkedIn'))+'</span>');
+  var hero=$('w9obHero');if(hero){hero.setAttribute('dir',_w9obDir());hero.setAttribute('aria-label',_w9obT('קורס ניהול מוצר','Product management course'))}
+  var chk=$('w9obCheck');if(chk)chk.setAttribute('aria-label',_w9obT('בדיקת חוש מוצר','Product instinct check'));
+  _w9obQzRender('chk');
+  /* who · how */
+  var who=en?['Looking for a first PM job','Moving from dev, QA, design or marketing','New product managers','Preparing for interviews']:['מחפשי עבודה ראשונה במוצר','עוברים מפיתוח, QA, עיצוב או שיווק','מנהלי מוצר בתחילת הדרך','מתכוננים לראיון'];
+  var how=en?[['Learn','A short stage: theory, a real-world case and a quiz with explanations'],['Practice','Duels, a weekly league and a daily question keep you going'],['Prove it','A completion certificate with a verification link, plus interview practice']]:[['לומדים','שלב קצר: תיאוריה, קייס מהשטח ומבחן עם הסברים'],['מתרגלים','דו־קרבות, ליגה שבועית ושאלה יומית שומרים על הקצב'],['מוכיחים','תעודת השלמה עם קישור אימות, ותרגול ראיונות']];
+  set('w9obInfo','<div class="w9ob-sec"><h2 class="w9ob-sh">'+_w9obE(_w9obT('למי זה מתאים','Who it is for'))+'</h2><ul class="w9ob-chips">'+who.map(function(x){return '<li>'+_w9obE(x)+'</li>'}).join('')+'</ul></div>'
+    +'<div class="w9ob-sec"><h2 class="w9ob-sh">'+_w9obE(_w9obT('איך זה עובד','How it works'))+'</h2><ol class="w9ob-steps">'+how.map(function(x,i){return '<li><span class="w9ob-n" aria-hidden="true">'+(i+1)+'</span><span><b>'+_w9obE(x[0])+'</b> — '+_w9obE(x[1])+'</span></li>'}).join('')+'</ol></div>');
+  var info=$('w9obInfo');if(info)info.setAttribute('dir',_w9obDir());
+  _w9obFaqRender();_w9obFormText();_w9obRetRender();
+}
+/* typical stage length for the FAQ: the median of the core stages by the stage header's own ⏱ formula (retention's) */
+function _w9obStageMin(){
+  try{if(typeof _w8rnEst!=='function')return 20;var a=[];PM_IDS.forEach(function(id){var s=_w9obStage(id);if(s)a.push(_w8rnEst(s).tot)});if(!a.length)return 20;a.sort(function(x,y){return x-y});var m=a[Math.floor(a.length/2)];return Math.max(5,Math.round(m/5)*5)}catch(e){return 20}
+}
+function _w9obFaqRender(){
+  var f=$('w9obFaq');if(!f)return;var sla=_w9obSla(),en=_w9obEn();
+  var openK={};try{f.querySelectorAll('details[open]').forEach(function(d){openK[d.getAttribute('data-k')]=1})}catch(e){}
+  var items=[
+    ['approval',_w9obT('למה יש אישור ידני?','Why is there a manual approval?'),_w9obE(en?_W9OB_WHY.en:_W9OB_WHY.he)+' '+_w9obT('בדרך כלל זה לוקח פחות מ-'+_w9obB(sla)+' שעות, ובינתיים אפשר כבר להתחיל לתרגל.','It usually takes under '+_w9obB(sla)+' hours, and you can start practising meanwhile.')],
+    ['free',_w9obT('זה באמת בחינם?','Is it really free?'),_w9obE(_w9obT('כן. כרגע כל התוכן פתוח, בלי תשלום ובלי כרטיס אשראי.','Yes. All content is open right now, with no payment and no credit card.'))],
+    ['time',_w9obT('כמה זמן זה לוקח?','How long does it take?'),'<span data-w9ob-min></span>'],
+    ['cert',_w9obT('האם התעודה מוכרת?','Is the certificate recognised?'),_w9obE(_w9obT('זו תעודת השלמה של תוכנית פרטית, עם קישור אימות ציבורי. היא לא הסמכה ולא מקנה נקודות זכות, אבל היא מראה למגייסים מה למדתם ותרגלתם.','It is a completion certificate from a private programme, with a public verification link. It is not a certification and carries no academic credit, but it shows recruiters what you learned and practised.'))]
+  ];
+  f.setAttribute('dir',_w9obDir());
+  f.innerHTML='<h2 class="w9ob-sh">'+_w9obE(_w9obT('שאלות נפוצות','Questions'))+'</h2>'+items.map(function(x){return '<details data-k="'+x[0]+'"'+(openK[x[0]]?' open':'')+'><summary>'+_w9obE(x[1])+'</summary><p>'+x[2]+'</p></details>'}).join('');
+  var fillMin=function(){var sp=f.querySelector('[data-w9ob-min]');if(!sp||sp.getAttribute('data-done'))return;var m=_w9obStageMin();sp.setAttribute('data-done','1');sp.innerHTML=_w9obT('שלב לוקח בערך '+_w9obB(m)+' דקות. בוחרים יעד יומי של 5, 10 או 15 דקות ומתקדמים בקצב שלכם.','A stage takes about '+_w9obB(m)+' minutes. Pick a daily goal of 5, 10 or 15 minutes and move at your own pace.')};
+  f.querySelectorAll('details').forEach(function(d){d.addEventListener('toggle',function(){if(d.open){if(d.getAttribute('data-k')==='time')fillMin()}})});
+  if(openK.time)fillMin();
+}
+/* S2: a learner already known on this device is one tap from the course */
+function _w9obRetRender(){
+  var host=$('w9obRet'),ws=$('ws');if(!host||!ws)return;
+  var reg=[];try{reg=JSON.parse(localStorage.getItem('pm_profiles')||'[]')}catch(e){}
+  reg=(Array.isArray(reg)?reg:[]).filter(function(p){return p&&p.n});
+  var lobby=$('lobbyRow');
+  if(lobby&&lobby.parentNode===host)ws.insertBefore(lobby,$('wsLogin'));/* out BEFORE the card is rebuilt (innerHTML would drop it) */
+  if(!reg.length){host.hidden=true;host.innerHTML='';ws.classList.remove('w9ob-ret1','w9ob-retn');return}
+  var p=reg[0],nm=String(p.n),en=_w9obEn(),hue=0;for(var i=0;i<nm.length;i++)hue=(hue*31+nm.charCodeAt(i))%360;
+  var next='';
+  try{if(G&&G.userName===nm&&G.done){var id=[0].concat(PM_IDS).filter(function(x){var st=_w9obStage(x);return st&&!G.done.has(x)&&!(typeof _stageHidden==='function'&&_stageHidden(st))})[0];var s=(id!=null)?_w9obStage(id):null;if(s)next=' · '+_w9obT('הבא בתור: שלב ','next: stage ')+_w9obB(id)+', <span dir="auto">'+_w9obE(_w9obTitle(s))+'</span>'}}catch(e){}
+  host.hidden=false;host.setAttribute('dir',_w9obDir());host.setAttribute('aria-label',_w9obT('ממשיכים','Welcome back'));
+  host.innerHTML='<div class="w9ob-ret-h"><span class="w9ob-av" aria-hidden="true" style="background:oklch(0.55 0.12 '+hue+')">'+_w9obE(nm.charAt(0)||'?')+'</span><div><h2 class="w9ob-ret-t">'+_w9obT('ממשיכים, <bdi dir="auto">'+_w9obE(nm)+'</bdi>?','Welcome back, <bdi dir="auto">'+_w9obE(nm)+'</bdi>')+'</h2><p class="w9ob-ret-m">'+_w9obB((parseInt(p.p,10)||0)+'%')+_w9obT(' מהקורס',' of the course')+next+'</p></div></div>'
+    +'<button type="button" class="bp w9ob-ret-go" id="w9obRetGo">'+_w9obE(_w9obT('המשך מאיפה שעצרתי','Continue where I left off'))+'</button>'
+    +'<button type="button" class="w9ob-link" id="w9obRetOther">'+_w9obT('לא <bdi dir="auto">'+_w9obE(nm)+'</bdi>? כניסה לחשבון אחר','Not <bdi dir="auto">'+_w9obE(nm)+'</bdi>? Sign in to another account')+'</button>';
+  var go=$('w9obRetGo');go.setAttribute('data-n',nm);go.addEventListener('click',_w9obGo(function(){_w9obEv('signup','cta','which=continue,from=return');if(typeof _lobbyGo==='function')_lobbyGo(go)}));
+  $('w9obRetOther').addEventListener('click',_w9obGo(function(){_w9obEv('signup','cta','which=signin,from=return');var ni=$('nameInput');if(ni)ni.value='';_w9obMode('signin','return',true)}));
+  ws.classList.toggle('w9ob-ret1',reg.length===1);ws.classList.toggle('w9ob-retn',reg.length>1);
+  if(lobby){if(reg.length>1){if(lobby.parentNode!==host)host.appendChild(lobby)}else if(lobby.parentNode===host)ws.insertBefore(lobby,$('wsLogin'))}
+}
+
+/* =============================== the form card (S5 sign up · S6 sign in) =============================== */
+var _W9OB_CONSENT_HE='שלחו לי תזכורות ללמידה במייל (אפשר להפסיק בכל רגע)';
+try{if(typeof UI_EN!=='undefined'){UI_EN[_W9OB_CONSENT_HE]='Send me study reminders by email (stop anytime)';UI_EN['למשל: דנה כ']='e.g. Dana C'}}catch(e){}
+function _w9obCtaTxt(){return _w9ob.mode==='signin'?_w9obT('כניסה','Sign in'):_w9obT('יצירת חשבון','Create account')}
+/* the login code resets the button to its old static label in four places; on this one button that label maps to the mode's */
+function _w9obCtaGuard(btn){
+  try{if(!btn||btn._w9obG)return;var d=Object.getOwnPropertyDescriptor(Node.prototype,'textContent');if(!d||!d.set||!d.get)return;btn._w9obG=1;
+    Object.defineProperty(btn,'textContent',{configurable:true,enumerable:true,get:function(){return d.get.call(this)},set:function(v){if(v==='התחל את המסע ←'||v==='Start the Journey →')v=_w9obCtaTxt();d.set.call(this,v)}});
+  }catch(e){}
+}
+function _w9obFormBuild(L){
+  var ni=$('nameInput'),ei=$('emailInput'),cs=$('emailConsent'),btn=L.querySelector('.btn-go');
+  var mk=function(tag,id,cls,html){var e=document.createElement(tag);if(id)e.id=id;if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e};
+  var head=mk('div','w9obFh','w9ob-fh','<p class="w9ob-saved" id="w9obSaved" hidden></p><h2 class="w9ob-ft" id="w9obFt"></h2><p class="w9ob-fs" id="w9obFs"></p>');
+  L.insertBefore(head,ni);
+  var nl=mk('label','w9obNameLbl','w9ob-lbl');nl.htmlFor='nameInput';L.insertBefore(nl,ni);
+  var nh=mk('p','w9obNameHelp','w9ob-help'),ne=mk('p','w9obNameErr','w9ob-err');ne.setAttribute('aria-live','polite');
+  ni.parentNode.insertBefore(nh,ni.nextSibling);nh.parentNode.insertBefore(ne,nh.nextSibling);
+  var el=mk('label','w9obEmailLbl','w9ob-lbl');el.htmlFor='emailInput';L.insertBefore(el,ei);
+  var ty=mk('div','w9obTypo','w9ob-typo');ty.hidden=true;ty.setAttribute('role','status');
+  var eh=mk('p','w9obEmailHelp','w9ob-help'),ee=mk('p','w9obEmailErr','w9ob-err');ee.setAttribute('aria-live','polite');
+  ei.parentNode.insertBefore(ty,ei.nextSibling);ty.parentNode.insertBefore(eh,ty.nextSibling);eh.parentNode.insertBefore(ee,eh.nextSibling);
+  var row=cs?cs.closest('label'):null;
+  if(row){row.id='w9obConsentRow';row.classList.add('w9ob-consent');var sp=row.querySelector('span[data-i18n]');if(sp){sp.setAttribute('data-i18n',_W9OB_CONSENT_HE);sp.id='w9obConsentTxt'}}
+  var lg=mk('p','w9obLegal','w9ob-legal');(row||ei).parentNode.insertBefore(lg,(row||ee).nextSibling);
+  var lr=mk('div','w9obLinkRow','w9ob-linkrow');lg.parentNode.insertBefore(lr,lg.nextSibling);
+  var alt=mk('p','w9obAlt','w9ob-alt');if(btn)btn.parentNode.insertBefore(alt,btn.nextSibling);else L.appendChild(alt);
+  /* mobile hints + accessible names (identity rules untouched: same inputs, same sanitizer, same go()) */
+  ni.setAttribute('autocomplete','nickname');ni.setAttribute('autocapitalize','words');ni.setAttribute('spellcheck','false');ni.setAttribute('enterkeyhint','go');ni.setAttribute('dir','auto');ni.setAttribute('aria-describedby','w9obNameHelp w9obNameErr');ni.setAttribute('data-i18n-ph','למשל: דנה כ');
+  ei.setAttribute('inputmode','email');ei.setAttribute('autocomplete','email');ei.setAttribute('autocapitalize','off');ei.setAttribute('spellcheck','false');ei.setAttribute('enterkeyhint','go');ei.setAttribute('dir','ltr');ei.setAttribute('aria-describedby','w9obEmailHelp w9obEmailErr');ei.setAttribute('data-i18n-ph','name@example.com');ei.setAttribute('placeholder','name@example.com');
+  ni.addEventListener('input',function(){_w9obErrSet('name','')});
+  ei.addEventListener('input',function(){_w9obErrSet('email','');clearTimeout(_w9ob.tyT);_w9ob.tyT=setTimeout(_w9obTypoCheck,650)});
+  ei.addEventListener('blur',function(){clearTimeout(_w9ob.tyT);_w9obTypoCheck()});
+  ei.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();var b=document.querySelector('#ws .btn-go');if(typeof _w8pfGo==='function')_w8pfGo(b,e);else go()}});
+  if(btn){btn.removeAttribute('data-i18n');_w9obCtaGuard(btn)}
+}
+function _w9obFormText(){
+  if(!_w9ob.built)return;var si=_w9ob.mode==='signin',en=_w9obEn();
+  var set=function(id,html){var e=$(id);if(e&&e.innerHTML!==html)e.innerHTML=html};
+  var L=$('wsLogin');if(L){L.classList.toggle('w9ob-signin',si);L.setAttribute('role','form');L.setAttribute('aria-labelledby','w9obFt')}
+  var chk=_w9obPre().check,sv=$('w9obSaved');
+  if(sv){var has=!si&&chk&&typeof chk.score==='number';sv.hidden=!has;if(has)sv.innerHTML=_W9OB_CHECK+'<span>'+_w9obT('בדיקת חוש מוצר: ','Product instinct check: ')+_w9obB(chk.score+'/3')+_w9obT(' — נשמר',' — saved')+'</span>'}
+  set('w9obFt',_w9obE(si?_w9obT('כניסה','Sign in'):_w9obT('הרשמה בחינם','Sign up free')));
+  set('w9obFs',_w9obE(si?_w9obT('עם השם והמייל שאיתם נרשמתם.','With the name and email you signed up with.'):_w9obT('שני פרטים וזהו. נשלח לכם קישור אימות, ואחרי אישור קצר אתם בפנים.','Two details and you are done. We will email you a confirmation link, and after a quick approval you are in.')));
+  set('w9obNameLbl',_w9obE(_w9obT('שם תצוגה','Display name')));
+  set('w9obNameHelp',_w9obE(si?_w9obT('השם שאיתו נרשמתם.','The name you signed up with.'):_w9obT('כך תופיעו בליגה ובדו־קרבות. שם פרטי ואות מספיקים.','This is how you appear in the league and duels. A first name and an initial is enough.')));
+  set('w9obEmailLbl',_w9obE(_w9obT('אימייל','Email')));
+  set('w9obEmailHelp',_w9obE(si?_w9obT('הכתובת שאיתה נרשמתם.','The address you signed up with.'):_w9obT('לקישור האימות ולעדכון כשהחשבון מאושר.','For the confirmation link and to tell you when you are approved.')));
+  var ct=$('w9obConsentTxt');if(ct){var k=_W9OB_CONSENT_HE,t=en?((typeof UI_EN!=='undefined'&&UI_EN[k])||k):k;if(ct.textContent!==t)ct.textContent=t}
+  set('w9obLegal',_w9obT('בהרשמה אתם מאשרים את <a href="#" role="button" class="w9ob-inl" data-w9l="tos">תנאי השימוש</a> ואת <a href="#" role="button" class="w9ob-inl" data-w9l="priv">מדיניות הפרטיות</a>.','By signing up you accept the <a href="#" role="button" class="w9ob-inl" data-w9l="tos">Terms</a> and the <a href="#" role="button" class="w9ob-inl" data-w9l="priv">Privacy Policy</a>.'));
+  var lg=$('w9obLegal');if(lg&&!lg._w9ob){lg._w9ob=1;lg.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-w9l]');if(!b)return;e.preventDefault();if(typeof showLegal==='function')showLegal(b.getAttribute('data-w9l'))})}
+  set('w9obLinkRow','<p class="w9ob-help">'+_w9obE(_w9obT('לא זוכרים את המייל? נשלח קישור כניסה לכתובת שרשומה בחשבון.','Can\'t remember the email? We\'ll send a sign-in link to the address on the account.'))+'</p><button type="button" class="bs w9ob-sm" id="w9obLinkBtn">'+_w9obE(_w9obT('שליחת קישור כניסה','Email me a sign-in link'))+'</button><p class="w9ob-help" id="w9obLinkMsg" role="status"></p>');
+  var lb=$('w9obLinkBtn');if(lb)lb.onclick=_w9obSendLink;
+  set('w9obAlt',si?_w9obT('חדשים כאן? <button type="button" class="w9ob-link" id="w9obToSignup">הרשמה בחינם</button>','New here? <button type="button" class="w9ob-link" id="w9obToSignup">Sign up free</button>'):_w9obT('כבר נרשמתם? <button type="button" class="w9ob-link" id="w9obToSignin">כניסה</button>','Already signed up? <button type="button" class="w9ob-link" id="w9obToSignin">Sign in</button>'));
+  var a1=$('w9obToSignin'),a2=$('w9obToSignup');
+  if(a1)a1.onclick=function(){_w9obEv('signup','cta','which=signin,from=form');_w9obMode('signin','form',true)};
+  if(a2)a2.onclick=function(){_w9obEv('signup','cta','which=signup,from=form');_w9obMode('signup','form',true)};
+  var btn=document.querySelector('#ws .btn-go');if(btn&&!btn.disabled){var t=_w9obCtaTxt();if(btn.textContent!==t)btn.textContent=t}
+  var ni=$('nameInput');if(ni){var ph=_w9obT('למשל: דנה כ','e.g. Dana C');if(ni.getAttribute('placeholder')!==ph)ni.setAttribute('placeholder',ph)}
+}
+function _w9obMode(m,from,focus){
+  _w9ob.mode=(m==='signin')?'signin':'signup';_w9obErrSet('name','');_w9obErrSet('email','');
+  var lm=$('w9obLinkMsg');if(lm)lm.textContent='';
+  _w9obFormText();
+  if(from)_w9obEv('signup','form_view','from='+from+',mode='+_w9ob.mode);
+  if(focus){var L=$('wsLogin');if(L){try{L.scrollIntoView({block:'start',behavior:_w9obRM()?'auto':'smooth'})}catch(e){}}
+    setTimeout(function(){var ni=$('nameInput');if(ni){try{ni.focus({preventScroll:true})}catch(e){}}},_w9obRM()?0:380)}
+}
+function _w9obErrSet(f,msg){
+  var e=$(f==='name'?'w9obNameErr':'w9obEmailErr'),inp=$(f==='name'?'nameInput':'emailInput');
+  if(e&&e.textContent!==msg)e.textContent=msg;
+  if(inp){if(msg)inp.setAttribute('aria-invalid','true');else inp.removeAttribute('aria-invalid')}
+}
+function _w9obErr(f,msg,code){
+  _w9obErrSet(f,msg);if(code)_w9obEv('signup','form_error','f='+code);
+  var inp=$(f==='name'?'nameInput':'emailInput');if(inp){try{inp.focus({preventScroll:true})}catch(e){}try{inp.scrollIntoView({block:'center',behavior:_w9obRM()?'auto':'smooth'})}catch(e){}}
+}
+/* inline validation in front of go() — same rules as go() itself, so go()'s own modals never fire for these */
+function _w9obValidate(){
+  var ni=$('nameInput'),ei=$('emailInput');_w9obErrSet('name','');_w9obErrSet('email','');
+  var raw=ni?String(ni.value||'').trim():'';
+  if(!raw||raw.length<2){_w9obErr('name',_w9obT('שם תצוגה צריך לכלול לפחות 2 תווים.','A display name needs at least 2 characters.'),'name_short');return false}
+  var nm=(typeof sanitizeName==='function')?sanitizeName(raw):raw;
+  if(!nm||nm.length<2){_w9obErr('name',_w9obT('אפשר להשתמש באותיות, ספרות ורווח.','Use letters, numbers and spaces.'),'name_chars');return false}
+  var em=ei?String(ei.value||'').trim().toLowerCase():'';
+  if(em&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){_w9obErr('email',_w9obT('כתובת המייל לא נראית תקינה. בדקו שיש בה @ ונקודה.','That email does not look right. Check it has an @ and a dot.'),'email');return false}
+  return true;
+}
+/* hook in _tryLogin's "not found" branch (before the e-mail requirement); true = handled here */
+function _w9obNotFound(name,email,consent){
+  try{
+    if(!_w9ob.built)return false;
+    if(_w9ob.mode==='signin'){_w9obErr('name',_w9obT('לא מצאנו חשבון בשם הזה. בדקו את האיות או הירשמו.','We could not find an account with that name. Check the spelling or sign up.'),'not_found');return true}
+    if(!email){_w9obErr('email',_w9obT('כדי להירשם צריך כתובת מייל — אליה נשלח את קישור האימות.','To sign up we need your email — that is where the confirmation link goes.'),'email_needed');return true}
+    var chk=_w9obPre().check;_w9obEv('signup','submit','consent='+(consent?1:0)+',chk='+_w9obScore(chk));
+  }catch(e){}
+  return false;
+}
+/* sign-in link (w8su backend: w8suLoginLink) — the copy never confirms that an account exists */
+function _w9obSendLink(){
+  var ni=$('nameInput'),msg=$('w9obLinkMsg'),btn=$('w9obLinkBtn');var raw=ni?String(ni.value||'').trim():'';
+  var name=(typeof sanitizeName==='function')?sanitizeName(raw):raw;
+  if(!name||name.length<2){_w9obErr('name',_w9obT('הזינו קודם את השם שאיתו נרשמתם.','Enter the name you signed up with first.'),'name_short');return}
+  var say=function(t){if(msg)msg.textContent=t};
+  if(!DB_URL||typeof _w8suPost!=='function'){say(_w9obT('אין חיבור לשרת כרגע.','No connection to the server right now.'));return}
+  if(btn)btn.disabled=true;
+  _w8suPost({action:'w8suLoginLink',userName:name,lang:(_w9obEn()?'en':'he')}).then(function(d){
+    if(btn)btn.disabled=false;
+    if(d&&d.success){_w9obEv('signup','signin_link','a=sent');say(_w9obT('אם יש חשבון בשם הזה, שלחנו קישור לכתובת שרשומה בו. הוא עובד פעם אחת, למשך 30 דקות.','If there is an account with that name, we sent a link to its address. It works once, for 30 minutes.'));return}
+    if(d&&d.error==='throttled'){_w9obEv('signup','signin_link','a=throttled');say(_w9obT('כבר ביקשתם קישור. אפשר לבקש שוב בעוד ','You already asked for a link. You can ask again in ')+(typeof _w8suDur==='function'?_w8suDur(d.retryAfterSec||120):'2 min')+'.');return}
+    if(typeof _w8suUnknown==='function'&&_w8suUnknown(d)){say(_w9obT('האפשרות הזו עוד לא זמינה — פנו למנהל הקורס.','This option is not available yet — please contact the course admin.'));return}
+    say(_w9obT('לא הצלחנו לשלוח כרגע. נסו שוב בעוד רגע.','We could not send it right now. Please try again in a moment.'));
+  }).catch(function(){if(btn)btn.disabled=false;say(_w9obT('שגיאת חיבור — נסו שוב בעוד רגע.','Connection error — please try again in a moment.'))});
+}
+/* local e-mail typo suggestion (spec S5 list, edit distance ≤ 2 — ≤ 1 for short domains — plus .con / .co.li) */
+function _w9obDL(a,b){var m=a.length,n=b.length,i,j;if(Math.abs(m-n)>2)return 9;var d=[];for(i=0;i<=m;i++){d[i]=[i]}for(j=0;j<=n;j++)d[0][j]=j;for(i=1;i<=m;i++)for(j=1;j<=n;j++){var c=a.charAt(i-1)===b.charAt(j-1)?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c);if(i>1&&j>1&&a.charAt(i-1)===b.charAt(j-2)&&a.charAt(i-2)===b.charAt(j-1))d[i][j]=Math.min(d[i][j],d[i-2][j-2]+1)}return d[m][n]}
+var _W9OB_DOM=['gmail.com','walla.co.il','hotmail.com','outlook.com','yahoo.com','icloud.com','live.com','012.net.il','bezeqint.net','netvision.net.il'];
+function _w9obSuggest(em){
+  em=String(em||'').trim().toLowerCase();var at=em.lastIndexOf('@');if(at<1||at>=em.length-3)return '';
+  var loc=em.slice(0,at),dom=em.slice(at+1);if(_W9OB_DOM.indexOf(dom)>=0||dom==='googlemail.com')return '';
+  var fx=dom.replace(/\.con$/,'.com').replace(/\.co\.li$/,'.co.il');
+  if(_W9OB_DOM.indexOf(fx)>=0)return loc+'@'+fx;
+  var best='',bd=9;_W9OB_DOM.forEach(function(x){var v=_w9obDL(fx,x);if(v<bd){bd=v;best=x}});
+  if(best&&bd>0&&bd<=(fx.length<9?1:2))return loc+'@'+best;
+  return fx!==dom?loc+'@'+fx:'';
+}
+function _w9obTypoCheck(){
+  var ei=$('emailInput'),box=$('w9obTypo');if(!ei||!box)return;
+  var s=_w9obSuggest(ei.value);
+  if(!s){box.hidden=true;box.innerHTML='';return}
+  box.hidden=false;box.setAttribute('dir',_w9obDir());
+  box.innerHTML='<span>'+_w9obT('התכוונתם ל-','Did you mean ')+_w9obB(s)+'?</span> <button type="button" class="w9ob-link" id="w9obTypoFix">'+_w9obE(_w9obT('תיקון','Fix'))+'</button>';
+  if(_w9ob.typoShown!==s){_w9ob.typoShown=s;_w9obEv('signup','email_typo','a=shown')}
+  $('w9obTypoFix').onclick=function(){ei.value=s;box.hidden=true;box.innerHTML='';_w9obErrSet('email','');_w9obEv('signup','email_typo','a=fixed');try{ei.focus({preventScroll:true})}catch(e){}};
+}
+
+/* =============================== waiting room (S7 confirm e-mail · S8 approval) =============================== */
+function _w9obPlanStep(pl){if(_w9ob.planEdit)return _w9ob.planQ;for(var i=0;i<_W9OB_PLAN.length;i++){if(!pl||pl[_W9OB_PLAN[i].k]==null)return i}return -1}
+function _w9obWaitRender(){
+  var pv=$('pendingView');if(!pv||pv.classList.contains('hid')||!_pendingName){return}
+  var wrap=pv.querySelector('.pending-wrap');if(!wrap)return;
+  var box=$('w9obWait');if(!box){box=document.createElement('div');box.id='w9obWait';box.className='w9ob-wait';wrap.appendChild(box);
+    box.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('[data-w9p]'):null;if(!b||!box.contains(b))return;try{_w9obWaitAct(b)}catch(x){}})}
+  pv.classList.add('w9ob-wait-on');
+  var en=_w9obEn(),mode=(_pendingMode==='verify')?'verify':'admin',pre=_w9obPre(),pl=pre.plan||{},step=_w9obPlanStep(pl),h='';
+  box.setAttribute('dir',_w9obDir());box.setAttribute('lang',en?'en':'he');
+  if(mode==='admin')h+='<p class="w9ob-why"><b>'+_w9obE(_w9obT('למה אישור ידני? ','Why a manual approval? '))+'</b>'+_w9obE(en?_W9OB_WHY.en:_W9OB_WHY.he)+'</p>';
+  if(step>=0){
+    var Q=_W9OB_PLAN[step];
+    h+='<section class="w9ob-card" id="w9obPlanQ" aria-labelledby="w9obPlanQh"><p class="w9ob-kick">'+_w9obT('בינתיים · שאלה ','Meanwhile · question ')+_w9obB(step+1)+_w9obT(' מתוך 3',' of 3')+'</p><h3 class="w9ob-ch" id="w9obPlanQh">'+_w9obE(en?Q.en:Q.he)+'</h3>'
+      +(step===0?'<p class="w9ob-cs">'+_w9obE(_w9obT('נתאים לכם תוכנית — 20 שניות.','We will tailor your plan — 20 seconds.'))+'</p>':'')
+      +'<div class="w9ob-chipq" role="group" aria-labelledby="w9obPlanQh">'+Q.o.map(function(o){var on=pl[Q.k]!=null&&String(pl[Q.k])===o[0];var lbl=en?o[2]:o[1];if(Q.k==='min')lbl+='<small>'+_w9obT('סיום הליבה עד ','core done by ')+_w9obE(_w9obProj(+o[0],true))+'</small>';return '<button type="button" class="w9ob-chip'+(on?' on':'')+'" data-w9p="ans" data-k="'+Q.k+'" data-v="'+o[0]+'" aria-pressed="'+(on?'true':'false')+'">'+lbl+'</button>'}).join('')+'</div></section>';
+  }else{
+    var min=+pl.min||10,first=[0,2,3].map(_w9obStage).filter(Boolean),ln=_W9OB_LINE[pl.goal]||_W9OB_LINE.curious;
+    h+='<section class="w9ob-card" id="w9obPlan" aria-labelledby="w9obPlanH"><p class="w9ob-kick">'+_w9obE(_w9obT('התוכנית שלכם','Your plan'))+'</p>'
+      +'<h3 class="w9ob-ch" id="w9obPlanH" tabindex="-1">'+_w9obT(_w9obB(min)+' דקות ביום · ליבת הקורס עד '+_w9obE(_w9obProj(min,true)),_w9obB(min)+' minutes a day · core done by '+_w9obE(_w9obProj(min,true)))+'</h3>'
+      +'<div class="w9ob-tags"><span>'+_w9obT('מטרה: ','Goal: ')+_w9obE((_W9OB_SHORT[pl.goal]||['',''])[en?1:0])+'</span><span>'+_w9obT('ניסיון: ','Experience: ')+_w9obE((_W9OB_SHORT[pl.level]||['',''])[en?1:0])+'</span><button type="button" class="w9ob-link" data-w9p="edit">'+_w9obE(_w9obT('שינוי','Edit'))+'</button></div>'
+      +'<ol class="w9ob-plst">'+first.map(function(s){return '<li><span class="w9ob-n">'+_w9obE(typeof _dispNum==='function'?_dispNum(s):s.id)+'</span><span dir="auto">'+_w9obE(_w9obTitle(s))+'</span></li>'}).join('')+'</ol>'
+      +'<p class="w9ob-cs">'+_w9obE(en?ln[1]:ln[0])+'</p></section>';
+  }
+  if(mode==='admin'){
+    var w=pre.warm,done=w&&typeof w.score==='number',started=w&&Array.isArray(w.ans)&&w.ans.length>0;
+    h+='<section class="w9ob-card" id="w9obWarm" aria-labelledby="w9obWarmH"><p class="w9ob-kick">'+_w9obE(_w9obT('חימום · 3 דקות','Warm-up · 3 minutes'))+'</p>';
+    if(done||started||_w9ob.warmOpen)h+='<h3 class="w9ob-ch w9ob-vh" id="w9obWarmH">'+_w9obE(_w9obT('עוד 3 שאלות חוש מוצר','3 more product-instinct questions'))+'</h3><div id="w9obWarmQz" class="w9ob-qzw"></div>';
+    else h+='<h3 class="w9ob-ch" id="w9obWarmH">'+_w9obE(_w9obT('עוד 3 שאלות חוש מוצר','3 more product-instinct questions'))+'</h3><p class="w9ob-cs">'+_w9obE(_w9obT('התשובות נשמרות במכשיר ומתווספות לחשבון ביום האישור.','Answers are saved on this device and added to your account on approval day.'))+'</p><button type="button" class="bp w9ob-sm" id="w9obWarmBtn" data-w9p="warm">'+_W9OB_PLAY+'<span>'+_w9obE(_w9obT('להתחיל','Start'))+'</span></button>';
+    h+='</section>';
+  }
+  box.innerHTML=h;
+  if($('w9obWarmQz'))_w9obQzRender('warm');
+}
+function _w9obWaitAct(b){
+  var a=b.getAttribute('data-w9p'),pre=_w9obPre();
+  if(a==='ans'){
+    var k=b.getAttribute('data-k'),v=b.getAttribute('data-v');pre.plan=pre.plan||{};pre.plan[k]=(k==='min')?(+v):v;pre.plan.at=Date.now();_w9obPreSave(pre);
+    _w9obEv('signup','plan_answer','q='+k+',a='+v);
+    if(_w9ob.planEdit){_w9ob.planQ++;if(_w9ob.planQ>=_W9OB_PLAN.length){_w9ob.planEdit=false;_w9ob.planQ=-1}}
+    var pl=pre.plan;if(_w9obPlanStep(pl)<0&&pl.goal&&pl.level&&pl.min)_w9obEv('signup','plan_done','goal='+pl.goal+',level='+pl.level+',min='+pl.min);
+    _w9obWaitRender();var f=$('w9obPlanQ'),c=f?f.querySelector('.w9ob-chip'):$('w9obPlanH');if(c){try{c.focus({preventScroll:true})}catch(e){}}
+    return;
+  }
+  if(a==='edit'){_w9ob.planEdit=true;_w9ob.planQ=0;_w9obWaitRender();var q=$('w9obPlanQ');if(q){try{q.scrollIntoView({block:'nearest',behavior:_w9obRM()?'auto':'smooth'})}catch(e){}var c2=q.querySelector('.w9ob-chip');if(c2){try{c2.focus({preventScroll:true})}catch(e){}}}return}
+  if(a==='warm'){_w9ob.warmOpen=true;_w9obWaitRender();var o=$('w9obWarmQz');if(o){var f2=o.querySelector('.w9ob-opt');if(f2){try{f2.focus({preventScroll:true})}catch(e){}}try{o.scrollIntoView({block:'nearest',behavior:_w9obRM()?'auto':'smooth'})}catch(e){}}}
+}
+
+/* =============================== approval: claim once (S9) =============================== */
+function _w9obClaim(){
+  try{
+    if(!G||!G.s||!G.userName||G._cloudVerified!==true)return null;/* only after a successful approved load (read-before-write) */
+    if(G._w9obClaim&&G._w9obClaim.u===G.userName)return null;
+    var pre=_w9obPre();if(!pre.reg||!pre.reg.n||pre.claimedBy)return null;
+    if(_w9obNorm(pre.reg.n)!==_w9obNorm(G.userName))return null;/* bound to the name that registered on this device */
+    if(!(G.done instanceof Set)||G.done.size!==0)return null;/* a cloud row with progress is never topped up */
+    var chk=_w9obScore(pre.check),warm=_w9obScore(pre.warm),n=Math.max(0,chk)+Math.max(0,warm),pts=Math.min(_W9OB.PTS_CAP,n*_W9OB.PTS);
+    var pl=pre.plan||{},min=+pl.min||0;
+    if(pts>0)G.ts=(parseInt(G.ts,10)||0)+pts;/* only grows; the server and the login merge keep the max */
+    if(!G.goalMin&&[5,10,15].indexOf(min)>=0){G.goalMin=min;G._goalAsked=true}
+    G._w9obClaim={u:G.userName,at:Date.now(),pts:pts,chk:chk,warm:warm,goal:String(pl.goal||''),level:String(pl.level||'')};
+    pre.claimedBy=G.userName;pre.claimAt=Date.now();_w9obPreSave(pre);
+    try{sv()}catch(e){}try{uh()}catch(e){}try{if(G.v==='m'&&typeof renderDailyGoal==='function')renderDailyGoal()}catch(e){}/* the map's goal card follows the plan's pace at once */
+    try{trackEvent('onboard','claim','pts='+pts+',chk='+chk+',warm='+warm)}catch(e){}
+    if(G._w9obClaim&&G.goalMin===min&&min){try{trackEvent('onboard','commit','min='+min+',via=plan')}catch(e){}}
+    if(pts>0){try{showAchievement('⭐',_w9obT('הניצחון הראשון כבר כאן','Your first win is already here'),'+'+pts+' '+_w9obT('נק׳','pts'))}catch(e){}}
+    return G._w9obClaim;
+  }catch(e){return null}
+}
+
+/* =============================== first map (S9) · first win → commitment (S10) =============================== */
+function _w9obMine(o){try{return !!(o&&G&&o.u===G.userName)}catch(e){return false}}
+function _w9obIsNew(){try{return !!(G&&G.s&&G.userName&&G.done&&G.done.size===0)}catch(e){return false}}
+function _w9obMapVisit(){try{var u=String(G.userName),k=_W9OB.MAPV+u,n=0;try{n=+localStorage.getItem(k)||0}catch(e){}n=Math.min(99,n+1);_w9ob.mapv[u]=n;try{localStorage.setItem(k,String(n))}catch(e){}}catch(e){}}
+function _w9obMapCount(){try{var u=String(G.userName);if(_w9ob.mapv[u])return _w9ob.mapv[u];return +localStorage.getItem(_W9OB.MAPV+u)||0}catch(e){return 0}}
+function _w9obAfterMap(arrive){
+  if(!G||!G.s||!G.userName)return;
+  var c=_w9obClaim();
+  if(_w9obIsNew()&&!(G._w9obFm&&_w9obMine(G._w9obFm))){G._w9obFm={u:G.userName,at:Date.now()};try{sv()}catch(e){}var pre=_w9obPre();try{trackEvent('onboard','first_map','via='+((pre.claimedBy&&_w9obNorm(pre.claimedBy)===_w9obNorm(G.userName))?'reg':'other')+(c?',claim=1':''))}catch(e){}}
+  _w9obMapCards(arrive);
+}
+function _w9obCommitPending(){var w=G&&G._w9obWin;return !!(w&&_w9obMine(w)&&w.p===1)}
+function _w9obCurSid(){var sid=0;try{if(typeof _currentMapStageId==='number'&&_currentMapStageId>=0)sid=_currentMapStageId}catch(e){}return sid}
+/* the stage has been started (retention's own model: a topic read, the case opened or an answer) → its "continue here" panel
+   under the current node takes over from the "Start here" card */
+function _w9obStarted(s){try{if(!s)return false;if(typeof _w8rnProg==='function')return !!_w8rnProg(s).started;var sn=G._seenSec||{},tv=(G._tabVisits&&G._tabVisits[s.id])||{},qa=(G.qa&&G.qa[s.id])||{};return Object.keys(sn).some(function(k){return k.indexOf(s.id+'_')===0&&sn[k]})||!!tv.c||Object.keys(qa).length>0}catch(e){return false}}
+/* rg() centres the current node 200 ms after every render; on the arrival that shows the "Start here" card the card IS the
+   first step, so that one scroll is skipped (the element's own scrollIntoView shadows the prototype once, then removes itself) */
+function _w9obHoldNode(){try{var cur=document.querySelector('.j-node.current');if(!cur||Object.prototype.hasOwnProperty.call(cur,'scrollIntoView'))return;
+  cur.scrollIntoView=function(){if(Date.now()<(_w9ob.holdUntil||0))return;try{delete cur.scrollIntoView}catch(e){}return Element.prototype.scrollIntoView.apply(cur,arguments)};
+  setTimeout(function(){try{delete cur.scrollIntoView}catch(e){}},Math.max(0,(_w9ob.holdUntil||0)-Date.now())+50)}catch(e){}}
+/* the hold covers the arrival window: any re-render of the map in the next 2.5 s (rg runs again from other packs) is held too */
+function _w9obHoldScroll(){_w9ob.holdUntil=Date.now()+2500;_w9obHoldNode()}
+function _w9obMapCards(arrive){
+  var mv=$('mv');if(!mv)return;
+  var sid=_w9obCurSid(),s=_w9obStage(sid)||_w9obStage(0);
+  var on=_w9obAuto()&&G.v==='m'&&_w9obIsNew()&&!_w9obStarted(s);
+  mv.classList.toggle('w9ob-new',on);
+  var st=$('w9obStart');
+  if(!on){if(st)st.remove()}
+  else{
+    var sub=$('map-sub')||mv.firstChild;if(!st){st=document.createElement('section');st.id='w9obStart';st.className='w9ob-start';st.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('[data-w9s]'):null;if(b)try{_w9obStartGo()}catch(x){}})}
+    if(sub&&sub.nextSibling!==st&&sub.parentNode)sub.parentNode.insertBefore(st,sub.nextSibling);
+    if(arrive){_w9obHoldScroll();try{window.scrollTo(0,0)}catch(e){}}
+    var cl=G._w9obClaim,en=_w9obEn(),core=_w9obCore(),sk=(typeof SKILL_SECTIONS!=='undefined'&&SKILL_SECTIONS.length)||0;
+    var mini=_w9obB(0)+_w9obT(' מתוך '+_w9obB(core)+' שלבי ליבה',' of '+_w9obB(core)+' core stages')+(G.goalMin?' · '+_w9obT('יעד: '+_w9obB(G.goalMin)+' דק׳ ביום','Goal: '+_w9obB(G.goalMin)+' min a day'):'')+(sk?' · '+_w9obT(_w9obB(sk)+' כישורים לפתוח',_w9obB(sk)+' skills to unlock'):'');
+    var h='<p class="w9ob-hello">'+_w9obT('ברוכים הבאים, <bdi dir="auto">'+_w9obE(G.userName)+'</bdi> · הנה הצעד הראשון שלכם.','Welcome, <bdi dir="auto">'+_w9obE(G.userName)+'</bdi> · here is your first step.')+'</p>'
+      +'<div class="w9ob-start-c"><p class="w9ob-kick">'+_w9obE(_w9obT('מתחילים כאן','Start here'))+'</p><h2 class="w9ob-ch" id="w9obStartH">'+_w9obT('שלב ','Stage ')+_w9obB(s?s.id:0)+' · <span dir="auto">'+_w9obE(_w9obTitle(s))+'</span></h2>'
+      +'<p class="w9ob-cs">'+_w9obE(_w9obT('3 נושאים קצרים, קייס ומבחן בסבבים של 5. מתחילים בנושא הראשון — כדקה. הסרטון יחכה.','3 short topics, a case and a quiz in rounds of 5. Start with the first topic — about a minute. The video can wait.'))+'</p>'
+      +'<button type="button" class="bp w9ob-go" data-w9s="go">'+_w9obE(_w9obT('להתחיל ←','Start →'))+'</button></div>'
+      +((cl&&_w9obMine(cl)&&cl.pts>0)?'<p class="w9ob-win">'+_W9OB_BADGE+'<span>'+_w9obT('הניצחון הראשון כבר כאן: '+[cl.chk>=0?'חוש מוצר '+_w9obB(cl.chk+'/3'):'',cl.warm>=0?'חימום '+_w9obB(cl.warm+'/3'):''].filter(Boolean).join(' · ')+' ('+_w9obB('+'+cl.pts)+' נק׳)','Your first win is already here: '+[cl.chk>=0?'product instinct '+_w9obB(cl.chk+'/3'):'',cl.warm>=0?'warm-up '+_w9obB(cl.warm+'/3'):''].filter(Boolean).join(' · ')+' ('+_w9obB('+'+cl.pts)+' pts)')+'</span></p>':'')
+      +'<p class="w9ob-mini">'+mini+'</p>';
+    st.setAttribute('dir',_w9obDir());st.setAttribute('aria-labelledby','w9obStartH');if(st.innerHTML!==h)st.innerHTML=h;
+    if(!_w9ob.startSent){_w9ob.startSent=1}
+  }
+  _w9obS10Render();
+}
+function _w9obStartGo(){
+  var sid=0;try{if(typeof _currentMapStageId==='number'&&_currentMapStageId>=0)sid=_currentMapStageId}catch(e){}
+  try{trackEvent('onboard','start_here','s='+sid)}catch(e){}
+  if(!_w9ob.fso){_w9ob.fso=1;try{trackEvent('onboard','first_stage_open','s='+sid)}catch(e){}}
+  try{ss(sid);window.scrollTo(0,0)}catch(e){return}
+  /* first action = the first unread topic, already expanded (retention's own entry point) */
+  setTimeout(function(){try{if(typeof _w8rnGoPart==='function'&&typeof _w8rnProg==='function'){var s=_w9obStage(sid),p=s?_w8rnProg(s):null;if(p&&!p.lAll)_w8rnGoPart('l',p.first>=0?p.first:0)}}catch(e){}},90);
+}
+/* the first win (once per learner on this device): retention's first part ✓ / round ✓, or the first completed stage */
+function _w9obWin(kind,meta){
+  try{
+    if(!G||!G.s||!G.userName)return;
+    if(G._w9obWin&&_w9obMine(G._w9obWin))return;
+    var n=G.done?G.done.size:0;if(kind==='stage'?n>1:n>0)return;
+    var parts=String(meta==null?'':meta).split(':'),sid=parseInt(parts[0],10);if(isNaN(sid))sid=G.st;
+    var fm=G._w9obFm&&_w9obMine(G._w9obFm)?G._w9obFm.at:0;
+    G._w9obWin={u:G.userName,at:Date.now(),k:kind,s:sid,r:(kind==='round'?(parseInt(parts[1],10)||1):0),p:(_w9obAuto()&&!(G.goalMin&&G._w9obCal))?1:0};try{sv()}catch(e){}
+    try{trackEvent('onboard','first_win','kind='+kind+(fm?',sec='+Math.max(0,Math.round((Date.now()-fm)/1000)):''))}catch(e){}
+    if(G._w9obWin.p){_w9obS10Render(false);setTimeout(function(){try{var c=$('w9obCommit');if(c)c.scrollIntoView({block:'nearest',behavior:_w9obRM()?'auto':'smooth'})}catch(e){}},120)}
+  }catch(e){}
+}
+function _w9obS10Html(){
+  var w=G._w9obWin,en=_w9obEn(),sel=_w9ob.cmSel||(G._w9obClaim&&[5,10,15].indexOf(+G.goalMin)>=0?+G.goalMin:10),h='';
+  var what=w.k==='part'?_w9obT('חלק 1 מתוך 3 בשלב '+_w9obB(w.s)+' ✓','Part 1 of 3 in stage '+_w9obB(w.s)+' ✓'):(w.k==='round'?_w9obT('סבב '+_w9obB(w.r||1)+' בשלב '+_w9obB(w.s)+' ✓','Round '+_w9obB(w.r||1)+' in stage '+_w9obB(w.s)+' ✓'):_w9obT('שלב '+_w9obB(w.s)+' הושלם ✓','Stage '+_w9obB(w.s)+' done ✓'));
+  h+='<button type="button" class="w9ob-x w9ob-cmx" data-w9c="later" aria-label="'+_w9obE(_w9obT('לא עכשיו','Not now'))+'">'+_W9OB_CROSS+'</button>';
+  if(_w9ob.cmDone){
+    h+='<div class="w9ob-cm-ic" aria-hidden="true">'+_W9OB_CHECK+'</div><h2 class="w9ob-ch" id="w9obCmH">'+_w9obT(_w9obB(G.goalMin)+' דקות ביום — נרשם',_w9obB(G.goalMin)+' minutes a day — committed')+'</h2>'
+      +'<button type="button" class="bs w9ob-sm" data-w9c="cal">📅 '+_w9obE(_w9obT('להוסיף תזכורת קבועה ליומן','Add a recurring reminder to my calendar'))+'</button><p class="w9ob-note">'+_w9obE(_w9obT('אפשר לשנות בכל רגע בפרופיל.','You can change this anytime in your profile.'))+'</p>';
+    return h;
+  }
+  h+='<div class="w9ob-cm-ic" aria-hidden="true">'+_W9OB_CHECK+'</div><h2 class="w9ob-ch" id="w9obCmH">'+_w9obE(_w9obT('יפה! הצעד הראשון מאחוריכם','Nice! Your first step is done'))+'</h2>';
+  if(!G.goalMin){
+    h+='<p class="w9ob-cs">'+what+'. '+_w9obE(_w9obT('כדי להפוך את זה להרגל — כמה זמן ביום מתאים לכם?','To make it a habit — how much time a day works for you?'))+'</p>'
+      +'<div class="w9ob-tiles" role="group" aria-labelledby="w9obCmH">'+[5,10,15].map(function(m){var on=m===sel;return '<button type="button" aria-pressed="'+(on?'true':'false')+'" class="w9ob-tile'+(on?' on':'')+'" data-w9c="pick" data-m="'+m+'"><b>'+_w9obB(m)+' '+_w9obE(_w9obT('דק׳','min'))+'</b><small>'+_w9obE(_w9obT('עד ','by ')+_w9obProj(m))+'</small></button>'}).join('')+'</div>'
+      +'<button type="button" class="bp w9ob-cm-go" data-w9c="commit">'+_w9obT('מתחייבים ל-'+_w9obB(sel)+' דקות ביום','Commit to '+_w9obB(sel)+' minutes a day')+'</button>'
+      +'<button type="button" class="w9ob-link" data-w9c="cal">📅 '+_w9obE(_w9obT('להוסיף תזכורת קבועה ליומן','Add a recurring reminder to my calendar'))+'</button>';
+  }else{
+    h+='<p class="w9ob-cs">'+what+'. '+_w9obT(_w9obB(G.goalMin)+' דקות ביום — כמו שבחרתם. רוצים תזכורת קבועה ביומן?',_w9obB(G.goalMin)+' minutes a day — as you chose. Want a recurring reminder in your calendar?')+'</p>'
+      +'<button type="button" class="bp w9ob-cm-go" data-w9c="cal">📅 '+_w9obE(_w9obT('להוסיף תזכורת קבועה ליומן','Add a recurring reminder to my calendar'))+'</button>';
+  }
+  h+='<div class="w9ob-cm-f"><button type="button" class="w9ob-link" data-w9c="later">'+_w9obE(_w9obT('לא עכשיו','Not now'))+'</button><span class="w9ob-note">'+_w9obE(_w9obT('אפשר לשנות בכל רגע בפרופיל.','You can change this anytime in your profile.'))+'</span></div>';
+  return h;
+}
+/* inline (never a modal): right after the win in the stage — the lesson-end card or the closed round — else at the top of
+   the stage / the map */
+function _w9obS10Render(scroll){
+  var old=$('w9obCommit');
+  if(!G||!G.s||!_w9obCommitPending()||!_w9obAuto()){if(old)old.remove();return}
+  var w=G._w9obWin,after=null,before=null;
+  if(G.v==='s'){var tc=$('tc');
+    if(tc&&parseInt(G.st,10)===w.s){
+      if(w.k==='part'&&G.tab==='l')after=tc.querySelector('.learn-cta');
+      else if(w.k==='round'&&G.tab==='q'){try{var s=_w9obStage(w.s),R=(typeof _w8rnRounds==='function'&&s)?_w8rnRounds((s.q||[]).length):null,r=R&&R[(w.r||1)-1];if(r){var qs=tc.querySelectorAll('.qq');after=qs[r.b]||null}}catch(e){}}
+    }
+    if(!after)after=$('w8rnPath');/* retention's checklist right under the stage tabs */
+    if(!after&&tc)before=tc.firstElementChild;
+  }else if(G.v==='m'){after=$('w9obStart')||$('map-sub')}
+  var el=old||_w9obS10El();
+  if(after&&after.parentNode){if(after.nextElementSibling!==el)after.parentNode.insertBefore(el,after.nextSibling)}
+  else if(before&&before.parentNode){if(before!==el&&before.previousElementSibling!==el)before.parentNode.insertBefore(el,before)}
+  else{if(old)old.remove();return}
+  _w9obS10Fill(el,scroll);
+}
+function _w9obS10El(){var el=document.createElement('section');el.id='w9obCommit';el.className='w9ob-commit';el.setAttribute('aria-labelledby','w9obCmH');el.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('[data-w9c]'):null;if(b&&el.contains(b))try{_w9obS10Act(b)}catch(x){}});return el}
+function _w9obS10Fill(el,scroll){el.setAttribute('dir',_w9obDir());var h=_w9obS10Html();if(el.innerHTML!==h)el.innerHTML=h;if(scroll){try{el.scrollIntoView({block:'nearest',behavior:_w9obRM()?'auto':'smooth'})}catch(e){}}}
+function _w9obS10Act(b){
+  var a=b.getAttribute('data-w9c'),w=G._w9obWin;if(!w)return;
+  if(a==='pick'){_w9ob.cmSel=+b.getAttribute('data-m')||10;_w9obS10Render();var t=document.querySelector('#w9obCommit .w9ob-tile.on');if(t){try{t.focus({preventScroll:true})}catch(e){}}return}
+  if(a==='commit'){var m=_w9ob.cmSel||10;try{_setGoal(m)}catch(e){G.goalMin=m}G._goalAsked=true;try{trackEvent('onboard','commit','min='+m+',via=win')}catch(e){}_w9ob.cmDone=true;try{sv()}catch(e){}_w9obS10Render();var c=document.querySelector('#w9obCommit [data-w9c="cal"]');if(c){try{c.focus({preventScroll:true})}catch(e){}}return}
+  if(a==='cal'){G._w9obCal=1;w.p=0;_w9ob.cmDone=false;G._goalAsked=true;try{sv()}catch(e){}try{trackEvent('onboard','calendar','')}catch(e){}_w9obS10Render();try{if(typeof _w7hbOpen==='function')_w7hbOpen('slot','w9ob')}catch(e){}return}
+  if(a==='later'){if(!_w9ob.cmDone){try{trackEvent('onboard','later','')}catch(e){}}w.p=0;_w9ob.cmDone=false;G._goalAsked=true;try{sv()}catch(e){}_w9obS10Render()}
+}
+
+/* =============================== wrappers (installed after every existing wrapper; pass-through on error) =============================== */
+var _w9obO={};
+/* inline validation before go() (the smoke contract go() / #nameInput / #emailInput / .btn-go is unchanged) */
+_w9obO.go=go;go=function(){try{if(_w9ob.built&&!_w9obValidate())return}catch(e){}return _w9obO.go.apply(this,arguments)};
+/* sign-in mode never registers — also not through w8su's stale-registration retry */
+_w9obO.req=_requestApproval;_requestApproval=function(name,email,consent){
+  try{if(_w9ob.built&&_w9ob.mode==='signin'){_w9obEv('signup','form_error','f=mismatch');if(typeof _w8suNameDialog==='function')_w8suNameDialog(name,email,'mismatch');else _w9obErr('name',_w9obT('השם או המייל לא תואמים. נסו שוב, או בקשו קישור כניסה.','The name and email do not match. Try again, or ask for a sign-in link.'),'');return}}catch(e){}
+  return _w9obO.req.apply(this,arguments);
+};
+/* a new row for THIS device: remember the registering name (the claim is bound to it) + link the anonymous visit */
+if(typeof _w8suReqHook==='function'){_w9obO.rh=_w8suReqHook;_w8suReqHook=function(name,email,consent,d){var r=_w9obO.rh.apply(this,arguments);try{if(!r&&d&&d.success&&(d.status==='pending_email'||d.status==='pending_admin')){var pre=_w9obPre();if(!pre.reg||_w9obNorm(pre.reg.n)!==_w9obNorm(name)){delete pre.claimedBy;delete pre.claimAt}pre.reg={n:String(name),at:Date.now(),l:(_w9obEn()?'en':'he')};_w9obPreSave(pre);_w9obEvU('onboard','link','did='+_w9obSid(),name)}}catch(e){}return r}}
+/* waiting room */
+_w9obO.sps=_showPendingScreen;_showPendingScreen=function(){var r=_w9obO.sps.apply(this,arguments);try{_w9obWaitRender()}catch(e){}return r};
+_w9obO.pb=_pendingBack;_pendingBack=function(){var r=_w9obO.pb.apply(this,arguments);try{var pv=$('pendingView');if(pv)pv.classList.remove('w9ob-wait-on');var b=$('w9obWait');if(b)b.remove();_w9ob.planEdit=false;_w9ob.warmOpen=false;delete _w9ob.qz.warm}catch(e){}return r};
+/* map: count the visit (BEFORE the original schedules the tour), then claim + cards */
+_w9obO.mp=mp;mp=function(){var arrive=false;try{arrive=(G.v!=='m')&&!!(G.s&&G.userName);if(arrive)_w9obMapVisit()}catch(e){}var r=_w9obO.mp.apply(this,arguments);try{_w9obAfterMap(arrive)}catch(e){}return r};
+_w9obO.rg=rg;rg=function(){var r=_w9obO.rg.apply(this,arguments);try{if(_w9ob.holdUntil&&Date.now()<_w9ob.holdUntil&&$('w9obStart'))_w9obHoldNode()}catch(e){}return r};
+_w9obO.rs=rs;rs=function(){var r=_w9obO.rs.apply(this,arguments);try{_w9obS10Render()}catch(e){}return r};
+_w9obO.rt=rt;rt=function(){var r=_w9obO.rt.apply(this,arguments);try{_w9obS10Render()}catch(e){}return r};
+_w9obO.rq=rq;rq=function(){var r=_w9obO.rq.apply(this,arguments);try{_w9obS10Render()}catch(e){}return r};
+/* first win: retention's own milestones (part ✓ · round ✓) + the first completed stage */
+if(typeof _w8rnT==='function'){_w9obO.rnT=_w8rnT;_w8rnT=function(act,meta){var r=_w9obO.rnT.apply(this,arguments);try{if(act==='part_done')_w9obWin('part',meta);else if(act==='round_done')_w9obWin('round',meta)}catch(e){}return r}}
+_w9obO.tcs=tryCompleteStage;tryCompleteStage=function(sid){
+  var was=true,n0=0;try{was=!!(G.done&&G.done.has(sid));n0=G.done?G.done.size:0}catch(e){}
+  var r=_w9obO.tcs.apply(this,arguments);
+  try{if(!was&&G.done&&G.done.has(sid)){
+    if(n0===0){var fm=G._w9obFm&&_w9obMine(G._w9obFm)?G._w9obFm.at:0;try{trackEvent('onboard','first_stage_done','s='+sid+(fm?',sec='+Math.max(0,Math.round((Date.now()-fm)/1000)):''))}catch(e){}_w9obWin('stage',String(sid))}
+    if(sid===2){var fu=parseInt(G.firstUse,10)||0;try{trackEvent('onboard','activated',fu?'days='+Math.max(0,Math.floor((Date.now()-fu)/864e5)):'')}catch(e){}}
+  }}catch(e){}
+  return r;
+};
+/* no goal pop-up on arrival for a new learner — the question comes after the first win (S10) */
+_w9obO.goal=maybeAskGoal;maybeAskGoal=function(){try{if(_w9obAuto()&&G&&G.s&&G.userName&&G.done&&(G.done.size===0||_w9obCommitPending()))return}catch(e){}return _w9obO.goal.apply(this,arguments)};
+/* map tour: at most 3 steps (current node · My day · header stats), and for a new learner not before the 2nd map visit */
+_w9obO.trS=_w6trSteps;_w6trSteps=function(kind){
+  var a=_w9obO.trS.apply(this,arguments);
+  try{if(kind==='map'&&Array.isArray(a)&&a.length>3){var want=[/כאן ממשיכים|Pick up right here/,/היום שלי|My day/,/נקודות, שלבים|Points, stages/],pick=[];want.forEach(function(re){for(var i=0;i<a.length;i++){if(a[i]&&re.test(String(a[i].h||''))&&pick.indexOf(a[i])<0){pick.push(a[i]);break}}});if(pick.length<2)pick=[a[0],a[2],a[4]].filter(Boolean);return pick}}catch(e){}
+  return a;
+};
+_w9obO.trSch=_w6trSchedule;_w6trSchedule=function(kind){try{if(kind==='map'&&!(typeof _w6trForce!=='undefined'&&_w6trForce.map)&&_w9obIsNew()&&_w9obMapCount()<2)return}catch(e){}return _w9obO.trSch.apply(this,arguments)};
+/* stage 0, first visit of a new learner: the opener video waits behind a "watch later" chip; the first topic is the first action */
+function _w9obIntroLater(){try{if(!_w9obAuto()||!_w9obIsNew()||parseInt(G.st,10)!==0||G.tab!=='l'||_w9ob.introOk[G.userName])return false;var sn=G._seenSec||{};return !(sn['0_0']||sn['0_1']||sn['0_2'])}catch(e){return false}}
+_w9obO.intro=enhanceIntroVideo;enhanceIntroVideo=function(){
+  try{if(_w9obIntroLater()){var tc=$('tc'),first=tc&&tc.querySelector('.csec[data-idx]');
+    if(tc&&first&&!tc.querySelector('.stage-intro-card')&&!tc.querySelector('.w9ob-later')){var b=document.createElement('button');b.type='button';b.className='w9ob-later';b.innerHTML=_W9OB_PLAY+'<span>'+_w9obE(_w9obT('פתיח השלב · לצפייה אחר כך','Stage opener · watch later'))+'</span>';
+      b.onclick=function(){_w9ob.introOk[G.userName]=1;try{trackEvent('onboard','intro_later','open')}catch(e){}b.remove();try{_w9obO.intro()}catch(e){}var c=tc.querySelector('.stage-intro-card');if(c){try{c.scrollIntoView({block:'nearest',behavior:_w9obRM()?'auto':'smooth'})}catch(e){}}};
+      first.parentNode.insertBefore(b,first);return}}}catch(e){}
+  return _w9obO.intro.apply(this,arguments);
+};
+/* a user switch keeps nothing of the previous account (RT2-06 rule) */
+if(typeof _w6syForeign==='function'){_w9obO.fg=_w6syForeign;_w6syForeign=function(){var r=_w9obO.fg.apply(this,arguments);try{delete G._w9obClaim;delete G._w9obWin;delete G._w9obFm;delete G._w9obCal;_w9ob.cmDone=false;_w9ob.cmSel=0;_w9ob.fso=0}catch(e){}return r}}
+/* admin analytics: anonymous visits ('~' users) never count as learners (per-user tables) */
+function _w9obScrubAn(a){try{if(!a||typeof a!=='object'||a._w9ob)return;if(a.perUser)Object.keys(a.perUser).forEach(function(k){if(k.charAt(0)==='~')delete a.perUser[k]});if(a.featUsers)Object.keys(a.featUsers).forEach(function(f){var x=a.featUsers[f];if(x&&typeof x==='object'&&!Array.isArray(x))Object.keys(x).forEach(function(k){if(k.charAt(0)==='~')delete x[k]})});a._w9ob=1}catch(e){}}
+['renderAdminDashboard','_renderDataResearch','_renderContentAnalytics'].forEach(function(n){try{var o=window[n];if(typeof o!=='function')return;window[n]=function(){try{if(typeof _admAnalytics!=='undefined')_w9obScrubAn(_admAnalytics);if(typeof _admContentData!=='undefined')_w9obScrubAn(_admContentData)}catch(e){}return o.apply(this,arguments)}}catch(e){}});
+/* language: every w9ob surface follows */
+_w9obO.al=applyLanguage;applyLanguage=function(){var r=_w9obO.al.apply(this,arguments);try{_w9obWsRender();var ty=$('w9obTypo');if(ty&&!ty.hidden)_w9obTypoCheck();if(_w9obPendLive())_w9obWaitRender();if(G.v==='m')_w9obMapCards();else _w9obS10Render()}catch(e){}return r};
+_w9obO.gh=goHome;goHome=function(){var r=_w9obO.gh.apply(this,arguments);try{_w9obChkView(false);_w9obRetRender();_w9obFormText()}catch(e){}return r};
+
+/* boot: the welcome is rebuilt right away (the script runs after the #ws markup). On any error the old welcome stays:
+   every w9ob rule that hides an old element is scoped to #ws.w9ob-on, which is set only after a complete build. */
+try{_w9obWsBuild()}catch(e){}
+/* ===== /W9 onboarding ===== */
+/* ===== W10 uxaudit (w10ux): truthful header labels · counter toggletips · one name per thing · points not XP ===== */
+var _w10ux={tip:null,el:null,k:'',t:0,raf:0,mo:null,sig:''};
+function _w10uxEn(){try{return typeof _enLang==='function'?!!_enLang():!!(G&&G.lang==='en')}catch(e){return false}}
+function _w10uxPt(){return _w10uxEn()?'pts':'נק\''}
+function _w10uxEsc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+/* W10 navux (w10nv) owns the header when it is on (its own counter panel + header Back; the old house is hidden) — then w10ux stands down */
+function _w10uxNav(){try{return !!((typeof _w10nv!=='undefined'&&_w10nv&&_w10nv.on)||document.documentElement.classList.contains('w10nv-on'))}catch(e){return false}}
+function _w10uxShown(id){var e=document.getElementById(id);return !!(e&&!e.classList.contains('hid'))}
+(function(){try{var m={'חזרה למפה':'Back to the map','למסך הפתיחה':'To the start screen','אתם כאן':'You are here','אחר כך':'Later'};for(var k in m){if(UI_EN[k]==null)UI_EN[k]=m[k]}}catch(e){}})();
+try{if(typeof TRACKED_FEATURES!=='undefined'&&TRACKED_FEATURES.indexOf('ux')<0){TRACKED_FEATURES.push('ux');if(typeof OTHER_FEATURES!=='undefined'&&OTHER_FEATURES.indexOf('ux')<0)OTHER_FEATURES.push('ux')}if(typeof FEAT_META!=='undefined'&&!FEAT_META.ux)FEAT_META.ux={ic:'💡',name:'הסברים בכותרת',col:'#8B85FF'};if(typeof FEAT_ACT_NAMES!=='undefined'){if(!FEAT_ACT_NAMES.hdr_tip)FEAT_ACT_NAMES.hdr_tip='הסבר על מונה בכותרת נפתח';if(!FEAT_ACT_NAMES.hdr_tip_go)FEAT_ACT_NAMES.hdr_tip_go='הסבר בכותרת: מעבר ליעד'}}catch(e){}
+/* 3 — one name per screen: the phone dock uses the same word as the desktop FAB and the screen title */
+try{if(typeof _w6dkLBL!=='undefined'&&_w6dkLBL&&_w6dkLBL.lbFab)_w6dkLBL.lbFab=['טבלת מובילים','Leaderboard']}catch(e){}
+/* 1 — where the header house (goHomeSmart) goes from the CURRENT view: the map from a stage / profile / glossary; the start
+   screen from the map and from the leaderboard, admin, practice-exam and about panels */
+function _w10uxHomeToMap(){try{if(window._w10uxHouseAlwaysMap)return true;if(['lbv','adv','miv','ab'].some(_w10uxShown))return false;return !!(G&&G.v&&G.v!=='w'&&G.v!=='m')}catch(e){return false}}
+/* 2 — header counters: name, tooltip, toggletip */
+var _W10UX_K={
+  pts:{he:['נקודות','צוברים נקודות על תשובות נכונות, שלבים שמסיימים, השאלה היומית ומשחקים. הניקוד קובע את מקומכם בטבלת המובילים.','לטבלת המובילים'],
+       en:['Points','You earn points for correct answers, finished stages, the daily question and games. Your points set your place on the leaderboard.','Open the leaderboard'],
+       go:function(){if(typeof showLeaderboard==='function')showLeaderboard()}},
+  stg:{he:['שלבים שהושלמו','שלב נספר כשמסיימים את שלושת החלקים שלו: קוראים את כל הנושאים, פותחים את הקייס ועונים על כל שאלות המבחן.',''],
+       en:['Stages completed','A stage counts once you finish its three parts: read every topic, open the case and answer every quiz question.','']},
+  stk:{he:['רצף ימים','כמה ימים ברצף נכנסתם ללמוד. ימי מנוחה והקפאת רצף שומרים עליו כשמפספסים יום.','הכללים של הרצף'],
+       en:['Day streak','How many days in a row you came to learn. Rest days and streak freezes protect it when you miss a day.','Streak rules'],
+       go:function(){if(typeof _w7hbOpen==='function')_w7hbOpen('rules','w10ux')}}
+};
+function _w10uxVal(k){
+  try{
+    var en=_w10uxEn();
+    if(k==='pts'){var t=document.getElementById('ts');return t?t.textContent.trim():''}
+    if(k==='stg'){var c=document.getElementById('cs'),n=(typeof _totalVisible==='function')?_totalVisible():0;return (c?c.textContent.trim():'0')+(n?(en?' of ':' מתוך ')+n:'')}
+    if(k==='stk'){var v=document.getElementById('stv'),d=v?parseInt(v.textContent,10)||0:0;return en?(d+(d===1?' day':' days')):(d===1?'יום אחד':d+' ימים')}
+  }catch(e){}
+  return '';
+}
+function _w10uxBadges(hd){
+  var en=_w10uxEn(),st=hd.querySelector('.hdr-stats'),list=[];if(!st)return;
+  if(_w10uxNav()){[].forEach.call(hd.querySelectorAll('[data-w10ux-k]'),function(b){b.removeAttribute('data-w10ux-k');b.removeAttribute('aria-expanded');b.removeAttribute('aria-controls')});return}
+  [].forEach.call(st.querySelectorAll('.badge'),function(b){if(b.querySelector('#ts'))list.push([b,'pts']);else if(b.querySelector('#cs'))list.push([b,'stg'])});
+  var sk=document.getElementById('stb');if(sk&&hd.contains(sk))list.push([sk,'stk']);
+  list.forEach(function(p){
+    var b=p[0],k=p[1],L=en?_W10UX_K[k].en:_W10UX_K[k].he,v=_w10uxVal(k),nm=L[0]+(v!==''?': '+v:'');
+    if(b.getAttribute('data-w10ux-k')!==k){b.setAttribute('data-w10ux-k',k);b.setAttribute('role','button');b.setAttribute('tabindex','0')}
+    if(!b.hasAttribute('aria-expanded'))b.setAttribute('aria-expanded','false');
+    if(b.getAttribute('aria-label')!==nm)b.setAttribute('aria-label',nm);
+    if(b.getAttribute('title')!==nm)b.setAttribute('title',nm);
+  });
+}
+function _w10uxHdr(){
+  var hd=document.getElementById('hd');if(!hd)return;
+  try{
+    var b=_w10uxNav()?null:hd.querySelector('.hdr-home[onclick*="goHomeSmart"]');
+    if(b){var k=_w10uxHomeToMap()?'חזרה למפה':'למסך הפתיחה',v=(typeof _t==='function')?_t(k):k;
+      if(b.getAttribute('data-w5i-l')!==k)b.setAttribute('data-w5i-l',k);
+      if(b.getAttribute('title')!==v)b.setAttribute('title',v);
+      if(b.getAttribute('aria-label')!==v)b.setAttribute('aria-label',v)}
+  }catch(e){}
+  try{_w10uxBadges(hd)}catch(e){}
+}
+/* an icon-only control of the floating chrome (e.g. the More sheet's ✕) gets its accessible name as a tooltip too */
+function _w10uxTitles(){try{[].forEach.call(document.querySelectorAll('#hd button,#w6dkDock button,#w6dkSheet button'),function(b){var al=(b.getAttribute('aria-label')||'').trim();if(!al||((b.innerText||'').match(/[A-Za-z0-9֐-׿]/g)||[]).length>=2)return;if(b.getAttribute('title')!==al)b.setAttribute('title',al)})}catch(e){}}
+function _w10uxTipHide(focusBack){
+  var t=_w10ux.tip;clearTimeout(_w10ux.t);
+  if(t&&!t.hidden){t.hidden=true;t.innerHTML=''}
+  if(_w10ux.el){try{_w10ux.el.setAttribute('aria-expanded','false');if(focusBack)_w10ux.el.focus()}catch(e){}}
+  _w10ux.el=null;_w10ux.k='';
+}
+function _w10uxTipShow(b,k){
+  var d=_W10UX_K[k];if(!d||!b)return;
+  try{_w10uxHdr()}catch(e){}
+  var en=_w10uxEn(),L=en?d.en:d.he,v=_w10uxVal(k),tip=_w10ux.tip;
+  if(!tip||!tip.isConnected){
+    tip=document.createElement('div');tip.id='w10uxTip';tip.className='w10ux-tip';tip.setAttribute('role','status');tip.hidden=true;
+    tip.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('[data-w10ux-go]'):null;if(!a)return;var kk=a.getAttribute('data-w10ux-go');_w10uxTipHide();try{trackEvent('ux','hdr_tip_go',kk)}catch(er){}try{_W10UX_K[kk].go()}catch(er){}});
+    document.body.appendChild(tip);_w10ux.tip=tip;
+  }
+  if(_w10ux.el&&_w10ux.el!==b){try{_w10ux.el.setAttribute('aria-expanded','false')}catch(e){}}
+  tip.setAttribute('dir',en?'ltr':'rtl');
+  tip.innerHTML='<span class="w10ux-tt">'+_w10uxEsc(L[0])+(v!==''?' · <bdi>'+_w10uxEsc(v)+'</bdi>':'')+'</span>'+_w10uxEsc(L[1])+((L[2]&&d.go)?'<button type="button" class="w10ux-ta" data-w10ux-go="'+k+'">'+_w10uxEsc(L[2])+(en?' →':' ←')+'</button>':'');
+  tip.hidden=false;
+  try{
+    var r=b.getBoundingClientRect(),hd=document.getElementById('hd'),hb=hd?hd.getBoundingClientRect().bottom:r.bottom,vw=document.documentElement.clientWidth||innerWidth,w=tip.offsetWidth;
+    var x=Math.round(r.left+r.width/2-w/2);x=Math.max(16,Math.min(vw-16-w,x));
+    tip.style.top=Math.round(Math.max(r.bottom,hb)+8)+'px';tip.style.left=x+'px';
+    tip.style.setProperty('--w10ux-ax',Math.max(10,Math.min(w-20,Math.round(r.left+r.width/2-x-5)))+'px');
+  }catch(e){}
+  b.setAttribute('aria-expanded','true');b.setAttribute('aria-controls','w10uxTip');
+  _w10ux.el=b;_w10ux.k=k;
+  clearTimeout(_w10ux.t);_w10ux.t=setTimeout(function(){_w10uxTipHide()},8000);
+  try{trackEvent('ux','hdr_tip',k)}catch(e){}
+}
+function _w10uxOnClick(e){
+  try{
+    var b=e.target&&e.target.closest?e.target.closest('#hd [data-w10ux-k]'):null;
+    if(b&&_w10uxNav()){_w10uxTipHide();return}
+    if(b){var k=b.getAttribute('data-w10ux-k');if(_w10ux.tip&&!_w10ux.tip.hidden&&_w10ux.k===k)_w10uxTipHide();else _w10uxTipShow(b,k);return}
+    if(_w10ux.tip&&!_w10ux.tip.hidden&&!(e.target&&e.target.closest&&e.target.closest('#w10uxTip')))_w10uxTipHide();
+  }catch(er){}
+}
+function _w10uxOnKey(e){
+  try{
+    if(e.key==='Escape'&&_w10ux.tip&&!_w10ux.tip.hidden){_w10uxTipHide(true);return}
+    var b=document.activeElement;
+    if(b&&b.getAttribute&&b.getAttribute('data-w10ux-k')&&(e.key==='Enter'||e.key===' '||e.key==='Spacebar')){e.preventDefault();var k=b.getAttribute('data-w10ux-k');if(_w10ux.tip&&!_w10ux.tip.hidden&&_w10ux.k===k)_w10uxTipHide();else _w10uxTipShow(b,k)}
+  }catch(er){}
+}
+var _W10UX_VIEWS=['ws','mv','sv','miv','glv','pv','lbv','adv','ab','pendingView','duelView'];
+function _w10uxQ(){
+  if(_w10ux.raf)return;
+  _w10ux.raf=(window.requestAnimationFrame||setTimeout)(function(){
+    _w10ux.raf=0;
+    try{var sig=_W10UX_VIEWS.filter(_w10uxShown).join(',');if(sig!==_w10ux.sig){_w10ux.sig=sig;_w10uxTipHide()}}catch(e){}
+    try{_w10uxHdr();_w10uxTitles()}catch(e){}
+  });
+}
+function _w10uxBoot(){
+  try{
+    if(!_w10ux.mo&&typeof MutationObserver!=='undefined'){_w10ux.mo=new MutationObserver(_w10uxQ);_W10UX_VIEWS.forEach(function(id){var e=document.getElementById(id);if(e)_w10ux.mo.observe(e,{attributes:true,attributeFilter:['class']})});var sh=document.getElementById('w6dkSheet');if(sh)_w10ux.mo.observe(sh,{attributes:true,attributeFilter:['aria-hidden']});else setTimeout(function(){var s2=document.getElementById('w6dkSheet');if(s2&&_w10ux.mo)_w10ux.mo.observe(s2,{attributes:true,attributeFilter:['aria-hidden']})},1500)}
+    document.addEventListener('click',_w10uxOnClick);
+    document.addEventListener('keydown',_w10uxOnKey);
+    window.addEventListener('resize',function(){if(_w10ux.tip&&!_w10ux.tip.hidden)_w10uxTipHide()},{passive:true});
+    _w10uxHdr();_w10uxTitles();
+  }catch(e){}
+}
+if(typeof uh==='function'&&!uh._w10ux){var _w10uxUh=uh;uh=function(){var r=_w10uxUh.apply(this,arguments);try{_w10uxHdr()}catch(e){}return r};uh._w10ux=1}
+if(typeof applyLanguage==='function'&&!applyLanguage._w10ux){var _w10uxAl=applyLanguage;applyLanguage=function(){var r=_w10uxAl.apply(this,arguments);try{_w10uxTipHide();_w10uxHdr()}catch(e){}return r};applyLanguage._w10ux=1}
+/* 4 — the game room isolates "N unit" as LTR (<bdi dir=ltr>): right for "pts", but a Hebrew unit inside it flips its geresh
+   ("100 'נק"). The number stays isolated and "נק'" flows in the RTL line ("נק' 100" reads right-to-left as "100 נק'"). */
+if(typeof _w8gmB==='function'&&!_w8gmB._w10ux){var _w10uxB0=_w8gmB;_w8gmB=function(t){try{var m=String(t).match(/^([\s\S]*?)&nbsp;(נק')$/);if(m)return _w10uxB0(m[1])+'&nbsp;'+m[2]}catch(e){}return _w10uxB0.apply(this,arguments)};_w8gmB._w10ux=1}
+/* 7 — the learner satisfaction survey (re-asked 2.5 s after a map paint) never opens over the admin dashboard, a duel, the
+   pending screen or the welcome screen — the walk saw it land on the owner's admin view. It simply waits for the next map visit
+   (no throttle stamp is written when it stands down). */
+if(typeof _showSatIfReady==='function'&&!_showSatIfReady._w10ux){var _w10uxSat=_showSatIfReady;_showSatIfReady=function(){try{if(['adv','duelView','pendingView','ws'].some(_w10uxShown))return}catch(e){}return _w10uxSat.apply(this,arguments)};_showSatIfReady._w10ux=1}
+/* 6 — no discovery toast over a first-run layer, a modal or the onboarding tour (the W8 queue simply retries later). The goal
+   question opens 1.2 s AFTER the map paint that fires date eggs (setTimeout(maybeAskGoal,1200)), so "still due" counts as open:
+   a fresh learner (≤ 2 stages, no goal yet, never asked) gets no discovery toast until that question has been answered or skipped. */
+function _w10uxGoalDue(){try{return !!(G&&G.s&&!G.goalMin&&!G._goalAsked&&G.done&&G.done.size<=2&&typeof maybeAskGoal==='function')}catch(e){return false}}
+if(typeof _w8dlToastOk==='function'&&!_w8dlToastOk._w10ux){var _w10uxDlOk=_w8dlToastOk;_w8dlToastOk=function(){try{if(['goalOv','wbOv','langPop','legalOv','pwOv','certOverlay'].some(function(id){return !!document.getElementById(id)}))return false;if(_w10uxGoalDue())return false;if(document.querySelector('.modal-overlay,.daily-modal,.lang-pop'))return false;if(typeof _w6trSt!=='undefined'&&_w6trSt)return false}catch(e){}return _w10uxDlOk.apply(this,arguments)};_w8dlToastOk._w10ux=1}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',_w10uxBoot);else setTimeout(_w10uxBoot,0);
+/* ===== /W10 uxaudit ===== */
+
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
