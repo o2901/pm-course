@@ -12,8 +12,8 @@
 <meta property="og:title" content="Product Master — קורס ניהול מוצר חינמי ומשחקי">
 <meta property="og:description" content="52 שלבים, 800+ שאלות, קייסים, דו-קרבות ו-26 ספרי בונוס. לומדים ניהול מוצר כמו משחק — בעברית ובאנגלית.">
 <meta property="og:url" content="https://pm-course-beta.vercel.app/">
-<meta property="og:image" content="https://pm-course-beta.vercel.app/av/ui/og-image.png">
-<meta property="og:image:secure_url" content="https://pm-course-beta.vercel.app/av/ui/og-image.png">
+<meta property="og:image" content="https://pm-course-media.vercel.app/av/ui/og-image.png">
+<meta property="og:image:secure_url" content="https://pm-course-media.vercel.app/av/ui/og-image.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -23,11 +23,35 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Product Master — קורס ניהול מוצר חינמי ומשחקי">
 <meta name="twitter:description" content="52 שלבים, 800+ שאלות, קייסים, דו-קרבות ו-26 ספרי בונוס. לומדים ניהול מוצר כמו משחק — בעברית ובאנגלית.">
-<meta name="twitter:image" content="https://pm-course-beta.vercel.app/av/ui/og-image.png">
+<meta name="twitter:image" content="https://pm-course-media.vercel.app/av/ui/og-image.png">
 <meta name="twitter:image:alt" content="Product Master — קורס ניהול מוצר חינמי ומשחקי">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%236C63FF'/><stop offset='1' stop-color='%2300C9A7'/></linearGradient></defs><rect width='64' height='64' rx='14' fill='url(%23g)'/><g fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='32' cy='18' r='4'/><path d='M32 22v26M24 28h16M16 38c0 8 8 12 16 12s16-4 16-12M16 38l-4-4M16 38l4-4M48 38l-4-4M48 38l4-4'/></g></svg>">
 <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%236C63FF'/><stop offset='1' stop-color='%2300C9A7'/></linearGradient></defs><rect width='64' height='64' rx='14' fill='url(%23g)'/><g fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='32' cy='18' r='4'/><path d='M32 22v26M24 28h16M16 38c0 8 8 12 16 12s16-4 16-12M16 38l-4-4M16 38l4-4M48 38l-4-4M48 38l4-4'/></g></svg>">
 <meta name="theme-color" content="#6C63FF">
+<script>
+/* ===== W7 media split (w7md): course media (av/**) is served by a separate static site. MEDIA_BASE='' on local hosts
+   (localhost, 127.0.0.1, [::1], *.localhost, *.test, file:) → relative av/ paths as before (local dev + smoke gates);
+   elsewhere the media host. Local-only test override: ?mediaBase=http://127.0.0.1:PORT/. _media('av/…') →
+   MEDIA_BASE+'av/…?v=<APP_VERSION>' (the media host caches 'immutable'; the version busts it per release). Data maps keep
+   relative 'av/…' values — route every consumer through _media(). ===== */
+var MEDIA_HOST='https://pm-course-media.vercel.app/';
+var MEDIA_BASE=(function(){try{var h=String(location.hostname||'').toLowerCase(),pr=location.protocol;
+  if(pr==='file:'||!h||h==='localhost'||h==='127.0.0.1'||h==='[::1]'||h==='::1'||/\.(localhost|test)$/.test(h)){
+    var m=/[?&]mediaBase=([^&#]+)/.exec(location.search||'');
+    if(m){var b=decodeURIComponent(m[1]);if(/^https?:\/\/[A-Za-z0-9.:\[\]-]+(\/[A-Za-z0-9._~\/-]*)?$/.test(b))return b.replace(/\/*$/,'/');}
+    return '';}
+  }catch(e){}return MEDIA_HOST;})();
+function _w7mdVer(){try{return String(APP_VERSION||'')}catch(e){return ''}}
+function _media(p){
+  if(typeof p!=='string'||!MEDIA_BASE)return p;
+  var m=/^(?:\.?\/)?(av\/.*)$/.exec(p);if(!m)return p;
+  var v=_w7mdVer();return MEDIA_BASE+m[1]+(v?((m[1].indexOf('?')<0?'?':'&')+'v='+encodeURIComponent(v)):'');
+}
+function _w7mdFix(root){try{var l=(root||document).querySelectorAll('img[data-media-src]');for(var i=0;i<l.length;i++){var e=l[i],u=_media(e.getAttribute('data-media-src'));if(e.getAttribute('src')!==u)e.setAttribute('src',u)}}catch(e){}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){_w7mdFix()});else _w7mdFix();
+try{if(MEDIA_BASE){var _w7mdL=document.createElement('link');_w7mdL.rel='preconnect';_w7mdL.href=MEDIA_BASE.replace(/\/+$/,'');document.head.appendChild(_w7mdL)}}catch(e){}
+/* ===== /W7 media split ===== */
+</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
 :root{--p:#8B85FF;--pd:#6A63E8;--s:#F06A7E;--a:#35C9A3;--g:#E8C45C;--bg:#101218;--card:#171A26;--cardh:#1F2333;--t1:#EDEEF4;--t2:#A9ADBE;--line:rgba(255,255,255,.08);--tx:var(--t1);--pk:var(--s);--c1:var(--card);--gr1:linear-gradient(135deg,var(--p),var(--pd));--gr2:linear-gradient(135deg,var(--a),var(--p))}
@@ -2731,11 +2755,11 @@ body.light .w6tr-card{box-shadow:0 18px 44px rgba(42,39,33,.24),0 2px 6px rgba(4
 </div>
 <div class="pending-videos">
 <div class="pending-scene">
-<img src="av/gifs/ne-salute-wide.gif" alt="אנחנו על זה" loading="lazy" decoding="async">
+<img data-media-src="av/gifs/ne-salute-wide.gif" alt="אנחנו על זה" loading="lazy" decoding="async">
 <span class="scene-label">⚡ אנחנו על זה!</span>
 </div>
 <div class="pending-scene">
-<img src="av/gifs/ne-hourglass-wide.gif" alt="ממתינים יחד" loading="lazy" decoding="async">
+<img data-media-src="av/gifs/ne-hourglass-wide.gif" alt="ממתינים יחד" loading="lazy" decoding="async">
 <span class="scene-label">😎 בינתיים... רגע של סבלנות</span>
 </div>
 </div>
@@ -6676,7 +6700,7 @@ function pfFace(o){o=o||{};var skin=o.skin||'#e8b894';var hair=o.gray?'#cfcfcf':
 function pfPersonCard(p){var _nm=_enLang()?'<div class="pf-name"><bdi>'+(p.en||p.he)+'</bdi></div>':'<div class="pf-name">'+p.he+' <span style="font-size:.7rem;color:var(--t2);font-weight:500">· <bdi>'+p.en+'</bdi></span></div>';return '<div class="pf-person">'+pfFace(p)+'<div>'+_nm+'<div class="pf-role">'+p.role+'</div>'+(p.q?'<div class="pf-quote">"'+p.q+'"</div>':'')+'</div></div>';}
 function pfTLDR(html){return '<div class="pf-tldr">⚡ <strong>'+_t('בקצרה:')+'</strong> '+html+'</div>';}
 function pfHero(arr){var inner='';for(var k=0;k<arr.length;k++){var x=40+k*67;inner+='<g style="animation:'+(k%2?'pf_float':'pf_floatB')+' '+(3.4+k*0.4).toFixed(1)+'s ease-in-out infinite"><circle cx="'+x+'" cy="46" r="24" fill="rgba(108,99,255,.14)" stroke="'+(k===arr.length-1?'#00C9A7':'#6C63FF')+'" stroke-width="1.5"/><text x="'+x+'" y="54" font-size="20" text-anchor="middle">'+arr[k]+'</text></g>';}return '<div class="pf-hero"><svg class="bidi-done" width="280" height="92" viewBox="0 0 280 92">'+inner+'<path d="M40 46 H'+(40+(arr.length-1)*67)+'" stroke="rgba(255,255,255,.12)" stroke-width="1" stroke-dasharray="3,4"/></svg></div>';}
-function pfBreather(b){return '<div class="pf-breather"><img src="'+b.gif+'" alt="" loading="lazy"/><div class="pf-bt">'+b.txt+'</div></div>';}
+function pfBreather(b){return '<div class="pf-breather"><img src="'+_media(b.gif)+'" alt="" loading="lazy"/><div class="pf-bt">'+b.txt+'</div></div>';}
 var _PFG={youreHired:'av/gifs/ne-party-popper.gif',plugConnect:'av/gifs/fe-link.gif',appsSwipe:'av/gifs/fe-mobile.gif',levelUpWin:'av/gifs/fe-gamepad.gif',robotFactory:'av/gifs/fe-factory.gif',radarWatch:'av/gifs/fe-satellite-antenna.gif',thinkingRobot:'av/gifs/ne-robot.gif',versionUpgrade:'av/gifs/ne-up.gif',stickyReminder:'av/gifs/ne-bell.gif',readySetSprint:'av/gifs/ne-chequered-flag.gif',partnerHandshake:'av/gifs/ne-handshake.gif',growthSprout:'av/gifs/ne-seedling.gif',rocketLiftoff:'av/gifs/ne-rocket.gif',chefsKissUX:'av/gifs/ne-chefs-kiss.gif',dataDetective:'av/gifs/ne-magnifier.gif',labDiscovery:'av/gifs/pm-ab-test.gif',typewriterSpec:'av/gifs/fe-keyboard.gif',teamHighfive:'av/gifs/ne-raising-hands.gif',sortPriorities:'av/gifs/pm-matrix.gif',chessVision:'av/gifs/ne-chess-pawn.gif',binocularsScout:'av/gifs/ne-eyes.gif',deepListening:'av/gifs/fe-bust.gif',jugglingPro:'av/gifs/fe-juggler.gif',meetpeople:'av/gifs/ne-wave.gif',navyfleet:'av/gifs/fe-ship.gif',manyhats:'av/gifs/fe-top-hat.gif',detective:'av/gifs/fe-detective.gif',piechart:'av/gifs/pm-market.gif',puzzlefit:'av/gifs/fe-puzzle.gif',treasuremap:'av/gifs/fe-world-map.gif',taskpile:'av/gifs/pm-backlog.gif',blueprint:'av/gifs/fe-ruler.gif',beaker:'av/gifs/fe-test-tube.gif',bullseye:'av/gifs/ne-target.gif',stickynotes:'av/gifs/ne-hugging.gif',pricetag:'av/gifs/fe-label.gif',leakybucket:'av/gifs/fe-bucket.gif',conductor:'av/gifs/ne-violin.gif',standup:'av/gifs/fe-standing.gif',handwrite:'av/gifs/ne-writing-hand.gif',odometer:'av/gifs/pm-semver.gif',shipboxes:'av/gifs/ne-package.gif',neurons:'av/gifs/ne-brain.gif',radar:'av/gifs/ne-eyes.gif',assemblyline:'av/gifs/ne-mech-arm.gif',arcade:'av/gifs/ne-alien-monster.gif',sitemap:'av/gifs/fe-card-index.gif',datapipe:'av/gifs/pm-network.gif',resumecv:'av/gifs/fe-memo.gif',bridgeconnect:'av/gifs/fe-bridge.gif',friendlychat:'av/gifs/ne-wave.gif',mockup:'av/gifs/pm-wireframe.gif',snowball:'av/gifs/ne-snowman.gif',teamcheer:'av/gifs/ne-fist-bump.gif',loopcycle:'av/gifs/pm-sprint-loop.gif',phoneping:'av/gifs/ne-bell.gif',honesttalk:'av/gifs/ne-hot-beverage.gif',compass:'av/gifs/fe-compass.gif',datacity:'av/gifs/fe-classical-building.gif',trustfall:'av/gifs/ne-ring-buoy.gif',gauge:'av/gifs/pm-okr.gif',sparkconnect:'av/gifs/ne-zap.gif',continuousloop:'av/gifs/ne-infinity.gif',signpost:'av/gifs/pm-roadmap.gif',indexcards:'av/gifs/ne-footprints.gif',trophy:'av/gifs/ne-trophy.gif',keyhole:'av/gifs/fe-key.gif',canyonbridge:'av/gifs/fe-climber.gif',bookflip:'av/gifs/fe-open-book.gif',decodecode:'av/gifs/pm-checklist.gif',qabubbles:'av/gifs/ne-speech.gif',bigtech:'av/gifs/fe-office.gif',mirror:'av/gifs/fe-mirror.gif',closedeal:'av/gifs/ne-money-face.gif',welcome:'av/gifs/ne-anchor.gif',youcan:'av/gifs/ne-muscle.gif',wow:'av/gifs/ne-star-struck.gif',high5:'av/gifs/ne-clap.gif',idea:'av/gifs/ne-bulb.gif',breath:'av/gifs/ne-exhale.gif',juggle:'av/gifs/ne-octopus.gif',cargoship:'av/gifs/ne-ocean.gif',typingcode:'av/gifs/ne-laptop.gif',mindblown:'av/gifs/ne-mind-blown.gif',castle:'av/gifs/fe-shield.gif',listen:'av/gifs/ne-ear.gif',chess:'av/gifs/ne-chess-pawn.gif',telescope:'av/gifs/fe-telescope.gif',sayno:'av/gifs/fe-gesturing-no.gif',sprint:'av/gifs/fe-runner.gif',writing:'av/gifs/fe-memo.gif',pirate:'av/gifs/fe-pirate-flag.gif',design:'av/gifs/ne-pencil.gif',rocket:'av/gifs/pm-checklist.gif',growth:'av/gifs/pm-retention.gif',handshake:'av/gifs/ne-speech.gif',stopwatch:'av/gifs/fe-stopwatch.gif',checklist:'av/gifs/pm-checklist.gif',robot:'av/gifs/ne-die.gif',satellite:'av/gifs/fe-satellite.gif',gears:'av/gifs/ne-gear.gif',levelup:'av/gifs/ne-up.gif',phoneui:'av/gifs/ne-sparkles.gif',plug:'av/gifs/ne-plug.gif',grad:'av/gifs/ne-grad-cap.gif',puzzle:'av/gifs/fe-puzzle.gif',smile:'av/gifs/ne-hug-face.gif',fivedays:'av/gifs/fe-calendar.gif',inlove:'av/gifs/ne-heart-eyes.gif',dominoes:'av/gifs/ne-collision.gif',teaching:'av/gifs/fe-teacher.gif',science:'av/gifs/fe-alembic.gif',fishhook:'av/gifs/ne-fishing.gif',pinocchio:'av/gifs/ne-liar.gif',darts:'av/gifs/ne-target.gif',liberty:'av/gifs/ne-scale.gif',shield:'av/gifs/fe-shield.gif',summit:'av/gifs/ne-mountain-sunrise.gif',magnet:'av/gifs/fe-magnet.gif',calendar:'av/gifs/fe-calendar.gif',roadtrip:'av/gifs/fe-world-map.gif',whiteboard:'av/gifs/pm-kanban.gif',finishflag:'av/gifs/ne-chequered-flag.gif',blocks:'av/gifs/fe-brick.gif',cliffjump:'av/gifs/ne-parachute.gif',reading:'av/gifs/ne-books.gif',vault:'av/gifs/fe-key.gif',qmark:'av/gifs/ne-question.gif',suit:'av/gifs/fe-briefcase.gif',spy:'av/gifs/ne-disguise.gif',cash:'av/gifs/fe-money-bag.gif'};
 var pmVisuals={
  0:{tldr:{0:'כל שלב בנוי מ-📚 לימוד ← 📋 קייס ← ❓ מבחן. צוברים נקודות, רצף ודרגות בדרך.',1:'הגישה: קראו לעומק · עצרו וחשבו על הקייס · ענו ברצינות · חזרו. שלב ביום = התקדמות עקבית.',2:'תפגשו את גדולי עולם המוצר — והתובנות שלהם ילוו אתכם לאורך כל הקורס.'},hero:{0:['📚','📋','❓','🎓'],1:['📖','🤔','✍️','🔁']},breather:{2:{gif:_PFG.meetpeople,txt:'תכירו: לאורך המסע תפגשו דמויות מפתח מעולם המוצר — קחו מהן השראה. 👋'},0:{gif:_PFG.welcome,txt:'מוכנים? יאללה, עולים על הסיפון! ⚓'},1:{gif:_PFG.youcan,txt:'אין ציון עובר, אין לחץ זמן — רק למידה. אתם מסוגלים! 💪'}},people:{2:[{id:'cg',he:'מרטי קגן',en:'Marty Cagan',role:'מייסד SVPG · מחבר Inspired ו-Empowered',gray:true,glasses:true,shirt:'#4a3b6b',q:'התאהבו בבעיה, לא בפתרון.'},{id:'ln',he:'לני רצ׳יצקי',en:'Lenny Rachitsky',role:'הניוזלטר המוביל בעולם המוצר · לשעבר Airbnb',hair:'#6b4a2b',beard:true,shirt:'#2e6e5e',q:'שימור הוא הצמיחה האמיתית.'},{id:'py',he:'פיטר יאנג',en:'Peter Yang',role:'Outcome over Output · Product Sense',hair:'#2a2a2a',shirt:'#3b4a6b',q:'תוצאות חשובות יותר מתפוקות.'},{id:'tt',he:'תרזה טורס',en:'Teresa Torres',role:'מחברת Continuous Discovery Habits',long:true,hair:'#7a4a2a',shirt:'#6b3b5b',q:'Discovery הוא הרגל — לא אירוע חד-פעמי.'},{id:'er',he:'אריק ריס',en:'Eric Ries',role:'מחבר The Lean Startup · אבי ה-MVP',hair:'#2a2a2a',glasses:true,shirt:'#3b4a6b',q:'בנה ← מדוד ← למד. מהר.'},{id:'ak',he:'אנדרי קרפטי',en:'Andrej Karpathy',role:'ממייסדי OpenAI · לשעבר ראש AI ב-Tesla',hair:'#1a1a1a',shirt:'#5b4a2b',q:'AI הוא לא קסם — הוא ניחוש מתוחכם.'}]}},
@@ -6943,7 +6967,7 @@ function enhanceIntroVideo(){
   var tc=document.getElementById('tc');if(!tc)return;
   if(tc.querySelector('.stage-intro-card'))return;
   var key=G.st+'_'+(_enLang()?'en':'he');
-  var url=STAGE_INTRO[key];if(!url)return;
+  var url=_media(STAGE_INTRO[key]);if(!url)return;/* w7md */
   var first=tc.querySelector('.csec[data-idx]');if(!first)return;
   var card=document.createElement('div');card.className='stage-intro-card';
   card.style.cssText='background:linear-gradient(135deg,rgba(108,99,255,.14),rgba(0,201,167,.08));border:2px solid rgba(108,99,255,.35);border-radius:18px;padding:1rem 1.1rem;margin-bottom:1.3rem;animation:fiu .4s';
@@ -6952,7 +6976,7 @@ function enhanceIntroVideo(){
   card.appendChild(head);
   var wrap=document.createElement('div');wrap.style.cssText='border-radius:12px;overflow:hidden;background:#000';
   if(/\.mp4($|\?)/i.test(url)){
-    var v=document.createElement('video');v.controls=true;v.preload='metadata';v.playsInline=true;v.setAttribute('playsinline','');v.style.cssText='width:100%;display:block;max-height:400px';v.src=url;
+    var v=document.createElement('video');v.controls=true;v.preload='metadata';v.playsInline=true;v.setAttribute('playsinline','');v.style.cssText='width:100%;display:block;max-height:400px';v.crossOrigin='anonymous';/* w7md: cross-origin <track> needs CORS mode */v.src=url;
     v.addEventListener('play',function(){trackEvent('introVideo','play',G.st+'_'+(_enLang()?'en':'he'));});/* per-VIEW: tagged stage_lang so admin sees which opener is most-watched + repeat views */
     wrap.appendChild(v);
     try{_introEnhance(v,url,key,card,first)}catch(e){}
@@ -6970,7 +6994,7 @@ function _introSyncCcChip(v,card){try{var b=card.querySelector('.intro-cc');if(!
 // Opener card extras (#57 captions · #58 duration/speed/skip/resume · #59 fullscreen)
 function _introEnhance(v,url,key,card,first){
   var en=_enLang();
-  try{var vtt=url.replace(/\.mp4(\?.*)?$/i,'.vtt');var _ck='pm_vtt_'+key,_cached=null;try{_cached=sessionStorage.getItem(_ck)}catch(e){}(_cached==='0'?Promise.resolve({ok:false}):fetch(vtt,{method:'HEAD',cache:'no-store'})).then(function(r){try{sessionStorage.setItem(_ck,r.ok?'1':'0')}catch(e){}if(!r.ok)return;var t=document.createElement('track');t.kind='subtitles';t.srclang=en?'en':'he';t.label=en?'English':'עברית';t.src=vtt;t.default=!G.ccOff;v.appendChild(t);setTimeout(function(){_introApplyCc(v,card);},300);try{v.textTracks.addEventListener('change',function(){_introSyncCcChip(v,card)})}catch(e){}var ccb=card.querySelector('.intro-cc');if(ccb)ccb.style.display='';}).catch(function(){});}catch(e){}
+  try{var vtt=url.replace(/\.mp4(\?.*)?$/i,'.vtt$1');var _ck='pm_vtt_'+key,_cached=null;try{_cached=sessionStorage.getItem(_ck)}catch(e){}(_cached==='0'?Promise.resolve({ok:false}):fetch(vtt,{method:'HEAD',cache:'no-store'})).then(function(r){try{sessionStorage.setItem(_ck,r.ok?'1':'0')}catch(e){}if(!r.ok)return;var t=document.createElement('track');t.kind='subtitles';t.srclang=en?'en':'he';t.label=en?'English':'עברית';t.src=vtt;t.default=!G.ccOff;v.appendChild(t);setTimeout(function(){_introApplyCc(v,card);},300);try{v.textTracks.addEventListener('change',function(){_introSyncCcChip(v,card)})}catch(e){}var ccb=card.querySelector('.intro-cc');if(ccb)ccb.style.display='';}).catch(function(){});}catch(e){}
   var bar=document.createElement('div');bar.className='intro-bar';
   var dur=document.createElement('span');dur.className='intro-dur';dur.textContent='⏱ …';bar.appendChild(dur);
   var rates=[1,1.25,1.5,2],cur=(G.introRate&&G.introRate>0)?G.introRate:1;
@@ -7274,7 +7298,7 @@ function _avRender(){
     slide.innerHTML='';
     var wrap=document.createElement('div');
     wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:.8rem;animation:avFade .45s ease';
-    if(sl.img){var im=document.createElement('img');im.src=sl.img;im.alt='';im.style.cssText='max-height:190px;max-width:92%;border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.4)';wrap.appendChild(im);}
+    if(sl.img){var im=document.createElement('img');im.src=_media(sl.img);im.alt='';im.style.cssText='max-height:190px;max-width:92%;border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.4)';wrap.appendChild(im);}
     else if(_av.i===0&&_av.emoji){var em=document.createElement('div');em.textContent=_av.emoji;em.style.cssText='font-size:3.2rem;line-height:1';wrap.appendChild(em);}
     var tx=document.createElement('div');tx.textContent=sl.t;
     tx.style.cssText='line-height:1.8;text-align:center;color:var(--t1);direction:'+(_enLang()?'ltr':'rtl')+';font-size:'+(_av.i===0?'1.5rem':'1.12rem')+';font-weight:'+(_av.i===0?'800':'500');
@@ -7296,7 +7320,7 @@ function _avSpeak(){
   _avHush();
   var myTok=_av.tok;
   if(_av.aud){
-    var a=new Audio('av/'+_av.aud+'/'+(G.avVoice==='hila'?'hila':(G.avVoice==='klasi'?'klasi':'avri'))+'-'+_av.i+'.mp3');
+    var a=new Audio(_media('av/'+_av.aud+'/'+(G.avVoice==='hila'?'hila':(G.avVoice==='klasi'?'klasi':'avri'))+'-'+_av.i+'.mp3'));/* w7md */
     _av.player=a;
     try{a.playbackRate=(G.narrRate&&G.narrRate>0)?G.narrRate:1;}catch(e){}
     a.onended=function(){_avAdvance(myTok);};
@@ -8238,9 +8262,9 @@ function _ensureTodayFab(){
 /* --- legal: ToS / privacy --- */
 function showLegal(which){
   var old=$('legalOv');if(old)old.remove();
-  var tos='<h3 style="color:var(--t1)">תנאי שימוש</h3><ul style="text-align:right;color:var(--t2);font-size:.82rem;line-height:1.8;padding-right:1.1rem"><li>התוכן לימודי ולהעשרה בלבד ואינו ייעוץ מקצועי; אין התחייבות לתוצאה, לקבלה לעבודה או להסמכה.</li><li>התעודה היא תעודת השלמה פנימית; הקורס אינו מוכר על-ידי המל"ג או גוף הסמכה ואינו מקנה נקודות זכות.</li><li>הקורס הוא יוזמה פרטית; אין קשר לצה"ל, לחיל הים או לכל מוסד הכשרה רשמי.</li><li>הקניין הרוחני בתכנים שייך ליוצר; רישיון שימוש אישי בלבד, ללא העתקה או הפצה.</li><li>שמות ספרים, מחברים ומתודולוגיות מוזכרים לצורך זיהוי והפניה בלבד; אין חסות או שיתוף פעולה מצד בעלי הזכויות.</li><li>הגבלת אחריות עד גובה הסכום ששולם (אם שולם); הדין החל — דיני מדינת ישראל.</li><li><b>קרדיטים / Credits:</b> אנימציות האימוג׳י מבוססות על <a href="https://googlefonts.github.io/noto-emoji-animation/" target="_blank" rel="noopener" style="color:var(--p)">Noto Animated Emoji</a> © Google, ברישיון <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" style="color:var(--p)">CC BY 4.0</a> (הוקטנו והונחו על רקע), ועל <a href="https://github.com/microsoft/fluentui-emoji" target="_blank" rel="noopener" style="color:var(--p)">Fluent Emoji</a> © Microsoft Corporation, ברישיון MIT (הונפשו על ידינו); שאר האנימציות — יצירה מקורית. פירוט מלא: <a href="av/gifs/LICENSES.txt" target="_blank" rel="noopener" style="color:var(--p)">LICENSES</a>.<div dir="ltr" style="text-align:left;margin-top:.2rem">Animated emoji: Noto Animated Emoji © Google, licensed CC BY 4.0 (resized, placed on a background tile) · Fluent Emoji © Microsoft Corporation, MIT License (animated by us) · all other animations are original work.</div></li></ul>';
+  var tos='<h3 style="color:var(--t1)">תנאי שימוש</h3><ul style="text-align:right;color:var(--t2);font-size:.82rem;line-height:1.8;padding-right:1.1rem"><li>התוכן לימודי ולהעשרה בלבד ואינו ייעוץ מקצועי; אין התחייבות לתוצאה, לקבלה לעבודה או להסמכה.</li><li>התעודה היא תעודת השלמה פנימית; הקורס אינו מוכר על-ידי המל"ג או גוף הסמכה ואינו מקנה נקודות זכות.</li><li>הקורס הוא יוזמה פרטית; אין קשר לצה"ל, לחיל הים או לכל מוסד הכשרה רשמי.</li><li>הקניין הרוחני בתכנים שייך ליוצר; רישיון שימוש אישי בלבד, ללא העתקה או הפצה.</li><li>שמות ספרים, מחברים ומתודולוגיות מוזכרים לצורך זיהוי והפניה בלבד; אין חסות או שיתוף פעולה מצד בעלי הזכויות.</li><li>הגבלת אחריות עד גובה הסכום ששולם (אם שולם); הדין החל — דיני מדינת ישראל.</li><li><b>קרדיטים / Credits:</b> אנימציות האימוג׳י מבוססות על <a href="https://googlefonts.github.io/noto-emoji-animation/" target="_blank" rel="noopener" style="color:var(--p)">Noto Animated Emoji</a> © Google, ברישיון <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" style="color:var(--p)">CC BY 4.0</a> (הוקטנו והונחו על רקע), ועל <a href="https://github.com/microsoft/fluentui-emoji" target="_blank" rel="noopener" style="color:var(--p)">Fluent Emoji</a> © Microsoft Corporation, ברישיון MIT (הונפשו על ידינו); שאר האנימציות — יצירה מקורית. פירוט מלא: <a href="'+_media('av/gifs/LICENSES.txt')+'" target="_blank" rel="noopener" style="color:var(--p)">LICENSES</a>.<div dir="ltr" style="text-align:left;margin-top:.2rem">Animated emoji: Noto Animated Emoji © Google, licensed CC BY 4.0 (resized, placed on a background tile) · Fluent Emoji © Microsoft Corporation, MIT License (animated by us) · all other animations are original work.</div></li></ul>';
   var priv='<h3 style="color:var(--t1)">מדיניות פרטיות</h3><ul style="text-align:right;color:var(--t2);font-size:.82rem;line-height:1.8;padding-right:1.1rem"><li><b>מה נאסף:</b> שם תצוגה, דוא"ל (אופציונלי), נקודות, התקדמות ופעילות בקורס.</li><li><b>למה:</b> שמירת ההתקדמות שלך, תזכורות (בהסכמה בלבד) ושיפור המערכת.</li><li><b>מסירת המידע מרצון;</b> אי-מסירת דוא"ל משמעה אי-קבלת תזכורות בלבד.</li><li><b>איפה:</b> Google Sheets/Apps Script ואחסון Vercel; ללא העברה לצדדים שלישיים למטרות שיווק.</li><li><b>זכויותיך:</b> עיון, תיקון ומחיקה — פנו דרך כפתור הדיווח במערכת והנתונים יימחקו.</li><li><b>דיוור:</b> רק בהסכמה מפורשת, עם הסרה בלחיצה אחת בכל הודעה.</li></ul>';
-  if(_enLang()){tos="<h3 style=\"color:var(--t1)\">Terms of Use</h3><ul style=\"text-align:left;color:var(--t2);font-size:.82rem;line-height:1.8;padding-left:1.1rem\"><li>The content is for learning and enrichment only and is not professional advice; there is no guarantee of any outcome, job placement or certification.</li><li>The certificate is an internal certificate of completion; the course is not accredited by the Council for Higher Education or any accreditation body and does not grant academic credit.</li><li>The course is a private initiative; it has no connection to the IDF, the Israeli Navy or any official training institution.</li><li>The intellectual property in the content belongs to the creator; personal-use license only, with no copying or distribution.</li><li>Book titles, authors and methodologies are mentioned for identification and reference only; there is no sponsorship by, or partnership with, the rights holders.</li><li>Liability is limited to the amount paid (if any); governing law: the laws of the State of Israel.</li><li><b>Credits:</b> animated emoji are based on <a href=\"https://googlefonts.github.io/noto-emoji-animation/\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--p)\">Noto Animated Emoji</a> © Google, licensed <a href=\"https://creativecommons.org/licenses/by/4.0/\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--p)\">CC BY 4.0</a> (resized, placed on a background tile), and on <a href=\"https://github.com/microsoft/fluentui-emoji\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--p)\">Fluent Emoji</a> © Microsoft Corporation, MIT License (animated by us); all other animations are original work. Full list: <a href=\"av/gifs/LICENSES.txt\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--p)\">LICENSES</a>.</li></ul>";priv="<h3 style=\"color:var(--t1)\">Privacy Policy</h3><ul style=\"text-align:left;color:var(--t2);font-size:.82rem;line-height:1.8;padding-left:1.1rem\"><li><b>What we collect:</b> display name, email (optional), points, progress and course activity.</li><li><b>Why:</b> to save your progress, send reminders (only with your consent) and improve the system.</li><li><b>Providing information is voluntary;</b> not providing an email only means you will not receive reminders.</li><li><b>Where:</b> Google Sheets/Apps Script and Vercel hosting; no transfer to third parties for marketing purposes.</li><li><b>Your rights:</b> access, correction and deletion. Contact us through the in-app report button and your data will be deleted.</li><li><b>Mailing:</b> only with explicit consent, with one-click unsubscribe in every message.</li></ul>";}/* w6 i18n */
+  if(_enLang()){tos="<h3 style=\"color:var(--t1)\">Terms of Use</h3><ul style=\"text-align:left;color:var(--t2);font-size:.82rem;line-height:1.8;padding-left:1.1rem\"><li>The content is for learning and enrichment only and is not professional advice; there is no guarantee of any outcome, job placement or certification.</li><li>The certificate is an internal certificate of completion; the course is not accredited by the Council for Higher Education or any accreditation body and does not grant academic credit.</li><li>The course is a private initiative; it has no connection to the IDF, the Israeli Navy or any official training institution.</li><li>The intellectual property in the content belongs to the creator; personal-use license only, with no copying or distribution.</li><li>Book titles, authors and methodologies are mentioned for identification and reference only; there is no sponsorship by, or partnership with, the rights holders.</li><li>Liability is limited to the amount paid (if any); governing law: the laws of the State of Israel.</li><li><b>Credits:</b> animated emoji are based on <a href=\"https://googlefonts.github.io/noto-emoji-animation/\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--p)\">Noto Animated Emoji</a> © Google, licensed <a href=\"https://creativecommons.org/licenses/by/4.0/\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--p)\">CC BY 4.0</a> (resized, placed on a background tile), and on <a href=\"https://github.com/microsoft/fluentui-emoji\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--p)\">Fluent Emoji</a> © Microsoft Corporation, MIT License (animated by us); all other animations are original work. Full list: <a href=\""+_media('av/gifs/LICENSES.txt')+"\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--p)\">LICENSES</a>.</li></ul>";priv="<h3 style=\"color:var(--t1)\">Privacy Policy</h3><ul style=\"text-align:left;color:var(--t2);font-size:.82rem;line-height:1.8;padding-left:1.1rem\"><li><b>What we collect:</b> display name, email (optional), points, progress and course activity.</li><li><b>Why:</b> to save your progress, send reminders (only with your consent) and improve the system.</li><li><b>Providing information is voluntary;</b> not providing an email only means you will not receive reminders.</li><li><b>Where:</b> Google Sheets/Apps Script and Vercel hosting; no transfer to third parties for marketing purposes.</li><li><b>Your rights:</b> access, correction and deletion. Contact us through the in-app report button and your data will be deleted.</li><li><b>Mailing:</b> only with explicit consent, with one-click unsubscribe in every message.</li></ul>";}/* w6 i18n */
   var ov=document.createElement('div');ov.id='legalOv';if(_enLang())ov.dir='ltr';/* W6 integration: base CSS forces #legalOv rtl; vis_c styles #legalOv[dir=ltr] */
   ov.innerHTML='<div class="hub-box" style="max-width:480px">'+(which==='priv'?priv:tos)+'<div style="text-align:center;margin-top:.6rem"><button class="bs" onclick="$(\'legalOv\').remove()">סגירה</button></div></div>';
   ov.onclick=function(e){if(e.target===ov)ov.remove()};
@@ -9156,7 +9180,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.5';
+const APP_VERSION='1.10.6';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -16965,7 +16989,7 @@ function _w7jcRM(){try{return !!(window.matchMedia&&matchMedia('(prefers-reduced
 function _w7jcEn(){try{return !!_enLang()}catch(e){return false}}
 function _w7jcT(he,en){return _w7jcEn()?en:he}
 function _w7jcTrack(f,a,m){try{trackEvent(f,a,m)}catch(e){}}
-function _w7jcImg(name,px,cls){return '<img class="w7jc-i3'+(cls?' '+cls:'')+'" src="'+_W7JC_UI+name+'.webp" width="'+px+'" height="'+px+'" alt="" draggable="false" decoding="async">'}
+function _w7jcImg(name,px,cls){return '<img class="w7jc-i3'+(cls?' '+cls:'')+'" src="'+_media(_W7JC_UI+name+'.webp')+'" width="'+px+'" height="'+px+'" alt="" draggable="false" decoding="async">'}
 function _w7jcPh(n,px,cls){var p=_W7JC_PH[n];if(!p)return '';return '<svg class="w7jc-ph w7jc-ph-'+n+(cls?' '+cls:'')+'" viewBox="0 0 256 256" width="'+px+'" height="'+px+'" fill="currentColor" aria-hidden="true" focusable="false">'+p+'</svg>'}
 function _w7jcSv(n,px,cls){var p=_W7JC_SV[n];
   if(!p){try{if(n==='target')p=_FAB_ICONS.dailyFab;else if(n==='cal')p=_FAB_ICONS.todayFab}catch(e){}}
@@ -16996,7 +17020,7 @@ function _w7jcIconize(root,map,px,cls){
   return n;
 }
 /* warm the ceremony set (~35KB) on the first answer of a session so the hero never pops in late */
-function _w7jcPreload(){if(_w7jc.pre)return;_w7jc.pre=1;try{['hero-star-256','hero-party-256','hero-trophy-256','hero-books-256','star-96','bullseye-96','fire-96','sparkles-96'].forEach(function(n){var i=new Image();i.decoding='async';i.src=_W7JC_UI+n+'.webp';_w7jc.res[n]=i})}catch(e){}}
+function _w7jcPreload(){if(_w7jc.pre)return;_w7jc.pre=1;try{['hero-star-256','hero-party-256','hero-trophy-256','hero-books-256','star-96','bullseye-96','fire-96','sparkles-96'].forEach(function(n){var i=new Image();i.decoding='async';i.src=_media(_W7JC_UI+n+'.webp');_w7jc.res[n]=i})}catch(e){}}
 function _w7jcEach(sel,fn){try{var l=document.querySelectorAll(sel);for(var i=0;i<l.length;i++)fn(l[i],i)}catch(e){}}
 /* one 0×0 fixed layer for sprites/ghosts: <body>'s child list stays stable (the W6 dock watches it), never hit-testable */
 function _w7jcLayer(){var l=_w7jc.layer;if(l&&l.isConnected)return l;l=document.getElementById('w7jcLayer');if(!l){l=document.createElement('div');l.id='w7jcLayer';l.setAttribute('aria-hidden','true');document.body.appendChild(l)}_w7jc.layer=l;return l}
@@ -17121,7 +17145,7 @@ function _w7jcCerBuild(st){
   var kick=(st.perfect||st.acc>=100)?(en?'PERFECT!':'מושלם!'):st.acc>=80?(en?'GREAT WORK!':'עבודה מצוינת!'):(en?'STAGE COMPLETE':'השלב הושלם!');
   var sk=G.streak||1;
   var mk=function(cls,html){var d=document.createElement('div');d.className=cls;if(html!=null)d.innerHTML=html;return d};
-  var heroEl=mk('w7jc-hero','<i class="w7jc-rays"></i><i class="w7jc-glow"></i><img src="'+_W7JC_UI+hero+'.webp" width="128" height="128" alt="" draggable="false">');
+  var heroEl=mk('w7jc-hero','<i class="w7jc-rays"></i><i class="w7jc-glow"></i><img src="'+_media(_W7JC_UI+hero+'.webp')+'" width="128" height="128" alt="" draggable="false">');
   var kEl=mk('cer-k w7jc-kick');kEl.textContent=kick;
   var tEl=mk('cer-t');tEl.textContent=String(s.t||'');
   var subTx=_w7jcSub(st.rankUp),sEl=mk('w7jc-sub'+(st.rankUp?' w7jc-rk':''));sEl.textContent=subTx;
@@ -17369,7 +17393,7 @@ function _w7jcMapChrome(){
   _w7jcEach('.j-node .j-score',function(el){_w7jcIconize(el,_W7JC_STAR,13)});
   _w7jcEach('.j-node[data-sid]',function(nd){
     var l4=!!nd.querySelector('.w5m-meter.w5m-l4'),ic=nd.querySelector('.j-ic'),cr=ic&&ic.querySelector('.w7jc-crown');
-    if(l4&&ic&&!cr){var im=document.createElement('img');im.className='w7jc-crown';im.src=_W7JC_UI+'crown-96.webp';im.width=im.height=24;im.alt='';im.setAttribute('aria-hidden','true');im.draggable=false;ic.appendChild(im)}
+    if(l4&&ic&&!cr){var im=document.createElement('img');im.className='w7jc-crown';im.src=_media(_W7JC_UI+'crown-96.webp');im.width=im.height=24;im.alt='';im.setAttribute('aria-hidden','true');im.draggable=false;ic.appendChild(im)}
     else if(!l4&&cr)cr.remove();
   });
   try{var h=document.querySelector('#mv>h2 .civ-only');if(h&&!h.querySelector('.w7jc-ph')&&/🗺/.test(h.textContent)){h.innerHTML=_w7jcPh('map',26,'w7jc-maph')+' '}}catch(e){}

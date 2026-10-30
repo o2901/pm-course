@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/av/:path*",
+      "destination": "https://pm-course-media.vercel.app/av/:path*",
+      "permanent": false
+    }
+  ]
+}
