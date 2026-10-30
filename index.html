@@ -5460,7 +5460,7 @@ function _renumId(id){id=parseInt(id,10);return(id>=18&&id<=24)?id+1:id;}
 function _renumNumKeys(o){if(!o||typeof o!=='object')return o;for(var id=24;id>=18;id--){var k=String(id),nk=String(id+1);if(Object.prototype.hasOwnProperty.call(o,k)){o[nk]=o[k];delete o[k];}}return o;}
 function _renumCompositeKeys(o){if(!o||typeof o!=='object')return o;var nw={};Object.keys(o).forEach(function(k){var m=/^(\d+)(_.*)?$/.exec(k);if(m){nw[_renumId(m[1])+(m[2]||'')]=o[k];}else{nw[k]=o[k];}});Object.keys(o).forEach(function(k){delete o[k];});Object.keys(nw).forEach(function(k){o[k]=nw[k];});return o;}
 function _migrateLocalRenumber(){
-  if(G._renum25)return;
+  if(G._renum25)return;if(G.navyArm!==undefined||G.isAdmin!==undefined||G._cloudRenumDone!==undefined){G._renum25=true;return}/* w8rt RT2-01: navyArm/isAdmin exist only in >=1.1.0 snapshots (ids already new) — a latch-less one came from a fresh browser, never from 1.0.x */
   if(G.done instanceof Set)G.done=new Set([...G.done].map(_renumId));
   ['sc','qa','quizAttempts','reflections','_pu','_quizPassed','_tabVisits'].forEach(function(p){if(G[p]&&typeof G[p]==='object')_renumNumKeys(G[p]);});
   ['_seenSec','stageTime'].forEach(function(p){if(G[p]&&typeof G[p]==='object')_renumCompositeKeys(G[p]);});
@@ -6354,7 +6354,7 @@ const consent=c?!!c.checked:false;
 if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showModal('📧','מייל לא תקין','אנא הזינו כתובת מייל תקינה.','הבנתי');return}
 if(!consent){showModal('☑️','נדרש אישור','אנא סמנו את הסכמתכם לקבל תזכורות.','הבנתי');return}
 // requestApproval will save the email + send verification mail (and handles email_mismatch)
-fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'requestApproval',userName:G.userName,email:email,emailConsent:!!consent}),headers:{'Content-Type':'text/plain'}})
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'requestApproval',userName:G.userName,email:email,emailConsent:!!consent,sessionToken:(G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||'')}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json()).then(d=>{
   if(d.success===false && d.error==='email_mismatch'){
     showModal('🔒','מייל לא תואם',d.message||'שם משתמש זה כבר רשום עם כתובת מייל אחרת.','הבנתי');
@@ -9615,7 +9615,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.8';
+const APP_VERSION='1.10.9';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -17220,7 +17220,7 @@ function _w7lnWeekShow(quiet){
   var start=_w7lnPD(p.k);if(!start){start=_w7lnWkStart(new Date());start.setDate(start.getDate()-7)}
   var names=en?['Sun','Mon','Tue','Wed','Thu','Fri','Sat']:['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
   var nd=0,npz=0,nrs=0,dots='',i,d;
-  for(i=0;i<7;i++){d=new Date(start);d.setDate(start.getDate()+i);var on=!!(p.days&&p.days[_dayKey(d)]),rd=_w7lnRestOn(d),pz=!on&&_w7lnPaused(d),rs=!on&&!pz&&rd;if(on)nd++;if(pz&&!rd)npz++;if(rd)nrs++;
+  for(i=0;i<7;i++){d=new Date(start);d.setDate(start.getDate()+i);var on=!!(p.days&&p.days[_dayKey(d)]),rd=_w7lnRestOn(d),pz=!on&&_w7lnPaused(d),rs=!on&&!pz&&rd;if(on)nd++;if(pz&&!rd)npz++;if(rd&&!on)nrs++;/* w8rt RT2-16 */
     dots+='<span class="w7ln-dd'+(on?' on':pz?' pz':rs?' rs':'')+'"><i aria-hidden="true">'+(on?'✓':pz?'⏸':rs?'🕯️':'')+'</i><b>'+names[d.getDay()]+'</b></span>'}
   var den=Math.max(1,7-nrs),allP=npz>0&&nd===0&&npz>=den,zero=nd===0&&!allP,body='';/* a rest day leaves the denominator (6 with one) */
   if(allP)body='<p class="w7ln-wk-h">'+L('⏸ השבוע היה בהשהיה — ממשיכים כשנוח לכם','⏸ Last week was paused — continue whenever you\'re ready')+'</p><div class="w7ln-dots" aria-hidden="true">'+dots+'</div>';
@@ -19798,6 +19798,138 @@ function _w8gmInstall(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',_w8gmInstall);else setTimeout(_w8gmInstall,0);
 /* ===== /W8 GAME ROOM ===== */
+/* ===== W8 RED-TEAM v2 (_w8rt) — see _video_factory/_w8_redteam2.js / .md. Wrappers only, pass-through on error. ===== */
+var _w8rt={boot:Date.now(),sessU:'',acc:null,tabDirty:false};
+function _w8rtLogged(){try{return typeof _w6rtLoggedIn==='function'?_w6rtLoggedIn():!!(G&&G.s&&G.userName&&G.v!=='w')}catch(e){return false}}
+function _w8rtEn(){try{return !!_enLang()}catch(e){return false}}
+function _w8rtMax(sid){try{var s=S.find(function(x){return x.id===+sid});return s&&s.q&&s.q.length?s.q.length*10:0}catch(e){return 0}}
+function _w8rtHide(ids){ids.forEach(function(id){var e=$(id);if(e&&!e.classList.contains('hid'))e.classList.add('hid')})}
+/* RT2-01 latch the one-time local renumber for every snapshot this build writes (ld() already ran any genuine migration) */
+try{if(!G._renum25)G._renum25=true}catch(e){}
+/* RT2-14 the stage best score never exceeds the stage maximum; the +15 speed bonus stays in G.ts, paid once per stage */
+function _w8rtSpdNorm(){try{if(!G.sc||typeof G.sc!=='object')return;Object.keys(G.sc).forEach(function(k){var mx=_w8rtMax(k),v=parseInt(G.sc[k]);if(mx&&v>mx){G.sc[k]=mx;if(!G._w8rtSpd||typeof G._w8rtSpd!=='object')G._w8rtSpd={};G._w8rtSpd[k]=1}})}catch(e){}}
+function _w8rtSpdFix(sid){var mx=_w8rtMax(sid),v=parseInt(G.sc&&G.sc[sid]);if(!mx||!(v>mx))return false;if(!G._w8rtSpd||typeof G._w8rtSpd!=='object')G._w8rtSpd={};var over=v-mx;G.sc[sid]=mx;if(G._w8rtSpd[sid])G.ts=Math.max(0,(parseInt(G.ts)||0)-over);else G._w8rtSpd[sid]=1;try{uh()}catch(e){}return true}
+_w8rtSpdNorm();
+/* RT2-03 quiz retake survives every merge: G._w8rtQr[sid]={t,a} mirrors the retake's own answers until it is finished */
+function _w8rtQrRestore(){try{var m=G._w8rtQr;if(!m||typeof m!=='object')return;Object.keys(m).forEach(function(sid){var r=m[sid];if(!r||typeof r!=='object'){delete m[sid];return}
+  var qa=(G.quizAttempts&&G.quizAttempts[sid])||[];if(Array.isArray(qa)&&qa.some(function(a){return a&&+a.t>+r.t+1000})){delete m[sid];return}/* finished on another device/tab after this retake started: take that */
+  if(!G.qa||typeof G.qa!=='object')G.qa={};var a=(r.a&&typeof r.a==='object')?r.a:{};if(Object.keys(a).length)G.qa[sid]=Object.assign({},a);else delete G.qa[sid]})}catch(e){}}
+const _w8rtOrigRr=rr;rr=function(sid){try{if(!G._w8rtQr||typeof G._w8rtQr!=='object')G._w8rtQr={};G._w8rtQr[sid]={t:Date.now(),a:{}}}catch(e){}return _w8rtOrigRr.apply(this,arguments)};
+const _w8rtOrigRetro=_retroCompleteStages;_retroCompleteStages=function(){_w8rtQrRestore();_w8rtSpdNorm();return _w8rtOrigRetro.apply(this,arguments)};
+const _w8rtOrigSa=sa;sa=function(sid,qi,sel){
+  var r=_w8rtOrigSa.apply(this,arguments);
+  try{var ch=false,m=G._w8rtQr;
+    if(m&&m[sid]){var n=_w8rtMax(sid)/10,qa=(G.qa&&G.qa[sid])||{};if(n&&Object.keys(qa).length>=n)delete m[sid];else m[sid].a=Object.assign({},qa);ch=true}
+    if(_w8rtSpdFix(sid))ch=true;
+    if(ch)sv();
+  }catch(e){}
+  return r;
+};
+/* RT2-02 another tab wrote the same account: merge it in (no sv() here — the next normal save persists the union) */
+function _w8rtTabMerge(o){
+  var J=function(x,d){try{return JSON.stringify(x==null?d:x)}catch(e){return JSON.stringify(d)}};
+  var oL=o.lastDay?new Date(o.lastDay).getTime():NaN,mL=G.lastDay?new Date(G.lastDay).getTime():NaN;
+  if(!isNaN(oL)&&(isNaN(mL)||oL>mL)){G.lastDay=o.lastDay;G.streak=parseInt(o.streak)||0}/* that tab already counted a newer day */
+  else if(!isNaN(oL)&&oL===mL)G.streak=Math.max(parseInt(G.streak)||0,parseInt(o.streak)||0);
+  var om=o._w8rtQr&&typeof o._w8rtQr==='object'?o._w8rtQr:{};if(!G._w8rtQr||typeof G._w8rtQr!=='object')G._w8rtQr={};
+  Object.keys(om).forEach(function(k){var a=om[k],b=G._w8rtQr[k];if(a&&typeof a==='object'&&(!b||+a.t>+b.t))G._w8rtQr[k]=a});
+  _w6syMerge({appVersion:APP_VERSION,score:o.ts,streak:G.streak,maxStreak:o.maxStreak,stagesList:Array.isArray(o.done)?o.done.join(','):'',
+    stageTimeJSON:J(o.stageTime,{}),activityLogJSON:J(o.activityLog,[]),quizAttemptsJSON:J(o.quizAttempts,{}),reflectionsJSON:J(o.reflections,{}),satSkipsJSON:J(o.satSkips,[]),
+    progressJSON:J({s:o._seenSec||{},t:o._tabVisits||{},q:o.qa||{},v:o._avPos||{},n:o._narrPos||{},i:o._introPos||{},p:o.sc||{}},{}),
+    interviewUnlocked:o.interviewUnlocked?'true':'',navyArm:G.navyArm?'true':'',isAdmin:G.isAdmin?'true':''});
+  ['weeklyDone','_achShown'].forEach(function(k){if(Array.isArray(o[k])){if(!Array.isArray(G[k]))G[k]=[];o[k].forEach(function(x){if(G[k].indexOf(x)<0)G[k].push(x)})}});
+  if(o._quizPassed&&typeof o._quizPassed==='object'){if(!G._quizPassed||typeof G._quizPassed!=='object')G._quizPassed={};Object.keys(o._quizPassed).forEach(function(k){if(o._quizPassed[k])G._quizPassed[k]=true})}
+  if(o._w8rtSpd&&typeof o._w8rtSpd==='object'){if(!G._w8rtSpd||typeof G._w8rtSpd!=='object')G._w8rtSpd={};Object.keys(o._w8rtSpd).forEach(function(k){G._w8rtSpd[k]=1})}
+  try{uh()}catch(e){}try{if(G.v==='m'){if(document.hidden)_w8rt.tabDirty=true;else rg()}}catch(e){}
+}
+/* merged synchronously: a background tab's timers are throttled to ≥1 s, and its first save on return (visibility → sv) must
+   already carry the other tab's progress. The map is re-rendered only while visible (else on the next return). */
+try{window.addEventListener('storage',function(e){try{
+  if(!e||e.key!==LS||!e.newValue||!G||!G.s||!G.userName)return;
+  var o=JSON.parse(e.newValue);if(!o||typeof o!=='object'||o.userName!==G.userName)return;
+  _w8rtTabMerge(o);
+}catch(x){}})}catch(e){}
+try{document.addEventListener('visibilitychange',function(){try{if(!document.hidden&&_w8rt.tabDirty){_w8rt.tabDirty=false;if(G.v==='m')rg()}}catch(e){}})}catch(e){}
+/* RT2-04 / RT2-05 nothing per-account keeps running once 🏠 is pressed */
+const _w8rtOrigMPE=_maybePromptEmail;_maybePromptEmail=function(){if(!_w8rtLogged())return;return _w8rtOrigMPE.apply(this,arguments)};
+const _w8rtOrigPAE=_promptAddEmail;_promptAddEmail=function(){if(!_w8rtLogged())return;return _w8rtOrigPAE.apply(this,arguments)};
+const _w8rtOrigCCU=checkCloudUnlocks;checkCloudUnlocks=function(){if(!_w8rtLogged())return;return _w8rtOrigCCU.apply(this,arguments)};
+/* RT2-06 user switch: per-account leftovers the W6 reset misses (deleted = the fresh-user defaults) */
+const _w8rtOrigForeign=_w6syForeign;_w6syForeign=function(){var r=_w8rtOrigForeign.apply(this,arguments);try{delete G._weeklyAns;delete G.goalMin;delete G._goalAsked;delete G._easterEggs;G._w8rtQr={};G._w8rtSpd={}}catch(e){}return r};
+/* RT2-07 duel invitations: retract a vanished one, never re-render the same one, roll back a failed accept */
+function _w8rtDuelGone(id){try{if(_duelId!==id)return;var dv=$('duelView');if(dv&&!dv.classList.contains('hid'))return;_duelId=null;try{_startPendingDuelCheck()}catch(e){}showAchievement('⌛',_w8rtEn()?'This challenge is no longer available':'האתגר כבר לא זמין','')}catch(e){}}
+const _w8rtOrigDuelPost=_duelPost;_duelPost=function(action,extra){
+  var p=_w8rtOrigDuelPost.apply(this,arguments);
+  try{
+    if(action==='getPendingDuels')p=p.then(function(d){try{if(d&&d.success&&!(d.data&&d.data.length)&&!_duelId){var n=$('duelNotif');if(n&&n.classList.contains('show')){n.classList.remove('show');n.removeAttribute('data-w8rt-id')}}}catch(e){}return d});
+    else if(action==='respondDuel'&&extra&&extra.accept){var id=extra.duelId;p=p.then(function(d){try{if(d&&d.success)_w8rt.acc=id;else _w8rtDuelGone(id)}catch(e){}return d})}
+    else if(action==='getDuelState'&&extra&&_w8rt.acc&&extra.duelId===_w8rt.acc){var id2=_w8rt.acc;_w8rt.acc=null;p=p.then(function(d){try{if(!(d&&d.success&&d.data))_w8rtDuelGone(id2)}catch(e){}return d})}
+  }catch(e){}
+  return p;
+};
+const _w8rtOrigDuelNotif=_showDuelNotif;_showDuelNotif=function(duel){
+  try{var n=$('duelNotif');if(n&&duel&&n.classList.contains('show')&&n.getAttribute('data-w8rt-id')===String(duel.duelId))return}catch(e){}/* same invitation: keep the card (and keyboard focus) as is */
+  var r=_w8rtOrigDuelNotif.apply(this,arguments);
+  try{var n2=$('duelNotif');if(n2&&duel&&n2.classList.contains('show'))n2.setAttribute('data-w8rt-id',String(duel.duelId))}catch(e){}
+  return r;
+};
+/* RT2-08 one main screen at a time / RT2-10 the jump-to-current chip lives on the map only */
+const _w8rtOrigViewSync=_w6rtViewSync;_w6rtViewSync=function(){var r=_w8rtOrigViewSync.apply(this,arguments);try{if(!_w6rtVis('mv')){var c=$('jumpCurFab');if(c&&c.classList.contains('on'))c.classList.remove('on')}}catch(e){}return r};
+const _w8rtOrigShowProfile=showProfile;showProfile=function(){var r=_w8rtOrigShowProfile.apply(this,arguments);try{if(_w6rtVis('pv')){_w8rtHide(['lbv','ib','miv','glv']);_w6rtViewSync()}}catch(e){}return r};
+const _w8rtOrigShowGl=showGlossary;showGlossary=function(){var r=_w8rtOrigShowGl.apply(this,arguments);try{if(_w6rtVis('glv')){_w8rtHide(['lbv','ib','miv','pv']);_w6rtViewSync()}}catch(e){}return r};
+const _w8rtOrigShowLb=showLeaderboard;showLeaderboard=function(){var r=_w8rtOrigShowLb.apply(this,arguments);try{if(_w6rtVis('lbv')){_w8rtHide(['miv']);_w6rtViewSync()}}catch(e){}return r};
+const _w8rtOrigSs=ss;ss=function(id){var r=_w8rtOrigSs.apply(this,arguments);try{if(G.v==='s'&&_w6rtVis('sv')){_w8rtHide(['lbv','miv','glv','pv']);_w6rtViewSync()}}catch(e){}return r};
+const _w8rtOrigMI=startMockInterview;startMockInterview=function(){var r=_w8rtOrigMI.apply(this,arguments);try{if(G.v==='mi'&&_w6rtVis('miv')){_w8rtHide(['pv','glv','lbv','ib']);window.scrollTo(0,0);_w6rtViewSync()}}catch(e){}return r};
+const _w8rtOrigSR=startSpacedRepetition;startSpacedRepetition=function(){var r=_w8rtOrigSR.apply(this,arguments);try{if(G.v==='sr'&&_w6rtVis('miv')){_w8rtHide(['pv','glv','lbv','ib']);window.scrollTo(0,0);_w6rtViewSync()}}catch(e){}return r};
+/* RT2-09 Tab stays inside the top stack overlay (the tour, dock sheet and share sheet trap Tab themselves) */
+try{window.addEventListener('keydown',function(e){
+  if(e.key!=='Tab'||e.altKey||e.ctrlKey||e.metaKey)return;
+  try{
+    if(typeof _w6skSync!=='function'||typeof _w6skStk==='undefined')return;
+    _w6skSync();var en=_w6skStk[_w6skStk.length-1];if(!en||!en.el||!en.el.isConnected)return;
+    var el=en.el;if(/^(w6trRoot|w6dkSheet|w7shOv)$/.test(el.id||''))return;
+    var f=[].slice.call(el.querySelectorAll('a[href],button,input,select,textarea,[tabindex]')).filter(function(x){return !x.disabled&&x.tabIndex>=0&&_w6skVis(x)&&!(x.closest&&x.closest('[inert],[aria-hidden="true"]'))});
+    var a=document.activeElement;
+    if(!f.length){e.preventDefault();try{if(!el.hasAttribute('tabindex'))el.setAttribute('tabindex','-1');el.focus({preventScroll:true})}catch(x){}return}
+    var i=f.indexOf(a);
+    if(i<0||!el.contains(a)){e.preventDefault();(e.shiftKey?f[f.length-1]:f[0]).focus();return}
+    if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus()}
+    else if(e.shiftKey&&i===0){e.preventDefault();f[f.length-1].focus()}
+  }catch(x){}
+},true)}catch(e){}
+/* RT2-21 double-click on a button that opens an overlay: the 2nd click lands on the brand-new backdrop and closed it again.
+   Stack entries are stamped when they appear (unstamped when they leave); a backdrop click on a <450 ms old overlay is swallowed. */
+const _w8rtOrigSkSync=_w6skSync;_w6skSync=function(){
+  var before=[];try{for(var i=0;i<_w6skStk.length;i++)before.push(_w6skStk[i].el)}catch(e){}
+  var r=_w8rtOrigSkSync.apply(this,arguments);
+  try{var now=[];for(var j=0;j<_w6skStk.length;j++){var el=_w6skStk[j].el;now.push(el);if(el&&!el._w8rtT0)el._w8rtT0=Date.now()}
+    before.forEach(function(el){if(el&&now.indexOf(el)<0)try{delete el._w8rtT0}catch(x){}})}catch(e){}
+  return r;
+};
+try{window.addEventListener('click',function(e){try{var t=e.target;if(t&&t._w8rtT0&&Date.now()-t._w8rtT0<450){e.stopImmediatePropagation();e.preventDefault()}}catch(x){}},true)}catch(e){}
+/* RT2-11 a new calendar day counts at the first interaction / focus / return, like a login would */
+function _w8rtRoll(){try{if(!G||!G.s||!G.userName||!G.lastDay||G.v==='w'||!_w8rtLogged())return;if(G.lastDay===new Date().toDateString())return;updateStreak();try{sv()}catch(e){}try{uh()}catch(e){}}catch(e){}}
+try{document.addEventListener('visibilitychange',function(){if(!document.hidden)_w8rtRoll()});window.addEventListener('focus',_w8rtRoll);['pointerdown','keydown'].forEach(function(t){document.addEventListener(t,_w8rtRoll,{capture:true,passive:true})})}catch(e){}
+/* RT2-12 one login request in flight (Enter twice, chip + Enter) */
+const _w8rtOrigGo=go;go=function(){try{var b=document.querySelector('.btn-go');if(b&&b.disabled)return}catch(e){}return _w8rtOrigGo.apply(this,arguments)};/* _tryLogin disables this exact button while its request is in flight */
+/* RT2-13 the session timer (+ morning/night bonus) starts on the first map of each login, however slow the login was */
+const _w8rtOrigMp=mp;mp=function(){var r=_w8rtOrigMp.apply(this,arguments);try{if(G.s&&G.userName&&G.userName!=='אנונימי'&&_w8rt.sessU!==G.userName&&_w8rtLogged()){_w8rt.sessU=G.userName;if(!G.sessionStart||G.sessionStart<_w8rt.boot)startSessionTimer()}}catch(e){}return r};
+const _w8rtOrigHome=goHome;goHome=function(){try{_w8rt.sessU='';_w8rt.acc=null;_clearEmailPromptCadence();var o=$('emailPromptOverlay');if(o)o.remove()}catch(e){}return _w8rtOrigHome.apply(this,arguments)};
+/* RT2-15 "stages to In Certification" = the missing ones of stages 2-10 (the rank rule), never negative */
+const _w8rtOrigUh=uh;uh=function(){var r=_w8rtOrigUh.apply(this,arguments);try{var ms=$('map-sub'),t=getTitle();if(ms&&t&&t.cls==='student'){var k=Math.max(1,9-[2,3,4,5,6,7,8,9,10].filter(function(i){return G.done.has(i)}).length);ms.textContent=(_w8rtEn()?(k+(k===1?' more stage':' more stages')+' to In Certification!'):(_t('עוד')+' '+k+' '+_t('שלבים לדרגת בהסמכה!')))+(G.navyArm?' ⚓':' 📜')}}catch(e){}return r};
+/* RT2-17 skills count only the stages this learner can see; a section with none is not shown */
+function _w8rtVisOnly(fn,ctx,args){var os=sortStages;sortStages=function(a){return os(a).filter(function(x){return !_stageHidden(x)})};try{return fn.apply(ctx,args)}finally{sortStages=os}}
+const _w8rtOrigSkills=renderSkillBadges;renderSkillBadges=function(){var r=_w8rtVisOnly(_w8rtOrigSkills,this,arguments);try{var el=$('skill-badges'),b=el?el.querySelectorAll('.skill-badge'):[];if(b.length===SKILL_SECTIONS.length)SKILL_SECTIONS.forEach(function(sec,i){if(!S.some(function(x){return x.tg===sec.tg&&!_stageHidden(x)}))b[i].remove()})}catch(e){}return r};
+const _w8rtOrigSecAch=checkSectionAchievements;checkSectionAchievements=function(){return _w8rtVisOnly(_w8rtOrigSecAch,this,arguments)};
+/* RT2-18 nothing left to complete → no "complete one stage today" goal */
+const _w8rtOrigGoal=renderDailyGoal;renderDailyGoal=function(){var r=_w8rtOrigGoal.apply(this,arguments);try{var el=$('daily-goal');if(el&&G.done&&S.every(function(x){return _stageHidden(x)||G.done.has(x.id)}))el.style.display='none'}catch(e){}return r};
+/* RT2-19 learnInsights / caseAnswers kept their pre-renumber keys: stage N (19-25) reads key N-1, the inserted 18 has none */
+function _w8rtOldKey(id){var n=parseInt(id,10);return n===18?null:((n>=19&&n<=25)?n-1:id)}
+const _w8rtOrigLI=_lInsight;_lInsight=function(id){var k=_w8rtOldKey(id);return k===null?'':_w8rtOrigLI.call(this,k)};
+const _w8rtOrigCA=_cAns;_cAns=function(id){var k=_w8rtOldKey(id);return k===null?'':_w8rtOrigCA.call(this,k)};
+/* RT2-20 the "3 perfect scores" hook: real perfect scores (≥ the stage maximum), not three 50s */
+try{hookMessages.forEach(function(h){if(h&&typeof h.cond==='function'&&/s===50/.test(String(h.cond)))h.cond=function(g){var n=0;try{Object.keys(g.sc||{}).forEach(function(k){var mx=_w8rtMax(k);if(mx&&(parseInt(g.sc[k])||0)>=mx)n++})}catch(e){}return n>=3}})}catch(e){}
+/* ===== /W8 RED-TEAM v2 ===== */
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
