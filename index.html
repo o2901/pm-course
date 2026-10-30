@@ -62,7 +62,6 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--t1);min-hei
 .btn-go::after{content:'';position:absolute;top:0;left:-100%;width:200%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);animation:btnShine 3s ease-in-out infinite}
 @keyframes btnShine{0%,100%{left:-100%}50%{left:100%}}
 @keyframes wsBtn{from{opacity:0;transform:scale(.9) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.btn-go:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 15px 50px rgba(108,99,255,.5)}
 .pbar{position:fixed;top:0;left:0;width:100%;height:4px;background:rgba(255,255,255,.1);z-index:100}
 .pfill{height:100%;background:var(--gr1);transition:width .5s;border-radius:0 2px 2px 0}
 .hdr{position:fixed;top:0;left:0;right:0;padding:.4rem .8rem;z-index:99;background:rgba(15,14,23,.95);backdrop-filter:blur(20px);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(108,99,255,.15);gap:.4rem}
@@ -200,7 +199,6 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--t1);min-hei
 .skill-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem}
 .skill-badge{display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.5rem .6rem;border-radius:14px;min-width:72px;transition:.3s;position:relative}
 .skill-badge.earned{background:linear-gradient(135deg,rgba(0,201,167,.12),rgba(108,99,255,.08));border:1.5px solid rgba(0,201,167,.35);cursor:default}
-.skill-badge.locked{background:rgba(255,255,255,.03);border:1.5px dashed rgba(255,255,255,.12);opacity:.5;filter:grayscale(.8)}
 .skill-badge.partial{background:rgba(108,99,255,.06);border:1.5px solid rgba(108,99,255,.2);opacity:.85}
 .skill-badge.partial .sb-name{color:var(--p)}
 .sb-prog{width:100%;height:3px;border-radius:2px;background:rgba(255,255,255,.1);margin-top:.2rem;overflow:hidden}
@@ -235,7 +233,6 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--t1);min-hei
 .streak-flame.s2{background:rgba(255,87,34,.15);color:#ff5722}
 .streak-flame.s3{background:rgba(244,67,54,.18);color:#f44336;animation:flamePulse 1.5s ease-in-out infinite}
 @keyframes flamePulse{0%,100%{text-shadow:0 0 4px rgba(244,67,54,.3)}50%{text-shadow:0 0 12px rgba(244,67,54,.6)}}
-.stag{display:inline-block;padding:.15rem .6rem;border-radius:10px;font-size:.72rem;font-weight:600;margin-top:.8rem}
 .tg1{background:rgba(0,201,167,.15);color:var(--a)}
 .tg2{background:rgba(108,99,255,.15);color:var(--p)}
 .tg3{background:rgba(255,101,132,.15);color:var(--s)}
@@ -423,8 +420,6 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--t1);min-hei
 .ti .tp.show{display:block;animation:fi .2s}
 .ws-anchor{font-size:5rem;animation:float 3s ease-in-out infinite;margin-bottom:.3rem;filter:drop-shadow(0 0 20px rgba(108,99,255,.4))}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-.ws-credit{font-size:.7rem;color:var(--t2);opacity:.5;margin-top:.8rem;animation:fiu .8s ease .8s both}
-.ws-credit strong{color:var(--p);opacity:.8}
 .title-badge{display:flex;align-items:center;gap:.3rem;padding:.25rem .7rem;border-radius:20px;font-size:.82rem;font-weight:600}
 .title-badge.student{background:linear-gradient(135deg,rgba(108,99,255,.15),rgba(0,201,167,.1));color:var(--p);border:1px solid rgba(108,99,255,.3)}
 .title-badge.naval{background:linear-gradient(135deg,rgba(0,201,167,.15),rgba(108,99,255,.15));color:var(--a);border:1px solid rgba(0,201,167,.3)}
@@ -461,12 +456,12 @@ body.b-navy .civ-only{display:none!important}
 .ib-item strong{color:var(--a);font-weight:600}
 .ib-sep{width:1px;height:16px;background:rgba(108,99,255,.25);flex-shrink:0}
 .ltr{direction:ltr;display:inline-block;unicode-bidi:isolate}
-.csec,.case,.qq,.qres,.shdr,.scard p,.scard h3,.ms,.daily-tip,.challenge-banner{direction:rtl;unicode-bidi:isolate}
+.csec,.case,.qq,.qres,.shdr,.ms,.daily-tip,.challenge-banner{direction:rtl;unicode-bidi:isolate}
 /* RTL/bidi fix: ALL content blocks are forced RTL with `unicode-bidi: isolate`.
    This guarantees Hebrew reading order even when the bullet/paragraph starts with
    English (e.g. "<strong>PM</strong> - ממוקד שוק..."). `plaintext` would let the
    first strong char (Latin "P") flip the whole paragraph LTR — DO NOT use it. */
-.th,.summary,.qa,.opt,.feedback,.help,.hint,.fk,.ex,.hint-text,.summary-text,.ach,.modal-box p,.scard,.case,.csec,.qq,.qres,.daily-tip,.challenge-banner,.modal-title-name,.shdr,.ms,.bug-text,.bug-context,.adm-msg,.duel-q,.duel-result,.duel-opts,.summary-card,.test-summary-line,.lh-text,.adm-card,p,li,td,th,h1,h2,h3,h4,h5,h6,.tab,.j-info,.j-title,.j-num,.j-score,.ch-title,.ch-sub,.ch-label,.cb,.adm-wrap,.adm-card,.scard,.jb-title,.modal-box,.modal-box h2,.modal-box p,.case-teaser p,.learn-cta p,.learn-insight,.sec-divider,.summary-card p,.scard div,.csec div,.csec p,.csec li,.case p,.case li,.case div,.qq p,.opt span,.duel-q p,.adm-msg p,.bug-modal-box p,.bug-modal-box li,.daily-modal-box p{direction:rtl;unicode-bidi:isolate}
+.th,.summary,.qa,.opt,.feedback,.help,.hint,.fk,.ex,.ach,.modal-box p,.case,.csec,.qq,.qres,.daily-tip,.challenge-banner,.modal-title-name,.shdr,.ms,p,li,td,th,h1,h2,h3,h4,h5,h6,.tab,.j-info,.j-title,.j-num,.j-score,.ch-title,.ch-sub,.ch-label,.cb,.adm-wrap,.jb-title,.modal-box,.modal-box h2,.case-teaser p,.learn-cta p,.learn-insight,.sec-divider,.csec div,.csec p,.csec li,.case p,.case li,.case div,.qq p,.opt span,.bug-modal-box p,.bug-modal-box li,.daily-modal-box p{direction:rtl;unicode-bidi:isolate}
 /* Tables - force RTL on every cell so mixed Hebrew/LTR content keeps right-to-left flow */
 table{direction:rtl}
 table td,table th{direction:rtl;unicode-bidi:isolate;text-align:right}
@@ -500,9 +495,7 @@ bdi{direction:ltr}
 .learn-xp-fill{height:100%;border-radius:4px;background:var(--gr1);transition:width .6s ease;position:relative}
 .learn-xp-fill::after{content:'';position:absolute;top:0;right:0;bottom:0;width:30px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3));border-radius:0 4px 4px 0;animation:xpShimmer 2s ease-in-out infinite}
 @keyframes xpShimmer{0%,100%{opacity:0}50%{opacity:1}}
-.learn-xp-label{text-align:center;font-size:.75rem;color:var(--t2);margin-bottom:.3rem}
 .learn-xp-pts{text-align:center;font-size:.7rem;font-weight:700;background:var(--gr1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sec-label{text-align:center;color:var(--t2);font-size:.8rem;margin-bottom:.8rem;direction:rtl}
 .learn-cta{text-align:center;margin-top:2rem;padding:1.5rem;background:linear-gradient(135deg,rgba(108,99,255,.12),rgba(0,201,167,.1));border:2px solid rgba(0,201,167,.2);border-radius:16px;animation:fiu .5s}
 .learn-cta p{color:var(--t2);font-size:.95rem;margin-bottom:.8rem}
 .learn-cta strong{color:var(--a)}
@@ -513,23 +506,20 @@ bdi{direction:ltr}
 .learn-insight strong{color:#FFD700}
 .sec-divider{display:flex;align-items:center;gap:.8rem;margin:1.5rem 0;color:var(--t2);font-size:.82rem;opacity:.85;padding:.4rem .6rem;border-radius:8px;background:rgba(108,99,255,.03)}
 .sec-divider::before,.sec-divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent)}
-.sec-key{background:linear-gradient(135deg,rgba(108,99,255,.08),rgba(0,201,167,.05));border-right:3px solid var(--p);padding:.6rem 1rem;border-radius:0 10px 10px 0;margin:.6rem 0;font-size:.82rem;color:var(--t2)}
-.sec-key strong{color:var(--p)}
 .quiz-bar{background:rgba(255,255,255,.06);border-radius:8px;height:8px;margin-bottom:1.2rem;overflow:hidden}
 .quiz-bar-fill{height:100%;background:var(--gr1);border-radius:8px;transition:width .4s ease}
 .quiz-bar-label{text-align:center;color:var(--t2);font-size:.8rem;margin-bottom:.5rem;direction:rtl}
 /* Phase 4 — LTR overrides for English (driven by html[dir="ltr"]) */
-html[dir="ltr"] .continue-hero,html[dir="ltr"] .daily-modal-box,html[dir="ltr"] .xp-info,html[dir="ltr"] .quiz-powerups,html[dir="ltr"] .daily-tip,html[dir="ltr"] .challenge-banner,html[dir="ltr"] .info-bar,html[dir="ltr"] .csec,html[dir="ltr"] .case,html[dir="ltr"] .qq,html[dir="ltr"] .qres,html[dir="ltr"] .shdr,html[dir="ltr"] .scard p,html[dir="ltr"] .scard h3,html[dir="ltr"] .ms,html[dir="ltr"] table,html[dir="ltr"] table td,html[dir="ltr"] table th,html[dir="ltr"] .learn-header,html[dir="ltr"] .sec-label,html[dir="ltr"] .learn-insight,html[dir="ltr"] .quiz-bar-label{direction:ltr}
+html[dir="ltr"] .continue-hero,html[dir="ltr"] .daily-modal-box,html[dir="ltr"] .xp-info,html[dir="ltr"] .quiz-powerups,html[dir="ltr"] .daily-tip,html[dir="ltr"] .challenge-banner,html[dir="ltr"] .info-bar,html[dir="ltr"] .csec,html[dir="ltr"] .case,html[dir="ltr"] .qq,html[dir="ltr"] .qres,html[dir="ltr"] .shdr,html[dir="ltr"] .ms,html[dir="ltr"] table,html[dir="ltr"] table td,html[dir="ltr"] table th,html[dir="ltr"] .learn-header,html[dir="ltr"] .learn-insight,html[dir="ltr"] .quiz-bar-label{direction:ltr}
 html[dir="ltr"] .xp-info{text-align:left}
 html[dir="ltr"] table td,html[dir="ltr"] table th{text-align:left}
 html[dir="ltr"] .ws-stat-lbl,html[dir="ltr"] .ws-feat,html[dir="ltr"] .ws-rank-name,html[dir="ltr"] .ws-rank-req,html[dir="ltr"] .sub{direction:ltr}
 html[dir="ltr"] .ws-rank-arrow{transform:scaleX(-1)}
-html[dir="ltr"] .about-page,html[dir="ltr"] .q-fact,html[dir="ltr"] .chat-panel,html[dir="ltr"] .wk-card,html[dir="ltr"] .bug-modal-box,html[dir="ltr"] .ach-toast,html[dir="ltr"] .duel-panel,html[dir="ltr"] .duel-config-box,html[dir="ltr"] .duel-notif,html[dir="ltr"] .duel-screen,html[dir="ltr"] .duel-results{direction:ltr}
+html[dir="ltr"] .about-page,html[dir="ltr"] .q-fact,html[dir="ltr"] .wk-card,html[dir="ltr"] .bug-modal-box,html[dir="ltr"] .ach-toast,html[dir="ltr"] .duel-panel,html[dir="ltr"] .duel-config-box,html[dir="ltr"] .duel-notif,html[dir="ltr"] .duel-screen,html[dir="ltr"] .duel-results{direction:ltr}
 /* Phase 4 — language selector (welcome flags) + first-journey popup */
 .ws-lang{display:flex;gap:.5rem;justify-content:center;margin-bottom:.7rem;animation:fiu .8s ease .1s both}
 .ws-lang-btn{padding:.35rem .9rem;border-radius:50px;border:1.5px solid rgba(108,99,255,.3);background:rgba(15,14,23,.6);color:var(--t2);font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit;transition:.25s;backdrop-filter:blur(6px)}
 .ws-lang-btn:hover{border-color:var(--p);color:var(--tx);transform:translateY(-1px)}
-.ws-lang-btn.active{background:linear-gradient(135deg,rgba(108,99,255,.25),rgba(0,201,167,.15));border-color:var(--p);color:var(--tx);box-shadow:0 0 14px rgba(108,99,255,.2)}
 /* Language-code badge — replaces flag emojis (which degrade to "GB"/"IL" on Windows) with crisp, cross-platform 2-letter codes */
 .lang-code{display:inline-flex;align-items:center;justify-content:center;font-weight:800;letter-spacing:.3px;background:linear-gradient(135deg,rgba(108,99,255,.3),rgba(0,201,167,.18));border:1px solid rgba(108,99,255,.4);border-radius:6px;padding:.04rem .34rem;font-size:.72rem;color:var(--tx);font-family:'Heebo',sans-serif;vertical-align:middle}
 .lang-pop-btn .lang-code{font-size:1.2rem;padding:.28rem .62rem;border-radius:12px}
@@ -568,27 +558,6 @@ html[dir="ltr"] .about-page,html[dir="ltr"] .q-fact,html[dir="ltr"] .chat-panel,
 /* ========== CHAT ASSISTANT ========== */
 .chat-fab{position:fixed;bottom:1.5rem;left:1.5rem;width:52px;height:52px;border-radius:50%;background:var(--gr1);color:#fff;border:none;font-size:1.4rem;cursor:pointer;z-index:180;box-shadow:0 6px 24px rgba(108,99,255,.4);transition:.3s;display:flex;align-items:center;justify-content:center;font-family:'Heebo'}
 .chat-fab:hover{transform:scale(1.1);box-shadow:0 8px 30px rgba(108,99,255,.5)}
-.chat-panel{position:fixed;bottom:5.5rem;right:1.5rem;width:380px;max-width:calc(100vw - 2rem);height:480px;max-height:calc(100vh - 8rem);background:var(--card);border:2px solid rgba(108,99,255,.3);border-radius:20px;z-index:180;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:fiu .3s;overflow:hidden;direction:rtl}
-.chat-hdr{padding:.8rem 1.2rem;background:linear-gradient(135deg,rgba(108,99,255,.15),rgba(0,201,167,.08));border-bottom:1px solid rgba(108,99,255,.15);display:flex;align-items:center;justify-content:space-between}
-.chat-hdr h4{font-size:1rem;font-weight:700;color:var(--t1);margin:0}
-.chat-hdr .chat-close{cursor:pointer;font-size:1.1rem;opacity:.6;background:none;border:none;color:var(--t1);padding:.2rem}
-.chat-hdr .chat-close:hover{opacity:1}
-.chat-body{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.6rem}
-.chat-msg{max-width:85%;padding:.6rem 1rem;border-radius:14px;font-size:.88rem;line-height:1.6;animation:fi .2s}
-.chat-msg.bot{background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.15);color:var(--t1);align-self:flex-start;border-top-right-radius:4px}
-.chat-msg.user{background:var(--gr1);color:#fff;align-self:flex-end;border-top-left-radius:4px}
-.chat-msg a{color:var(--p);text-decoration:underline}
-.chat-msg.bot a{color:var(--a)}
-.chat-input-wrap{padding:.6rem;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:.4rem}
-.chat-input{flex:1;padding:.6rem .8rem;border-radius:12px;border:1.5px solid rgba(108,99,255,.2);background:rgba(255,255,255,.04);color:var(--t1);font-size:.9rem;font-family:'Heebo';outline:none;transition:.3s}
-.chat-input:focus{border-color:var(--p);box-shadow:0 0 10px rgba(108,99,255,.15)}
-.chat-input::placeholder{color:var(--t2)}
-.chat-send{width:38px;height:38px;border-radius:50%;background:var(--gr1);color:#fff;border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:.3s;flex-shrink:0}
-.chat-send:hover{transform:scale(1.1)}
-.chat-suggestions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem}
-.chat-suggestions button{padding:.3rem .7rem;border-radius:20px;border:1px solid rgba(108,99,255,.2);background:rgba(108,99,255,.06);color:var(--p);font-size:.78rem;cursor:pointer;font-family:'Heebo';transition:.3s}
-.chat-suggestions button:hover{background:rgba(108,99,255,.15);border-color:var(--p)}
-@media(max-width:500px){.chat-panel{right:.5rem;bottom:5rem;width:calc(100vw - 1rem);height:60vh}}
 
 /* About Page */
 .about-page{min-height:100vh;padding:3rem 1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;direction:rtl}
@@ -603,11 +572,6 @@ html[dir="ltr"] .about-page,html[dir="ltr"] .q-fact,html[dir="ltr"] .chat-panel,
 .about-roles li:hover{background:rgba(108,99,255,.12);transform:translateX(-4px)}
 .about-roles .role-title{font-weight:600;color:var(--t1)}
 .about-roles .role-unit{font-size:.82rem;color:var(--t2);opacity:.8}
-.about-highlight{background:linear-gradient(135deg,rgba(0,201,167,.1),rgba(108,99,255,.08));border:1px solid rgba(0,201,167,.2);border-radius:14px;padding:1.2rem 1.5rem;margin:1.5rem 0;text-align:center}
-.about-highlight p{color:var(--t1);font-size:.95rem;line-height:1.8}
-.about-highlight strong{color:var(--a)}
-.btn-about{padding:.55rem 1.3rem;font-size:.85rem;font-weight:700;border:1px solid rgba(108,99,255,.3);border-radius:50px;cursor:pointer;background:rgba(108,99,255,.06);color:var(--p);transition:.3s;font-family:'Heebo';animation:fiu .8s ease .7s both}
-.btn-about:hover{background:rgba(108,99,255,.15);transform:translateY(-2px);box-shadow:0 5px 20px rgba(108,99,255,.2)}
 .btn-linkedin{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.5rem;border-radius:50px;background:linear-gradient(135deg,#0077B5,#005885);color:#fff;font-size:.9rem;font-weight:700;text-decoration:none;transition:.3s;margin-top:.5rem;font-family:'Heebo'}
 .btn-linkedin:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(0,119,181,.3)}
 .about-back{display:inline-flex;align-items:center;gap:.4rem;color:var(--t2);cursor:pointer;font-size:.95rem;margin-bottom:1.5rem;background:none;border:none;font-family:'Heebo';transition:.3s;padding:.5rem}
@@ -665,13 +629,11 @@ html[dir="ltr"] .about-page,html[dir="ltr"] .q-fact,html[dir="ltr"] .chat-panel,
 body.light{--bg:#F6F3EA;--card:#FFFFFF;--cardh:#F2EEE2;--t1:#2A2721;--t2:#6E6A5E;--p:#6A5FE0;--pd:#574DC2;--s:#D95468;--a:#1FA583;--g:#B08A2E;--line:rgba(42,39,33,.12);--tx:var(--t1);--pk:var(--s);--c1:var(--card);--gr1:linear-gradient(135deg,var(--p),var(--pd));--gr2:linear-gradient(135deg,var(--a),var(--p))}
 html[data-acc="amber"] body.light{--p:#8F6618;--pd:#7A5612}
 body.light .hdr{background:rgba(240,240,245,.95);border-bottom-color:rgba(0,0,0,.08)}
-body.light .info-bar{background:linear-gradient(180deg,rgba(240,240,245,.95),rgba(240,240,245,.9))}
 body.light .particle{opacity:.05}
 body.light ::-webkit-scrollbar-track{background:var(--bg)}
 body.light .ti .tp{background:#fff;border-color:rgba(108,99,255,.3);box-shadow:0 10px 40px rgba(0,0,0,.15)}
 body.light .modal-overlay{background:rgba(0,0,0,.4)}
 body.light .modal-box{background:#fff}
-body.light .expl{background:rgba(108,99,255,.05)}
 body.light .opt{background:rgba(0,0,0,.02);border-color:rgba(0,0,0,.1)}
 body.light .opt:hover{border-color:var(--p);background:rgba(108,99,255,.05)}
 body.light .glv-search{background:#fff}
@@ -694,8 +656,6 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 .wk-done{color:var(--a);font-size:.9rem;margin-top:.3rem}
 
 /* ========== CERTIFICATE ========== */
-.cert-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.5rem;border-radius:50px;border:2px solid var(--g);background:rgba(255,215,0,.08);color:var(--g);font-size:1rem;font-weight:700;cursor:pointer;font-family:'Heebo';transition:.3s;margin:.3rem}
-.cert-btn:hover{background:rgba(255,215,0,.15);transform:translateY(-2px);box-shadow:0 5px 20px rgba(255,215,0,.2)}
 /* Admin Panel */
 #adv{padding-top:4.5rem}
 .adm-gate{max-width:400px;margin:2rem auto;text-align:center}
@@ -822,7 +782,6 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 .adm-fchip{border:1px solid rgba(108,99,255,.35);background:rgba(108,99,255,.08);color:var(--t1);font-size:.75rem;padding:.3rem .6rem;border-radius:999px;cursor:pointer;font-family:Heebo;transition:.2s}
 .adm-fchip.on{background:var(--p);color:#fff;font-weight:700}
 .adm-fcount{font-size:.74rem;color:var(--t2);white-space:nowrap}
-body.light .adm-tbl-ctrl{background:rgba(240,240,245,.95)}
 .intro-resume{margin-top:.45rem;font-size:.78rem;color:var(--t2)}
 .intro-resume a{color:var(--p);font-weight:700}
 .vpc-fig{margin:.8rem 0 1rem}
@@ -1036,7 +995,7 @@ body.light #todayHub,body.light #wbOv,body.light #goalOv,body.light #legalOv,bod
 [id$="Fab"]{font-size:0!important;display:flex;align-items:center;justify-content:center}
 [id$="Fab"] svg{width:21px;height:21px;color:var(--t1)}
 [id$="Fab"]:hover svg{color:var(--p)}
-[id$="Fab"] [id$="Badge"],[id$="Fab"] .fab-badge{font-size:.68rem!important}
+[id$="Fab"] [id$="Badge"]{font-size:.68rem!important}
 /* legal footer */
 .legal-foot{margin-top:2.4rem;text-align:center;font-size:.68rem;color:var(--t2);opacity:.75;position:relative;z-index:1}
 .legal-foot a{color:var(--t2);text-decoration:underline;cursor:pointer;margin:0 .35rem}
@@ -2790,11 +2749,6 @@ body.light .w6tr-card{box-shadow:0 18px 44px rgba(42,39,33,.24),0 2px 6px rgba(4
 <button class="lb-fab hid" id="lbFab" onclick="showLeaderboard()" title="טבלת מובילים">🏆</button>
 <button class="admin-fab hid" id="adminFab" onclick="adminEnterByFlag()" title="ניהול המערכת">🛡️</button>
 <button class="bug-fab hid" id="bugFab" onclick="showBugReport()" title="דיווח על תקלה או הצעה">🐛</button>
-<div class="chat-panel hid" id="chatPanel">
-<div class="chat-hdr"><h4>🤖 עוזר חכם</h4><button class="chat-close" onclick="toggleChat()">✕</button></div>
-<div class="chat-body" id="chatBody"></div>
-<div class="chat-input-wrap"><input class="chat-input" id="chatInput" type="text" placeholder="חפשו מושג, שאלו שאלה..." maxlength="100" onkeydown="if(event.key==='Enter')chatSend()"><button class="chat-send" onclick="chatSend()">🔍</button></div>
-</div>
 </div>
 <script>
 const S=[
@@ -5159,7 +5113,7 @@ const UI_EN={"הכרת המסע":"Getting to know the journey","מבנה ומת�
 "בינתיים... אנחנו על זה! 🚀":"In the meantime... we're on it! 🚀","בינתיים... תהנו! 😺🐒":"In the meantime... enjoy! 😺🐒",
 "⚡ אנחנו על זה!":"⚡ We're on it!","😎 בינתיים... רגע של סבלנות":"😎 Meanwhile... a moment of patience",
 // ===== duel / chat panel headers =====
-"⚔️ שחקנים אונליין":"⚔️ Players Online","🤖 עוזר חכם":"🤖 Smart Assistant","חפשו מושג, שאלו שאלה...":"Search a term, ask a question...",
+"⚔️ שחקנים אונליין":"⚔️ Players Online",
 // ===== rank / title names =====
 "סטודנט לניהול מוצר":"Product Management Student","מנהל מוצר בהסמכה":"Product Manager in Training",
 "מנהל מוצר מוסמך":"Certified Product Manager","סניור מוצר":"Senior Product Manager","מזל טוב, מפקד!":"Congratulations, Commander!","כל הכבוד, מוסמך!":"Well done, Certified!","מתחיל":"Beginner",
@@ -5253,9 +5207,6 @@ const UI_EN={"הכרת המסע":"Getting to know the journey","מבנה ומת�
 "ינואר":"January","פברואר":"February","מרץ":"March","אפריל":"April","מאי":"May","יוני":"June","יולי":"July","אוגוסט":"August","ספטמבר":"September","אוקטובר":"October","נובמבר":"November","דצמבר":"December",
 // ===== sync / errors =====
 "שגיאה":"Error","שגיאת חיבור":"Connection Error","לא ניתן להתחבר לענן. נסו שוב מאוחר יותר.":"Couldn't connect to the cloud. Please try again later.",
-// ===== chat assistant =====
-"שלום! 👋 אני העוזר החכם של המערכת. אפשר לשאול אותי על כל מושג או נושא בקורס.":"Hello! 👋 I'm the system's smart assistant. Ask me about any term or topic in the course.",
-"מה זה MVP?":"What is an MVP?","מה זה Agile?":"What is Agile?","מה זה PMF?":"What is PMF?","איך מתעדפים?":"How do you prioritize?","מה זה Scrum?":"What is Scrum?","מצאתי שלבים רלוונטיים:":"I found relevant stages:",
 // ===== update banner =====
 "גרסה חדשה זמינה! רעננו כדי לקבל את העדכונים האחרונים.":"A new version is available! Refresh to get the latest updates.","רענן עכשיו":"Refresh Now",
 // ===== admin message (user-facing) =====
@@ -5550,7 +5501,7 @@ function getTipRemain(){return TIP_CYCLE-Math.floor(Date.now()/1000)%TIP_CYCLE}
 function getChalIdx(){return Math.floor(Date.now()/1000/CHAL_CYCLE)%dailyChallenges.length}
 function getChalRemain(){return CHAL_CYCLE-Math.floor(Date.now()/1000)%CHAL_CYCLE}
 function renderTipMap(){const el=$('dtip');if(!el)return;const tip=_currentMapStageId>=0?getContextualTip(_currentMapStageId):_dTips()[getTipIdx()];const stg=_currentMapStageId>=0?S.find(x=>x.id===_currentMapStageId):null;const label=stg?` (${stg.t})`:'';el.innerHTML=`<div class="daily-tip"><span class="dt-icon">🧠</span> <strong>${_t('טיפ')}${label}:</strong> ${tip}</div>`}
-function renderChalMap(){const el=$('dchal');if(!el)return;const coreDone=S.filter(s=>s.tg!=='בונוס - ספר'&&s.tg!=='בונוס מיוחד').filter(s=>G.done.has(s.id)).length;if(coreDone>=20){el.innerHTML='';return}const ch=_dChals()[getChalIdx()];el.innerHTML=`<div class="challenge-banner">${ch}</div>`}
+function renderChalMap(){}/* body assigned at load: see "Override renderChalMap" */
 function _syncInfoBarTop(){var ib=$('ib'),hd=$('hd'),sv=$('sv');if(!ib||!hd)return;var mob=window.innerWidth<=600,vis=!ib.classList.contains('hid')&&!hd.classList.contains('hid');if(mob&&vis){var hH=hd.offsetHeight;ib.style.top=hH+'px';if(sv&&!sv.classList.contains('hid'))sv.style.paddingTop=(hH+ib.offsetHeight+10)+'px';}else{ib.style.top='';if(sv)sv.style.paddingTop='';}}
 var _ibHintShown=false;
 // One-time scroll hint for the tip/challenge bar: on first entry, if the row overflows, briefly reveal the
@@ -6221,9 +6172,6 @@ el.innerHTML=h;
 
 // Achievement toast system
 let _achQueue=[];let _achShowing=false;
-// Audio feedback - subtle web-audio sounds (no external files)
-let _audioCtx=null;
-function _audio(){if(_audioCtx)return _audioCtx;try{_audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}return _audioCtx}
 // Audio feedback — procedural ZzFX engine (no external files, no network)
 // ZzFXMicro - Zuper Zmall Zound Zynth - v1.4.0 by Frank Force ~ MIT License
 // https://github.com/KilledByAPixel/ZzFX — inlined verbatim, with ONE change:
@@ -6442,7 +6390,6 @@ function rg(){
 document.body.classList.toggle('b-navy',!!G.navyArm);/* drives .navy-only visibility for civilians vs navy-arm */
 const g=$('sg');g.innerHTML='';
 const _secEmojis={'טרום הבסיס':'🧭','בסיסי':'🎯','ביניים':'⚡','מתקדם':'🚀','מתקדם מאוד':'🔥','התמחות':'🎓','בונוס מיוחד':'🌟','בונוס - ספר':'📚'};
-const _secNames={'בונוס - ספר':'📚 פרקי ספרים - בונוס'};
 const sorted=sortStages(S);
 const coreStages=sorted.filter(s=>s.tg!=='בונוס - ספר'&&s.tg!=='בונוס מיוחד'&&!_stageHidden(s));
 const specialBonus=sorted.filter(s=>s.tg==='בונוס מיוחד'&&!_stageHidden(s));
@@ -7943,7 +7890,6 @@ const cols=['#8B85FF','#F06A7E','#35C9A3','#E8C45C','#FF9800','#E91E63'];for(let
 // ========== MOCK INTERVIEW MODE ==========
 function updateSrFab(){const fab=$('srFab');if(!fab)return;const wrongCount=Object.keys(G.wrongQ).length;if(wrongCount>0){fab.classList.remove('hid');const badge=$('srFabBadge');if(badge)badge.textContent=wrongCount}else{fab.classList.add('hid')}}
 function renderMapActions(){const ma=$('ma');if(!ma)return;
-const completedStages=S.filter(s=>G.done.has(s.id));
 let h='';
 ma.innerHTML=h;updateSrFab()}
 
@@ -9088,13 +9034,6 @@ if(entry.dateISO){try{const d=new Date(entry.dateISO);const now=new Date();retur
 const raw=entry.lastLogin||entry.date||'';const parts=raw.split(/[\/.,\s]/);if(parts.length>=3){const day=parseInt(parts[0]),mon=parseInt(parts[1])-1,yr=parseInt(parts[2]);if(!isNaN(day)&&!isNaN(mon)&&!isNaN(yr)){const now=new Date();return mon===now.getMonth()&&yr===now.getFullYear()}}
 return true; // If can't parse, include it
 }
-function _isToday(loginStr){
-if(!loginStr)return false;
-const parts=String(loginStr).split(/[\/.,\s]/);
-if(parts.length>=3){const day=parseInt(parts[0]),mon=parseInt(parts[1])-1,yr=parseInt(parts[2]);
-if(!isNaN(day)&&!isNaN(mon)&&!isNaN(yr)){const now=new Date();return day===now.getDate()&&mon===now.getMonth()&&yr===now.getFullYear()}}
-return false;
-}
 // Reliable activity checks based on lastActivity (absolute ms, timezone-proof) instead of
 // parsing the localized lastLogin string. ms===0 means "never truly active" (e.g. pending_email).
 function _isTodayMs(ms){if(!ms)return false;const d=new Date(ms),n=new Date();return d.getDate()===n.getDate()&&d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear()}
@@ -9126,11 +9065,6 @@ h+='</tbody></table></div>'}
 h+='<div style="text-align:center;margin:1.4rem 0 .5rem">'+_w5iBack('hideLeaderboard()',' style="margin:0"')+'</div>';
 h+='</div>';
 lbv.innerHTML=h;_i18nDynamic(lbv)}
-
-// ========== UPDATE LEADERBOARD ON QUIZ COMPLETE ==========
-const _origSa=sa;
-// Override sa to update leaderboard after quiz completion
-const _origSaRef=sa.toString();
 
 // ========== CERTIFICATE ACCESS FROM MAP ==========
 // The certificate button already shows in renderMapActions when all PM_IDS are done.
@@ -9192,7 +9126,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.3';
+const APP_VERSION='1.10.4';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -9350,7 +9284,6 @@ function _handleAccountDeleted(){
     localStorage.removeItem(LS);
     if(deletedName){
       localStorage.removeItem('pm_session_token_'+deletedName);
-      localStorage.removeItem('pm_last_user');
     }
   }catch(e){}
   // Reset in-memory state
@@ -9399,78 +9332,6 @@ function loadCloudLeaderboard(){
 // Load cloud leaderboard on startup (if DB is configured)
 if(DB_URL){loadCloudLeaderboard()}
 
-// ========== CHAT ASSISTANT ==========
-let _chatOpen=false;
-function toggleChat(){
-  _chatOpen=!_chatOpen;
-  $('chatPanel').classList.toggle('hid',!_chatOpen);
-  $('chatFab').textContent=_chatOpen?'✕':'💬';
-  if(_chatOpen&&!$('chatBody').children.length){
-    chatAddMsg('bot','שלום! 👋 אני העוזר החכם של המערכת. אפשר לשאול אותי על כל מושג או נושא בקורס.');
-    chatAddMsg('bot','<div class="chat-suggestions"><button onclick="chatAsk(\'מה זה MVP?\')">מה זה MVP?</button><button onclick="chatAsk(\'מה זה Agile?\')">מה זה Agile?</button><button onclick="chatAsk(\'מה זה PMF?\')">מה זה PMF?</button><button onclick="chatAsk(\'איך מתעדפים?\')">איך מתעדפים?</button><button onclick="chatAsk(\'מה זה Scrum?\')">מה זה Scrum?</button></div>');
-    $('chatInput').focus();
-  }
-}
-function chatAddMsg(type,html){
-  const el=document.createElement('div');
-  el.className='chat-msg '+type;
-  el.innerHTML=html;
-  $('chatBody').appendChild(el);
-  $('chatBody').scrollTop=$('chatBody').scrollHeight;
-}
-function chatAsk(q){$('chatInput').value=q;chatSend()}
-function chatSend(){
-  const inp=$('chatInput');
-  const q=inp.value.trim();
-  if(!q)return;
-  inp.value='';
-  chatAddMsg('user',esc(q));
-  const answer=chatSearch(q);
-  setTimeout(()=>chatAddMsg('bot',answer),300);
-}
-function chatSearch(query){
-  const q=query.toLowerCase().replace(/[?!.,]/g,'');
-  // Search glossary first
-  const glossMatch=GLOSSARY.filter(g=>g.term.toLowerCase().includes(q)||g.heb.includes(q)||(g.desc&&g.desc.includes(q)));
-  if(glossMatch.length>0){
-    let h='';
-    glossMatch.slice(0,3).forEach(g=>{
-      const _gi=GLOSSARY.indexOf(g);const _go=(_enLang()&&typeof GLOSSARY_EN!=='undefined'&&GLOSSARY_EN[_gi])?GLOSSARY_EN[_gi]:g;h+='<div style="margin-bottom:.5rem"><strong style="color:var(--p)">'+esc(_go.term)+'</strong>'+(_enLang()?'':' ('+esc(g.heb)+')')+'<br><span style="font-size:.82rem">'+esc(_go.desc)+'</span>';
-      if(g.stage!==undefined)h+=' <a href="javascript:void(0)" onclick="toggleChat();ss('+g.stage+')" style="font-size:.8rem">'+(_enLang()?'to stage ':'לשלב ')+g.stage+' →</a>';
-      h+='</div>';
-    });
-    if(glossMatch.length>3)h+='<div style="font-size:.8rem;color:var(--t2)">'+(_enLang()?'and ':'ועוד ')+(glossMatch.length-3)+(_enLang()?' more results...':' תוצאות...')+'</div>';
-    return h;
-  }
-  // Search stage titles and descriptions
-  const stageMatch=S.filter(s=>s.t.includes(q)||s.d.includes(q)||s.t.toLowerCase().includes(q));
-  if(stageMatch.length>0){
-    let h=(_enLang()?'Found relevant stages:':'מצאתי שלבים רלוונטיים:')+'<br>';
-    stageMatch.slice(0,4).forEach(s=>{
-      h+='<a href="javascript:void(0)" onclick="toggleChat();ss('+s.id+')" style="display:block;margin:.3rem 0">'+s.ic+(_enLang()?' Stage ':' שלב ')+s.id+': '+esc(s.t)+'</a>';
-    });
-    return h;
-  }
-  // Keyword matching for common topics
-  const keywords={
-    'mvp':10,'מוצר מינימלי':10,'product market fit':6,'pmf':6,'agile':8,'אגיל':8,'scrum':8,'סקראם':8,
-    'sprint':8,'ספרינט':8,'backlog':8,'stakeholder':15,'בעל עניין':15,'user story':9,'סיפור משתמש':9,
-    'roadmap':7,'מפת דרכים':7,'kpi':11,'a/b test':11,'persona':4,'פרסונה':4,'ux':12,'חוויית משתמש':12,
-    'retention':14,'שימור':14,'growth':14,'צמיחה':14,'תעדוף':7,'prioritization':7,'rice':7,'kano':7,
-    'okr':6,'discovery':10,'lean':10,'kanban':8,'waterfall':8,'bcg':2,'מטריצ':2,
-    'השקה':13,'launch':13,'מנהיגות':15,'leadership':15,'ai':16,'בינה מלאכותית':16,
-    'ראיון':17,'interview':17,'ביטחוני':18,'צבאי':18,'חומרה':19,'hardware':19,
-    'זרוע הים':1,'חיל הים':1,'שייטת':1,'מספן':1,'hook':14,'funnel':14,'nps':11,
-    'ltv':14,'churn':14,'north star':11
-  };
-  for(const[kw,sid] of Object.entries(keywords)){
-    if(q.includes(kw)){
-      const s=S.find(x=>x.id===sid);
-      if(s)return (_enLang()?'This topic is covered in <a href="javascript:void(0)" onclick="toggleChat();ss('+sid+')">Stage '+sid+': '+esc(s.t)+'</a>.<br>Click to jump to the relevant stage.':'נושא זה נלמד ב<a href="javascript:void(0)" onclick="toggleChat();ss('+sid+')">שלב '+sid+': '+esc(s.t)+'</a>.<br>לחצו כדי לעבור לשלב הרלוונטי.');
-    }
-  }
-  return (_enLang()?'I could not find an exact match for "'+esc(query)+'". Try an English term (like MVP, Agile, KPI) or a topic name. You can also open the <a href="javascript:void(0)" onclick="toggleChat();showGlossary()">glossary</a> for advanced search.':'לא מצאתי תוצאה מדויקת עבור "'+esc(query)+'". נסו לחפש מושג אנגלי (כמו MVP, Agile, KPI) או שם של נושא. אפשר גם לפתוח את <a href="javascript:void(0)" onclick="toggleChat();showGlossary()">המילון</a> לחיפוש מתקדם.');
-}
 // Show training FAB + daily FAB when in map or stage view
 const _origMp2=mp;
 mp=function(){_origMp2();$('chatFab').classList.remove('hid');$('dailyFab').classList.remove('hid');$('bugFab').classList.remove('hid');if($('glossaryFab'))$('glossaryFab').classList.remove('hid');if($('lbFab'))$('lbFab').classList.remove('hid');if($('adminFab'))$('adminFab').classList.toggle('hid',!G.isAdmin);updateSrFab();updateAdminMsgFab();updateCertFab()};
@@ -9570,7 +9431,6 @@ function showAdminMessage(){
 }
 
 // ========== FEATURE 4: SESSION TIME TRACKING ==========
-let _tabTimerInterval=null;
 let _tabTimerStart=null;
 let _currentTabKey=null;
 
@@ -10082,7 +9942,6 @@ function adminEnterByFlag(){
   }).catch(()=>showAchievement('📴','שגיאה','שגיאת רשת'));
 }
 
-let _admAutoRefresh=null;
 let _admBugCount=0;
 function loadAdminData(){
 $('adv').innerHTML='<div class="adm-wrap" style="text-align:center;padding:4rem"><div style="font-size:2.5rem;margin-bottom:.5rem">⏳</div><p style="color:var(--t2)">טוען נתוני משתמשים מהענן...</p></div>';
@@ -10152,7 +10011,6 @@ const total=users.length;
 // Pending approval = legacy 'pending' OR new 'pending_admin' (email already verified, waiting for admin)
 // NOT 'pending_email' (still waiting for user to click verification link)
 const pendingUsers=users.filter(u=>{const s=String(u.status||'');return s==='pending'||s==='pending_admin'});
-const pendingEmailUsers=users.filter(u=>String(u.status||'')==='pending_email');
 const approvedUsers=users.filter(u=>{const s=String(u.status||'');return s!=='pending'&&s!=='pending_admin'&&s!=='pending_email'});
 // Use lastActivity (absolute ms) — reliable & timezone-proof — not the localized lastLogin string
 const todayUsers=approvedUsers.filter(u=>_isTodayMs(parseInt(u.lastActivity)||0));
@@ -10323,7 +10181,6 @@ if(onlineUsersList.length>0){
     let _liveDur=_ss>0?Math.round((Date.now()-_ss)/1000):0;
     if(_liveDur>MAX_SESSION_SEC)_liveDur=0;// stale/inflated sessionStart (not reset on tab close) — treat as not-live
     const _la=parseInt(u.lastActivity)||0;
-    const _lastActiveSec=_la>0?Math.round((Date.now()-_la)/1000):0;
     const _lsv=u.lastStageVisited?S.find(s=>s.id===parseInt(u.lastStageVisited)):null;
     const _en=esc(u.userName||'').replace(/'/g,"\\'");
     h+='<div onclick="showUserDetail(\''+_en+'\')" style="background:rgba(15,14,23,.4);border-radius:12px;padding:.6rem .8rem;cursor:pointer;border:1px solid rgba(255,255,255,.08);transition:all .2s" onmouseover="this.style.borderColor=\'rgba(0,201,167,.4)\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,.08)\'">';
@@ -11080,7 +10937,6 @@ if(stKeys.length>0){
 
 // Activity log — show last 10 by default (was constrained to ~3 visible due to max-height:250px)
 if(activityLog.length>0){
-  const _shown=Math.min(10,activityLog.length);
   h+='<div style="margin-top:1rem"><strong style="color:var(--p);font-size:.9rem">📊 יומן פעילות (10 אחרונות מתוך '+activityLog.length+'):</strong>';
   h+='<div style="max-height:480px;overflow-y:auto;margin-top:.5rem;border-radius:10px;background:rgba(108,99,255,.05);padding:.5rem">';
   const actIcons={login:'🚪',openStage:'📖',switchTab:'🔀',answer:'✍️',completeStage:'🏆',openGlossary:'📚',openProfile:'👤',readAdminMsg:'💬',duelAccept:'⚔️',duelDecline:'🚫',endSession:'⏱️',adminCredit:'🛡️',adminUncredit:'↩️',reflection:'📌'};
@@ -12146,7 +12002,6 @@ function _showDuelResults(){
     const winner=st.winner;const mode=st.mode;const wager=st.wagerAmount||0;
     const iWon=winner===myName;
     const iLost=winner!==''&&winner!=='tie'&&!iWon;
-    const isTie=winner==='tie';
     let icon,title,titleClass,ptsText;
     if(iWon){icon='🏆';title=_enLang()?'You won!':'ניצחת!';titleClass='win';ptsText=mode==='wager'?(_enLang()?'+'+wager+' points!':'+'+wager+' נקודות!'):(_enLang()?'+30 points!':'+30 נקודות!')}
     else if(iLost){icon='😔';title=_enLang()?'You lost':'הפסדת';titleClass='lose';ptsText=mode==='wager'?(_enLang()?'-'+wager+' points':'-'+wager+' נקודות'):(_enLang()?'Next time!':'בפעם הבאה!')}
