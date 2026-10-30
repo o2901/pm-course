@@ -2258,6 +2258,327 @@ html[data-acc="amber"] body:not(.light) :is(#w7hbOv,#w7hbProf,.w7hb-hub,.w7hb-wb
 @keyframes w7hbRiseIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 @media(max-width:430px){#w7hbOv{padding:.6rem}.w7hb-box{padding:1rem .9rem .9rem;border-radius:18px}.w7hb-chip{font-size:.78rem;padding:.4rem .7rem}.w7hb-days .w7hb-chip{font-size:.76rem}.w7hb-mapb{flex-wrap:wrap;font-size:.8rem}.w7hb-mapb-t{flex:1 1 calc(100% - 5rem)}.w7hb-mapb .w7hb-rs-go{order:3;flex:1 1 100%}#w7hbProf .w7hb-prow{gap:.55rem}#w7hbProf .w7hb-pic{width:1.6rem;font-size:1.15rem}#w7hbProf .w7hb-go{min-width:64px;padding:.35rem .6rem}}
 @media(prefers-reduced-motion:reduce){.w7hb-box,.w7hb-mapb,.w7hb-rescue,.w7hb-bar i,.w7hb-chip{animation:none!important;transition:none!important}}
+/* ===== W7 learn (w7ln): 📜 certificate meter · 🧠 recap + recall cards · ↩ resume toast · ✨ weekly recap ===== */
+.w7ln-x[dir="rtl"],.w7ln-x[dir="rtl"] *:not(bdi){direction:rtl}
+.w7ln-x[dir="ltr"],.w7ln-x[dir="ltr"] *:not(bdi){direction:ltr}
+.w7ln-x bdi{unicode-bidi:isolate;font-variant-numeric:tabular-nums}
+/* certificate meter — map (inside #continue-hero) */
+.w7ln-cm{position:relative;box-sizing:border-box;width:100%;max-width:500px;margin:.85rem auto 0;padding:.75rem .95rem .7rem;background:var(--card);border:1px solid var(--line);border-radius:16px;cursor:pointer;text-align:start;color:var(--t1);transition:border-color .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
+.w7ln-cm:hover{border-color:var(--g)}
+.w7ln-cm:focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--p)}
+.w7ln-cm-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:.5rem}
+.w7ln-cm-chip{font-size:.84rem;font-weight:800;color:var(--t1);line-height:1.35}
+.w7ln-cm-chip bdi{color:var(--g);margin-inline-start:.1rem}
+.w7ln-cm-ar{color:var(--t2);font-size:1.15rem;line-height:1;flex:0 0 auto}
+.w7ln-segs{display:flex;gap:2px;height:8px}
+.w7ln-sg{flex:1 1 0;min-width:0;border-radius:3px;background:rgba(255,255,255,.13)}
+body.light .w7ln-sg:not(.on){background:rgba(42,39,33,.14)}
+.w7ln-sg.on{background:var(--g)}
+.w7ln-sg.on.j{background:var(--a)}
+.w7ln-cm-lbl{display:flex;justify-content:space-between;gap:.5rem;font-size:.66rem;font-weight:600;color:var(--t2);margin-top:.3rem}
+.w7ln-cm-copy{font-size:.8rem;color:var(--t2);margin-top:.35rem;line-height:1.45}
+.w7ln-cm.w7ln-near{border-color:var(--g);animation:w7lnGlow 2.4s ease-in-out 3}
+.w7ln-cm.w7ln-near .w7ln-cm-copy{color:var(--t1);font-weight:700}
+.w7ln-cm.w7ln-ready{border-color:var(--g);background:linear-gradient(135deg,rgba(232,196,92,.16),rgba(139,133,255,.1)),var(--card)}
+.w7ln-cm.w7ln-ready .w7ln-cm-copy{color:var(--t1);font-weight:800;font-size:.88rem}
+.w7ln-cm.w7ln-issued{border-color:var(--a)}
+.w7ln-cm.w7ln-issued .w7ln-cm-copy{color:var(--t1);font-weight:700}
+.w7ln-cm.w7ln-intro{animation:w7lnGlow 1.4s ease-out 1}
+@keyframes w7lnGlow{0%,100%{box-shadow:0 0 0 0 rgba(232,196,92,0)}50%{box-shadow:0 0 0 6px rgba(232,196,92,.24)}}
+body:has(#continue-hero .w7ln-cm) #ma .cert-progress{display:none}
+/* certificate line in the stage ceremony (nested in .cer-streak, so it is revealed with it) */
+#stageCerem .w7ln-cer{display:flex;flex-direction:column;align-items:center;gap:.35rem;margin-top:.55rem;font-size:.8rem;font-weight:600;color:var(--t2)}
+#stageCerem .w7ln-cer bdi{color:var(--g);font-weight:800}
+#stageCerem .w7ln-cer .w7ln-segs{width:min(300px,78vw);height:7px;gap:3px}
+#stageCerem .w7ln-cer .w7ln-sg{border-radius:2px}
+.w7ln-sg.nw{animation:w7lnSeg .9s ease-out 2}
+@keyframes w7lnSeg{0%,100%{transform:none;filter:none}50%{transform:scaleY(1.9);filter:brightness(1.25)}}
+/* overlays (stack z-index is assigned by the W6 modal stack) */
+.w7ln-ov{position:fixed;inset:0;z-index:380;background:rgba(10,11,16,.93);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);display:grid;place-items:center;padding:1.2rem;overflow:auto}
+body.light .w7ln-ov{background:rgba(246,243,234,.95)}
+.w7ln-ov .hub-box{box-sizing:border-box;text-align:start;animation:w7lnIn .28s cubic-bezier(.22,1,.36,1)}
+@keyframes w7lnIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.w7ln-ov .hub-h{gap:.6rem}
+.w7ln-ov .hub-h h3{margin:0;line-height:1.3}
+.w7ln-kick{font-size:.74rem;font-weight:700;color:var(--t2);margin:-.35rem 0 .75rem;line-height:1.4}
+/* recap list */
+.w7ln-rc{list-style:none;margin:0 0 .9rem;padding:0;counter-reset:w7rc;display:grid;gap:.55rem}
+.w7ln-rc li{counter-increment:w7rc;position:relative;background:var(--cardh);border:1px solid var(--line);border-radius:12px;padding:.6rem .8rem .65rem;padding-inline-start:2.55rem;text-align:start}
+.w7ln-rc li::before{content:counter(w7rc);position:absolute;inset-inline-start:.7rem;top:.62rem;width:1.35rem;height:1.35rem;border-radius:50%;display:grid;place-items:center;font-size:.72rem;font-weight:800;background:var(--a);color:#06231C}
+.w7ln-rc-sec{display:block;font-size:.7rem;font-weight:700;color:var(--t2);margin-bottom:.2rem;line-height:1.35}
+.w7ln-rc-tl{display:block;font-size:.88rem;line-height:1.6;color:var(--t1)}
+/* switch */
+.w7ln-tg{display:flex;align-items:center;gap:.65rem;padding:.6rem .75rem;border-radius:12px;background:var(--cardh);border:1px solid var(--line);cursor:pointer;font-size:.84rem;font-weight:600;color:var(--t1);margin:0 0 1rem;position:relative;line-height:1.4}
+.w7ln-tg input{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.w7ln-tg-s{flex:0 0 auto;width:38px;height:22px;border-radius:999px;background:rgba(255,255,255,.2);position:relative;transition:background .2s}
+body.light .w7ln-tg-s{background:rgba(42,39,33,.22)}
+.w7ln-tg-s::after{content:'';position:absolute;top:3px;inset-inline-start:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:inset-inline-start .2s}
+.w7ln-tg input:checked+.w7ln-tg-s{background:var(--a)}
+.w7ln-tg input:checked+.w7ln-tg-s::after{inset-inline-start:19px}
+.w7ln-tg input:focus-visible+.w7ln-tg-s{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--p)}
+/* buttons */
+.w7ln-btn{font:inherit;font-size:.84rem;font-weight:700;min-height:40px;padding:.5rem .95rem;border-radius:11px;border:1px solid var(--line);background:var(--card);color:var(--t1);cursor:pointer;line-height:1.25}
+.w7ln-btn.pri{background:var(--gr1);border-color:transparent;color:#fff}
+html[data-acc="amber"] .w7ln-btn.pri{color:#1A1407}
+.w7ln-btn.ok{border-color:var(--a)}
+.w7ln-btn.no{border-color:var(--s)}
+.w7ln-btn.ghost{background:transparent}
+.w7ln-btn.sm{min-height:34px;padding:.3rem .75rem;font-size:.78rem;border-radius:10px}
+.w7ln-btn:focus-visible,.w7ln-chip:focus-visible,.w7ln-sw:focus-visible,.w7ln-wg-btn:focus-visible,.w7ln-rt button:focus-visible,.w7ln-off:focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--p)}
+/* recall cards in My Day */
+#w7lnFb:empty,#w7lnWg:empty{display:none}
+.w7ln-fb{background:var(--cardh);border:1px solid var(--line);border-inline-start:3px solid var(--a);border-radius:14px;padding:.75rem .85rem;margin:0 0 .8rem;text-align:start}
+.w7ln-fb-k{display:flex;justify-content:space-between;gap:.5rem;align-items:baseline;font-size:.72rem;font-weight:700;color:var(--t2);margin-bottom:.35rem;line-height:1.4}
+.w7ln-fb-n{color:var(--t1);font-weight:800;flex:0 0 auto}
+.w7ln-fb-q{font-size:.95rem;font-weight:800;color:var(--t1);line-height:1.45;margin-bottom:.65rem}
+.w7ln-fb-a{font-size:.86rem;line-height:1.6;color:var(--t1);background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:.55rem .7rem;margin-bottom:.65rem}
+.w7ln-fb-btns{display:flex;flex-wrap:wrap;gap:.5rem}
+.w7ln-fb-btns .w7ln-btn{flex:1 1 0;min-width:7.5rem}
+.w7ln-fb-msg{font-size:.84rem;line-height:1.55;color:var(--t1);margin-bottom:.6rem}
+.w7ln-fb-done{font-size:.84rem;font-weight:700;color:var(--t1);text-align:center;padding:.1rem 0}
+.w7ln-fb-msg+.w7ln-fb-btns+.w7ln-fb-done{margin-top:.6rem}
+.w7ln-fb-end{border-inline-start-color:var(--g)}
+/* weekly goal row (My Day) */
+.w7ln-wg{background:var(--cardh);border:1px solid var(--line);border-radius:12px;padding:.6rem .8rem;margin:0 0 .8rem;text-align:start}
+.w7ln-wg-t{display:flex;justify-content:space-between;gap:.5rem;font-size:.82rem;color:var(--t1);line-height:1.4}
+.w7ln-wg-n{font-weight:800;color:var(--t1);flex:0 0 auto}
+.w7ln-bar{height:6px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:.45rem}
+body.light .w7ln-bar{background:rgba(42,39,33,.13)}
+.w7ln-bar>i{display:block;height:100%;border-radius:inherit;background:var(--a);transition:width .4s}
+.w7ln-wg.done .w7ln-bar>i{background:var(--g)}
+.w7ln-wg-ok{font-size:.78rem;font-weight:700;color:var(--t1);margin-top:.35rem}
+.w7ln-wg.w7ln-wg-set{padding:0;background:transparent;border:0}
+.w7ln-wg-btn{width:100%;box-sizing:border-box;font:inherit;font-size:.82rem;font-weight:700;color:var(--t1);background:var(--cardh);border:1px dashed var(--t2);border-radius:12px;padding:.55rem .8rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.5rem;min-height:42px;text-align:start}
+.w7ln-wg-q{font-size:.84rem;font-weight:800;color:var(--t1);margin:.1rem 0 .5rem}
+.w7ln-chips{display:flex;flex-wrap:wrap;gap:.45rem}
+.w7ln-chip{font:inherit;font-size:.8rem;font-weight:700;min-height:38px;padding:.4rem .85rem;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--t1);cursor:pointer}
+.w7ln-chip.sel{box-shadow:inset 0 0 0 2px var(--p);border-color:transparent}
+/* weekly recap card */
+#w7lnWeek .hub-box{max-width:440px}
+.w7ln-wk-h{font-size:.92rem;line-height:1.55;color:var(--t1);font-weight:700;margin:0 0 .85rem}
+.w7ln-dots{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.3rem;margin:0 0 .9rem}
+.w7ln-dd{display:flex;flex-direction:column;align-items:center;gap:.25rem;min-width:0}
+.w7ln-dd i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:.78rem;font-weight:800;background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--t2);box-sizing:border-box}
+body.light .w7ln-dd:not(.on) i{background:rgba(42,39,33,.05);border-color:rgba(42,39,33,.16)}
+.w7ln-dd.on i{background:var(--a);border-color:transparent;color:#06231C}
+.w7ln-dd b{font-size:.66rem;font-weight:600;color:var(--t2)}
+.w7ln-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.45rem;margin:0 0 .8rem}
+.w7ln-tile{background:var(--cardh);border:1px solid var(--line);border-radius:12px;padding:.55rem .35rem;text-align:center;min-width:0}
+.w7ln-tile b{display:block;font-size:1.35rem;font-weight:800;color:var(--t1);line-height:1.2}
+.w7ln-tile span{display:block;font-size:.68rem;color:var(--t2);line-height:1.3;margin-top:.15rem}
+.w7ln-tile small{display:block;font-size:.66rem;color:var(--t2);font-weight:700;margin-top:.1rem}
+.w7ln-mom{font-size:.82rem;line-height:1.5;color:var(--t1);background:linear-gradient(135deg,rgba(232,196,92,.14),rgba(139,133,255,.08));border:1px solid var(--line);border-radius:12px;padding:.5rem .7rem;margin:0 0 .6rem}
+.w7ln-cmp{font-size:.84rem;color:var(--t2);margin:0 0 .95rem;line-height:1.5}
+.w7ln-cmp.up{color:var(--t1);font-weight:700}
+.w7ln-cmp .w7ln-up{color:var(--a);font-weight:900}
+.w7ln-gq{font-size:.88rem;font-weight:800;color:var(--t1);margin:0 0 .5rem}
+.w7ln-wk-btns{display:flex;gap:.5rem;margin-top:1rem}
+.w7ln-wk-btns .w7ln-btn{flex:1 1 0;min-width:0}
+.w7ln-off{display:block;margin:.7rem auto 0;background:none;border:0;font:inherit;font-size:.74rem;color:var(--t2);text-decoration:underline;cursor:pointer;padding:.3rem .5rem;min-height:32px}
+/* certificate sheet */
+.w7ln-cs-hd{display:flex;align-items:baseline;justify-content:space-between;gap:.6rem;margin:-.2rem 0 .5rem}
+.w7ln-cs-big{font-size:1.6rem;font-weight:900;color:var(--g)}
+.w7ln-cs-sub{font-size:.78rem;color:var(--t2);text-align:end}
+.w7ln-cs-list{display:grid;gap:.4rem;margin:.85rem 0}
+.w7ln-cs-row{display:flex;align-items:center;gap:.6rem;background:var(--cardh);border:1px solid var(--line);border-radius:12px;padding:.45rem .55rem;padding-inline-start:.7rem}
+.w7ln-cs-row.nx{border-color:var(--p);box-shadow:inset 0 0 0 1px var(--p)}
+.w7ln-cs-ic{font-size:1.2rem;flex:0 0 auto}
+.w7ln-cs-t{flex:1 1 auto;min-width:0;font-size:.84rem;font-weight:700;color:var(--t1);line-height:1.35}
+.w7ln-cs-t small{display:block;font-size:.68rem;font-weight:600;color:var(--t2)}
+.w7ln-cs-nx{font-size:.66rem;font-weight:800;color:var(--t1);background:var(--card);border:1px solid var(--p);border-radius:999px;padding:0 .4rem;margin-inline-start:.35rem;white-space:nowrap}
+.w7ln-note{font-size:.74rem;color:var(--t2);line-height:1.5;margin:.25rem 0 0}
+.w7ln-legal{font-size:.68rem;color:var(--t2);line-height:1.5;margin:.6rem 0 0;border-top:1px solid var(--line);padding-top:.5rem}
+/* profile */
+.w7ln-pvt{cursor:pointer}
+.w7ln-pvset{display:flex;align-items:center;justify-content:center;gap:.6rem;flex-wrap:wrap;margin:1rem auto .4rem;font-size:.84rem;color:var(--t1)}
+.w7ln-sw{font:inherit;font-size:.78rem;font-weight:700;padding:.35rem .9rem;border-radius:999px;border:1px solid var(--t2);background:transparent;color:var(--t1);cursor:pointer;min-height:34px}
+.w7ln-sw.on{background:var(--a);border-color:transparent;color:#06231C}
+/* inline recap under the quiz results of a completed stage */
+.w7ln-rci{box-sizing:border-box;width:100%;margin:1rem auto 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:.9rem 1rem;text-align:start}
+.w7ln-rci-h{font-size:.98rem;font-weight:800;color:var(--t1);margin:0 0 .6rem}
+.w7ln-rci .w7ln-rc{margin-bottom:.4rem}
+.w7ln-rci-st{font-size:.76rem;color:var(--t2);margin-top:.35rem}
+/* resume toast — fixed bottom lane (above the phone dock), so the landing spot itself is never shifted */
+.w7ln-rt{position:fixed;left:50%;bottom:calc(1.1rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:180;display:flex;align-items:center;gap:.5rem;width:max-content;max-width:min(560px,calc(100vw - 24px));box-sizing:border-box;padding:.5rem .55rem;padding-inline-start:.9rem;background:var(--card);color:var(--t1);border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 32px rgba(0,0,0,.35);font-size:.84rem;line-height:1.4;animation:w7lnRt .25s ease-out}
+body.light .w7ln-rt{box-shadow:0 10px 28px rgba(42,39,33,.18)}
+@media(max-width:640px){html.w6dk-ready .w7ln-rt{bottom:calc(var(--w6dk-h,64px) + 12px + env(safe-area-inset-bottom,0px))}}
+.w7ln-rt-m{flex:1 1 auto;min-width:0}
+.w7ln-rt-a{flex:0 0 auto;font:inherit;font-size:.8rem;font-weight:800;color:var(--t1);background:transparent;border:1px solid var(--p);border-radius:999px;padding:.3rem .75rem;cursor:pointer;min-height:34px;white-space:nowrap}
+.w7ln-rt-x{flex:0 0 auto;background:none;border:0;color:var(--t2);font:inherit;cursor:pointer;padding:.3rem .45rem;min-height:34px}
+.w7ln-rt.out{opacity:0;transform:translate(-50%,8px);transition:opacity .3s,transform .3s}
+@keyframes w7lnRt{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translateX(-50%)}}
+.w7ln-hl{outline:2px solid var(--p)!important;outline-offset:4px;transition:outline-color 1.2s}
+/* due-cards dot on the My-day FAB (the phone dock mirrors it) */
+#todayFab .w7ln-fd{display:none;position:absolute;top:1px;left:1px;width:12px;height:12px;border-radius:50%;background:var(--a);border:2px solid var(--bg);pointer-events:none}
+#todayFab .w7ln-fd.on{display:block}
+@media (prefers-reduced-motion:reduce){.w7ln-cm,.w7ln-sg.nw,.w7ln-ov .hub-box,.w7ln-rt{animation:none!important}.w7ln-hl,.w7ln-tg-s,.w7ln-tg-s::after,.w7ln-bar>i,.w7ln-cm,.w7ln-rt.out{transition:none!important}}
+/* ===== /W7 learn ===== */
+/* ===== W7 juice kit (w7jc): motion tokens · Ceremony 2.0 · Combo 2.0 · Perfect stamp · Map Return 2.0 · Ink & Gold chrome icons ===== */
+:root{--ease-pop:cubic-bezier(.34,1.56,.64,1);--ease-out:cubic-bezier(.2,.8,.2,1);--ease-in:cubic-bezier(.4,0,1,1);--t-micro:140ms;--t-std:280ms;--t-hero:480ms;--t-cele:1200ms;--f:#FF9F43;--ice:#6CC8FF;--w7jc-sh3:drop-shadow(0 8px 14px rgba(0,0,0,.45));--w7jc-fd:#FF9F43}
+body.light{--w7jc-sh3:drop-shadow(0 6px 10px rgba(42,39,33,.18));--w7jc-fd:#B85A0C}
+/* icons */
+.w7jc-i3{display:inline-block;vertical-align:-.2em;object-fit:contain;flex:0 0 auto;-webkit-user-drag:none;user-select:none;pointer-events:none}
+.w7jc-ph,.w7jc-sv{display:inline-block;vertical-align:-.16em;flex:0 0 auto}
+.w7jc-sv{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.w7jc-ic{display:inline-flex;align-items:center;vertical-align:middle;line-height:0}
+.w7jc-ph-fire{color:var(--f)}
+.w7jc-ph-lightning{color:var(--g)}
+/* sprite layer (0×0, never hit-testable) */
+#w7jcLayer{position:fixed;left:0;top:0;width:0;height:0;overflow:visible;z-index:2450;pointer-events:none}
+.w7jc-spr{position:fixed;left:0;top:0;pointer-events:none;will-change:transform,opacity;filter:drop-shadow(0 3px 5px rgba(0,0,0,.35))}
+.w7jc-spr .w7jc-i3{display:block}
+.w7jc-ghost.hdr-stats{position:fixed;display:flex;align-items:center;justify-content:center;overflow:visible;padding:0;margin:0;background:none;border:0;pointer-events:none;animation:w7jcFadeIn .16s var(--ease-out) both}
+.w7jc-ghost .w7jc-gb{box-shadow:0 0 0 2px color-mix(in srgb,var(--g) 75%,transparent),0 0 18px color-mix(in srgb,var(--g) 45%,transparent)!important;background:var(--card)!important}
+.w7jc-ghost.w7jc-out{animation:w7jcFadeOut .25s var(--ease-in) both}
+@keyframes w7jcFadeIn{from{opacity:0}}
+@keyframes w7jcFadeOut{to{opacity:0}}
+/* ---------- Ceremony 2.0 ---------- */
+#stageCerem.w7jc-cer[dir="ltr"]{direction:ltr}/* the base rule pins #stageCerem to rtl; English runs need ltr punctuation, tile order and arrow */
+#stageCerem.w7jc-cer{place-items:normal;overflow-y:auto;overscroll-behavior:contain;animation:w7jcFadeIn .18s var(--ease-out) both}
+#stageCerem.w7jc-cer .cer-in{margin:auto;max-width:400px;position:relative}
+#stageCerem.w7jc-cer .cer-in>*{transition:opacity .26s var(--ease-out),transform .26s var(--ease-out)}
+#stageCerem.w7jc-cer .cer-in>:not(.on){pointer-events:none}
+.w7jc-hero{position:relative;width:128px;height:128px;margin:0 auto .35rem;display:grid;place-items:center}
+#stageCerem.w7jc-cer .cer-in>.w7jc-hero{transform:none}
+.w7jc-hero>img{position:relative;z-index:2;width:128px;height:128px;filter:var(--w7jc-sh3);opacity:0}
+.w7jc-hero.on>img{animation:w7jcHero .6s both}
+@keyframes w7jcHero{0%{transform:scale(.2);opacity:0;animation-timing-function:cubic-bezier(.2,.8,.2,1)}60%{transform:scale(1.18);opacity:1;animation-timing-function:ease-out}73%{transform:scale(1.08,.94)}100%{transform:scale(1);opacity:1}}
+.w7jc-rays{position:absolute;left:50%;top:50%;width:400px;height:400px;margin:-200px 0 0 -200px;z-index:0;border-radius:50%;pointer-events:none;opacity:0;background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--g) 17%,transparent) 0deg 8deg,transparent 8deg 22deg);-webkit-mask:radial-gradient(closest-side,#000 22%,transparent 100%);mask:radial-gradient(closest-side,#000 22%,transparent 100%)}
+.w7jc-hero.on .w7jc-rays{animation:w7jcRaysIn .5s var(--ease-out) .04s both,w7jcSpin 40s linear infinite}
+@keyframes w7jcRaysIn{from{opacity:0}to{opacity:1}}
+@keyframes w7jcSpin{to{rotate:360deg}}
+.w7jc-glow{position:absolute;inset:-18px;z-index:1;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--g) 30%,transparent),transparent 72%);opacity:0;pointer-events:none}
+.w7jc-hero.on .w7jc-glow{animation:w7jcRaysIn .4s var(--ease-out) .12s both}
+body.light .w7jc-rays{background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--g) 15%,transparent) 0deg 8deg,transparent 8deg 22deg)}
+#stageCerem.w7jc-cer .cer-k.w7jc-kick{color:var(--a);font-weight:800;font-size:.84rem;letter-spacing:.14em;margin:0 0 .25rem}
+[dir="rtl"] #stageCerem.w7jc-cer .cer-k.w7jc-kick,#stageCerem.w7jc-cer[dir="rtl"] .cer-k.w7jc-kick{letter-spacing:.03em;font-size:.95rem}
+#stageCerem.w7jc-cer .cer-t{margin-bottom:.3rem;line-height:1.25}
+.w7jc-sub{font-size:.84rem;color:var(--t2);margin:0 0 1rem;line-height:1.45}
+.w7jc-sub.w7jc-rk{color:var(--g);font-weight:800}
+.w7jc-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem;margin:0 0 .75rem}
+.w7jc-tile{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:.7rem .3rem .6rem;box-shadow:0 4px 0 color-mix(in srgb,var(--t2) 16%,var(--bg));display:flex;flex-direction:column;align-items:center;gap:.12rem;min-width:0;opacity:0;transform:translateY(16px)}
+body.light .w7jc-tile{box-shadow:0 4px 0 rgba(42,39,33,.10)}
+.w7jc-tiles.on .w7jc-tile{animation:w7jcTile .26s var(--ease-out) both}
+.w7jc-tiles.on .w7jc-tile:nth-child(2){animation-delay:.09s}
+.w7jc-tiles.on .w7jc-tile:nth-child(3){animation-delay:.18s}
+@keyframes w7jcTile{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.w7jc-tile .w7jc-i3{width:40px;height:40px;filter:var(--w7jc-sh3);margin-bottom:.1rem}
+.w7jc-tv{display:block;font-size:1.55rem;font-weight:900;line-height:1.15;font-variant-numeric:tabular-nums;color:var(--t1);white-space:nowrap}
+.w7jc-tp .w7jc-tv{color:var(--g)}
+.w7jc-ta .w7jc-tv{color:var(--a)}
+.w7jc-ts .w7jc-tv{color:var(--w7jc-fd)}
+.w7jc-tl{font-size:.72rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;padding:0 .2rem}
+.w7jc-mast{display:flex;align-items:center;justify-content:space-between;gap:.6rem;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:.6rem .9rem;margin:0 0 1rem;font-size:.86rem;color:var(--t2)}
+.w7jc-mast b{color:var(--a);font-weight:800}
+.w7jc-extra{margin:-.35rem 0 1rem}
+.w7jc-extra>*{margin-top:0}
+.w7jc-mast.w7jc-l4 b{color:var(--g)}
+.w7jc-pips{display:inline-flex;gap:5px;flex:0 0 auto}
+.w7jc-pip{display:block;width:24px;height:8px;border-radius:5px;background:color-mix(in srgb,var(--t2) 26%,transparent)}
+.w7jc-pip.on{background:var(--a)}
+.w7jc-mast.w7jc-l4 .w7jc-pip.on{background:var(--g);box-shadow:0 0 6px color-mix(in srgb,var(--g) 55%,transparent)}
+.w7jc-mast.on .w7jc-pip.w7jc-new{animation:w7jcPip .3s var(--ease-pop) .18s both}
+@keyframes w7jcPip{0%{transform:scale(0)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
+#stageCerem.w7jc-cer .cer-btns{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center;align-items:center}
+#stageCerem.w7jc-cer .cer-btns .bp.w7jc-cta{flex:1 1 60%;min-height:52px;margin:0;font-size:1.04rem;font-weight:800;border-radius:16px;box-shadow:0 5px 0 var(--pd);display:inline-flex;align-items:center;justify-content:center;gap:.5rem;transition:transform 90ms,box-shadow 90ms}
+#stageCerem.w7jc-cer .cer-btns .bp.w7jc-cta:active{transform:translateY(3px)!important;box-shadow:0 2px 0 var(--pd)}
+#stageCerem.w7jc-cer .cer-btns .bp.w7jc-cta .w5i{width:20px;height:20px}
+html[dir="ltr"] .w7jc-fwd{transform:scaleX(-1)}
+#stageCerem.w7jc-cer .cer-btns .bs.w7jc-link{flex-basis:100%;order:9;margin:0;background:none!important;border:0!important;box-shadow:none!important;color:var(--t2);font-weight:700;font-size:.9rem;padding:.55rem;text-decoration:underline;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,var(--t2) 45%,transparent)}
+#stageCerem.w7jc-cer .cer-btns .bs.w7jc-solo{min-height:48px;border-radius:16px}
+#stageCerem.w7jc-cer .cer-btns .bs:not(.w7jc-link){min-height:52px;margin:0;border-radius:16px;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;box-shadow:0 4px 0 color-mix(in srgb,var(--p) 30%,transparent)}/* e.g. the W7 share button next to the CTA */
+#stageCerem.w7jc-skip *:not(.w7jc-rays){animation-delay:0s!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+#stageCerem.w7jc-rm .w7jc-tile,#stageCerem.w7jc-rm .w7jc-pip{animation-delay:0s!important}
+#stageCerem.w7jc-rm .w7jc-rays{animation:none;opacity:1}
+#stageCerem.w7jc-rm .w7jc-hero>img,#stageCerem.w7jc-rm .w7jc-glow{opacity:1;animation:none}
+@media(max-height:700px){.w7jc-hero,.w7jc-hero>img{width:96px;height:96px}.w7jc-tile .w7jc-i3{width:34px;height:34px}.w7jc-tile{padding:.55rem .25rem .5rem}}
+/* ---------- Perfect stamp ---------- */
+#w7jcStamp{position:fixed;inset:0;z-index:2300;display:grid;place-items:center;background:rgba(10,11,16,.55);animation:w7jcFadeIn .14s ease-out both;cursor:pointer;-webkit-tap-highlight-color:transparent}
+body.light #w7jcStamp{background:rgba(246,243,234,.68)}
+#w7jcStamp.w7jc-out{animation:w7jcFadeOut .18s var(--ease-in) both}
+.w7jc-stamp{position:relative;width:200px;height:200px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.05rem;background:radial-gradient(circle at 35% 28%,color-mix(in srgb,var(--g) 24%,var(--card)),var(--card) 70%);box-shadow:0 0 0 5px var(--g),0 0 0 9px color-mix(in srgb,var(--g) 22%,transparent),0 18px 50px rgba(0,0,0,.45);transform:rotate(-6deg);animation:w7jcSlam .24s cubic-bezier(.4,0,1,1) both}
+body.light .w7jc-stamp{box-shadow:0 0 0 5px var(--g),0 0 0 9px color-mix(in srgb,var(--g) 22%,transparent),0 14px 34px rgba(42,39,33,.22)}
+.w7jc-stamp::after{content:'';position:absolute;inset:13px;border-radius:50%;border:2px dashed color-mix(in srgb,var(--g) 65%,transparent);pointer-events:none}
+.w7jc-stamp b{font-size:2.15rem;font-weight:900;line-height:1.05;color:var(--g);letter-spacing:.04em}
+.w7jc-stamp small{font-size:.72rem;font-weight:700;color:var(--t2)}
+.w7jc-stamp .w7jc-sst{width:46px;height:46px;margin-top:-.4rem;filter:var(--w7jc-sh3)}
+@keyframes w7jcSlam{0%{transform:scale(1.6) rotate(-12deg);opacity:0}100%{transform:scale(1) rotate(-6deg);opacity:1}}
+.w7jc-shock{position:absolute;inset:-6px;border-radius:50%;border:3px solid var(--g);opacity:0;pointer-events:none;animation:w7jcShock .44s var(--ease-out) .24s both}
+@keyframes w7jcShock{0%{opacity:.85;transform:scale(1)}100%{opacity:0;transform:scale(1.5)}}
+/* ---------- Combo 2.0 ---------- */
+#qfxCombo.w7jc-chip{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .78rem .3rem .62rem;isolation:isolate;line-height:1.25}
+#qfxCombo .w7jc-cf{width:16px;height:16px;transition:transform .3s var(--ease-out),opacity .3s ease,filter .3s ease}
+#qfxCombo.w7jc-t3,#qfxCombo.w7jc-t5{border-color:var(--f);box-shadow:0 6px 20px rgba(0,0,0,.28),0 0 14px rgba(255,159,67,.3)}
+body.light #qfxCombo.w7jc-t3,body.light #qfxCombo.w7jc-t5{box-shadow:0 6px 16px rgba(42,39,33,.16),0 0 12px rgba(255,159,67,.35)}
+#qfxCombo.w7jc-t3 .w7jc-cf,#qfxCombo.w7jc-t5 .w7jc-cf,#qfxCombo.w7jc-t10 .w7jc-cf{width:20px;height:20px}
+#qfxCombo.w7jc-t5{scale:1.1}
+#qfxCombo.w7jc-t5::before{content:'';position:absolute;inset:0;z-index:-1;border-radius:inherit;background:linear-gradient(100deg,color-mix(in srgb,var(--f) 20%,var(--card)) 20%,color-mix(in srgb,var(--g) 34%,var(--card)) 50%,color-mix(in srgb,var(--f) 20%,var(--card)) 80%);background-size:250% 100%;animation:w7jcShim 1.2s linear infinite}
+@keyframes w7jcShim{from{background-position:100% 0}to{background-position:-150% 0}}
+#qfxCombo.w7jc-t10{scale:1.12;background:linear-gradient(135deg,#F7DC86,#E2AE3A);color:#2A1E05;border-color:#F7DC86;box-shadow:0 0 0 2px rgba(232,196,92,.35),0 8px 26px rgba(226,174,58,.45)}
+#qfxCombo .w7jc-cx{font-weight:900;color:var(--w7jc-fd)}
+#qfxCombo.w7jc-t10 .w7jc-cx{color:#2A1E05}
+#qfxCombo .w7jc-cn{display:inline-grid;overflow:hidden;height:1.25em;line-height:1.25em;font-weight:900;font-variant-numeric:tabular-nums}
+#qfxCombo .w7jc-cn>span{grid-area:1/1}
+#qfxCombo .w7jc-cn .w7jc-o{animation:w7jcFlipOut .18s var(--ease-in) both}
+#qfxCombo .w7jc-cn .w7jc-o+.w7jc-n{animation:w7jcFlipIn .18s var(--ease-out) both}
+@keyframes w7jcFlipOut{to{transform:translateY(-100%);opacity:0}}
+@keyframes w7jcFlipIn{from{transform:translateY(100%);opacity:0}}
+#qfxCombo.w7jc-cool .w7jc-cf{filter:grayscale(1) brightness(1.15);transform:translateY(-8px);opacity:0}
+#qfxCombo .w7jc-plus{position:absolute;top:-1rem;inset-inline-end:-.2rem;font-size:.8rem;font-weight:900;color:var(--g);text-shadow:0 1px 2px rgba(0,0,0,.45);animation:w7jcPlus .95s var(--ease-out) both;pointer-events:none}
+body.light #qfxCombo .w7jc-plus{text-shadow:none;color:#8A6A12}
+@keyframes w7jcPlus{0%{opacity:0;transform:translateY(6px) scale(.7)}22%{opacity:1;transform:translateY(0) scale(1.12)}70%{opacity:1;transform:translateY(-6px)}100%{opacity:0;transform:translateY(-14px)}}
+#w7jcComboMsg{position:fixed;top:4.9rem;inset-inline-end:.8rem;z-index:290;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:.38rem .85rem;font-size:.78rem;font-weight:700;color:var(--t2);box-shadow:0 6px 20px rgba(0,0,0,.25);pointer-events:none;animation:w7jcMsgIn .3s var(--ease-out) .25s both}
+#w7jcComboMsg.w7jc-out{animation:w7jcFadeOut .3s var(--ease-in) both}
+@keyframes w7jcMsgIn{from{opacity:0;transform:translateY(-6px)}}
+@media(max-width:700px){body:has(.ach-toast.show) #w7jcComboMsg{top:8.9rem}}
+body.w7jc-fire #tc .qq:nth-child(1 of .qq:not(.qok):not(.qno)){box-shadow:0 0 0 2px var(--f),0 0 24px rgba(255,159,67,.35);transition:box-shadow .3s ease}
+/* ---------- Map Return 2.0 + mastery crown ---------- */
+.j-node .j-ic{position:relative}
+.j-node.w7jc-locked{opacity:.72;border-style:dashed!important;border-color:var(--line)!important;box-shadow:none!important;animation:none!important}
+body.light .j-node.w7jc-locked{opacity:.86}
+.j-node.w7jc-locked .j-ic{filter:saturate(.45);opacity:.85}
+.j-node.w7jc-locked .j-here{opacity:0}
+.j-node .j-here{transition:opacity .3s ease}
+.j-node.w7jc-unlocked{transition:opacity .3s ease,border-color .3s ease,box-shadow .3s ease}
+.w7jc-lock{position:absolute;inset-inline-end:-7px;bottom:-7px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--card);border:1.5px solid var(--line);color:var(--t2);z-index:3;pointer-events:none}
+.w7jc-lock .w7jc-sv{width:14px;height:14px;stroke-width:2.3}
+.j-seg.w7jc-seg-pre{border-style:dashed!important;border-color:var(--line)!important;filter:none!important;animation:none!important}
+.j-seg.w7jc-seg-fill{animation:w7jcSegFill .34s var(--ease-out) both!important}
+@keyframes w7jcSegFill{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+.w7jc-dot{position:absolute;left:0;top:0;width:10px;height:10px;border-radius:50%;background:var(--a);box-shadow:0 0 10px var(--a),0 0 2px #fff;z-index:6;pointer-events:none;will-change:transform,opacity}
+.w7jc-dot.w7jc-tr{box-shadow:none;opacity:.55}
+.w7jc-crown{position:absolute;top:-15px;left:50%;width:24px;height:24px;margin-left:-12px;z-index:4;pointer-events:none;rotate:-12deg;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}
+[dir="rtl"] .w7jc-crown{rotate:12deg}
+.w7jc-crown.w7jc-drop{animation:w7jcCrown .42s var(--ease-pop) both}
+@keyframes w7jcCrown{from{translate:0 -24px;opacity:0}to{translate:0 0;opacity:1}}
+.j-node .w5m-pip{position:relative}
+.j-node .w5m-pip.w7jc-pnew{animation:w7jcPip .3s var(--ease-pop) both}
+.w7jc-spk{position:absolute;left:50%;bottom:2px;margin-left:-9px;width:18px;height:18px;pointer-events:none;animation:w7jcSpk .6s var(--ease-out) both}
+.w7jc-spk .w7jc-i3{width:18px;height:18px;display:block}
+@keyframes w7jcSpk{0%{opacity:0;transform:translateY(4px) scale(.6)}30%{opacity:1}100%{opacity:0;transform:translateY(-16px) scale(1)}}
+.j-node:has(>.j-start-bub){z-index:3}/* the bubble hangs into the next card: lift its node above that sibling */
+.j-start-bub .w7jc-bh{margin-inline-start:.4rem;padding-inline-start:.4rem;border-inline-start:1px solid rgba(255,255,255,.35);font-weight:900}
+.j-start-bub .w7jc-bh .w7jc-i3{width:13px;height:13px;margin-inline-start:.15rem;vertical-align:-2px}
+/* ---------- Ink & Gold chrome ---------- */
+.journey .j-section .w7jc-ic .w7jc-i3,#sg .j-section .w7jc-ic .w7jc-i3{width:20px;height:20px}
+.j-here .w7jc-sv{width:11px;height:11px;vertical-align:-1px;stroke-width:2.6;margin-inline-end:.15rem}
+.j-score .w7jc-i3{width:13px;height:13px;vertical-align:-2px}
+#mv>h2 .w7jc-maph{width:1.05em;height:1.05em;color:var(--p);vertical-align:-.12em}
+.skill-badge .sb-ic .w7jc-ic .w7jc-i3{width:30px;height:30px}
+.skill-badge.locked::after{content:'';width:15px;height:15px;top:-.4rem;background:var(--t2);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='10.5' width='14' height='10.5' rx='2.6'/%3E%3Cpath d='M8.2 10.5V7.8a3.8 3.8 0 0 1 7.6 0v2.7'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='10.5' width='14' height='10.5' rx='2.6'/%3E%3Cpath d='M8.2 10.5V7.8a3.8 3.8 0 0 1 7.6 0v2.7'/%3E%3C/svg%3E") center/contain no-repeat}
+#todayHub :is(h3,h4) .w7jc-ic{margin-inline-end:.1rem}
+#todayHub :is(h3,h4) .w7jc-sv,#todayHub :is(h3,h4) .w7jc-ph{width:1.15em;height:1.15em;color:var(--p)}
+#todayHub :is(h3,h4) .w7jc-ph-fire{color:var(--f)}
+#todayHub .w7jc-ic .w7jc-i3{width:1.2em;height:1.2em}
+#xp-area .w7jc-ic .w7jc-i3,#daily-goal .w7jc-ic .w7jc-i3{width:1.15em;height:1.15em}
+.ach-ic .w7jc-ic .w7jc-i3,.ach-ic>.w7jc-i3{width:30px;height:30px;vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,.2))}
+.ach-ic .w7jc-ph{width:28px;height:28px;color:#2A1E05}
+#pv .bt-ic .w7jc-ic .w7jc-i3{width:30px;height:30px}
+.pv-tile-flame .bt-flame .w7jc-ic{display:inline-flex}
+.w7jc-best{font-size:.72rem;color:var(--t2);margin-top:.25rem;font-weight:600}
+.w7jc-hapbtn .w7jc-sv{width:16px;height:16px;vertical-align:-3px}
+@media(prefers-reduced-motion:reduce){.w7jc-hero .w7jc-rays{animation:none;opacity:1}#qfxCombo.w7jc-t5::before{animation:none}.w7jc-crown.w7jc-drop{animation:none}}
+/* ===== /W7 juice kit ===== */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.6.1/chart.umd.min.js" defer></script>
@@ -5236,7 +5557,7 @@ function _tryLogin(name,email,consent){
 email=email||'';consent=!!consent;
 const btn=document.querySelector('.btn-go');
 if(btn){btn.disabled=true;btn.textContent='⏳ בודק...'}
-fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,email:email,sessionToken:(localStorage.getItem('pm_session_token_'+name)||'')}),headers:{'Content-Type':'text/plain'}})
+fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,email:email,sessionToken:(localStorage.getItem('pm_session_token_'+name)||'')}),headers:{'Content-Type':'text/plain'},signal:(typeof _w6sySig==='function'?_w6sySig(25000):undefined)})
 .then(r=>r.json())
 .then(d=>{
   if(btn){btn.disabled=false;btn.textContent='התחל את המסע ←'}
@@ -5305,6 +5626,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
     /* W5: the account's last activity on ANY device (absolute ms) — read by maybeWelcomeBack; window-scoped = this session only */
     try{var _w5fLa=d.data.lastActivity,_w5fN=Number(_w5fLa);if(isNaN(_w5fN))_w5fN=Date.parse(String(_w5fLa))||0;window._w5cloudLastAct=(_w5fN>1e12&&_w5fN<4e12)?Math.round(_w5fN):0}catch(e){window._w5cloudLastAct=0}
     G._cloudVerified=true;// a load succeeded → empty-save guard in _doSync may proceed
+    try{_w6idSignedIn(name)}catch(e){}/* w6id: fresh e-mail proof → re-sync once if this device's saves were refused */
     // CRITICAL: Clear per-user state if (a) different user or (b) genuinely new user with leftover data
     if((G.userName && G.userName!==name) || isNewUser){
       G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G.satSkips=[];G._pu={};G._seenSec={};G._tabVisits={};
@@ -5313,10 +5635,11 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
       G.interviewUnlocked=false;G.stageTime={};G.satisfactionRating=0;
       G.adminMessage='';G.adminMessageRead=false;G.streak=0;G.maxStreak=0;G.ts=0;G.firstUse=null;
       G.activityLog=[];G.lastStageVisited=null;
+      if(G.userName&&G.userName!==name){try{_w6syForeign()}catch(e){}}/* W6SY: nothing of the previous account survives */
     }
     G.userName=name;
     // Never let a blank cloud read lower an existing local score/streak (cross-device safety + self-heal).
-    G.ts=_recoverLocal?Math.max(parseInt(G.ts)||0,cloudScore):cloudScore;
+    G.ts=(_recoverLocal||_sameUser)?Math.max(parseInt(G.ts)||0,cloudScore):cloudScore;/* W6SY: same account → keep points earned locally but not yet synced (the server keeps max anyway) */try{var _w6fu=(typeof _w6syFirstUse==='function')?_w6syFirstUse(d.data.firstUse):0;if(_w6fu&&!(parseInt(G.firstUse)<=_w6fu))G.firstUse=_w6fu}catch(e){}/* W6SY: keep the account's real signup date */
     G.streak=_recoverLocal?Math.max(parseInt(G.streak)||0,cloudStreak):cloudStreak;
     // Keep the all-time peak streak for the certificate (so it never "resets" between sessions)
     G.maxStreak=Math.max(parseInt(G.maxStreak)||0,parseInt(cloudStreak)||0,parseInt(G.streak)||0,parseInt(d.data.maxStreak)||0);
@@ -5409,7 +5732,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
         try{if(typeof _w7hbMergeCloud==='function')_w7hbMergeCloud(_pg.h)}catch(e){}/* W7: habits — rest days / pause / rescue / study slot (newest 'at' wins) */
       }
     }catch(e){}
-    try{if(typeof _w6rtScLoad==='function')_w6rtScLoad(d.data.progressJSON)}catch(e){}/* W6 red-team: per-stage best scores (progressJSON.p) */
+    try{if(typeof _w6rtScLoad==='function')_w6rtScLoad(d.data.progressJSON)}catch(e){}try{if(typeof _w7lnRLoad==='function')_w7lnRLoad(d.data.progressJSON)}catch(e){}/* W7 learn: progressJSON.r (newest per card wins) *//* W6 red-team: per-stage best scores (progressJSON.p) */
     try{_retroCompleteStages()}catch(e){}/* credit stages stuck by missing read-marks (Yonatan report) */
     // Merge satisfaction-skip log from cloud (#sat) — dedupe by timestamp
     try{
@@ -5477,7 +5800,7 @@ fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,ema
   if(G.userName && G.userName!==name){
     G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G.satSkips=[];G._pu={};G._seenSec={};G._tabVisits={};
     G.done=new Set();G.miHistory=[];G.weeklyDone=[];G._achShown=[];
-    G.interviewUnlocked=false;G.stageTime={};G.ts=0;G.streak=0;
+    G.interviewUnlocked=false;G.stageTime={};G.ts=0;G.streak=0;try{_w6syForeign()}catch(e){}/* W6SY */
   }
   G.userName=name;G.s=true;if(!G.firstUse)G.firstUse=Date.now();updateStreak();sv();updateLeaderboard();mp();
 });
@@ -8582,7 +8905,7 @@ function generateCert(){
 
   /* W5: server-side issuance record + public verification link (fire-and-forget; the backend endpoint may lag) */
   const _w5fVerUrl=(typeof _DB_BASE!=='undefined'&&_DB_BASE)?(_DB_BASE+'?action=verifyCert&id='+encodeURIComponent(certId)):'';
-  try{if(DB_URL){let _w5fTok='';try{_w5fTok=G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||''}catch(e){}fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'issueCert',userName:G.userName||'',sessionToken:_w5fTok,certId:certId,title:(title?title.name:'מנהל מוצר מוסמך'),score:score,stages:stagesCompleted}),headers:{'Content-Type':'text/plain'},keepalive:true}).catch(function(){})}}catch(e){}
+  try{if(DB_URL){const _w6gsU=G.userName||'';const _w6gsCert=function(again){let _w5fTok='';try{_w5fTok=G.sessionToken||localStorage.getItem('pm_session_token_'+_w6gsU)||''}catch(e){}fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'issueCert',userName:_w6gsU,sessionToken:_w5fTok,certId:certId,title:(title?title.name:'מנהל מוצר מוסמך'),score:score,stages:stagesCompleted}),headers:{'Content-Type':'text/plain'},keepalive:true}).then(function(r){return r.json()}).then(function(d){/* w6gs: issueCert now needs this device's current session token AND the core stages already saved on the server; refused right after the last stage (save in flight) or after a device switch → ONE retry after this device's next save */if(!again&&d&&d.success!==true&&(d.denied==='auth'||d.error==='incomplete')){try{syncToCloud()}catch(e){}setTimeout(function(){try{if((G.userName||'')===_w6gsU)_w6gsCert(true)}catch(e){}},9000)}}).catch(function(){})};_w6gsCert(false)}}catch(e){}
   const _w6i18nCE=_enLang();const certHTML=`<!DOCTYPE html>
 <html lang="${_w6i18nCE?'en':'he'}" dir="${_w6i18nCE?'ltr':'rtl'}">
 <head>
@@ -8826,7 +9149,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.0';
+const APP_VERSION='1.10.1';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -8898,6 +9221,7 @@ function _doSync(){
     })(),
     sessionStart:G.sessionStart||0,
     sessionToken:G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||'',
+    email:_w6idEmail(),/* w6id: identity proof — the server re-binds this device's session token only with the CURRENT token or the account e-mail */
     lastDevice:JSON.stringify(G.lastDevice||detectDevice()),
     quizAttemptsJSON:JSON.stringify(G.quizAttempts||{}),
     progressJSON:JSON.stringify({s:G._seenSec||{},t:G._tabVisits||{},q:G.qa||{},v:G._avPos||{},n:G._narrPos||{},i:G._introPos||{},w:(typeof _w6fWSnap==='function'?_w6fWSnap():undefined)}),/* partial progress (read-marks/case-visits/answers) — used to be device-local only (bug #67) */
@@ -8912,18 +9236,23 @@ function _doSync(){
   // stored values (both are '!= null'-guarded there). A stale phone whose load failed once replaced a
   // user's synced quiz answers with a near-empty snapshot (עומר דיין, 10/2026). Score/stages stay in
   // the payload — they are max/union-guarded server-side.
-  try{if(typeof _w6rtPayload==='function')_w6rtPayload(payload)}catch(e){}/* W6 red-team: per-stage best scores → progressJSON.p (server max-merges; an old server drops it) */
+  try{if(typeof _w6rtPayload==='function')_w6rtPayload(payload)}catch(e){}try{if(typeof _w7lnPayload==='function')_w7lnPayload(payload)}catch(e){}/* W7 learn: recall cards + weekly-recap prefs → progressJSON.r (server keeps newest per card; an old server drops it) *//* W6 red-team: per-stage best scores → progressJSON.p (server max-merges; an old server drops it) */
   if(!G._cloudVerified){delete payload.progressJSON;delete payload.reflectionsJSON;}
   fetch(DB_URL,{method:'POST',body:JSON.stringify(payload),headers:{'Content-Type':'text/plain'}})
   .then(r=>r.json())
   .then(d=>{
     if(d.success){
+      _w6idEp=null;/* w6id: accepted → a later refusal may run its one recovery again */
       // Bind session token returned by server (TOFU on first save)
       if(d.sessionToken){
         G.sessionToken=d.sessionToken;
         try{localStorage.setItem('pm_session_token_'+G.userName,d.sessionToken)}catch(e){}
       }
       _showSync('☁️')
+    }else if(d.denied==='auth'){
+      /* w6id: refused — this device's token is no longer the account's current one and the save carried no matching
+         account e-mail. NOTHING was written server-side; local progress stays and syncs on the next accepted save. */
+      _showSync('🔒');try{_w6idOnDenied()}catch(e){}
     }else if(d.sessionMismatch){
       _showSync('🔒')
     }else if(d.userDeleted){
@@ -8935,6 +9264,35 @@ function _doSync(){
   .catch(()=>{_showSync('📴')});
 }
 
+/* ===== w6id: identity proof for cloud saves (companion of _w6_gas_identity.gs.txt) ===== */
+var _w6idEp=null,_w6idNoted=null;/* _w6idEp = user whose refusal episode already used its ONE recovery; _w6idNoted = toast shown (per session) */
+function _w6idEmail(){var e='';try{e=String(G.cloudEmail||'').trim().toLowerCase()}catch(x){}return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)?e:''}
+function _w6idOnDenied(){
+  var u=G.userName||'';
+  if(!DB_URL||!u||u==='אנונימי'||_w6idEp===u)return;/* one recovery per episode — never loops */
+  _w6idEp=u;
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:u,email:_w6idEmail(),sessionToken:(G.sessionToken||localStorage.getItem('pm_session_token_'+u)||'')}),headers:{'Content-Type':'text/plain'}})
+  .then(function(r){return r.json()})
+  .then(function(d){
+    if((G.userName||'')!==u)return;
+    if(d&&d.success&&d.data){/* the account accepts this device's proof again (e.g. its e-mail changed meanwhile): refresh it, ONE re-save */
+      var em=String(d.data.email||'').trim().toLowerCase();
+      if(em!==String(G.cloudEmail||'').trim().toLowerCase()){G.cloudEmail=em;G.cloudEmailVerified=String(d.data.emailVerified||'')==='true'}
+      try{syncToCloud()}catch(e){}
+      return;
+    }
+    if(d&&d.success===false&&(d.error==='email_required'||d.error==='email_mismatch'))_w6idNotice(u);
+  }).catch(function(){});
+}
+function _w6idNotice(u){
+  if(_w6idNoted===u)return;_w6idNoted=u;
+  var en=_enLang();
+  try{showAchievement('🔒',en?'Cloud sync paused':'הסנכרון לענן מושהה',en?'Your progress is safe on this device. Sign in again with your account email to resume syncing.':'ההתקדמות שמורה במכשיר הזה. כדי לחדש את הסנכרון, היכנסו שוב עם המייל של החשבון.')}catch(e){}
+}
+function _w6idSignedIn(name){/* a successful sign-in = fresh e-mail proof → close the episode, ONE save carries this device's progress up */
+  if(_w6idEp===name){_w6idEp=null;_w6idNoted=null;setTimeout(function(){try{syncToCloud()}catch(e){}},0)}
+}
+/* ===== /w6id ===== */
 // Called when server reports the user no longer exists (admin deleted them).
 // Wipes local state and forces re-registration via welcome screen.
 let _acctDeletedHandled=false;
@@ -9670,7 +10028,7 @@ function adminEnterByFlag(){
   var tok=G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||'';
   if(!tok){showAchievement('🔒','גישת מנהל','נדרשת התחברות מחדש');return;}
   showAchievement('🛡️','פאנל ניהול','מאמת הרשאה...');
-  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'adminAccessByFlag',userName:G.userName,sessionToken:tok}),headers:{'Content-Type':'text/plain'}})
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'adminAccessByFlag',userName:G.userName,sessionToken:tok,email:_w6idEmail()}),headers:{'Content-Type':'text/plain'}})/* w6id: the server also needs the verified account e-mail */
   .then(r=>r.json()).then(d=>{
     if(d&&d.success&&d.adminToken){
       _admToken=d.adminToken;_admTokenExp=d.expiresAt||(Date.now()+3*60*60*1000);
@@ -11972,7 +12330,7 @@ function _w4MapReturn(){
     if(!nx)return;
     nx.classList.add('j-next-pulse');setTimeout(function(){nx.classList.remove('j-next-pulse')},950);
     setTimeout(function(){
-      var bub=document.createElement('div');bub.className='j-start-bub';bub.textContent=_enLang()?'Start ▸':'התחל ▸';
+      var bub=document.createElement('div');bub.className='j-start-bub';bub.innerHTML=(typeof _w7jcBub==='function')?_w7jcBub(nx):(_enLang()?'Start ▸':'התחל ▸');/* W7 juice: Continue here + reward hint */
       nx.appendChild(bub);setTimeout(function(){bub.remove()},4000);
     },950);
   },800);
@@ -12442,12 +12800,16 @@ function _w5ecoEarn(amount,kind,key){
     if(_w5eco.user!==u||_w5eco.seen[u+'|'+key])return;
     _w5eco.seen[u+'|'+key]=1;/* in-memory fast path; the durable guard is pm_eco_sent */
     if(!_w5ecoMark(u,key))return;
-    _w5ecoPost({action:'economyEarn',userName:u,sessionToken:_w5ecoTok(),amount:amount,event:'earn_'+kind,meta:key,appVersion:APP_VERSION}).then(function(d){
+    var _w6gsEarn=function(again){_w5ecoPost({action:'economyEarn',userName:u,sessionToken:_w5ecoTok(),amount:amount,event:'earn_'+kind,meta:key,appVersion:APP_VERSION}).then(function(d){
       if(!window._w5ecoOn||u!==_w5ecoUser())return;
+      /* w6gs: the server now needs this device's CURRENT session token. A refusal (another device saved last) wrote nothing,
+         so ONE retry after this device's next save (which re-binds the token) is safe; the server also dedupes by meta. */
+      if(d&&d.denied==='auth'){if(!again){try{syncToCloud()}catch(e){}setTimeout(function(){try{if(window._w5ecoOn&&u===_w5ecoUser())_w6gsEarn(true)}catch(e){}},9000)}return}
       _w5ecoApply(d);
       var dl=(d&&typeof d.delta==='number')?d.delta:0;
       if(d&&d.success===true&&!d.denied&&dl>0){var w=_W5ECO_WHY[kind]||['',''],en=_w5ecoEn();showAchievement('🪙',(en?'Token earned! +':'נפל האסימון! +')+dl,en?w[1]:w[0])}
-    }).catch(function(){});
+    }).catch(function(){})};
+    _w6gsEarn(false);
   }catch(e){}
 }
 /* capability probe — once per user per page session */
@@ -16038,6 +16400,1339 @@ if(typeof _w6lgPayload==='function'){const _w7hbOrigPay=_w6lgPayload;_w6lgPayloa
 if(typeof _w6stRiskOn==='function'){const _w7hbOrigRisk=_w6stRiskOn;_w6stRiskOn=function(){try{if(_w7hbExcusedToday())return false}catch(e){}return _w7hbOrigRisk.apply(this,arguments)}}
 if(typeof _w6stBlocked==='function'){const _w7hbOrigBlk=_w6stBlocked;_w6stBlocked=function(){try{if($('w7hbOv'))return true}catch(e){}return _w7hbOrigBlk.apply(this,arguments)}}
 /* ===== /W7HB habits ===== */
+/* ===== W7 learn (w7ln): 📜 certificate meter · 🧠 "3 things to remember" + recall cards · ↩ resume where you stopped · ✨ weekly recap =====
+   State on G (persisted by sv()): flash · wk · wkPrev · weekGoal · recapShown · recapOff · _lastPos · _certMeterIntro · _certIssued ·
+   _w7lnAt (merge clocks) · _w7lnOwn (owner — another account on this device never inherits these keys). Cloud: progressJSON.r. */
+var _w7ln={boot:Date.now(),q:{},pend:null,fb:null,lpT:0,lpTm:0,srS:null,wgOpen:false,rtT:0,cw:''};
+var _W7LN_KEYS=['flash','wk','wkPrev','weekGoal','recapShown','recapOff','_lastPos','_certMeterIntro','_certIssued','_w7lnAt'];
+function _w7lnEn(){try{return !!_enLang()}catch(e){return false}}
+function _w7lnL(he,en){return _w7lnEn()?en:he}
+function _w7lnDir(){return _w7lnEn()?'ltr':'rtl'}
+function _w7lnRM(){try{return !!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)}catch(e){return false}}
+function _w7lnT(f,a,m){try{trackEvent(f,a,m==null?'':String(m))}catch(e){}}
+function _w7lnSave(){try{sv()}catch(e){}}
+function _w7lnU(){try{return (G&&G.s&&G.userName&&G.userName!=='אנונימי')?String(G.userName):''}catch(e){return ''}}
+function _w7lnE(x){try{return esc(String(x==null?'':x))}catch(e){return ''}}
+function _w7lnTxt(h){try{return String(new DOMParser().parseFromString(String(h==null?'':h),'text/html').body.textContent||'').replace(/\s+/g,' ').trim()}catch(e){return String(h==null?'':h).replace(/<[^>]*>/g,'').trim()}}
+function _w7lnSt(id){try{id=parseInt(id,10);for(var i=0;i<S.length;i++)if(S[i].id===id)return S[i]}catch(e){}return null}
+function _w7lnStack(){try{if(typeof _w6skSoon==='function')_w6skSoon()}catch(e){}}
+function _w7lnRm(id){var o=document.getElementById(id);if(o){o.remove();_w7lnStack();return true}return false}
+function _w7lnOwn(){try{var u=(G&&G.userName)?String(G.userName):'';if(!u||G._w7lnOwn===u)return;if(G._w7lnOwn){_W7LN_KEYS.forEach(function(k){delete G[k]});_w7ln.pend=null;_w7ln.fb=null}G._w7lnOwn=u}catch(e){}}
+function _w7lnAtSet(k){try{if(!G._w7lnAt||typeof G._w7lnAt!=='object')G._w7lnAt={};G._w7lnAt[k]=Date.now()}catch(e){}}
+/* ---------- dates (device-local, same day semantics as _dayKey) ---------- */
+function _w7lnPad(n){return (n<10?'0':'')+n}
+function _w7lnISO(d){return d.getFullYear()+'-'+_w7lnPad(d.getMonth()+1)+'-'+_w7lnPad(d.getDate())}
+function _w7lnPD(k){var m=/^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(String(k||''));return m?new Date(+m[1],+m[2]-1,+m[3]):null}
+function _w7lnD0(d){d=d||new Date();return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+function _w7lnDK(n){var d=_w7lnD0();d.setDate(d.getDate()+(n|0));return _dayKey(d)}
+function _w7lnDiff(a,b){return Math.round((_w7lnD0(b)-_w7lnD0(a))/864e5)}
+function _w7lnWkStart(d){d=_w7lnD0(d);var w=d.getDay(),back=(G&&G.lang==='en')?((w+6)%7):w;d.setDate(d.getDate()-back);return d}
+function _w7lnN(kind,n){n=n|0;var en=_w7lnEn();
+  if(kind==='s')return en?(n+(n===1?' stage':' stages')):(n===1?'שלב אחד':n+' שלבים');
+  if(kind==='d')return en?(n+(n===1?' learning day':' learning days')):(n===1?'יום למידה אחד':n+' ימי למידה');
+  return en?(n+(n===1?' correct answer':' correct answers')):(n===1?'תשובה נכונה אחת':n+' תשובות נכונות')}
+/* ---------- analytics registry ---------- */
+try{
+  var _w7lnF={certMeter:{ic:'📜',name:'מד תעודה',col:'#E8C45C'},flashback:{ic:'🧠',name:'3 דברים לזכור',col:'#00C9A7'},weeklyRecap:{ic:'✨',name:'סיכום שבועי',col:'#7E57C2'}};
+  Object.keys(_w7lnF).forEach(function(k){if(TRACKED_FEATURES.indexOf(k)<0){TRACKED_FEATURES.push(k);if(typeof OTHER_FEATURES!=='undefined'&&OTHER_FEATURES.indexOf(k)<0)OTHER_FEATURES.push(k)}if(!FEAT_META[k])FEAT_META[k]=_w7lnF[k]});
+  var _w7lnA={cta:'הפקת תעודה מהמד',share:'שיתוף',recap_shown:'כרטיס "3 דברים לזכור" הוצג',opt_out:'ויתור על בדיקת זיכרון',reveal:'הצגת תשובה',got:'זכרתי',forgot:'שכחתי',reread:'קריאה מחדש',shown:'הוצג',goal_set:'יעד שבועי נקבע',off:'כיבוי',on:'הפעלה',goal_done:'יעד שבועי הושג',resume:'המשך מאיפה שעצרתי',resume_top:'חזרה להתחלה',jump:'קפיצה למקום שעצרתי'};
+  Object.keys(_w7lnA).forEach(function(k){if(!FEAT_ACT_NAMES[k])FEAT_ACT_NAMES[k]=_w7lnA[k]});
+}catch(e){}
+/* ---------- W6 modal stack: our overlays join it (z-index, focus, Escape = top only, scroll lock, toasts wait) ---------- */
+try{if(typeof _W6SK_OV==='string'&&_W6SK_OV.indexOf('#w7lnRecap')<0)_W6SK_OV+=',#w7lnRecap,#w7lnWeek,#w7lnCertOv';if(typeof _W6SK_TK==='string'&&_W6SK_TK.indexOf('#w7lnRecap')<0)_W6SK_TK+=',#w7lnRecap,#w7lnWeek'}catch(e){}
+function _w7lnBusy(){
+  try{if(typeof _w6skOpen==='function'){var o=_w6skOpen();for(var i=0;i<o.length;i++){if(String(o[i].id||'').indexOf('w7ln')!==0)return true}}
+      else if(document.querySelector('#stageCerem,#todayHub,#wbOv,#goalOv,#legalOv,#pwOv,#certOverlay,.modal-overlay'))return true}catch(e){}
+  try{if(typeof _w6skTake==='function'&&_w6skTake())return true}catch(e){}
+  return !!document.querySelector('#w7lnRecap,#w7lnWeek,#w7lnCertOv');
+}
+/* run fn once the screen is free (no overlay/takeover), the user is in one of o.views, within o.max ms */
+function _w7lnWhenFree(key,fn,o){
+  o=o||{};var old=_w7ln.q[key];if(old)clearTimeout(old.t);
+  var t0=Date.now(),job={t:0};_w7ln.q[key]=job;
+  var tick=function(){
+    if(_w7ln.q[key]!==job)return;
+    if(Date.now()-t0>(o.max||60000)){delete _w7ln.q[key];return}
+    var ok=false;try{ok=!!G.s&&(!o.views||o.views.indexOf(G.v)>=0)&&!_w7lnBusy()}catch(e){}
+    if(!ok){job.t=setTimeout(tick,400);return}
+    delete _w7ln.q[key];try{fn()}catch(e){}
+  };
+  job.t=setTimeout(tick,o.delay||0);
+}
+function _w7lnCancelAll(){try{Object.keys(_w7ln.q).forEach(function(k){clearTimeout(_w7ln.q[k].t);delete _w7ln.q[k]})}catch(e){}}
+
+/* =============================== #1 📜 CERTIFICATE METER =============================== */
+/* ONE count helper: the red-team helper (_w6rtCounts().core, used by the continue card / XP ring / cert card) when present, else PM_IDS */
+function _w7lnCore(){
+  var ids=[];try{ids=PM_IDS.slice()}catch(e){}
+  var done=-1;try{if(typeof _w6rtCounts==='function'){var c=_w6rtCounts().core;if(c&&c.total===ids.length)done=c.done|0}}catch(e){}
+  if(done<0){done=0;ids.forEach(function(i){try{if(G.done&&G.done.has(i))done++}catch(e){}})}
+  return {ids:ids,total:ids.length,done:done,left:Math.max(0,ids.length-done)};
+}
+function _w7lnPhase(c){if(c.left===0)return G._certIssued?'issued':'ready';if(c.done===0)return 'start';return c.left<=3?'near':'mid'}
+function _w7lnCopy(c,ph){var L=_w7lnL;
+  if(ph==='start')return L('השלב הראשון מחכה לכם — '+c.total+' שלבי ליבה לתעודה עם קישור אימות','Your first stage is waiting — '+c.total+' core stages to a certificate with a verification link');
+  if(ph==='mid')return L('עוד '+c.left+' שלבי ליבה לתעודה',c.left+' core stages to your certificate');
+  if(ph==='near')return L('רק עוד '+c.left+'! התעודה כמעט אצלכם 🔥','Just '+c.left+' more! Your certificate is almost yours 🔥');
+  if(ph==='ready')return L('🎉 התעודה מוכנה — הפיקו אותה עכשיו','🎉 Your certificate is ready — generate it now');
+  return L('✓ התעודה הופקה · שתפו','✓ Certificate issued · Share');
+}
+function _w7lnChip(c){return _w7lnL('📜 תעודת השלמה · ','📜 Completion certificate · ')+'<bdi>'+c.done+'/'+c.total+'</bdi>'}
+/* total+1 segments: segment 0 = "joined ✓" (always filled — honest endowed progress); nw = the segment this completion filled */
+function _w7lnSegs(c,nw){var h='<span class="w7ln-sg on j"></span>';for(var i=1;i<=c.total;i++)h+='<span class="w7ln-sg'+(i<=c.done?' on':'')+((nw&&i===c.done)?' nw':'')+'"></span>';return h}
+function _w7lnMeterHTML(where,intro){
+  var c=_w7lnCore(),ph=_w7lnPhase(c),en=_w7lnEn(),L=_w7lnL,cp=_w7lnCopy(c,ph),w=_w7lnE(where);
+  return '<div class="w7ln-cm w7ln-x w7ln-'+ph+(intro?' w7ln-intro':'')+'" dir="'+(en?'ltr':'rtl')+'" role="button" tabindex="0" aria-label="'+_w7lnE(_w7lnTxt(_w7lnChip(c))+' — '+cp)+'" onclick="_w7lnCertTap(\''+w+'\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();_w7lnCertTap(\''+w+'\')}">'
+   +'<div class="w7ln-cm-top"><span class="w7ln-cm-chip">'+_w7lnChip(c)+'</span><span class="w7ln-cm-ar" aria-hidden="true">'+(en?'›':'‹')+'</span></div>'
+   +'<div class="w7ln-segs" aria-hidden="true">'+_w7lnSegs(c)+'</div>'
+   +'<div class="w7ln-cm-lbl" aria-hidden="true"><span>'+L('הצטרפתם ✓','Joined ✓')+'</span><span>📜</span></div>'
+   +'<div class="w7ln-cm-copy">'+cp+'</div></div>';
+}
+function _w7lnMeterMount(host){
+  try{
+    host=host||$('continue-hero');if(!host||!host.isConnected)return;
+    var old=host.querySelectorAll('.w7ln-cm');for(var i=0;i<old.length;i++)old[i].remove();
+    var intro=!G._certMeterIntro&&!_w7lnRM();
+    var tmp=document.createElement('div');tmp.innerHTML=_w7lnMeterHTML('map',intro);var m=tmp.firstChild;
+    var card=host.querySelector('.continue-hero');
+    if(card&&card.parentNode===host)host.insertBefore(m,card.nextSibling);else host.appendChild(m);
+    if(!G._certMeterIntro){G._certMeterIntro=true}
+  }catch(e){}
+}
+function _w7lnCertTap(where){
+  var c=_w7lnCore(),ph=_w7lnPhase(c);
+  if(ph==='ready'){_w7lnT('certMeter','cta',where||'');_w7lnRm('w7lnCertOv');try{generateCert()}catch(e){}return}
+  if(ph==='issued'){_w7lnT('certMeter','share',where||'');_w7lnRm('w7lnCertOv');
+    if(typeof _pmShare==='function'){try{_pmShare('cert',{stages:c.done,score:G.ts||0});return}catch(e){}}
+    try{generateCert()}catch(e){}return}
+  _w7lnCertOpen(where);
+}
+function _w7lnCertOpen(where,quiet){
+  if(!quiet)_w7lnT('certMeter','open',where||'');_w7ln.cw=where||'';
+  var c=_w7lnCore(),en=_w7lnEn(),L=_w7lnL,ph=_w7lnPhase(c);
+  var core=[],nxt=null;
+  try{sortStages(S).forEach(function(s){if(s.tg==='בונוס - ספר'||s.tg==='בונוס מיוחד'||_stageHidden(s))return;if(!nxt&&!G.done.has(s.id))nxt=s;if(c.ids.indexOf(s.id)>=0&&!G.done.has(s.id))core.push(s)})}catch(e){}
+  /* the same target as the continue card first; a pre-core journey stage (e.g. the intro) leads the list as "up next" */
+  var rows=[];if(nxt){rows.push(nxt);core=core.filter(function(s){return s.id!==nxt.id})}rows=rows.concat(core);
+  var row=function(s,i){var isN=(i===0&&nxt&&s.id===nxt.id);return '<div class="w7ln-cs-row'+(isN?' nx':'')+'"><span class="w7ln-cs-ic" aria-hidden="true">'+(s.ic||'📘')+'</span><span class="w7ln-cs-t"><small>'+L('שלב','Stage')+' <bdi>'+s.id+'</bdi>'+(isN?'<span class="w7ln-cs-nx">'+L('▶ הבא בתור','▶ Up next')+'</span>':'')+'</small>'+_w7lnE(_w7lnTxt(s.t))+'</span><button type="button" class="w7ln-btn sm'+(isN?' pri':'')+'" onclick="_w7lnCertGo('+s.id+')">'+L('לשלב','Go')+'</button></div>'};
+  var old=$('w7lnCertOv');if(old)old.remove();
+  var ov=document.createElement('div');ov.id='w7lnCertOv';ov.className='w7ln-ov w7ln-x';ov.dir=en?'ltr':'rtl';
+  ov.innerHTML='<div class="hub-box"><div class="hub-h"><h3>📜 '+L('הדרך לתעודה','Your path to the certificate')+'</h3><button type="button" class="hub-x" onclick="_w7lnRm(\'w7lnCertOv\')" aria-label="'+L('סגירה','Close')+'">✕</button></div>'
+   +'<div class="w7ln-cs-hd"><span class="w7ln-cs-big"><bdi>'+c.done+'/'+c.total+'</bdi></span><span class="w7ln-cs-sub">'+_w7lnCopy(c,ph)+'</span></div>'
+   +'<div class="w7ln-segs" aria-hidden="true">'+_w7lnSegs(c)+'</div>'
+   +'<div class="w7ln-cm-lbl" aria-hidden="true"><span>'+L('הצטרפתם ✓','Joined ✓')+'</span><span>📜</span></div>'
+   +(ph==='ready'||ph==='issued'?'<div class="w7ln-wk-btns"><button type="button" class="w7ln-btn pri" onclick="_w7lnCertTap(\'sheet\')">'+_w7lnCopy(c,ph)+'</button></div>':'<div class="w7ln-cs-list">'+rows.map(row).join('')+'</div>')
+   +'<p class="w7ln-note">📚 '+L('פרקי הספרים הם בונוס ואינם נדרשים לתעודה','Book chapters are a bonus and aren\'t required')+'</p>'
+   +'<p class="w7ln-legal">'+L('תעודת השלמה של תכנית לימוד פרטית, עם קישור אימות ציבורי','A completion certificate from a private learning program, with a public verification link')+'</p></div>';
+  ov.onclick=function(e){if(e.target===ov)_w7lnRm('w7lnCertOv')};
+  document.body.appendChild(ov);_w7lnStack();
+}
+function _w7lnCertGo(id){_w7lnT('certMeter','go',String(id));_w7lnRm('w7lnCertOv');window._w7lnOffer=1;try{ss(id)}catch(e){}window._w7lnOffer=0}
+function _w7lnCerLine(sid){
+  try{
+    var box=document.querySelector('#stageCerem .cer-streak');if(!box||box.querySelector('.w7ln-cer'))return;
+    var c=_w7lnCore(),nw=c.ids.indexOf(sid)>=0&&G.done&&G.done.has(sid)&&!_w7lnRM();
+    var d=document.createElement('div');d.className='w7ln-cer w7ln-x';d.dir=_w7lnDir();
+    d.innerHTML='<span>📜 <bdi>'+c.done+'/'+c.total+'</bdi> '+_w7lnL('לתעודת ההשלמה','to your completion certificate')+'</span><span class="w7ln-segs" aria-hidden="true">'+_w7lnSegs(c,nw)+'</span>';
+    box.appendChild(d);
+  }catch(e){}
+}
+function _w7lnPvTile(){
+  var pv=$('pv');if(!pv)return;var b=pv.querySelector('.pv-bento');if(!b||b.querySelector('.w7ln-pvt'))return;
+  var c=_w7lnCore(),t=document.createElement('div');
+  t.className='pv-tile pv-tile-sm w7ln-pvt';t.setAttribute('role','button');t.tabIndex=0;
+  t.setAttribute('aria-label',_w7lnTxt(_w7lnChip(c)));
+  t.onclick=function(){_w7lnCertTap('profile')};t.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();_w7lnCertTap('profile')}};
+  t.innerHTML='<div class="bt-ic">📜</div><div class="bt-num pv-val"><bdi>'+c.done+'</bdi><span class="bt-den"> / '+c.total+'</span></div><div class="bt-label">'+_w7lnL('שלבי ליבה לתעודה','core stages to certificate')+'</div>';
+  var fl=b.querySelector('.pv-tile-flame');if(fl&&fl.parentNode===b)b.insertBefore(t,fl.nextSibling);else b.appendChild(t);
+}
+function _w7lnPvSet(){
+  var pv=$('pv');if(!pv||!_w7lnU())return;var b=pv.querySelector('.pv-bento');if(!b||pv.querySelector('.w7ln-pvset'))return;
+  var on=!G.recapOff,r=document.createElement('div');r.className='w7ln-pvset w7ln-x';r.dir=_w7lnDir();
+  r.innerHTML='<span>✨ '+_w7lnL('סיכום שבועי (בתחילת כל שבוע)','Weekly recap (start of each week)')+'</span><button type="button" class="w7ln-sw'+(on?' on':'')+'" role="switch" aria-checked="'+on+'" onclick="_w7lnRecapToggle(this)">'+(on?_w7lnL('פעיל','On'):_w7lnL('כבוי','Off'))+'</button>';
+  b.parentNode.insertBefore(r,b.nextSibling);
+}
+function _w7lnRecapToggle(btn){
+  G.recapOff=!G.recapOff;_w7lnAtSet('o');_w7lnSave();_w7lnT('weeklyRecap',G.recapOff?'off':'on','profile');
+  try{var on=!G.recapOff;if(btn){btn.classList.toggle('on',on);btn.setAttribute('aria-checked',String(on));btn.textContent=on?_w7lnL('פעיל','On'):_w7lnL('כבוי','Off')}}catch(e){}
+}
+
+/* =============================== #5 🧠 "3 THINGS TO REMEMBER" + RECALL CARDS =============================== */
+/* the TL;DR of section i in the CURRENT language only (null = none in this language → skipped silently) */
+function _w7lnTl(sid,i){var t=null;
+  try{if(_w7lnEn()){t=(typeof ENRICH_EN!=='undefined'&&ENRICH_EN)?ENRICH_EN['pmVisuals.'+sid+'.tldr.'+i]:null}else{var V=pmVisuals[sid];t=(V&&V.tldr)?V.tldr[i]:null}}catch(e){t=null}
+  return (t==null||t==='')?null:String(t)}
+function _w7lnPick(sid){var ks=[];
+  try{var V=pmVisuals[sid];if(V&&V.tldr)ks=Object.keys(V.tldr).map(Number).filter(function(k){return !isNaN(k)&&_w7lnTl(sid,k)!=null}).sort(function(a,b){return a-b})}catch(e){}
+  var n=ks.length;if(!n)return [];return n<=3?ks:[ks[0],ks[Math.floor(n/2)],ks[n-1]]}
+function _w7lnCap(){try{var f=G.flash||{},ks=Object.keys(f);if(ks.length<=150)return;
+  ks.sort(function(a,b){var A=f[a]||{},B=f[b]||{},da=(A.box|0)>=2?0:1,db=(B.box|0)>=2?0:1;return (da-db)||((+A.at||0)-(+B.at||0))});
+  while(ks.length>150)delete f[ks.shift()]}catch(e){}}
+function _w7lnSchedule(sid,idx){
+  if(!G.flash||typeof G.flash!=='object')G.flash={};
+  var due=_w7lnDK(1),now=Date.now(),added=[];
+  idx.forEach(function(i){var k=sid+'_'+i;if(G.flash[k])return;/* a retake never duplicates */G.flash[k]={due:due,box:0,at:now};added.push(k)});
+  _w7lnCap();return added;
+}
+function _w7lnOnComplete(sid){
+  _w7lnOwn();_w7lnLedger('stage');
+  var idx=_w7lnPick(sid);if(!idx.length){_w7lnSave();return}
+  var added=_w7lnSchedule(sid,idx);/* toggle default ON — an opt-out on the card removes exactly these */
+  _w7ln.pend={sid:sid,idx:idx,added:added,on:true,t:Date.now()};
+  _w7lnSave();_w7lnFabDot();
+  /* after the ceremony and the post-completion prompts (title 2.6s · reflection 3.6s): never on top of / inside the ceremony */
+  _w7lnWhenFree('recap',function(){_w7lnRecapShow(sid)},{delay:4200,max:180000,views:['m','s']});
+}
+function _w7lnRcList(sid,idx){var s=_w7lnSt(sid);if(!s)return '';
+  return '<ol class="w7ln-rc">'+idx.map(function(i){var th=s.th&&s.th[i];return '<li><span class="w7ln-rc-sec">'+_w7lnE(_w7lnTxt(th?th.t:''))+'</span><span class="w7ln-rc-tl">'+(_w7lnTl(sid,i)||'')+'</span></li>'}).join('')+'</ol>'}
+function _w7lnRecapShow(sid,quiet){
+  var p=_w7ln.pend;if(!p||p.sid!==sid)return;var s=_w7lnSt(sid);if(!s)return;
+  var idx=p.idx.filter(function(i){return _w7lnTl(sid,i)!=null});if(!idx.length)return;
+  var en=_w7lnEn(),L=_w7lnL,old=$('w7lnRecap');if(old)old.remove();
+  var ov=document.createElement('div');ov.id='w7lnRecap';ov.className='w7ln-ov w7ln-x';ov.dir=en?'ltr':'rtl';
+  ov.innerHTML='<div class="hub-box"><div class="hub-h"><h3>'+L('🧠 3 דברים לזכור','🧠 3 things to remember')+'</h3><button type="button" class="hub-x" onclick="_w7lnRecapClose()" aria-label="'+L('סגירה','Close')+'">✕</button></div>'
+   +'<div class="w7ln-kick">'+(s.ic||'')+' '+L('שלב','Stage')+' <bdi>'+sid+'</bdi> · '+_w7lnE(_w7lnTxt(s.t))+'</div>'
+   +_w7lnRcList(sid,idx)
+   +'<label class="w7ln-tg"><input type="checkbox" role="switch"'+(p.on?' checked':'')+' onchange="_w7lnRecapTg(this.checked)"><span class="w7ln-tg-s" aria-hidden="true"></span><span>'+L('נבדוק אתכם מחר (20 שניות)','We\'ll check you tomorrow (20 seconds)')+'</span></label>'
+   +'<div class="cer-btns"><button type="button" class="bp" onclick="_w7lnRecapClose()">'+L('המשך','Continue')+'</button></div></div>';
+  ov.onclick=function(e){if(e.target===ov)_w7lnRecapClose()};
+  document.body.appendChild(ov);_w7lnStack();
+  if(!quiet&&!p.shown){p.shown=true;_w7lnT('flashback','recap_shown',String(sid))}
+}
+function _w7lnRecapTg(on){var p=_w7ln.pend;if(!p)return;p.on=!!on;
+  if(!on){(p.added||[]).forEach(function(k){var c=G.flash&&G.flash[k];if(c&&(c.box|0)===0)delete G.flash[k]});p.added=[];_w7lnT('flashback','opt_out',String(p.sid))}
+  else p.added=_w7lnSchedule(p.sid,p.idx);
+  _w7lnSave();_w7lnFabDot()}
+function _w7lnRecapClose(){_w7lnRm('w7lnRecap')}
+/* inline recap under the quiz results of a completed stage (review mode) */
+function _w7lnRecapInline(s){
+  try{
+    if(!s||!G.done||!G.done.has(s.id))return;var r=$('quizResult'),tc=$('tc');if(!r||!tc||tc.querySelector('.w7ln-rci'))return;
+    var idx=_w7lnPick(s.id);if(!idx.length)return;var L=_w7lnL,st='';
+    var cs=idx.map(function(i){return G.flash&&G.flash[s.id+'_'+i]}).filter(Boolean),open=cs.filter(function(c){return (c.box|0)<2});
+    if(open.length){var d=null;open.forEach(function(c){var x=_w7lnPD(c.due);if(x&&(!d||x<d))d=x});var n=d?_w7lnDiff(new Date(),d):0;
+      st='📅 '+L('בדיקת זיכרון קצרה ב„היום שלי”: ','Quick recall check in My Day: ')+(n<=0?L('היום','today'):n===1?L('מחר','tomorrow'):(d.toLocaleDateString(_w7lnEn()?'en-GB':'he-IL',{day:'numeric',month:'short'})))}
+    else if(cs.length)st='✓ '+L('נשלפו מהזיכרון — כל הכבוד','Recalled from memory — well done');
+    var b=document.createElement('div');b.className='w7ln-rci w7ln-x';b.dir=_w7lnDir();
+    b.innerHTML='<div class="w7ln-rci-h">'+L('🧠 3 דברים לזכור','🧠 3 things to remember')+'</div>'+_w7lnRcList(s.id,idx)+(st?'<div class="w7ln-rci-st">'+st+'</div>':'');
+    r.parentNode.insertBefore(b,r.nextSibling);
+  }catch(e){}
+}
+/* due recall cards, oldest due first; hidden (navy-only) stages and cards without a TL;DR in this language are skipped */
+function _w7lnDue(){var f=G.flash,t=_w7lnD0(),out=[];if(!f||typeof f!=='object')return out;
+  Object.keys(f).forEach(function(k){var c=f[k];if(!c||(c.box|0)>=2)return;var d=_w7lnPD(c.due);if(!d||d>t)return;var m=/^(\d+)_(\d+)$/.exec(k);if(!m)return;
+    var sid=+m[1],i=+m[2],s=_w7lnSt(sid);if(!s||!s.th||!s.th[i])return;try{if(_stageHidden(s))return}catch(e){}if(_w7lnTl(sid,i)==null)return;
+    out.push({k:k,sid:sid,i:i,d:d.getTime(),at:+c.at||0})});
+  out.sort(function(a,b){return (a.d-b.d)||(a.at-b.at)||(a.sid-b.sid)||(a.i-b.i)});return out}
+function _w7lnFlDone(){try{return _todayState().fl|0}catch(e){return 0}}
+function _w7lnFbRender(){
+  var el=$('w7lnFb');if(!el)return;var L=_w7lnL,en=_w7lnEn();el.dir=_w7lnDir();
+  if(!_w7lnU()){el.className='';el.innerHTML='';return}
+  var due=_w7lnDue(),n=_w7lnFlDone(),left=Math.max(0,3-n),st=_w7ln.fb,all=L('✨ כל כרטיסי היום הושלמו','✨ All of today\'s cards are done');
+  if(st&&st.forgot){var more=left>0&&due.length>0;
+    el.className='w7ln-fb w7ln-x';
+    el.innerHTML='<div class="w7ln-fb-msg">'+L('אין בעיה — שליפה שנכשלה היא בדיוק מה שמחזק זיכרון. נחזור לזה מחר.','No problem — a failed recall is exactly what strengthens memory. We\'ll come back tomorrow.')+'</div>'
+      +'<div class="w7ln-fb-btns"><button type="button" class="w7ln-btn" onclick="_w7lnFbReread(\''+st.k+'\')">📖 '+L('לקריאה מחדש (2 דק׳)','Re-read (2 min)')+'</button>'+(more?'<button type="button" class="w7ln-btn ghost" onclick="_w7lnFbNext()">'+L('לכרטיס הבא','Next card')+' '+(en?'→':'←')+'</button>':'')+'</div>'
+      +(more?'':'<div class="w7ln-fb-done">'+all+'</div>');
+    return}
+  if(!left||!due.length){_w7ln.fb=null;if(n>0){el.className='w7ln-fb w7ln-fb-end w7ln-x';el.innerHTML='<div class="w7ln-fb-done">'+all+'</div>'}else{el.className='';el.innerHTML=''}return}
+  /* the question quotes the section title: its decorative leading emoji and a trailing "?" are dropped (the copy adds its own "?") */
+  var c=due[0],s=_w7lnSt(c.sid),sec=_w7lnTxt(s.th[c.i].t);try{sec=sec.replace(/^[^\p{L}\p{N}"'(]+/u,'').replace(/\s*[?？]\s*$/,'')||sec}catch(e){}
+  if(st&&st.k!==c.k){_w7ln.fb=st=null}
+  var rev=!!(st&&st.rev),tot=Math.min(3,n+due.length);
+  el.className='w7ln-fb w7ln-x'+(rev?' rev':'');
+  el.innerHTML='<div class="w7ln-fb-k"><span>'+L('🧠 זוכרים? · שלב ','🧠 Remember this? · Stage ')+'<bdi>'+c.sid+'</bdi>: '+_w7lnE(_w7lnTxt(s.t))+'</span><bdi class="w7ln-fb-n">'+(n+1)+'/'+tot+'</bdi></div>'
+   +'<div class="w7ln-fb-q">'+(en?'What was the key idea of “'+_w7lnE(sec)+'”?':'מה הרעיון המרכזי של „'+_w7lnE(sec)+'”?')+'</div>'
+   +(rev?'<div class="w7ln-fb-a">⚡ '+(_w7lnTl(c.sid,c.i)||'')+'</div><div class="w7ln-fb-btns"><button type="button" class="w7ln-btn ok" onclick="_w7lnFbAns(1)">'+L('זכרתי ✓','Got it ✓')+'</button><button type="button" class="w7ln-btn no" onclick="_w7lnFbAns(0)">'+L('שכחתי ✗','Forgot ✗')+'</button></div>'
+        :'<div class="w7ln-fb-btns"><button type="button" class="w7ln-btn pri" onclick="_w7lnFbReveal(\''+c.k+'\')">'+L('הצג תשובה','Show answer')+'</button></div>');
+}
+function _w7lnFbFocus(){try{var b=document.querySelector('#w7lnFb button');if(b)b.focus({preventScroll:true})}catch(e){}}
+function _w7lnFbReveal(k){_w7ln.fb={k:k,rev:true};_w7lnT('flashback','reveal',k);_w7lnFbRender();_w7lnFbFocus()}
+function _w7lnFbNext(){_w7ln.fb=null;_w7lnFbRender();_w7lnFbFocus()}
+function _w7lnFbAns(ok){
+  var st=_w7ln.fb;if(!st||!st.k)return;var c=G.flash&&G.flash[st.k];if(!c){_w7ln.fb=null;_w7lnFbRender();return}
+  var box=c.box|0;
+  if(ok){if(box===0){c.box=1;c.due=_w7lnDK(6)}else{c.box=2;c.due=_w7lnDK(0)}_w7lnT('flashback','got',String(box));_w7ln.fb=null}
+  else{c.due=_w7lnDK(1);_w7lnT('flashback','forgot',String(box));_w7ln.fb={k:st.k,forgot:true}}
+  c.at=Date.now();
+  try{var ts=_todayState();ts.fl=(ts.fl|0)+1}catch(e){}
+  _w7lnLedger('day');_w7lnSave();_w7lnFbRender();_w7lnFabDot();_w7lnFbFocus();
+}
+function _w7lnFbReread(k){var m=/^(\d+)_(\d+)$/.exec(String(k||''));if(!m)return;_w7lnT('flashback','reread',k);_w7ln.fb=null;_w7lnRm('todayHub');_w7lnGo(+m[1],'reread',{sec:+m[2],rr:1})}
+function _w7lnFabDot(){
+  try{var f=$('todayFab');if(!f)return;var on=!!_w7lnU()&&_w7lnFlDone()<3&&_w7lnDue().length>0;
+    var d=f.querySelector('.w7ln-fd');if(!d){if(!on)return;d=document.createElement('span');d.className='w7ln-fd';d.setAttribute('aria-hidden','true');f.appendChild(d)}
+    if(d.classList.contains('on')!==on)d.classList.toggle('on',on)}catch(e){}
+}
+
+/* =============================== #6 ↩ RESUME WHERE YOU STOPPED =============================== */
+function _w7lnGo(sid,src,mode){window._pmResume={sid:parseInt(sid,10),mode:mode||'auto',src:src||''};try{ss(parseInt(sid,10))}catch(e){}window._pmResume=null}
+/* first unread section → the case → the next unanswered question; untouched or completed stages → null (open at the top) */
+function _w7lnTarget(sid){
+  var s=_w7lnSt(sid);if(!s)return null;try{if(G.done&&G.done.has(s.id))return null}catch(e){}
+  var seen=G._seenSec||{},tv=(G._tabVisits&&G._tabVisits[s.id])||{},qa=(G.qa&&G.qa[s.id])||{},n=(s.th||[]).length,qn=(s.q||[]).length,seenN=0,first=-1,ans=0,i;
+  for(i=0;i<n;i++){if(seen[s.id+'_'+i])seenN++;else if(first<0)first=i}
+  for(i=0;i<qn;i++)if(qa[i]!==undefined)ans++;
+  if(!seenN&&!tv.c&&!ans)return null;
+  if(first>=0){var lp=G._lastPos;if(lp&&lp.sid===s.id&&lp.tab==='l'&&lp.idx>=0&&lp.idx<n&&!seen[s.id+'_'+lp.idx])first=lp.idx;return {tab:'l',sec:first}}
+  if(s.cs&&!tv.c)return {tab:'c'};
+  if(qn&&ans<qn){for(i=0;i<qn;i++)if(qa[i]===undefined)return {tab:'q',qi:i,n:qn}}
+  return null;
+}
+function _w7lnHdrOff(){var off=0;
+  try{['.hdr','#ib'].forEach(function(q){var e=document.querySelector(q);if(!e)return;var cs=getComputedStyle(e);if(cs.display==='none'||cs.visibility==='hidden'||cs.position!=='fixed')return;var r=e.getBoundingClientRect();if(r.height>0&&r.top<140&&r.bottom>off)off=r.bottom})}catch(e){}
+  return off}
+function _w7lnScroll(el,smooth){try{if(!el||!el.isConnected)return;var y=Math.max(0,el.getBoundingClientRect().top+(window.pageYOffset||0)-_w7lnHdrOff()-10);if(Math.abs((window.pageYOffset||0)-y)<4)return;window.scrollTo({top:y,behavior:(smooth&&!_w7lnRM())?'smooth':'auto'})}catch(e){}}
+function _w7lnToastRm(fade){clearTimeout(_w7ln.rtT);var t=$('w7lnRt');if(!t)return;if(fade&&!_w7lnRM()){t.classList.add('out');setTimeout(function(){try{t.remove()}catch(e){}},320)}else t.remove()}
+function _w7lnToast(msg,lbl,fn){
+  _w7lnToastRm();var t=document.createElement('div');t.id='w7lnRt';t.className='w7ln-rt w7ln-x';t.dir=_w7lnDir();t.setAttribute('role','status');t.setAttribute('aria-live','polite');
+  t.innerHTML='<span class="w7ln-rt-m">'+_w7lnE(msg)+'</span><button type="button" class="w7ln-rt-a" onclick="'+fn+'">'+_w7lnE(lbl)+'</button><button type="button" class="w7ln-rt-x" onclick="_w7lnToastRm()" aria-label="'+_w7lnE(_w7lnL('סגירה','Close'))+'">✕</button>';
+  document.body.appendChild(t);_w7ln.rtT=setTimeout(function(){_w7lnToastRm(true)},6000);
+}
+function _w7lnTop(){_w7lnToastRm();try{window.scrollTo({top:0,behavior:_w7lnRM()?'auto':'smooth'})}catch(e){window.scrollTo(0,0)}_w7lnT('lastVisited','resume_top')}
+function _w7lnLand(sid,tg){
+  var tc=$('tc');if(!tc)return false;var s=_w7lnSt(sid),L=_w7lnL,el=null,msg='';
+  if(tg.tab==='l'){el=tc.querySelector('.csec[data-idx="'+tg.sec+'"]');var nm=(s&&s.th&&s.th[tg.sec])?_w7lnTxt(s.th[tg.sec].t):'';msg=tg.rr?L('📖 קריאה מחדש — ','📖 Re-read — ')+nm:L('↩ ממשיכים מאיפה שעצרתם — ','↩ Picking up where you left off — ')+nm}
+  else if(tg.tab==='c'){el=tc;msg=L('↩ הקריאה הושלמה — ממשיכים לקייס','↩ Reading done — on to the case')}
+  else{el=tc.querySelectorAll('.qq')[tg.qi]||null;msg=L('↩ ממשיכים בשאלה '+(tg.qi+1)+' מתוך '+tg.n,'↩ Continuing at question '+(tg.qi+1)+' of '+tg.n)}
+  if(!el)return false;/* the content changed under a stored index → stay at the top */
+  if(tg.rr){try{var b=el.querySelector('.pf-acc-toggle'),bd=el.querySelector('.pf-acc-body');if(b&&bd&&!bd.classList.contains('open'))pfAccToggle(b)}catch(e){}}
+  _w7lnToast(msg,L('מההתחלה','From the top'),'_w7lnTop()');
+  /* pass 1 after two frames, pass 2 at 420ms (TL;DR/hero blocks and lazy media shift the layout) with the SAME behavior — an instant
+     scroll issued during a smooth one gets the animation's remaining delta added in Chrome — and a final instant check once scrolling
+     has ended. Any wheel/touch/key from the user cancels the corrections. */
+  var sm=!_w7lnRM(),t0=Date.now();_w7ln.uin=0;_w7lnInputWatch();
+  var mine=function(){return !_w7ln.uin||_w7ln.uin<t0};
+  requestAnimationFrame(function(){requestAnimationFrame(function(){if(mine())_w7lnScroll(el,sm)})});
+  setTimeout(function(){if(!mine())return;_w7lnScroll(el,sm);
+    var done=false,fin=function(){if(done)return;done=true;window.removeEventListener('scrollend',fin);if(mine())_w7lnScroll(el,false)};
+    try{window.addEventListener('scrollend',fin)}catch(e){}setTimeout(fin,1500)},420);
+  if(el!==tc){el.classList.add('w7ln-hl');setTimeout(function(){try{el.classList.remove('w7ln-hl')}catch(e){}},1200)}
+  return true;
+}
+function _w7lnInputWatch(){if(_w7ln.inw)return;_w7ln.inw=1;var f=function(){_w7ln.uin=Date.now()};try{['wheel','touchstart','keydown','mousedown'].forEach(function(n){window.addEventListener(n,f,{passive:true,capture:true})})}catch(e){}}
+function _w7lnApply(sid,mode){
+  var s=_w7lnSt(sid);if(!s)return false;var tg=null;
+  if(mode&&typeof mode==='object'&&mode.sec!=null){var i=parseInt(mode.sec,10);if(i>=0&&i<(s.th||[]).length)tg={tab:'l',sec:i,rr:!!mode.rr}}
+  else tg=_w7lnTarget(sid);
+  if(!tg)return false;
+  try{if(G.tab!==tg.tab)st(tg.tab)}catch(e){}
+  if(!_w7lnLand(sid,tg))return false;
+  _w7lnT('lastVisited','resume',tg.tab==='l'?'learn':tg.tab==='c'?'case':'quiz');
+  return true;
+}
+function _w7lnJump(sid){_w7lnToastRm();try{if(G.v==='s'&&parseInt(G.st,10)===sid){_w7lnT('lastVisited','jump',String(sid));_w7lnApply(sid,'auto')}}catch(e){}}
+function _w7lnLastPos(){
+  try{if(G.v!=='s'||G.tab!=='l')return;var now=Date.now(),dt=now-_w7ln.lpT;
+    if(dt<2000){if(!_w7ln.lpTm)_w7ln.lpTm=setTimeout(function(){_w7ln.lpTm=0;_w7lnLastPos()},2000-dt);return}
+    _w7ln.lpT=now;var d=document.querySelector('#tc .sec-dot.active');if(!d)return;var i=parseInt(d.getAttribute('data-si'),10);if(isNaN(i))return;
+    G._lastPos={sid:G.st,tab:'l',idx:i,at:now}}catch(e){}
+}
+
+/* =============================== #7 ✨ SUNDAY WEEKLY RECAP =============================== */
+function _w7lnFromLog(start){
+  var s0=start.getTime(),s1=s0+7*864e5,o={days:{},stages:0,correct:0,pts:0,reviews:0,ms:0},qc=0;
+  try{(G.activityLog||[]).forEach(function(a){if(!a||!a.t||a.t<s0||a.t>=s1)return;var x=a.a,d=String(a.d||'');
+    if(x==='answer'||x==='completeStage'||x==='switchTab'||x==='openStage')o.days[_dayKey(new Date(a.t))]=1;
+    if(x==='completeStage'&&d.indexOf('רטרואקטיבי')<0)o.stages++;
+    if(x==='answer'&&d.indexOf('✓')>=0)o.correct++;
+    if(a.p)o.pts+=(+a.p||0)})}catch(e){}
+  try{Object.keys(G.quizAttempts||{}).forEach(function(k){(G.quizAttempts[k]||[]).forEach(function(q){if(q&&q.t>=s0&&q.t<s1){qc+=(q.ok|0);o.days[_dayKey(new Date(q.t))]=1}})})}catch(e){}
+  if(qc>o.correct)o.correct=qc;return o}
+function _w7lnBrief(w){return {d:Object.keys((w&&w.days)||{}).length,s:(w&&w.stages)|0,c:(w&&w.correct)|0}}
+/* rollover: the week starts Sunday (HE) / Monday (EN); a new week = a start >= 6 days after the stored one, so a language switch can't double-roll */
+function _w7lnWkRoll(){
+  try{
+    if(!_w7lnU())return;_w7lnOwn();var now=new Date(),cur=_w7lnWkStart(now),ck=_w7lnISO(cur),w=G.wk;
+    if(!w||!_w7lnPD(w.k)){/* first run after release: seed this + last week from the activity log / quiz history */
+      var o=_w7lnFromLog(cur);G.wk={k:ck,days:o.days,stages:o.stages,correct:o.correct,pts0:Math.max(0,(G.ts|0)-(o.pts|0)),reviews:0,ms:G.streak|0};
+      if(!G.wkPrev){var pk=new Date(cur);pk.setDate(pk.getDate()-7);var po=_w7lnFromLog(pk);po.k=_w7lnISO(pk);G.wkPrev=po}
+      if(now.getDay()!==((G.lang==='en')?1:0)&&G.recapShown!==ck){G.recapShown=ck;_w7lnAtSet('k')}/* mid-week first run: start fresh next week */
+      return}
+    var diff=_w7lnDiff(_w7lnPD(w.k),cur);if(diff<6)return;
+    var sum={k:w.k,days:w.days||{},stages:w.stages|0,correct:w.correct|0,pts:Math.max(0,(G.ts|0)-(w.pts0|0)),reviews:w.reviews|0,ms:w.ms|0,b:G.wkPrev?_w7lnBrief(G.wkPrev):null};
+    if(diff>=13){var lk=new Date(cur);lk.setDate(lk.getDate()-7);G.wkPrev={k:_w7lnISO(lk),days:{},stages:0,correct:0,pts:0,reviews:0,ms:0,b:diff<20?_w7lnBrief(sum):null}}
+    else G.wkPrev=sum;
+    G.wk={k:ck,days:{},stages:0,correct:0,pts0:G.ts|0,reviews:0,ms:G.streak|0};
+  }catch(e){}
+}
+function _w7lnLedger(kind){
+  try{
+    if(!_w7lnU())return;_w7lnWkRoll();var w=G.wk;if(!w)return;
+    if(!w.days||typeof w.days!=='object')w.days={};w.days[_dayKey()]=1;
+    if(kind==='stage')w.stages=(w.stages|0)+1;else if(kind==='correct')w.correct=(w.correct|0)+1;else if(kind==='review')w.reviews=(w.reviews|0)+1;
+    var sk=G.streak|0;if(sk>(w.ms|0))w.ms=sk;
+    _w7lnGoalCheck();
+  }catch(e){}
+}
+/* rest days / pause: the W7 habits module (G.h, _w7hbIsRest/_w7hbPausedOn) when present — feature-detected, never required;
+   else the spec's G.restDay (0..6) / G.pause {from,until} + G.pauseHistory */
+function _w7lnRestOn(d){try{if(typeof _w7hbIsRest==='function')return !!_w7hbIsRest(d)}catch(e){}return typeof G.restDay==='number'&&G.restDay===d.getDay()}
+function _w7lnRestN(start){var n=0;for(var i=0;i<7;i++){var d=new Date(start);d.setDate(start.getDate()+i);if(_w7lnRestOn(d))n++}return n}
+function _w7lnPaused(d){
+  try{if(typeof _w7hbPausedOn==='function')return !!_w7hbPausedOn(d)}catch(e){}
+  try{var k=_w7lnISO(d),L=[];if(G.pause&&typeof G.pause==='object')L.push(G.pause);if(Array.isArray(G.pauseHistory))L=L.concat(G.pauseHistory);
+    for(var i=0;i<L.length;i++){var p=L[i];if(!p||!p.from)continue;var f=_w7lnPD(p.from),u=_w7lnPD(p.until||p.from);if(!f||!u)continue;if(k>=_w7lnISO(f)&&k<=_w7lnISO(u))return true}}catch(e){}
+  return false}
+function _w7lnGoalHave(g){var w=G.wk||{};return g.type==='days'?Object.keys(w.days||{}).length:(w.stages|0)}
+function _w7lnGoalCheck(){
+  try{var g=G.weekGoal;if(!g||!G.wk||g.k!==G.wk.k||g.done||!(g.n>0))return;
+    if(_w7lnGoalHave(g)>=g.n){g.done=true;g.at=Date.now();_w7lnT('weeklyRecap','goal_done',g.type+':'+g.n);
+      try{showAchievement('🎯',_w7lnL('יעד השבוע הושג!','Weekly goal reached!'),_w7lnN(g.type==='days'?'d':'s',g.n))}catch(e){}
+      _w7lnSave();_w7lnWgRender()}}catch(e){}
+}
+function _w7lnChips(src){
+  var p=G.wkPrev||{},s=p.stages|0,dd=Object.keys(p.days||{}).length,cap=Math.max(1,7-_w7lnRestN(_w7lnWkStart(new Date())));
+  var a=Math.max(1,Math.min(5,s+1)),b=Math.min(cap,Math.max(3,dd)),L=[{t:'stages',n:a},{t:'days',n:b}];
+  if(a<5)L.push({t:'stages',n:a+1});else if(b<cap)L.push({t:'days',n:b+1});else L.push({t:'stages',n:Math.max(1,a-1)});
+  var g=G.weekGoal,cur=(g&&G.wk&&g.k===G.wk.k)?g:null;
+  return L.map(function(c){var sel=!!cur&&cur.type===c.t&&cur.n===c.n;return '<button type="button" class="w7ln-chip'+(sel?' sel':'')+'" aria-pressed="'+sel+'" onclick="_w7lnGoalSet(\''+c.t+'\','+c.n+',\''+src+'\')">'+(sel?'✓ ':'')+_w7lnN(c.t==='days'?'d':'s',c.n)+'</button>'}).join('');
+}
+function _w7lnGoalSet(t,n,src){
+  if(!_w7lnU())return;_w7lnWkRoll();if(!G.wk)return;
+  G.weekGoal={k:G.wk.k,type:t==='days'?'days':'stages',n:Math.max(1,n|0),at:Date.now(),done:false};
+  _w7lnT('weeklyRecap','goal_set',G.weekGoal.type+':'+G.weekGoal.n+(src?','+src:''));
+  _w7ln.wgOpen=false;_w7lnSave();_w7lnWgRender();
+  try{var c=document.querySelector('#w7lnWeek .w7ln-chips');if(c)c.innerHTML=_w7lnChips('week')}catch(e){}
+  _w7lnGoalCheck();
+}
+function _w7lnWgRender(){
+  var el=$('w7lnWg');if(!el)return;el.dir=_w7lnDir();
+  if(!_w7lnU()||!G.wk){el.className='';el.innerHTML='';return}
+  var L=_w7lnL,g=G.weekGoal,q=L('מה היעד לשבוע הזה?','What\'s your goal this week?');
+  if(g&&g.k===G.wk.k&&g.n>0){var have=Math.min(g.n,_w7lnGoalHave(g)),pct=Math.round(have/g.n*100),ok=have>=g.n;
+    el.className='w7ln-wg w7ln-x'+(ok?' done':'');
+    el.innerHTML='<div class="w7ln-wg-t"><span>🎯 '+L('יעד השבוע','This week\'s goal')+': <b>'+_w7lnN(g.type==='days'?'d':'s',g.n)+'</b></span><bdi class="w7ln-wg-n">'+have+'/'+g.n+'</bdi></div>'
+      +'<div class="w7ln-bar" role="progressbar" aria-valuemin="0" aria-valuemax="'+g.n+'" aria-valuenow="'+have+'"><i style="width:'+pct+'%"></i></div>'
+      +(ok?'<div class="w7ln-wg-ok">'+L('🎯 יעד השבוע הושג!','🎯 Weekly goal reached!')+'</div>':'');
+    return}
+  el.className='w7ln-wg w7ln-wg-set w7ln-x';
+  el.innerHTML=_w7ln.wgOpen?'<div class="w7ln-wg-q">🎯 '+q+'</div><div class="w7ln-chips">'+_w7lnChips('hub')+'</div>'
+    :'<button type="button" class="w7ln-wg-btn" onclick="_w7ln.wgOpen=true;_w7lnWgRender()"><span>🎯 '+q+'</span><span aria-hidden="true">'+(_w7lnEn()?'›':'‹')+'</span></button>';
+}
+function _w7lnWeekMaybe(){
+  try{
+    if(!_w7lnU()||G.v!=='m'||_w7ln.q.week)return;_w7lnWkRoll();var w=G.wk;if(!w)return;
+    if(G.recapShown===w.k||G.recapOff)return;
+    if(window._w5fWbDone)return;/* the welcome-back overlay was shown this session → next open */
+    var now=Date.now(),first=+G.firstUse||now;
+    try{(G.activityLog||[]).forEach(function(a){if(a&&a.t&&a.t<first)first=a.t});Object.keys(G.quizAttempts||{}).forEach(function(k){(G.quizAttempts[k]||[]).forEach(function(q){if(q&&q.t&&q.t<first)first=q.t})})}catch(e){}
+    if(now-first<7*864e5)return;
+    var pd=Object.keys((G.wkPrev&&G.wkPrev.days)||{}).length,last=0;
+    try{last=+window._w5cloudLastAct||0}catch(e){}
+    try{(G.activityLog||[]).forEach(function(a){if(a&&a.t&&a.t<_w7ln.boot-5000&&a.t>last)last=a.t})}catch(e){}
+    if(!(pd>=1||(last&&now-last<=28*864e5)))return;
+    _w7lnWhenFree('week',function(){if(G.v!=='m'||!G.wk||G.recapShown===G.wk.k||G.recapOff)return;_w7lnWeekShow()},{delay:2500,max:20000,views:['m']});
+  }catch(e){}
+}
+function _w7lnWeekShow(quiet){
+  var en=_w7lnEn(),L=_w7lnL,p=G.wkPrev||{days:{},stages:0,correct:0,pts:0,ms:0};
+  var start=_w7lnPD(p.k);if(!start){start=_w7lnWkStart(new Date());start.setDate(start.getDate()-7)}
+  var names=en?['Sun','Mon','Tue','Wed','Thu','Fri','Sat']:['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
+  var nd=0,npz=0,nrs=0,dots='',i,d;
+  for(i=0;i<7;i++){d=new Date(start);d.setDate(start.getDate()+i);var on=!!(p.days&&p.days[_dayKey(d)]),rd=_w7lnRestOn(d),pz=!on&&_w7lnPaused(d),rs=!on&&!pz&&rd;if(on)nd++;if(pz&&!rd)npz++;if(rd)nrs++;
+    dots+='<span class="w7ln-dd'+(on?' on':pz?' pz':rs?' rs':'')+'"><i aria-hidden="true">'+(on?'✓':pz?'⏸':rs?'🕯️':'')+'</i><b>'+names[d.getDay()]+'</b></span>'}
+  var den=Math.max(1,7-nrs),allP=npz>0&&nd===0&&npz>=den,zero=nd===0&&!allP,body='';/* a rest day leaves the denominator (6 with one) */
+  if(allP)body='<p class="w7ln-wk-h">'+L('⏸ השבוע היה בהשהיה — ממשיכים כשנוח לכם','⏸ Last week was paused — continue whenever you\'re ready')+'</p><div class="w7ln-dots" aria-hidden="true">'+dots+'</div>';
+  else if(zero)body='<p class="w7ln-wk-h">'+L('שבוע שקט? קורה. 10 דקות היום ואתם שוב בתנועה.','Quiet week? It happens. 10 minutes today and you\'re moving again.')+'</p><div class="w7ln-dots" aria-hidden="true">'+dots+'</div>';
+  else{
+    body='<p class="w7ln-wk-h">'+L('בשבוע שעבר: ','Last week: ')+_w7lnN('d',nd)+' · '+_w7lnN('s',p.stages|0)+' · '+_w7lnN('c',p.correct|0)+'</p>'
+      +'<div class="w7ln-dots" aria-hidden="true">'+dots+'</div>'
+      +'<div class="w7ln-tiles"><div class="w7ln-tile"><b><bdi>'+nd+'/'+den+'</bdi></b><span>'+L('ימי למידה','learning days')+'</span></div>'
+      +'<div class="w7ln-tile"><b><bdi>'+(p.stages|0)+'</bdi></b><span>'+L('שלבים','stages')+'</span></div>'
+      +'<div class="w7ln-tile"><b><bdi>'+(p.correct|0)+'</bdi></b><span>'+L('תשובות נכונות','correct answers')+'</span>'+((p.pts|0)>0?'<small><bdi>+'+(p.pts|0)+'</bdi> '+L('נק׳','pts')+'</small>':'')+'</div></div>';
+    /* moment of the week: best quiz accuracy in that week, else the longest streak */
+    var best=null,s0=start.getTime(),s1=s0+7*864e5;
+    try{Object.keys(G.quizAttempts||{}).forEach(function(k){(G.quizAttempts[k]||[]).forEach(function(q){if(!q||!(q.t>=s0&&q.t<s1)||!(q.total>0))return;var a=Math.round(q.ok/q.total*100);if(!best||a>best.a||(a===best.a&&q.t>best.t))best={a:a,sid:+k,t:q.t}})})}catch(e){}
+    var bs=best?_w7lnSt(best.sid):null;
+    if(bs&&!_stageHidden(bs))body+='<div class="w7ln-mom">⭐ '+(en?'Moment of the week: <bdi>'+best.a+'%</bdi> on “'+_w7lnE(_w7lnTxt(bs.t))+'”':'רגע השבוע: <bdi>'+best.a+'%</bdi> בשלב „'+_w7lnE(_w7lnTxt(bs.t))+'”')+'</div>';
+    else if((p.ms|0)>=2)body+='<div class="w7ln-mom">⭐ '+L('רגע השבוע: רצף של '+(p.ms|0)+' ימים 🔥','Moment of the week: a '+(p.ms|0)+'-day streak 🔥')+'</div>';
+    /* comparison with your own previous week only */
+    var b=p.b,cmp='';
+    if(b){var m=((p.stages|0)||(b.s|0))?['s',p.stages|0,b.s|0]:((nd||(b.d|0))?['d',nd,b.d|0]:['c',p.correct|0,b.c|0]),x=m[1]-m[2];
+      if(x>0)cmp='<p class="w7ln-cmp up"><span class="w7ln-up" aria-hidden="true">↑</span> '+(en?_w7lnN(m[0],x)+' more than the week before — nice!':_w7lnN(m[0],x)+' יותר מהשבוע שלפניו — יפה!')+'</p>'}
+    body+=cmp||'<p class="w7ln-cmp">'+L('השבוע הזה הוא הזדמנות חדשה.','This week is a fresh chance.')+'</p>';
+  }
+  var old=$('w7lnWeek');if(old)old.remove();
+  var ov=document.createElement('div');ov.id='w7lnWeek';ov.className='w7ln-ov w7ln-x';ov.dir=en?'ltr':'rtl';
+  ov.innerHTML='<div class="hub-box"><div class="hub-h"><h3>'+L('שבוע חדש, דף חדש ✨','New week, fresh start ✨')+'</h3><button type="button" class="hub-x" onclick="_w7lnRm(\'w7lnWeek\')" aria-label="'+L('סגירה','Close')+'">✕</button></div>'
+   +body
+   +'<div class="w7ln-gq">'+L('מה היעד לשבוע הזה?','What\'s your goal this week?')+'</div><div class="w7ln-chips">'+_w7lnChips('week')+'</div>'
+   +'<div class="w7ln-wk-btns"><button type="button" class="w7ln-btn pri" onclick="_w7lnWeekGo()">'+L('יאללה, מתחילים','Let\'s go')+'</button><button type="button" class="w7ln-btn" onclick="_w7lnWeekShare()">'+L('שיתוף','Share')+'</button></div>'
+   +'<button type="button" class="w7ln-off" onclick="_w7lnWeekOff()">'+L('לא להציג סיכום שבועי','Don\'t show weekly recaps')+'</button></div>';
+  ov.onclick=function(e){if(e.target===ov)_w7lnRm('w7lnWeek')};
+  document.body.appendChild(ov);_w7lnStack();
+  if(!quiet&&G.wk&&G.recapShown!==G.wk.k){G.recapShown=G.wk.k;_w7lnAtSet('k');_w7lnSave();_w7lnT('weeklyRecap','shown',(allP?'paused':zero?'zero':'d'+nd+',s'+(p.stages|0)))}
+}
+function _w7lnWeekGo(){_w7lnT('weeklyRecap','go');_w7lnRm('w7lnWeek');var id=-1;try{id=_currentMapStageId}catch(e){}if(id>=0)_w7lnGo(id,'weekly');else{try{mp()}catch(e){}}}
+function _w7lnWeekShare(){
+  _w7lnT('weeklyRecap','share');var p=G.wkPrev||{},nd=Object.keys(p.days||{}).length,ns=p.stages|0;
+  if(typeof _pmShare==='function'){try{_pmShare('weekly',{days:nd,stages:ns,correct:p.correct|0});return}catch(e){}}
+  var txt=_w7lnL('השבוע: '+nd+' ימי למידה ו-'+ns+' שלבים ב-Product Master ✨','This week: '+nd+' learning days and '+ns+' stages on Product Master ✨')+' https://pm-course-beta.vercel.app/?s=weekly';
+  try{if(navigator.share){navigator.share({title:'Product Master',text:txt}).catch(function(){});return}}catch(e){}
+  try{navigator.clipboard.writeText(txt).then(function(){try{showAchievement('📋',_w7lnL('הטקסט הועתק — הדביקו בפוסט','Text copied — paste it into your post'),'')}catch(e){}}).catch(function(){})}catch(e){}
+}
+function _w7lnWeekOff(){G.recapOff=true;_w7lnAtSet('o');_w7lnSave();_w7lnT('weeklyRecap','off','card');_w7lnRm('w7lnWeek');
+  try{showAchievement('✨',_w7lnL('הסיכום השבועי כבוי','Weekly recap is off'),_w7lnL('אפשר להפעיל אותו שוב בפרופיל','You can turn it back on in your profile'))}catch(e){}}
+
+/* =============================== My Day hub: recall cards + weekly goal, above "Daily quests" =============================== */
+function _w7lnHub(){
+  try{
+    var box=document.querySelector('#todayHub .hub-box');if(!box)return;_w7lnOwn();_w7lnWkRoll();
+    /* the "Daily quests" heading = the heading right before the first quest row (structural: icon passes may replace its 🎯) */
+    var anchor=null,q=box.querySelector(':scope>.q-item');
+    for(var e=q?q.previousElementSibling:null;e;e=e.previousElementSibling){if(e.tagName==='H3'||e.tagName==='H4'){anchor=e;break}}
+    if(!anchor){var k=box.children;for(var i=0;i<k.length;i++){if(k[i].tagName==='H3'&&k[i].textContent.indexOf('🎯')>=0){anchor=k[i];break}}}
+    if(!anchor){var cal=box.querySelector(':scope>.cal');anchor=cal?cal.nextSibling:null}
+    var fb=$('w7lnFb')||document.createElement('div'),wg=$('w7lnWg')||document.createElement('div');fb.id='w7lnFb';wg.id='w7lnWg';
+    if(anchor&&anchor.parentNode===box){box.insertBefore(fb,anchor);box.insertBefore(wg,anchor)}else{box.appendChild(fb);box.appendChild(wg)}
+    _w7ln.wgOpen=false;_w7lnFbRender();_w7lnWgRender();
+  }catch(e){}
+}
+
+/* =============================== cloud: progressJSON.r (server rule: _w7_learn.gs.txt) =============================== */
+function _w7lnRSnap(){
+  try{
+    if(!G._w7lnOwn||G._w7lnOwn!==G.userName)return null;/* never upload another account's state */
+    var f={},F=G.flash||{};Object.keys(F).forEach(function(k){var c=F[k];if(c&&c.due&&/^\d+_\d+$/.test(k))f[k]={d:String(c.due),b:c.box|0,a:+c.at||0}});
+    var A=G._w7lnAt||{},o={f:f};
+    if(A.o)o.o={v:G.recapOff?1:0,a:+A.o};
+    if(A.k&&G.recapShown)o.k={v:String(G.recapShown),a:+A.k};
+    var g=G.weekGoal;if(g&&g.k)o.g={k:String(g.k),t:g.type==='days'?'d':'s',n:g.n|0,x:g.done?1:0,a:+g.at||0};
+    return o;
+  }catch(e){return null}
+}
+function _w7lnPayload(p){
+  try{if(!p||typeof p.progressJSON!=='string')return;var r=_w7lnRSnap();if(!r)return;
+    var o=JSON.parse(p.progressJSON);if(!o||typeof o!=='object')return;o.r=r;var js=JSON.stringify(o);if(js.length<=45000)p.progressJSON=js}catch(e){}
+}
+function _w7lnRLoad(pj){
+  try{
+    _w7lnOwn();var o=null;try{o=JSON.parse(pj||'')}catch(e){o=null}var r=o&&o.r;if(!r||typeof r!=='object')return;
+    if(r.f&&typeof r.f==='object'){if(!G.flash||typeof G.flash!=='object')G.flash={};
+      Object.keys(r.f).forEach(function(k){var c=r.f[k];if(!c||typeof c!=='object'||!/^\d+_\d+$/.test(k)||!_w7lnPD(c.d))return;var l=G.flash[k];
+        if(!l||(+c.a||0)>(+l.at||0))G.flash[k]={due:String(c.d),box:Math.max(0,Math.min(2,c.b|0)),at:+c.a||0}});_w7lnCap()}
+    if(!G._w7lnAt||typeof G._w7lnAt!=='object')G._w7lnAt={};var A=G._w7lnAt;
+    if(r.o&&(+r.o.a||0)>(+A.o||0)){G.recapOff=!!r.o.v;A.o=+r.o.a}
+    if(r.k&&r.k.v&&(+r.k.a||0)>(+A.k||0)){G.recapShown=String(r.k.v);A.k=+r.k.a}
+    if(r.g&&r.g.k&&(!G.weekGoal||(+r.g.a||0)>(+G.weekGoal.at||0)))G.weekGoal={k:String(r.g.k),type:r.g.t==='d'?'days':'stages',n:Math.max(1,r.g.n|0),done:!!r.g.x,at:+r.g.a||0};
+  }catch(e){}
+}
+
+/* =============================== wrappers (installed after every existing wrapper; pass-through on error) =============================== */
+var _w7lnOrigTcs=tryCompleteStage;tryCompleteStage=function(sid){
+  var was=true;try{was=!!(G.done&&G.done.has(sid))}catch(e){}
+  var r=_w7lnOrigTcs.apply(this,arguments);
+  try{if(r===true&&!was&&G.done&&G.done.has(sid))_w7lnOnComplete(sid)}catch(e){}
+  return r;
+};
+var _w7lnOrigCer=showStageCeremony;showStageCeremony=function(s,sid){var r=_w7lnOrigCer.apply(this,arguments);try{_w7lnCerLine(sid)}catch(e){}return r};
+var _w7lnOrigSa=sa;sa=function(sid,qi,sel){
+  var was=true;try{was=!!(G.qa&&G.qa[sid]&&G.qa[sid][qi]!==undefined)}catch(e){}
+  var r=_w7lnOrigSa.apply(this,arguments);
+  try{if(!was&&G.qa&&G.qa[sid]&&G.qa[sid][qi]===sel){var s=_w7lnSt(sid);_w7lnLedger((s&&s.q&&s.q[qi]&&sel===s.q[qi].c)?'correct':'day')}}catch(e){}
+  return r;
+};
+var _w7lnOrigSr=srAnswer;srAnswer=function(qi,sel){
+  var was=true;try{was=_srAnswers[qi]!==undefined}catch(e){}
+  var r=_w7lnOrigSr.apply(this,arguments);
+  try{if(!was&&_srAnswers[qi]===sel){var q=_srQuestions[qi];_w7lnLedger((q&&sel===q.c)?'correct':'day');
+    if(Object.keys(_srAnswers).length>=Math.min(5,_srQuestions.length)&&_w7ln.srS!==_srQuestions){_w7ln.srS=_srQuestions;_w7lnLedger('review')}}}catch(e){}
+  return r;
+};
+var _w7lnOrigUrp=_updateReadProgress;_updateReadProgress=function(){var r=_w7lnOrigUrp.apply(this,arguments);try{_w7lnLedger('day')}catch(e){}return r};
+var _w7lnOrigMsbs=_markSeenByScroll;_markSeenByScroll=function(){var r=_w7lnOrigMsbs.apply(this,arguments);try{_w7lnLastPos()}catch(e){}return r};
+var _w7lnOrigSt=st;st=function(t){var r=_w7lnOrigSt.apply(this,arguments);try{if(t==='c'&&G.v==='s')_w7lnLedger('day')}catch(e){}return r};
+var _w7lnOrigRq=rq;rq=function(s){var r=_w7lnOrigRq.apply(this,arguments);try{_w7lnRecapInline(s)}catch(e){}return r};
+var _w7lnOrigSs=ss;ss=function(id){
+  var pr=window._pmResume,offer=!!window._w7lnOffer;window._pmResume=null;
+  var fromMap=false;try{fromMap=(G.v==='m')}catch(e){}
+  try{_w7lnToastRm();_w7lnRm('w7lnWeek');_w7lnRm('w7lnCertOv')}catch(e){}
+  var r=_w7lnOrigSs.apply(this,arguments);
+  try{var n=parseInt(id,10);if(G.v==='s'&&parseInt(G.st,10)===n){
+    if(pr&&parseInt(pr.sid,10)===n)_w7lnApply(n,pr.mode);
+    else if(fromMap||offer){var tg=_w7lnTarget(n);if(tg)_w7lnToast(_w7lnL('↩ התחלתם את השלב הזה','↩ You started this stage'),_w7lnL('לקפוץ למקום שעצרתי','Jump to where I stopped'),'_w7lnJump('+n+')')}
+  }}catch(e){}
+  return r;
+};
+var _w7lnOrigRch=renderContinueHero;renderContinueHero=function(currentId){
+  var r=_w7lnOrigRch.apply(this,arguments);
+  try{var el=$('continue-hero');if(el){var card=el.querySelector('.continue-hero'),n=parseInt(currentId,10);
+    if(card&&n>=0&&/^ss\(\d+\)$/.test(card.getAttribute('onclick')||''))card.setAttribute('onclick','_w7lnGo('+n+',\'continue\')');
+    _w7lnMeterMount(el)}}catch(e){}
+  return r;
+};
+var _w7lnOrigGlv=goToLastVisited;goToLastVisited=function(){
+  try{var n=parseInt(G.lastStageVisited,10);if(!isNaN(n))window._pmResume={sid:n,mode:'auto',src:'last'}}catch(e){}
+  try{return _w7lnOrigGlv.apply(this,arguments)}finally{window._pmResume=null}
+};
+var _w7lnOrigWb=maybeWelcomeBack;maybeWelcomeBack=function(){
+  var r=_w7lnOrigWb.apply(this,arguments);
+  try{var bs=document.querySelectorAll('#wbOv button');for(var i=0;i<bs.length;i++){var m=/ss\((\d+)\)/.exec(bs[i].getAttribute('onclick')||'');if(m)bs[i].setAttribute('onclick','$(\'wbOv\').remove();_w7lnGo('+m[1]+',\'wb\')')}}catch(e){}
+  return r;
+};
+var _w7lnOrigMp=mp;mp=function(){
+  var r=_w7lnOrigMp.apply(this,arguments);
+  try{_w7lnOwn();_w7lnWkRoll();if(!document.querySelector('#continue-hero .w7ln-cm'))_w7lnMeterMount();_w7lnFabDot();_w7lnWeekMaybe()}catch(e){}
+  return r;
+};
+var _w7lnOrigHub=showTodayHub;showTodayHub=function(){var r=_w7lnOrigHub.apply(this,arguments);try{_w7lnHub()}catch(e){}return r};
+var _w7lnOrigRp=renderProfile;renderProfile=function(){var r=_w7lnOrigRp.apply(this,arguments);try{_w7lnRm('w7lnWeek');_w7lnPvTile();_w7lnPvSet()}catch(e){}return r};
+/* issued = generateCert() got past its lock (all core stages done, no certificate already open) — it opens a new window, or the
+   #certOverlay fallback when pop-ups are blocked, right after trackEvent('cert','open') */
+var _w7lnOrigCert=generateCert;generateCert=function(){
+  var go=false;try{go=!$('certOverlay')&&_w7lnCore().left===0}catch(e){}
+  var r=_w7lnOrigCert.apply(this,arguments);
+  try{if(go&&!G._certIssued){G._certIssued=Date.now();_w7lnSave();if(G.v==='m')_w7lnMeterMount()}}catch(e){}
+  return r;
+};
+var _w7lnOrigHome=goHome;goHome=function(){try{_w7lnCancelAll();_w7lnToastRm();['w7lnRecap','w7lnWeek','w7lnCertOv'].forEach(_w7lnRm);_w7ln.pend=null;_w7ln.fb=null}catch(e){}return _w7lnOrigHome.apply(this,arguments)};
+var _w7lnOrigLang=applyLanguage;applyLanguage=function(){
+  var r=_w7lnOrigLang.apply(this,arguments);
+  try{_w7lnToastRm();if($('w7lnRecap')&&_w7ln.pend)_w7lnRecapShow(_w7ln.pend.sid,true);if($('w7lnWeek'))_w7lnWeekShow(true);if($('w7lnCertOv'))_w7lnCertOpen(_w7ln.cw,true);if($('todayHub'))_w7lnHub()}catch(e){}
+  return r;
+};
+/* ===== /W7 learn ===== */
+/* ===== W7 juice kit (_w7jc) — F0 (motion tokens, haptics, 8 pentatonic sounds, juiceFlyTo, celebration queue on the W6 toast
+   queue, tap-to-skip) · Ceremony 2.0 · Combo 2.0 + "Perfect!" stamp · Map Return 2.0 + mastery crown · Ink & Gold chrome icons.
+   Presentation only: never changes points, streak, mastery or completion. Wrappers are installed at DOMContentLoaded, i.e. after
+   every inline wrapper in the file (later patches at the same anchor included); originals are never re-declared; no observers.
+   Reduced motion = the final state at once (no stamp, no flight, no theatrics), sound kept. Lesson content keeps its emoji (audio
+   sync) — only chrome surfaces are iconized, at render time. Assets: av/ui/ (Fluent Emoji 3D + Phosphor, MIT — av/ui/LICENSES.md). ===== */
+var _w7jc={on:false,cfHold:0,cfWant:0,qEnd:null,prevCombo:0,mb:{},cer:null,tiers:{},held:false,relAt:0,relT:0,layer:null,plus:null,msgT:0,res:{}};
+var _W7JC_UI='av/ui/';
+var _W7JC_HAP={tap:[8],pop:[12],success:[14,40,18],reward:[10,30,10,30,24],milestone:[20,60,20,60,60],error:[30,50,30]};
+/* starting points in C-major pentatonic (research F0.3); 'unlock' C/G, 'coin' C6→G6, 'cool' E4 sliding down */
+var _W7JC_SFX={
+  coin:[.3,0,1046.5,.002,.02,.07,0,1.8,0,0,523.25,.03,0,0,0,0,0,.6,.01,0,0],
+  pop:[.35,0,659.25,.002,.015,.06,0,1.6,6,0,0,0,0,0,0,0,0,.5,.01,0,0],
+  unlock:[.45,0,392,.008,.06,.2,0,1.4,0,0,392,.06,0,0,0,0,.04,.7,.03,0,0],
+  chestShake:[.3,.05,110,.001,.01,.06,3,1,0,0,0,0,0,.6,0,0,0,.45,.01,0,900],
+  chestOpen:[.6,0,523.25,.015,.16,.4,0,1.3,0,0,261.63,.07,.07,0,0,0,.1,.75,.06,0,0],
+  milestone:[.65,0,392,.03,.3,.55,0,1.25,0,0,196,.1,.1,0,0,0,.18,.8,.08,.04,0],
+  cool:[.25,0,330,.005,.03,.12,0,1.5,-6,0,0,0,0,0,0,0,0,.4,.02,0,0],
+  whoosh:[.18,.2,800,.04,.04,.18,4,1,-4,0,0,0,0,.9,0,0,0,.35,.04,0,2200]
+};
+var _W7JC_PENT=[0,2,4,7,9,12,14,16,19,21,24];/* rate n → n-th step up the pentatonic ladder (C D E G A C' D' E' G' A' C'') */
+var _w7jcMute={};
+/* Phosphor duotone (MIT) — inlined so they inherit currentColor */
+var _W7JC_PH={map:'<path d="M160,72V216L96,184V40Z" opacity="0.2"/><path d="M228.92,49.69a8,8,0,0,0-6.86-1.45L160.93,63.52,99.58,32.84a8,8,0,0,0-5.52-.6l-64,16A8,8,0,0,0,24,56V200a8,8,0,0,0,9.94,7.76l61.13-15.28,61.35,30.68A8.15,8.15,0,0,0,160,224a8,8,0,0,0,1.94-.24l64-16A8,8,0,0,0,232,200V56A8,8,0,0,0,228.92,49.69ZM104,52.94l48,24V203.06l-48-24ZM40,62.25l48-12v127.5l-48,12Zm176,131.5-48,12V78.25l48-12Z"/>',fire:'<path d="M208,144a80,80,0,0,1-160,0c0-30.57,14.42-58.26,31-80l33,32,26.27-72C159.86,41.92,208,88.15,208,144Z" opacity="0.2"/><path d="M183.89,153.34a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68ZM216,144a88,88,0,0,1-176,0c0-27.92,11-56.47,32.66-84.85a8,8,0,0,1,11.93-.89l24.12,23.41,22-60.41a8,8,0,0,1,12.63-3.41C165.21,36,216,84.55,216,144Zm-16,0c0-46.09-35.79-85.92-58.21-106.33L119.52,98.74a8,8,0,0,1-13.09,3L80.06,76.16C64.09,99.21,56,122,56,144a72,72,0,0,0,144,0Z"/>',lightning:'<path d="M96,240l16-80L48,136,160,16,144,96l64,24Z" opacity="0.2"/><path d="M215.79,118.17a8,8,0,0,0-5-5.66L153.18,90.9l14.66-73.33a8,8,0,0,0-13.69-7l-112,120a8,8,0,0,0,3,13l57.63,21.61L88.16,238.43a8,8,0,0,0,13.69,7l112-120A8,8,0,0,0,215.79,118.17ZM109.37,214l10.47-52.38a8,8,0,0,0-5-9.06L62,132.71l84.62-90.66L136.16,94.43a8,8,0,0,0,5,9.06l52.8,19.8Z"/>'};
+/* hand-drawn stroke glyphs (24-grid, no third-party source) */
+var _W7JC_SV={
+  lock:'<rect x="5" y="10.5" width="14" height="10.5" rx="2.6"/><path d="M8.2 10.5V7.8a3.8 3.8 0 0 1 7.6 0v2.7"/><path d="M12 15v2"/>',
+  pin:'<path d="M12 21.2s-6.6-5.7-6.6-11.2a6.6 6.6 0 0 1 13.2 0c0 5.5-6.6 11.2-6.6 11.2z"/><circle cx="12" cy="10" r="2.3"/>',
+  buzz:'<rect x="8" y="3" width="8" height="18" rx="2.2"/><path d="M4.5 9v6"/><path d="M19.5 9v6"/><path d="M2 11v2"/><path d="M22 11v2"/>'
+};
+/* chrome emoji → icon (Fluent 3D = reward objects; 'ph:' Phosphor; 'sv:' stroke). 🪙 stays (owner decision), errors stay. */
+var _W7JC_EMO={'🔥':'fire-96','⭐':'star-96','🌟':'star-96','🎯':'bullseye-96','🏆':'trophy-96','👑':'crown-96','🎓':'gradcap-96','🧭':'compass-96','🚀':'rocket-96','📚':'books-96','🧊':'ice-96','🎉':'party-96','💎':'gem-96','✨':'sparkles-96','💡':'bulb-96','⬆':'sparkles-96'};
+var _W7JC_SEC=Object.assign({},_W7JC_EMO,{'⚡':'bulb-96'});/* map section marks + skill badges: ⚡ "analyst" reads as insight */
+var _W7JC_TOAST=Object.assign({},_W7JC_EMO,{'⚡':'ph:lightning'});
+var _W7JC_STAR={'⭐':'star-96'},_W7JC_XP={'⭐':'star-96','🔥':'fire-96','🎓':'gradcap-96','👑':'crown-96','🏆':'trophy-96'},_W7JC_GOAL={'🎯':'bullseye-96'};
+var _W7JC_HUB={'🔥':'ph:fire','🧊':'ice-96','🎯':'sv:target','🎮':'ph:lightning','🗓':'sv:cal','📅':'sv:cal'};
+var _w7jcReC=[];
+function _w7jcRM(){try{return !!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)}catch(e){return false}}
+function _w7jcEn(){try{return !!_enLang()}catch(e){return false}}
+function _w7jcT(he,en){return _w7jcEn()?en:he}
+function _w7jcTrack(f,a,m){try{trackEvent(f,a,m)}catch(e){}}
+function _w7jcImg(name,px,cls){return '<img class="w7jc-i3'+(cls?' '+cls:'')+'" src="'+_W7JC_UI+name+'.webp" width="'+px+'" height="'+px+'" alt="" draggable="false" decoding="async">'}
+function _w7jcPh(n,px,cls){var p=_W7JC_PH[n];if(!p)return '';return '<svg class="w7jc-ph w7jc-ph-'+n+(cls?' '+cls:'')+'" viewBox="0 0 256 256" width="'+px+'" height="'+px+'" fill="currentColor" aria-hidden="true" focusable="false">'+p+'</svg>'}
+function _w7jcSv(n,px,cls){var p=_W7JC_SV[n];
+  if(!p){try{if(n==='target')p=_FAB_ICONS.dailyFab;else if(n==='cal')p=_FAB_ICONS.todayFab}catch(e){}}
+  if(!p)return '';return '<svg class="w7jc-sv w7jc-sv-'+n+(cls?' '+cls:'')+'" viewBox="0 0 24 24" width="'+px+'" height="'+px+'" aria-hidden="true" focusable="false">'+p+'</svg>'}
+function _w7jcGlyph(v,px){v=String(v||'');if(v.indexOf('ph:')===0)return _w7jcPh(v.slice(3),px);if(v.indexOf('sv:')===0)return _w7jcSv(v.slice(3),px);return _w7jcImg(v,px)}
+function _w7jcRe(map){
+  for(var i=0;i<_w7jcReC.length;i++)if(_w7jcReC[i][0]===map)return _w7jcReC[i][1];
+  var ks=Object.keys(map).sort(function(a,b){return b.length-a.length}).map(function(k){return k.replace(/[.*+?^$()|[\]\\{}]/g,'\\$&')});
+  var re=new RegExp('('+ks.join('|')+')\\uFE0F?','g');_w7jcReC.push([map,re]);return re;
+}
+/* render-time chrome iconizer: replaces mapped emoji in TEXT nodes under root (never inside form controls/editable/opt-out) */
+function _w7jcIconize(root,map,px,cls){
+  var n=0;if(!root)return 0;
+  try{
+    var re=_w7jcRe(map),w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),t,list=[];
+    while((t=w.nextNode())){re.lastIndex=0;if(re.test(t.nodeValue)){var p=t.parentElement;if(p&&!(p.closest&&p.closest('script,style,textarea,input,select,[contenteditable="true"],.w7jc-keep')))list.push(t)}}
+    list.forEach(function(t){
+      var s=t.nodeValue,fr=document.createDocumentFragment(),last=0,m;re.lastIndex=0;
+      while((m=re.exec(s))){
+        if(m.index>last)fr.appendChild(document.createTextNode(s.slice(last,m.index)));
+        var sp=document.createElement('span');sp.className='w7jc-ic'+(cls?' '+cls:'');sp.setAttribute('aria-hidden','true');sp.innerHTML=_w7jcGlyph(map[m[1]],px);fr.appendChild(sp);
+        last=m.index+m[0].length;n++;
+      }
+      if(last<s.length)fr.appendChild(document.createTextNode(s.slice(last)));
+      if(t.parentNode)t.parentNode.replaceChild(fr,t);
+    });
+  }catch(e){}
+  return n;
+}
+/* warm the ceremony set (~35KB) on the first answer of a session so the hero never pops in late */
+function _w7jcPreload(){if(_w7jc.pre)return;_w7jc.pre=1;try{['hero-star-256','hero-party-256','hero-trophy-256','hero-books-256','star-96','bullseye-96','fire-96','sparkles-96'].forEach(function(n){var i=new Image();i.decoding='async';i.src=_W7JC_UI+n+'.webp';_w7jc.res[n]=i})}catch(e){}}
+function _w7jcEach(sel,fn){try{var l=document.querySelectorAll(sel);for(var i=0;i<l.length;i++)fn(l[i],i)}catch(e){}}
+/* one 0×0 fixed layer for sprites/ghosts: <body>'s child list stays stable (the W6 dock watches it), never hit-testable */
+function _w7jcLayer(){var l=_w7jc.layer;if(l&&l.isConnected)return l;l=document.getElementById('w7jcLayer');if(!l){l=document.createElement('div');l.id='w7jcLayer';l.setAttribute('aria-hidden','true');document.body.appendChild(l)}_w7jc.layer=l;return l}
+
+/* ---------- F0.2 haptics (Android; iOS has no navigator.vibrate → silent no-op) ---------- */
+function _w7jcHapOk(){try{return typeof navigator!=='undefined'&&typeof navigator.vibrate==='function'}catch(e){return false}}
+/* the settings row is offered only where a buzz can actually be felt: vibrate API + a touch-first pointer */
+function _w7jcHapShown(){try{return _w7jcHapOk()&&!!(window.matchMedia&&matchMedia('(pointer: coarse)').matches)}catch(e){return false}}
+function _w7jcHaptic(kind){
+  try{
+    if(!_w7jcHapOk()||G.hapticsOff)return false;
+    var ua=navigator.userActivation;if(ua&&!ua.hasBeenActive)return false;/* Chrome rejects vibrate before the first tap */
+    return !!navigator.vibrate(_W7JC_HAP[kind]||_W7JC_HAP.tap);
+  }catch(e){return false}
+}
+function _w7jcHapToggle(){
+  G.hapticsOff=!G.hapticsOff;try{sv()}catch(e){}
+  _w7jcTrack('settings','haptics',G.hapticsOff?'off':'on');
+  if(!G.hapticsOff)_w7jcHaptic('success');
+  try{showProfile()}catch(e){}
+}
+/* ---------- F0.3 sound: playSfx(type,{rate,vol}) — rate bypasses the 140ms throttle and climbs the pentatonic ladder ---------- */
+function _w7jcMuteFor(key,ms){_w7jcMute[key]=Date.now()+ms}
+function _w7jcSfxInit(){try{Object.keys(_W7JC_SFX).forEach(function(k){if(!_sfx[k])_sfx[k]=_W7JC_SFX[k]})}catch(e){}}
+
+/* ---------- F0.4 fly-to: sprites travel from src to dst (rects → RTL-safe), dst bumps on each arrival ---------- */
+function _w7jcRect(el){var r=el.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2,w:r.width,h:r.height}}
+function _w7jcFlyTo(src,dst,o){
+  o=o||{};var n=Math.max(1,Math.min(10,o.n||6)),done=0,list=[],dead=false,sz=o.size||22;
+  var fin=function(){if(dead)return;dead=true;try{o.onDone&&o.onDone()}catch(e){}};
+  var api={cancel:function(){list.forEach(function(s){try{s.getAnimations().forEach(function(x){x.cancel()})}catch(e){}try{s.remove()}catch(e){}});list=[];dead=true}};
+  if(!src||!dst||_w7jcRM()||!document.body.animate){try{o.onArrive&&o.onArrive(n-1,n,true)}catch(e){}try{playSfx('coin')}catch(e){}fin();return api}
+  var a=_w7jcRect(src),b=_w7jcRect(dst),dx=b.x-a.x,dy=b.y-a.y,lift=Math.min(110,Math.max(46,Math.abs(dx)*.22+38)),L=_w7jcLayer();
+  for(var i=0;i<n;i++)(function(i){
+    var sp=document.createElement('div');sp.className='w7jc-spr';sp.innerHTML=o.html||_w7jcImg(o.img||'star-96',sz);
+    var jx=((i*37)%17)-8,jy=((i*53)%13)-6;/* deterministic fan-out */
+    sp.style.left=Math.round(a.x-sz/2+jx)+'px';sp.style.top=Math.round(a.y-sz/2+jy)+'px';
+    L.appendChild(sp);list.push(sp);
+    var an=sp.animate([
+      {transform:'translate(0px,0px) scale(.5)',opacity:0},
+      {offset:.14,transform:'translate('+Math.round(dx*.05)+'px,'+Math.round(dy*.05-lift*.35)+'px) scale(1.1)',opacity:1},
+      {offset:.5,transform:'translate('+Math.round(dx/2-jx)+'px,'+Math.round(dy/2-lift-jy)+'px) scale(1.15)',opacity:1},
+      {transform:'translate('+Math.round(dx-jx)+'px,'+Math.round(dy-jy)+'px) scale(.55)',opacity:.3}
+    ],{duration:o.dur||620,delay:i*(o.stagger||55),easing:'cubic-bezier(.4,0,1,1)',fill:'both'});
+    an.onfinish=function(){
+      try{sp.remove()}catch(e){}if(dead)return;done++;
+      try{dst.animate([{transform:'scale(1)'},{transform:'scale(1.18)'},{transform:'scale(1)'}],{duration:220,easing:'cubic-bezier(.34,1.56,.64,1)'})}catch(e){}
+      try{playSfx('coin',{rate:i,vol:.75})}catch(e){}
+      if(i===0||i===n-1)_w7jcHaptic('tap');
+      try{o.onArrive&&o.onArrive(i,n,false)}catch(e){}
+      if(done===n)fin();
+    };
+  })(i);
+  return api;
+}
+/* ---------- F0.5 celebration queue = the W6 toast queue (_w6sk): held during takeovers, released 400ms after,
+   at most 2 then one merged "+N" toast. Our own overlays carry data-takeover so the W6 queue holds for them too. ---------- */
+function _w7jcMergeQ(){
+  try{
+    if(typeof _w6skQ==='undefined'||!Array.isArray(_w6skQ)||_w6skQ.length<4)return;
+    var keep=[],rest=[],k=0,mg=null;
+    _w6skQ.forEach(function(it){if(it&&it._w7jcM){mg=it;return}if(!it||it.err||k<2){keep.push(it);if(it&&!it.err)k++;return}rest.push(it)});
+    if(!mg&&rest.length<2)return;
+    if(!mg){mg={_w7jcM:1,_w7jcN:0,_w7jcT:[],n:1,err:false,sub:''}}
+    rest.forEach(function(it){mg._w7jcN+=(it.n||1);var t='';try{t=String(_t(it.title))}catch(e){t=String(it.title)}t=t.replace(/<[^>]*>/g,'').trim();if(t)mg._w7jcT.push(t)});
+    mg.icon=_w7jcImg('sparkles-96',30);
+    mg.title=_w7jcT('ועוד '+mg._w7jcN+' עדכונים','+'+mg._w7jcN+' more rewards');
+    mg.sub=mg._w7jcT.slice(0,3).join(' · ')+(mg._w7jcT.length>3?' …':'');
+    mg.k='w7jc-merge\u0001'+mg.title;
+    _w6skQ.length=0;keep.forEach(function(x){_w6skQ.push(x)});_w6skQ.push(mg);
+  }catch(e){}
+}
+function _w7jcQueue(fn){/* run fn now when nothing celebrates, else once the takeover is gone (+400ms) */
+  var tries=0;(function go(){var busy=false;try{busy=typeof _w6skTake==='function'?_w6skTake():!!document.getElementById('stageCerem')}catch(e){}
+    if(busy&&tries++<200){setTimeout(go,300);return}setTimeout(function(){try{fn()}catch(e){}},busy?0:(tries?400:0))})();
+}
+
+/* ---------- Ceremony 2.0 ---------- */
+function _w7jcRankNext(){
+  var t=null,en=_w7jcEn(),has=function(i){return !!(G.done&&G.done.has(i))};try{t=getTitle()}catch(e){}
+  if(!t)return {k:has(2)?0:1,nm:en?'Student':'סטודנט'};
+  if(t.cls==='student')return {k:[2,3,4,5,6,7,8,9,10].filter(function(i){return !has(i)}).length,nm:en?'In Certification':'בהסמכה'};
+  if(t.cls==='naval')return {k:PM_IDS.filter(function(i){return !has(i)}).length,nm:en?'Certified':'מוסמך'};
+  if(t.cls==='senior')return {k:Math.max(0,_totalVisible()-G.done.size),nm:en?'Senior':'סניור'};
+  return {top:true};
+}
+function _w7jcSub(rankUp){
+  var en=_w7jcEn();
+  try{
+    if(rankUp){var t=getTitle();return (en?'New rank: ':'דרגה חדשה: ')+_t(t.name)+'!'}
+    var r=_w7jcRankNext(),dn=G.done.size,tot=_totalVisible();
+    var a=en?(dn+' of '+tot+' stages done'):('השלמת '+dn+' מתוך '+tot+' שלבים');
+    if(r.top)return a+(en?' · top rank':' · הדרגה הגבוהה ביותר');
+    if(!r.k)return a;
+    return a+' · '+(en?(r.k+' more to “'+r.nm+'”'):((r.k===1?'עוד שלב אחד':'עוד '+r.k)+' לדרגת "'+r.nm+'"'));
+  }catch(e){return ''}
+}
+function _w7jcCerOpen(self,args,o){
+  var s=args[0]||{},sid=args[1],st=null;
+  try{
+    var pts=G.sc[sid]||0,max=(s.q&&s.q.length?s.q.length*10:0),acc=max?Math.round(Math.min(100,pts/max*100)):0;
+    var tc=_w7jc.tcs,fresh=!!(tc&&tc.sid===sid&&!tc.was),rb=fresh?tc.rank:null,ra=null;try{ra=getTitle()}catch(e){}
+    var rankUp=!!(fresh&&ra&&(!rb||rb.cls!==ra.cls));
+    var mi=null;try{if(typeof _w5mInfo==='function')mi=_w5mInfo(sid)}catch(e){}
+    var la=mi&&mi.n?mi.level:-1,lb=_w7jc.mb[sid];if(lb==null||lb>la)lb=la;
+    st={sid:sid,s:s,pts:pts,acc:acc,perfect:!!(o&&o.perfect)||(max>0&&pts>=max),rankUp:rankUp,la:la,lb:lb,t0:Date.now(),timers:[],final:false,fly:null,ghost:null};
+  }catch(e){st=null}
+  _w7jc.cfHold++;_w7jc.cfWant=0;var r;
+  try{r=_w7jcOrig.cer.apply(self,args)}finally{_w7jc.cfHold--}
+  var built=false;try{if(st&&document.getElementById('stageCerem'))built=_w7jcCerBuild(st)}catch(e){built=false}
+  if(!built)try{_w7jcOrig.cf()}catch(x){}/* our layout failed: the original markup stays, with its own confetti */
+  return r;
+}
+function _w7jcCerBuild(st){
+  var ov=document.getElementById('stageCerem'),cin=ov&&ov.querySelector('.cer-in');if(!cin)return false;
+  var en=_w7jcEn(),rm=_w7jcRM(),s=st.s,sid=st.sid;
+  var ptsEl=document.getElementById('cerPts'),accEl=document.getElementById('cerAcc'),btns=cin.querySelector('.cer-btns');
+  if(!ptsEl||!accEl)return false;
+  var own=[ptsEl.closest('#stageCerem .cer-in>*'),accEl.closest('#stageCerem .cer-in>*')];/* the original points/accuracy blocks */
+  var book=(s.tg==='בונוס - ספר')||(sid>=100&&sid<=125);
+  var hero=st.rankUp?'hero-trophy-256':(st.acc>=90||st.perfect)?'hero-star-256':book?'hero-books-256':'hero-party-256';
+  var kick=(st.perfect||st.acc>=100)?(en?'PERFECT!':'מושלם!'):st.acc>=80?(en?'GREAT WORK!':'עבודה מצוינת!'):(en?'STAGE COMPLETE':'השלב הושלם!');
+  var sk=G.streak||1;
+  var mk=function(cls,html){var d=document.createElement('div');d.className=cls;if(html!=null)d.innerHTML=html;return d};
+  var heroEl=mk('w7jc-hero','<i class="w7jc-rays"></i><i class="w7jc-glow"></i><img src="'+_W7JC_UI+hero+'.webp" width="128" height="128" alt="" draggable="false">');
+  var kEl=mk('cer-k w7jc-kick');kEl.textContent=kick;
+  var tEl=mk('cer-t');tEl.textContent=String(s.t||'');
+  var subTx=_w7jcSub(st.rankUp),sEl=mk('w7jc-sub'+(st.rankUp?' w7jc-rk':''));sEl.textContent=subTx;
+  var tiles=mk('w7jc-tiles');
+  var tp=mk('w7jc-tile w7jc-tp',_w7jcImg('star-96',40)+'<bdi dir="ltr" class="w7jc-tv"></bdi><span class="w7jc-tl">'+(en?'points':'נקודות')+'</span>');
+  var ta=mk('w7jc-tile w7jc-ta',_w7jcImg('bullseye-96',40)+'<bdi dir="ltr" class="w7jc-tv"></bdi><span class="w7jc-tl">'+(en?'accuracy':'דיוק')+'</span>');
+  var ts=mk('w7jc-tile w7jc-ts',_w7jcImg('fire-96',40)+'<bdi dir="ltr" class="w7jc-tv">'+sk+'</bdi><span class="w7jc-tl">'+(en?'day streak':(sk===1?'יום ברצף':'ימים ברצף'))+'</span>');
+  ptsEl.className='';accEl.className='';
+  tp.querySelector('.w7jc-tv').appendChild(ptsEl);ta.querySelector('.w7jc-tv').appendChild(accEl);
+  tiles.appendChild(tp);tiles.appendChild(ta);tiles.appendChild(ts);
+  var kids=[heroEl,kEl,tEl];if(subTx)kids.push(sEl);kids.push(tiles);
+  if(st.la>=1){
+    var ph='';for(var i=1;i<=4;i++)ph+='<i class="w7jc-pip'+(i<=st.la?' on':'')+(i>st.lb&&i<=st.la?' w7jc-new':'')+'"></i>';
+    var nm='';try{nm=_w5mName(st.la)}catch(e){}
+    var mEl=mk('w7jc-mast w7jc-l'+st.la,'<span class="w7jc-ml">'+(en?'Mastery: ':'רמת שליטה: ')+'<b></b></span><span class="w7jc-pips" role="img">'+ph+'</span>');
+    mEl.querySelector('b').textContent=nm;mEl.querySelector('.w7jc-pips').setAttribute('aria-label',(en?'Mastery: ':'רמת שליטה: ')+nm);
+    kids.push(mEl);st.newPip=st.la>st.lb;
+  }
+  /* content other packs put into the original layout (e.g. W7 learn's certificate meter inside .cer-streak, any extra
+     .cer-in child) moves into our layout instead of being dropped */
+  var extras=[];
+  [].slice.call(cin.children).forEach(function(ch){
+    if(ch===btns||own.indexOf(ch)>=0)return;
+    var cl=' '+(typeof ch.className==='string'?ch.className:'')+' ';
+    if(/ cer-(k|t|ring) /.test(cl))return;
+    if(/ cer-streak /.test(cl)){[].slice.call(ch.children).forEach(function(x){extras.push(x)});return}
+    extras.push(ch);
+  });
+  if(extras.length){var ex=mk('w7jc-extra');extras.forEach(function(x){ex.appendChild(x)});kids.push(ex)}
+  if(btns){
+    var bp=btns.querySelector('.bp'),bs=btns.querySelector('.bs');
+    if(bp){bp.classList.add('w7jc-cta');var arr='';try{arr=_w5icon('arrow-left','w7jc-fwd')}catch(e){}bp.innerHTML='<span>'+(en?'Next stage':'לשלב הבא')+'</span>'+arr}
+    if(bs)bs.classList.add(bp?'w7jc-link':'w7jc-solo');
+    kids.push(btns);
+  }
+  cin.textContent='';kids.forEach(function(k){cin.appendChild(k)});
+  ov.classList.add('w7jc-cer');if(rm)ov.classList.add('w7jc-rm');
+  _w7jc.cer=st;st.ov=ov;
+  /* first tap anywhere but a live button = jump to the final frame (the second backdrop tap keeps its W6 meaning: close) */
+  ov.addEventListener('click',function(e){try{if(_w7jc.cer!==st||st.final||e.target===ov)return;/* backdrop: the original onclick → _cerShowAll (wrapped below) */var b=e.target&&e.target.closest?e.target.closest('button'):null;if(b&&b.closest('.on'))return;_w7jcCerSkip()}catch(x){}},true);
+  if(rm){
+    kids.forEach(function(k){k.classList.add('on')});st.final=true;
+    if(st.newPip)st.timers.push(setTimeout(function(){try{playSfx('unlock')}catch(e){}},120));
+    return true;
+  }
+  var T=function(ms,fn){st.timers.push(setTimeout(function(){if(_w7jc.cer!==st||!ov.isConnected)return;try{fn()}catch(e){}},ms))};
+  var on=function(el){return function(){el.classList.add('on')}};
+  T(40,on(heroEl));T(300,on(kEl));T(390,on(tEl));if(subTx)T(480,on(sEl));T(560,on(tiles));
+  var mEl2=cin.querySelector('.w7jc-mast');if(mEl2)T(860,on(mEl2));
+  var exEl=cin.querySelector('.w7jc-extra');if(exEl)T(930,on(exEl));
+  if(btns)T(1000,on(btns));
+  T(200,function(){_w7jcBurst(heroEl)});
+  T(430,function(){_w7jcHaptic('success')});
+  if(st.newPip)T(1040,function(){playSfx('unlock');_w7jcHaptic('pop')});
+  T(1290,function(){st.final=true;kids.forEach(function(k){k.classList.add('on')});_w7jcCerFly(st,tp)});
+  return true;
+}
+/* one confetti burst, from the hero (replaces the ceremony's centred cf()) */
+function _w7jcBurst(el){
+  if(_w7jcRM())return;
+  try{
+    if(window.confetti&&el){var r=el.getBoundingClientRect(),W=innerWidth||375,H=innerHeight||800;
+      confetti({particleCount:90,spread:72,startVelocity:34,ticks:180,origin:{x:(r.left+r.width/2)/W,y:(r.top+r.height*.45)/H},zIndex:2400,disableForReducedMotion:true,scalar:.9,colors:['#8B85FF','#E8C45C','#35C9A3','#F06A7E','#EDEEF4']});return}
+  }catch(e){}
+  try{_w7jcOrig.cf()}catch(e){}
+}
+/* points travel to the header counter: a lit twin of the header chip sits above the overlay and counts up */
+function _w7jcCerFly(st,tile){
+  if(!st.pts||st.pts<1)return;
+  var src=tile.querySelector('.w7jc-i3')||tile,gh=_w7jcGhost();if(!gh)return;
+  st.ghost=gh;var total=+G.ts||0,start=Math.max(0,total-st.pts),n=Math.max(3,Math.min(6,Math.round(st.pts/10)));
+  gh.v.textContent=String(start);
+  st.fly=_w7jcFlyTo(src,gh.b,{n:n,img:'star-96',size:22,onArrive:function(i,nn){gh.v.textContent=String(Math.round(start+(total-start)*(i+1)/nn))},
+    onDone:function(){gh.v.textContent=String(total);st.timers.push(setTimeout(function(){_w7jcGhostOff(gh)},700))}});
+}
+function _w7jcGhost(){
+  try{
+    var hd=document.getElementById('hd'),ts=document.getElementById('ts');if(!hd||!ts||hd.classList.contains('hid'))return null;
+    var b=ts.closest('.badge')||ts,r=b.getBoundingClientRect();if(r.width<4||r.bottom<0||r.top>(innerHeight||800))return null;
+    var w=document.createElement('div');w.className='hdr-stats w7jc-ghost';
+    w.style.left=Math.round(r.left)+'px';w.style.top=Math.round(r.top)+'px';w.style.width=Math.ceil(r.width)+'px';w.style.height=Math.ceil(r.height)+'px';
+    var c=b.cloneNode(true);c.removeAttribute('id');var ids=c.querySelectorAll('[id]');for(var i=0;i<ids.length;i++)ids[i].removeAttribute('id');
+    c.classList.add('w7jc-gb');w.appendChild(c);_w7jcLayer().appendChild(w);
+    return {w:w,b:c,v:c.querySelector('.v')||c};
+  }catch(e){return null}
+}
+function _w7jcGhostOff(g){if(!g||!g.w)return;try{g.w.classList.add('w7jc-out');setTimeout(function(){try{g.w.remove()}catch(e){}},260)}catch(e){}}
+function _w7jcCerSkip(){
+  var st=_w7jc.cer;if(!st||st.final)return;st.final=true;
+  st.timers.forEach(clearTimeout);st.timers=[];
+  var ov=st.ov;if(!ov||!ov.isConnected)return;
+  ov.classList.add('w7jc-skip');
+  _w7jcEach('#stageCerem .cer-in>*',function(el){el.classList.add('on')});
+  /* the original count-up ticks look #cerPts/#cerAcc up by id every frame: hide the ids until it has given up, set the finals */
+  var p=document.getElementById('cerPts'),a=document.getElementById('cerAcc');
+  if(p){p.removeAttribute('id');p.textContent='+'+st.pts}
+  if(a){a.removeAttribute('id');a.textContent=st.acc+'%'}
+  setTimeout(function(){try{if(p&&p.isConnected&&!document.getElementById('cerPts'))p.id='cerPts';if(a&&a.isConnected&&!document.getElementById('cerAcc'))a.id='cerAcc'}catch(e){}},Math.max(48,st.t0+470-Date.now()));
+  if(st.fly)st.fly.cancel();if(st.ghost)_w7jcGhostOff(st.ghost);
+  try{if(typeof _w6an!=='undefined'&&_w6an.cer)_w6an.cer.sa=1}catch(e){}/* analytics: same "skipped" mark _cerShowAll sets */
+}
+function _w7jcCerCleanup(){var st=_w7jc.cer;if(!st)return;_w7jc.cer=null;st.timers.forEach(clearTimeout);if(st.fly)st.fly.cancel();if(st.ghost)try{st.ghost.w.remove()}catch(e){}}
+
+/* ---------- Combo 2.0 ---------- */
+function _w7jcTier(c){return c>=10?10:c>=5?5:c>=3?3:c>=2?2:0}
+function _w7jcComboFx(correct){
+  /* sounds + haptics now (they belong to the tap); DOM work in the next frame, so the quiz re-render that sa() just did is
+     styled once at paint time instead of being forced mid-task by the chip update */
+  var c=G.combo||0,en=_w7jcEn(),prev=_w7jcPrevC(),sid=G.st,plus=_w7jc.plus,qEnd=!!_w7jc.qEnd;_w7jc.plus=null;
+  var raf=window.requestAnimationFrame||function(f){return setTimeout(f,16)};
+  if(correct&&c>=2){
+    var t=_w7jcTier(c),seen=_w7jc.tiers[sid]||(_w7jc.tiers[sid]={}),first=t>=3&&!seen[t];
+    if(t>=3)_w7jcHaptic('tap');
+    if(first){seen[t]=1;_w7jcTrack('combo','tier',String(t));if(t>=10&&!qEnd){try{playSfx('milestone',{vol:.8})}catch(e){}_w7jcHaptic('reward')}}
+    raf(function(){try{
+      var chip=document.getElementById('qfxCombo');if(!chip||G.combo!==c)return;
+      var fresh=prev<2||!chip.classList.contains('w7jc-chip');
+      var lbl=t>=10?(en?'Unstoppable!':'בלתי ניתנים לעצירה!'):t>=5?(en?'On fire!':'בוערים!'):'';
+      var tail=t>=10?'':(en?'in a row':'ברצף');
+      chip.classList.remove('w7jc-t2','w7jc-t3','w7jc-t5','w7jc-t10','w7jc-cool');chip.classList.add('w7jc-chip','w7jc-t'+t);
+      chip.innerHTML=_w7jcImg('fire-96',t>=3?20:16,'w7jc-cf')+(lbl?'<span class="w7jc-cx">'+lbl+'</span>':'')
+        +'<b class="w7jc-cn">'+(fresh?'':'<span class="w7jc-o">'+(c-1)+'</span>')+'<span class="w7jc-n">'+c+'</span></b>'+(tail?'<span class="w7jc-cl">'+tail+'</span>':'')
+        +(plus?'<span class="w7jc-plus"><bdi dir="ltr">'+plus+'</bdi></span>':'');
+      chip.setAttribute('aria-hidden','true');
+      if(!fresh){chip.classList.remove('qfx-chip-in');if(!_w7jcRM())chip.animate([{transform:'scale(1)'},{transform:'scale(1.15)'},{transform:'scale(1)'}],{duration:220,easing:'cubic-bezier(.34,1.56,.64,1)'})}
+      var fire=t>=5;if(document.body.classList.contains('w7jc-fire')!==fire)document.body.classList.toggle('w7jc-fire',fire);
+      if(first&&t>=10&&!qEnd)_w7jcChipBurst(chip);
+    }catch(e){}});
+  }else if(!correct){
+    if(prev>=2)try{playSfx('cool')}catch(e){}
+    raf(function(){try{
+      if(document.body.classList.contains('w7jc-fire'))document.body.classList.remove('w7jc-fire');
+      var chip=document.getElementById('qfxCombo');if(prev>=2&&chip)chip.classList.add('w7jc-cool');
+      if(prev>=5)_w7jcComboMsg();
+    }catch(e){}});
+  }
+}
+function _w7jcPrevC(){return _w7jc.prevCombo||0}
+function _w7jcChipBurst(chip){
+  if(_w7jcRM()||!window.confetti)return;
+  try{var r=chip.getBoundingClientRect(),W=innerWidth||375,H=innerHeight||800;
+    confetti({particleCount:26,spread:55,startVelocity:20,ticks:110,scalar:.7,gravity:1.1,origin:{x:(r.left+r.width/2)/W,y:(r.top+r.height/2)/H},zIndex:2400,disableForReducedMotion:true,colors:['#E8C45C','#FF9F43','#F6D77A']})}catch(e){}
+}
+function _w7jcComboMsg(){
+  try{
+    var m=document.getElementById('w7jcComboMsg');if(m)m.remove();
+    m=document.createElement('div');m.id='w7jcComboMsg';m.setAttribute('role','status');m.textContent=_w7jcT('הרצף נשבר — ממשיכים','Streak reset — keep going');
+    _w7jcLayer().appendChild(m);clearTimeout(_w7jc.msgT);
+    _w7jc.msgT=setTimeout(function(){m.classList.add('w7jc-out');setTimeout(function(){try{m.remove()}catch(e){}},300)},1450);/* 0.25s in + 1.2s readable */
+  }catch(e){}
+}
+
+/* ---------- "Perfect!" stamp (650ms, tap skips) before the ceremony — or alone when the stage is not complete yet ---------- */
+function _w7jcStamp(next,cf){
+  var en=_w7jcEn(),fired=false,ov=document.createElement('div'),tm=[];
+  var go=function(){if(fired)return;fired=true;tm.forEach(clearTimeout);document.removeEventListener('keydown',kd,true);
+    if(next){try{next()}catch(e){}}
+    ov.classList.add('w7jc-out');setTimeout(function(){try{ov.remove()}catch(e){}},200)};
+  var kd=function(){go()};
+  ov.id='w7jcStamp';ov.setAttribute('data-takeover','');ov.setAttribute('role','status');ov.setAttribute('aria-label',en?'Perfect! Every answer correct':'מושלם! כל התשובות נכונות');
+  ov.innerHTML='<div class="w7jc-stamp"><i class="w7jc-shock"></i>'+_w7jcImg('star-96',46,'w7jc-sst')+'<b>'+(en?'PERFECT':'מושלם')+'</b><small>'+(en?'every answer right':'כל התשובות נכונות')+'</small></div>';
+  ov.addEventListener('click',go);document.addEventListener('keydown',kd,true);
+  document.body.appendChild(ov);
+  tm.push(setTimeout(function(){
+    try{playSfx('win')}catch(e){}_w7jcMuteFor('win',450);/* the quiz-finish 'win' (W4, +350ms) would double it */_w7jcHaptic('success');
+    try{var sv=document.getElementById('sv');if(sv&&sv.animate&&!sv.classList.contains('hid'))sv.animate([{transform:'translateY(0)'},{transform:'translateY(2px)'},{transform:'translateY(0)'}],{duration:80})}catch(e){}
+    if(cf&&!next)try{_w7jcOrig.cf()}catch(e){}
+  },240));
+  tm.push(setTimeout(go,next?650:900));
+  _w7jcTrack('combo','perfect',String(G.st));
+}
+
+/* ---------- Map Return 2.0 ---------- */
+function _w7jcBub(nx){
+  try{
+    var s=null,id=nx&&nx.getAttribute('data-sid');try{s=S.find(function(x){return String(x.id)===String(id)})}catch(e){}
+    var mx=s&&s.q?s.q.length*10:0;
+    return '<span>'+_w7jcT('המשיכו מכאן','Continue here')+'</span>'+(mx?'<span class="w7jc-bh">'+_w7jcT('עד ','up to ')+'<bdi dir="ltr">+'+mx+'</bdi>'+_w7jcImg('star-96',13)+'</span>':'');
+  }catch(e){return _w7jcEn()?'Start ▸':'התחל ▸'}
+}
+function _w7jcMapReturn(sid){
+  var node=document.querySelector('.j-node[data-sid="'+sid+'"]');if(!node)return;
+  var seg=document.querySelector('.j-seg[data-from="'+sid+'"]'),nx=seg?document.querySelector('.j-node[data-sid="'+seg.getAttribute('data-to')+'"]'):null;
+  var unlock=!!(nx&&nx.classList.contains('current')&&!nx.classList.contains('done'));
+  var lb=_w7jc.mb[sid],la=-1;try{la=_w5mLevel(sid)}catch(e){}delete _w7jc.mb[sid];
+  var tm=[],T=function(ms,fn){tm.push(setTimeout(function(){if(!node.isConnected)return;try{fn()}catch(e){}},ms))};
+  /* pre-state, painted in the same frame as the map: the next stop still looks locked, its connector unlit */
+  var lock=null;
+  if(unlock){
+    nx.classList.add('w7jc-locked');
+    var ic=nx.querySelector('.j-ic');if(ic){lock=document.createElement('span');lock.className='w7jc-lock';lock.innerHTML=_w7jcSv('lock',14);ic.appendChild(lock)}
+    if(seg)seg.classList.add('w7jc-seg-pre');
+  }
+  T(320,function(){try{playSfx('pop')}catch(e){}_w7jcHaptic('pop')});
+  if(lb!=null&&la>lb&&la>=1)T(640,function(){_w7jcPipPop(node,la)});
+  if(nx&&seg)T(480,function(){_w7jcTravel(node,seg,nx,unlock)});
+  if(unlock)T(1080,function(){_w7jcShatter(nx,lock);if(seg)seg.classList.remove('w7jc-seg-pre')});
+  else if(seg)T(700,function(){seg.classList.remove('w7jc-seg-pre')});
+  if(la>=4&&lb!=null&&lb<4){
+    var cr=node.querySelector('.w7jc-crown');var at=unlock?1500:760;
+    if(cr){cr.style.animationDelay=at+'ms';cr.classList.add('w7jc-drop')}
+    T(at+300,function(){try{playSfx('milestone',{vol:.5})}catch(e){}_w7jcHaptic('reward')});
+  }
+  _w7jc.mr={tm:tm};
+}
+function _w7jcTravel(node,seg,nx,unlock){
+  var J=node.closest('.journey');if(!J||!J.animate)return;
+  var jr=J.getBoundingClientRect(),ai=node.querySelector('.j-ic')||node,bi=nx.querySelector('.j-ic')||nx;
+  var a=_w7jcRect(ai),b=_w7jcRect(bi),m=_w7jcRect(seg);
+  var ax=a.x-jr.left,ay=a.y-jr.top,mx=m.x-jr.left-ax,my=m.y-jr.top-ay,bx=b.x-jr.left-ax,by=b.y-jr.top-ay;
+  var frames=function(sc){return [{transform:'translate(-50%,-50%) translate(0px,0px) scale('+(.4*sc)+')',opacity:0},{offset:.12,transform:'translate(-50%,-50%) translate(0px,0px) scale('+sc+')',opacity:1},{offset:.5,transform:'translate(-50%,-50%) translate('+Math.round(mx)+'px,'+Math.round(my)+'px) scale('+sc+')',opacity:1},{offset:.9,transform:'translate(-50%,-50%) translate('+Math.round(bx)+'px,'+Math.round(by)+'px) scale('+(1.15*sc)+')',opacity:1},{transform:'translate(-50%,-50%) translate('+Math.round(bx)+'px,'+Math.round(by)+'px) scale('+(2.2*sc)+')',opacity:0}]};
+  [[1,0],[.7,45],[.5,90]].forEach(function(d,i){
+    var dot=document.createElement('i');dot.className='w7jc-dot'+(i?' w7jc-tr':'');dot.style.left=Math.round(ax)+'px';dot.style.top=Math.round(ay)+'px';J.appendChild(dot);
+    var an=dot.animate(frames(d[0]),{duration:600,delay:d[1],easing:'ease-in-out',fill:'both'});an.onfinish=function(){try{dot.remove()}catch(e){}};
+  });
+  try{playSfx('whoosh',{vol:.7})}catch(e){}
+  setTimeout(function(){try{seg.classList.remove('w7jc-seg-pre');seg.classList.add('w7jc-seg-fill');setTimeout(function(){seg.classList.remove('w7jc-seg-fill')},700)}catch(e){}},200);
+}
+function _w7jcShatter(nx,lock){
+  try{playSfx('unlock')}catch(e){}_w7jcHaptic('success');
+  if(lock&&lock.animate){
+    var host=lock.parentNode;
+    [-1,1].forEach(function(sg){
+      var h=lock.cloneNode(true);h.className='w7jc-lock w7jc-shard';h.style.clipPath=sg<0?'inset(0 50% 0 0)':'inset(0 0 0 50%)';host.appendChild(h);
+      var an=h.animate([{transform:'translate(0,0) rotate(0deg)',opacity:1},{transform:'translate('+(18*sg)+'px,8px) rotate('+(25*sg)+'deg)',opacity:0}],{duration:360,easing:'cubic-bezier(.2,.8,.2,1)',fill:'both'});
+      an.onfinish=function(){try{h.remove()}catch(e){}};
+    });
+  }
+  try{if(lock)lock.remove()}catch(e){}
+  nx.classList.remove('w7jc-locked');nx.classList.add('w7jc-unlocked');
+  setTimeout(function(){try{nx.classList.remove('w7jc-unlocked')}catch(e){}},900);
+}
+function _w7jcPipPop(node,lv){
+  var m=node.querySelector('.w5m-meter');if(!m)return;var p=m.querySelectorAll('.w5m-pip')[lv-1];if(!p)return;
+  p.classList.add('w7jc-pnew');setTimeout(function(){try{p.classList.remove('w7jc-pnew')}catch(e){}},700);
+  var sp=document.createElement('span');sp.className='w7jc-spk';sp.innerHTML=_w7jcImg('sparkles-96',18);p.appendChild(sp);setTimeout(function(){try{sp.remove()}catch(e){}},640);
+  try{playSfx('coin',{rate:5,vol:.45})}catch(e){}
+}
+
+/* ---------- Ink & Gold chrome passes (render-time; lesson/narrated content never touched) ---------- */
+function _w7jcMapChrome(){
+  _w7jcEach('.journey .j-section',function(el){_w7jcIconize(el,_W7JC_SEC,20)});
+  _w7jcEach('#sg .j-section',function(el){_w7jcIconize(el,_W7JC_SEC,20)});
+  _w7jcEach('.j-node .j-here',function(el){if(el.querySelector('.w7jc-sv'))return;var t=el.firstChild;if(t&&t.nodeType===3&&/^\s*📍️?\s*/.test(t.nodeValue)){t.nodeValue=t.nodeValue.replace(/^\s*📍️?\s*/,' ');el.insertAdjacentHTML('afterbegin',_w7jcSv('pin',11))}});
+  _w7jcEach('.j-node .j-score',function(el){_w7jcIconize(el,_W7JC_STAR,13)});
+  _w7jcEach('.j-node[data-sid]',function(nd){
+    var l4=!!nd.querySelector('.w5m-meter.w5m-l4'),ic=nd.querySelector('.j-ic'),cr=ic&&ic.querySelector('.w7jc-crown');
+    if(l4&&ic&&!cr){var im=document.createElement('img');im.className='w7jc-crown';im.src=_W7JC_UI+'crown-96.webp';im.width=im.height=24;im.alt='';im.setAttribute('aria-hidden','true');im.draggable=false;ic.appendChild(im)}
+    else if(!l4&&cr)cr.remove();
+  });
+  try{var h=document.querySelector('#mv>h2 .civ-only');if(h&&!h.querySelector('.w7jc-ph')&&/🗺/.test(h.textContent)){h.innerHTML=_w7jcPh('map',26,'w7jc-maph')+' '}}catch(e){}
+}
+function _w7jcBadges(){_w7jcEach('.skill-badge .sb-ic',function(el){_w7jcIconize(el,_W7JC_SEC,30)})}
+function _w7jcHub(){
+  var hub=document.getElementById('todayHub');if(!hub)return;
+  _w7jcEach('#todayHub h3,#todayHub h4',function(el){_w7jcIconize(el,_W7JC_HUB,20,'w7jc-hh')});
+  _w7jcEach('#todayHub .hub-stat',function(el){_w7jcIconize(el,_W7JC_HUB,18)});
+}
+function _w7jcProfile(){
+  var pv=document.getElementById('pv');if(!pv)return;
+  _w7jcEach('#pv .bt-ic',function(el){_w7jcIconize(el,_W7JC_EMO,30)});
+  _w7jcBadges();
+  /* best combo lives with the streak (both are "in a row") */
+  try{var fl=pv.querySelector('.pv-tile-flame');if(fl&&!fl.querySelector('.w7jc-best')){var d=document.createElement('div');d.className='w7jc-best';d.textContent=_w7jcT('שיא קומבו: ','Best combo: ')+(G.maxCombo||0);fl.appendChild(d)}}catch(e){}
+  /* haptics row, next to the sound toggle — only where a buzz can be felt */
+  try{
+    if(_w7jcHapShown()&&!pv.querySelector('.w7jc-hapbtn')){
+      var sb=pv.querySelector('button[onclick*="toggleSound"]');
+      if(sb){var b=document.createElement('button');b.type='button';b.className='bs w7jc-hapbtn';b.setAttribute('style',sb.getAttribute('style')||'');
+        var on=!G.hapticsOff;b.setAttribute('aria-pressed',on?'true':'false');b.title=_w7jcT('רטט','Haptics');
+        b.innerHTML=_w7jcSv('buzz',16)+' '+(on?_w7jcT('רטט פעיל','Haptics on'):_w7jcT('רטט כבוי','Haptics off'));
+        b.addEventListener('click',_w7jcHapToggle);sb.parentNode.insertBefore(b,sb.nextSibling)}
+    }
+  }catch(e){}
+}
+function _w7jcXp(){var el=document.getElementById('xp-area');if(el)_w7jcIconize(el,_W7JC_XP,18)}
+function _w7jcGoal(){var el=document.getElementById('daily-goal');if(el)_w7jcIconize(el,_W7JC_GOAL,18)}
+function _w7jcToastIc(){
+  try{var l=document.querySelectorAll('.ach-toast:not([data-w6sk]) .ach-ic');var ic=l.length?l[l.length-1]:null;if(ic&&!ic.querySelector('.w7jc-i3,.w7jc-ph'))_w7jcIconize(ic,_W7JC_TOAST,28)}catch(e){}
+}
+
+/* ---------- install: wrap at DOMContentLoaded, after every inline wrapper ---------- */
+var _w7jcOrig={};
+function _w7jcWrap(name,mk){try{var f=window[name];if(typeof f!=='function'||f._w7jc)return false;var w=mk(f);w._w7jc=1;_w7jcOrig[name]=f;window[name]=w;return true}catch(e){return false}}
+function _w7jcInstall(){
+  if(_w7jc.on)return;_w7jc.on=true;
+  _w7jcSfxInit();
+  _w7jcWrap('playSfx',function(f){return function(type,o){
+    try{
+      var key=(typeof _sfxAlias!=='undefined'&&_sfxAlias[type])||type;
+      if(_w7jcMute[key]&&Date.now()<_w7jcMute[key])return;
+      if(o&&typeof o==='object'&&(o.rate!=null||o.vol!=null)){
+        if(G.soundOff)return;var p=_sfx[key];if(!p||!_sfxCtx())return;p=p.slice();
+        if(o.rate!=null){var m=Math.pow(2,_W7JC_PENT[Math.max(0,Math.min(_W7JC_PENT.length-1,o.rate|0))]/12);p[2]*=m;if(p[10])p[10]*=m}
+        if(o.vol!=null)p[0]*=Math.max(0,Math.min(1.5,+o.vol||0));
+        _sfxLast[key]=Date.now();zzfx.apply(null,p);return;
+      }
+    }catch(e){}
+    return f.apply(this,arguments);
+  }});
+  _w7jcWrap('cf',function(f){_w7jcOrig.cf=function(){return f.apply(window,arguments)};return function(){if(_w7jc.cfHold>0){_w7jc.cfWant++;return}return f.apply(this,arguments)}});
+  /* quiz answer: capture combo + mastery before; detect the perfect finish; hold the quiz-end confetti for the ceremony */
+  _w7jcWrap('sa',function(f){return function(sid,qi,sel){
+    var qEnd=null;_w7jcPreload();
+    try{
+      var qa=(G.qa&&G.qa[sid])||{};
+      if(qa[qi]===undefined){
+        _w7jc.prevCombo=G.combo||0;
+        var s=S.find(function(x){return x.id===sid});
+        if(s&&s.q&&s.q.length){
+          var n=s.q.length,ans=0,ok=0;Object.keys(qa).forEach(function(k){var i=+k;if(i>=0&&i<n&&qa[k]!==undefined){ans++;if(qa[k]===s.q[i].c)ok++}});
+          if(!ans)_w7jc.tiers[sid]={};/* a fresh pass: combo tiers report once per pass */
+          if((!ans||_w7jc.mb[sid]==null)&&typeof _w5mLevel==='function')_w7jc.mb[sid]=_w5mLevel(sid);/* mastery before this pass */
+          if(ans===n-1){qEnd={sid:sid,perfect:ok===n-1&&sel===s.q[qi].c,used:false};}
+        }
+      }
+    }catch(e){qEnd=null}
+    if(qEnd){_w7jc.qEnd=qEnd;_w7jc.cfHold++;_w7jc.cfWant=0}
+    var r;
+    try{r=f.apply(this,arguments)}
+    finally{
+      if(qEnd){_w7jc.cfHold--;_w7jc.qEnd=null;
+        try{if(!qEnd.used){if(qEnd.perfect&&!_w7jcRM())_w7jcStamp(null,_w7jc.cfWant>0);else if(_w7jc.cfWant>0)_w7jcOrig.cf()}}catch(e){}
+        try{document.body.classList.remove('w7jc-fire')}catch(e){}
+      }
+    }
+    return r;
+  }});
+  _w7jcWrap('tryCompleteStage',function(f){return function(sid){
+    var prev=_w7jc.tcs;try{_w7jc.tcs={sid:sid,was:!!(G.done&&G.done.has(sid)),rank:getTitle()}}catch(e){_w7jc.tcs=null}
+    try{return f.apply(this,arguments)}finally{_w7jc.tcs=prev}
+  }});
+  _w7jcWrap('showStageCeremony',function(f){_w7jcOrig.cer=f;return function(s,sid){
+    var q=_w7jc.qEnd,self=this,args=arguments;
+    if(q&&q.sid===sid&&!q.used){
+      q.used=true;
+      if(q.perfect&&!_w7jcRM()){
+        var tc=_w7jc.tcs;_w7jcMuteFor('complete',900);/* the stamp's 'win' owns this beat */
+        _w7jcStamp(function(){var p=_w7jc.tcs;_w7jc.tcs=tc;try{_w7jcCerOpen(self,args,{perfect:true})}finally{_w7jc.tcs=p}},false);
+        return;
+      }
+    }
+    return _w7jcCerOpen(this,arguments,{});
+  }});
+  _w7jcWrap('_cerClose',function(f){return function(){_w7jcCerCleanup();return f.apply(this,arguments)}});
+  _w7jcWrap('_cerShowAll',function(f){return function(){var st=_w7jc.cer;if(st&&!st.final&&document.getElementById('stageCerem')){_w7jcCerSkip();return}return f.apply(this,arguments)}});
+  _w7jcWrap('_qfxCombo',function(f){return function(correct){var r=f.apply(this,arguments);try{_w7jcComboFx(correct)}catch(e){}return r}});
+  _w7jcWrap('_qfxChipHide',function(f){return function(){try{document.body.classList.remove('w7jc-fire')}catch(e){}return f.apply(this,arguments)}});
+  /* the "Combo! +5" toast becomes a +5 riding on the combo chip (the bonus itself, and W6's first-correct-only rule, are untouched) */
+  _w7jcWrap('showAchievement',function(f){return function(icon,title,sub){
+    try{
+      if(String(icon)==='🔥'&&String(title)==='קומבו!'&&G.v==='s'&&G.tab==='q'){
+        var m=String(sub||'').match(/\+\d+/);_w7jc.plus=m?m[0]:'+5';
+        try{if(typeof _w6axSay==='function')_w6axSay(_t(title)+' '+_t(String(sub||'')))}catch(e){}
+        var self=this,args=arguments;setTimeout(function(){if(_w7jc.plus){_w7jc.plus=null;f.apply(self,args)}},80);/* no chip rendered → normal toast */
+        return;
+      }
+    }catch(e){}
+    return f.apply(this,arguments);
+  }});
+  _w7jcWrap('_processAchQueue',function(f){return function(){var r=f.apply(this,arguments);_w7jcToastIc();return r}});
+  if(typeof _w6skPump==='function')_w7jcWrap('_w6skPump',function(f){return function(){
+    try{
+      if((typeof _w6skQ!=='undefined'&&_w6skQ.length)||_w7jc.held){
+        if(_w6skTake()){_w7jc.held=true;_w7jc.relAt=0;_w7jcMergeQ()}
+        else if(_w7jc.held){
+          if(!_w7jc.relAt){_w7jc.relAt=Date.now()+400;_w7jcMergeQ()}
+          var w=_w7jc.relAt-Date.now();
+          if(w>0){clearTimeout(_w7jc.relT);_w7jc.relT=setTimeout(function(){try{_w6skPump()}catch(e){}},w+12);return}
+          _w7jc.held=false;_w7jc.relAt=0;
+        }
+      }
+    }catch(e){}
+    return f.apply(this,arguments);
+  }});
+  if(typeof _w6skTrim==='function')_w7jcWrap('_w6skTrim',function(f){return function(){_w7jcMergeQ();return f.apply(this,arguments)}});/* merge before the W6 cap drops anything */
+  _w7jcWrap('_w4MapReturn',function(f){return function(){
+    var sid=window._justDone,t=window._justDoneT||0;
+    var r=f.apply(this,arguments);
+    try{if(sid!=null&&Date.now()-t<=120000&&!_w7jcRM())_w7jcMapReturn(sid);else if(sid!=null)delete _w7jc.mb[sid]}catch(e){}
+    return r;
+  }});
+  _w7jcWrap('rg',function(f){return function(){var r=f.apply(this,arguments);_w7jcMapChrome();return r}});
+  _w7jcWrap('renderSkillBadges',function(f){return function(){var r=f.apply(this,arguments);_w7jcBadges();return r}});
+  _w7jcWrap('renderXPArea',function(f){return function(){var r=f.apply(this,arguments);_w7jcXp();return r}});
+  _w7jcWrap('renderDailyGoal',function(f){return function(){var r=f.apply(this,arguments);_w7jcGoal();return r}});
+  _w7jcWrap('showTodayHub',function(f){return function(){var r=f.apply(this,arguments);_w7jcHub();return r}});
+  _w7jcWrap('showProfile',function(f){return function(){var r=f.apply(this,arguments);_w7jcProfile();return r}});
+  if(typeof window.juiceHaptic!=='function')window.juiceHaptic=_w7jcHaptic;
+  if(typeof window.juiceFlyTo!=='function')window.juiceFlyTo=_w7jcFlyTo;
+  if(typeof window.juiceQueue!=='function')window.juiceQueue=_w7jcQueue;
+  try{_w7jcMapChrome();_w7jcBadges();_w7jcXp();_w7jcGoal()}catch(e){}
+}
+function _w7jcDbg(){var c=_w7jc.cer;return {on:_w7jc.on,wrapped:Object.keys(_w7jcOrig),cer:c?{sid:c.sid,final:c.final,pts:c.pts,acc:c.acc,la:c.la,lb:c.lb,rankUp:c.rankUp}:null,held:_w7jc.held,mb:_w7jc.mb,hap:_w7jcHapShown()}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',_w7jcInstall);else setTimeout(_w7jcInstall,0);
+/* ===== /W7 juice kit ===== */
+/* ===== W6 SYNC INTEGRITY (_w6sy) — read-before-write for every column · re-verify with backoff · no lost tail ·
+   user-switch reset · login-load timeout · streak lastDay sanity · idempotent earn retry. Wrappers only, pass-through on error. ===== */
+var _w6sy={lp:'',le:'',rv:0,rvN:0,busy:false,pend:false,dirty:false,rtT:0,rtN:0,cla:''};
+function _w6sySig(ms){try{if(typeof AbortSignal!=='undefined'&&AbortSignal.timeout)return AbortSignal.timeout(ms);if(typeof AbortController!=='undefined'){var c=new AbortController();setTimeout(function(){try{c.abort()}catch(e){}},ms);return c.signal}}catch(e){}return undefined}
+function _w6syFirstUse(v){try{if(v==null||v==='')return 0;var now=Date.now()+864e5;if(typeof v==='number')return(v>1e12&&v<now)?v:0;var x=String(v).trim(),m=/^(\d{1,2})\.(\d{1,2})\.(\d{4})/.exec(x);if(m){var t=new Date(+m[3],+m[2]-1,+m[1]).getTime();return(t>1e12&&t<now)?t:0}var p=Date.parse(x);return(p>1e12&&p<now)?p:0}catch(e){return 0}}
+function _w6syTrimQA(){var q=G.quizAttempts;if(!q||typeof q!=='object')return null;var js='';try{js=JSON.stringify(q)}catch(e){return null}if(js.length<=38000)return null;var c={};Object.keys(q).forEach(function(k){c[k]=Array.isArray(q[k])?q[k].slice():q[k]});for(var cap=19;cap>=1;cap--){Object.keys(c).forEach(function(k){if(Array.isArray(c[k])&&c[k].length>cap)c[k]=c[k].slice(-cap)});if(JSON.stringify(c).length<=38000)break}return c}
+/* (11) wrong-typed fields from a damaged localStorage (ld() only fills MISSING ones): G.activityLog={} or G.sc=null crashed
+   logActivity / the save payload / the quiz. Only values of the wrong type are replaced — by the same empty default ld() uses. */
+function _w6syTypes(){try{
+  var O=function(k){var v=G[k];if(!v||typeof v!=='object'||Array.isArray(v))G[k]={}},A=function(k){if(!Array.isArray(G[k]))G[k]=[]};
+  ['sc','qa','wrongQ','stageTime','quizAttempts','reflections','_seenSec','_tabVisits','_pu','goldenQuestions','_avPos','_narrPos','_introPos'].forEach(O);
+  ['activityLog','sessions','satSkips','miHistory','weeklyDone','_achShown'].forEach(A);
+  if(!(G.done instanceof Set))G.done=new Set();
+  var d=[];G.done.forEach(function(x){var n=Number(x);if(String(x).trim()!==''&&isFinite(n))d.push(n)});if(d.length!==G.done.size)G.done=new Set(d);
+  ['ts','streak','maxStreak'].forEach(function(k){var n=parseInt(G[k]);G[k]=(isNaN(n)||n<0)?0:n});
+  Object.keys(G.qa).forEach(function(k){if(!G.qa[k]||typeof G.qa[k]!=='object'||Array.isArray(G.qa[k]))delete G.qa[k]});
+  if(G.lastDay!=null&&isNaN(new Date(G.lastDay).getTime()))G.lastDay=null;
+}catch(e){}}
+function _w6syJ(s,d){var o=null;try{o=JSON.parse(s==null||s===''?d:s)}catch(e){o=null}if(!o||typeof o!=='object')o=JSON.parse(d);return o}
+/* (4) per-account state the original user-switch reset leaves behind. Device prefs + migration latches are kept. */
+function _w6syForeign(){
+  G.reflections={};G._avPos={};G._narrPos={};G._introPos={};G.sessions=[];G.sessionToken='';G.lastDay=null;
+  G._today=null;G._qRewarded={};G._dailyDone={};G.certFlair=false;G.streakFreezes=1;G.lastFreezeWeek=null;G._w5ecoTicket=null;
+  G.goldenQuestions={};G.combo=0;G.maxCombo=0;G._quizPassed={};G._quizStart={};G.lastMorningBonus=null;G.lastNightBonus=null;G._wbShown=null;
+  G._hooksShown={};G._prevDone=0;G.activityLog=[];G.maxStreak=0;G.firstUse=null;G.lastStageVisited=null;G.satisfactionRating=0;
+  G.titleShown2=false;G.titleShown9=false;G.titleShown15=false;G.titleShownAll=false;G.adminMessage='';G.adminMessageRead=false;
+  G.interviewUnlocked=false;G.isAdmin=false;G.navyArm=false;G.cloudEmail='';G.cloudEmailConsent=false;G.cloudEmailVerified=false;
+  G.qa={};G.sc={};G.wrongQ={};G.quizAttempts={};G.satSkips=[];G._pu={};G._seenSec={};G._tabVisits={};G.miHistory=[];G.weeklyDone=[];G._achShown=[];
+  G.done=new Set();G.ts=0;G.streak=0;G.stageTime={};
+}
+/* (2) the login merge, for a re-read that succeeds AFTER an offline-mode login. Same user only; union / max; local wins. */
+function _w6syMerge(c){
+  try{
+    var v=c.appVersion;if(v&&(_isLegacyVersion(v)||cmpVersion(v,'1.1.0')<0)&&!G._cloudRenumDone)return false;/* pre-renumber payload: leave it to a real login */
+    var cs=parseInt(c.score)||0,ck=parseInt(c.streak)||0;
+    G.ts=Math.max(parseInt(G.ts)||0,cs);G.streak=Math.max(parseInt(G.streak)||0,ck);
+    G.maxStreak=Math.max(parseInt(G.maxStreak)||0,ck,parseInt(G.streak)||0,parseInt(c.maxStreak)||0);
+    if(!(G.done instanceof Set))G.done=new Set();
+    String(c.stagesList==null?'':c.stagesList).split(',').filter(Boolean).map(Number).forEach(function(id){if(!isNaN(id))G.done.add(id)});
+    var st=_w6syJ(c.stageTimeJSON,'{}');if(!G.stageTime||typeof G.stageTime!=='object')G.stageTime={};Object.keys(st).forEach(function(k){var a=parseInt(st[k])||0;if(a>(parseInt(G.stageTime[k])||0))G.stageTime[k]=a});
+    var al=_w6syJ(c.activityLogJSON,'[]');if(!Array.isArray(G.activityLog))G.activityLog=[];if(Array.isArray(al)){var sn={};G.activityLog.forEach(function(e){if(e&&e.t)sn[e.t+'|'+e.a]=1});al.forEach(function(e){if(e&&e.t&&!sn[e.t+'|'+e.a]){G.activityLog.push(e);sn[e.t+'|'+e.a]=1}});G.activityLog.sort(function(a,b){return(a.t||0)-(b.t||0)});if(G.activityLog.length>100)G.activityLog=G.activityLog.slice(-100)}
+    var qa=_w6syJ(c.quizAttemptsJSON,'{}');if(!G.quizAttempts||typeof G.quizAttempts!=='object'||Array.isArray(G.quizAttempts))G.quizAttempts={};Object.keys(qa).forEach(function(sid){if(!Array.isArray(qa[sid]))return;if(!Array.isArray(G.quizAttempts[sid]))G.quizAttempts[sid]=[];var t={};G.quizAttempts[sid].forEach(function(a){if(a&&a.t)t[a.t]=1});qa[sid].forEach(function(a){if(a&&a.t&&!t[a.t]){G.quizAttempts[sid].push(a);t[a.t]=1}});G.quizAttempts[sid].sort(function(a,b){return(a.t||0)-(b.t||0)});if(G.quizAttempts[sid].length>20)G.quizAttempts[sid]=G.quizAttempts[sid].slice(-20)});
+    var rf=_w6syJ(c.reflectionsJSON,'{}');if(!G.reflections||typeof G.reflections!=='object')G.reflections={};Object.keys(rf).forEach(function(sid){var cv=rf[sid],lv=G.reflections[sid];if(cv&&cv.text&&(!lv||(parseInt(cv.t)||0)>(parseInt(lv.t)||0)))G.reflections[sid]=cv});
+    var pg=_w6syJ(c.progressJSON,'{}');
+    if(pg.s&&typeof pg.s==='object'){if(!G._seenSec)G._seenSec={};Object.keys(pg.s).forEach(function(k){if(pg.s[k]&&!G._seenSec[k])G._seenSec[k]=true})}
+    if(pg.t&&typeof pg.t==='object'){if(!G._tabVisits)G._tabVisits={};Object.keys(pg.t).forEach(function(k){if(!G._tabVisits[k])G._tabVisits[k]=pg.t[k];else if(pg.t[k]&&typeof pg.t[k]==='object'){Object.keys(pg.t[k]).forEach(function(k2){if(!G._tabVisits[k][k2])G._tabVisits[k][k2]=pg.t[k][k2]})}})}
+    if(pg.q&&typeof pg.q==='object'){if(!G.qa)G.qa={};Object.keys(pg.q).forEach(function(k){if(!G.qa[k])G.qa[k]=pg.q[k];else if(pg.q[k]&&typeof pg.q[k]==='object'){Object.keys(pg.q[k]).forEach(function(k2){if(G.qa[k][k2]==null)G.qa[k][k2]=pg.q[k][k2]})}})}
+    [['v','_avPos'],['n','_narrPos'],['i','_introPos']].forEach(function(pr){var src=pg[pr[0]];if(src&&typeof src==='object'){if(!G[pr[1]])G[pr[1]]={};Object.keys(src).forEach(function(k){if(G[pr[1]][k]==null)G[pr[1]][k]=src[k]})}});
+    /* the per-module sections, through the same hooks the login merge calls (each owner-checked; absent → skipped) */
+    try{if(typeof _w6fMergeW==='function')_w6fMergeW(pg.w)}catch(e){}try{if(typeof _w7hbMergeCloud==='function')_w7hbMergeCloud(pg.h)}catch(e){}
+    try{if(typeof _w6rtScLoad==='function')_w6rtScLoad(c.progressJSON)}catch(e){}try{if(typeof _w7lnRLoad==='function')_w7lnRLoad(c.progressJSON)}catch(e){}
+    var sk=_w6syJ(c.satSkipsJSON,'[]');if(!Array.isArray(G.satSkips))G.satSkips=[];if(Array.isArray(sk)){var ss2={};G.satSkips.forEach(function(x){if(x&&x.t)ss2[x.t]=1});sk.forEach(function(x){if(x&&x.t&&!ss2[x.t]){G.satSkips.push(x);ss2[x.t]=1}});G.satSkips.sort(function(a,b){return(a.t||0)-(b.t||0)})}
+    if(c.interviewUnlocked==='true')G.interviewUnlocked=true;
+    G.navyArm=(String(c.navyArm)==='true');G.isAdmin=(String(c.isAdmin)==='true');
+    if(c.email!=null){G.cloudEmail=String(c.email||'').trim().toLowerCase();G.cloudEmailConsent=String(c.emailConsent||'')==='true';G.cloudEmailVerified=String(c.emailVerified||'')==='true'}/* the saves that follow carry this e-mail as identity proof (w6id) */
+    try{_retroCompleteStages()}catch(e){}
+    return true;
+  }catch(e){return false}
+}
+function _w6syRvStop(){if(_w6sy.rv){clearTimeout(_w6sy.rv);_w6sy.rv=0}}
+function _w6syRvArm(){if(_w6sy.rv||_w6sy.busy||_w6sy.rvN>=12)return;_w6sy.rv=setTimeout(_w6syRvNow,Math.min(600000,15000*Math.pow(2,_w6sy.rvN)))}
+function _w6syRvNow(){
+  _w6syRvStop();
+  var name=G.userName;if(!DB_URL||!name||G._cloudVerified||!G.s||_w6sy.lp!==name||_w6sy.busy)return;
+  _w6sy.busy=true;_w6sy.rvN++;
+  var tok='';try{tok=G.sessionToken||localStorage.getItem('pm_session_token_'+name)||''}catch(e){}
+  fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'load',userName:name,email:_w6sy.le||G.cloudEmail||'',sessionToken:tok}),headers:{'Content-Type':'text/plain'},signal:_w6sySig(25000)})
+  .then(function(r){return r.json()}).then(function(d){
+    _w6sy.busy=false;
+    if(G.userName!==name||G._cloudVerified||_w6sy.lp!==name)return;
+    if(!(d&&d.success&&d.data)){if(d&&d.success===false&&/not\s*found|email_|deactivated/i.test(String(d.error||'')))return;_w6syRvArm();return}/* account-level answers are for a real login to handle */
+    var st=String(d.data.status||'');if(st&&st!=='approved')return;
+    if(!_w6syMerge(d.data))return;
+    try{var la=Number(d.data.lastActivity);if(isNaN(la))la=Date.parse(String(d.data.lastActivity))||0;window._w5cloudLastAct=(la>1e12&&la<4e12)?Math.round(la):0}catch(e){}
+    G._cloudVerified=true;_w6sy.rvN=0;
+    try{sv()}catch(e){}try{uh()}catch(e){}try{if(G.v==='m'&&typeof rg==='function')rg()}catch(e){}
+  }).catch(function(){_w6sy.busy=false;_w6syRvArm()});
+}
+/* (6) failed / pending saves */
+function _w6syRetryArm(){if(_w6sy.rtT||_w6sy.rtN>=10)return;_w6sy.rtT=setTimeout(function(){_w6sy.rtT=0;_w6sy.rtN++;if(_w6sy.dirty&&G._cloudVerified){try{syncToCloud()}catch(e){}}},Math.min(600000,20000*Math.pow(2,_w6sy.rtN)))}
+function _w6syFlush(keep){
+  if(!_w6sy.pend||!G._cloudVerified)return;
+  try{clearTimeout(_syncTimer)}catch(e){}
+  var of=window.fetch;
+  if(keep){window.fetch=function(u,o){try{if(o&&typeof o.body==='string'&&o.body.length<60000)o=Object.assign({},o,{keepalive:true})}catch(e){}return of.apply(this,[u,o])}}
+  try{_doSync()}catch(e){}finally{window.fetch=of}
+}
+/* (1) the gate */
+const _w6syOrigDoSync=_doSync;_doSync=function(){
+  _w6sy.pend=false;
+  try{
+    if(DB_URL&&G&&G.userName&&G.userName!=='אנונימי'&&!G._cloudVerified){
+      _w6sy.dirty=true;
+      if(G.s&&_w6sy.lp&&_w6sy.lp===G.userName)_w6syRvArm();/* logged in this session, cloud read failed → re-read, then save */
+      return;
+    }
+  }catch(e){}
+  var _q=null,_qs=null;try{_q=_w6syTrimQA();if(_q){_qs=G.quizAttempts;G.quizAttempts=_q}}catch(e){_q=null}
+  try{return _w6syOrigDoSync.apply(this,arguments)}finally{if(_q)G.quizAttempts=_qs}/* the payload is built synchronously — local history stays complete */
+};
+const _w6syOrigSync=syncToCloud;syncToCloud=function(){try{if(DB_URL&&G.userName&&G.userName!=='אנונימי')_w6sy.pend=true}catch(e){}return _w6syOrigSync.apply(this,arguments)};
+const _w6syOrigShowSync=_showSync;_showSync=function(icon){
+  try{if(icon==='📴'||icon==='⚠️'){_w6sy.dirty=true;_w6syRetryArm()}else if(icon==='☁️'){_w6sy.dirty=false;_w6sy.rtN=0;if(_w6sy.rtT){clearTimeout(_w6sy.rtT);_w6sy.rtT=0}}}catch(e){}
+  return _w6syOrigShowSync.apply(this,arguments);
+};
+/* a new login attempt: remember who/what was typed and invalidate any earlier verification (it may be another account's) */
+const _w6syOrigTry=_tryLogin;_tryLogin=function(name,email){
+  try{_w6syTypes();var _n=String(name||'');if(_n&&_n!==G.userName)_w6syFlush(false);_w6sy.lp=_n;_w6sy.le=String(email||'').toLowerCase();G._cloudVerified=false;_w6sy.rvN=0;_w6syRvStop()}catch(e){}
+  return _w6syOrigTry.apply(this,arguments);
+};
+const _w6syOrigHome=goHome;goHome=function(){try{_w6syFlush(false)}catch(e){}return _w6syOrigHome.apply(this,arguments)};
+try{window.addEventListener('pagehide',function(){_w6syFlush(true)})}catch(e){}
+try{document.addEventListener('visibilitychange',function(){if(document.hidden)_w6syFlush(true)})}catch(e){}
+try{window.addEventListener('online',function(){try{if(!G._cloudVerified){if(G.s&&_w6sy.lp===G.userName){_w6sy.rvN=0;_w6syRvStop();_w6syRvNow()}}else if(_w6sy.dirty){syncToCloud()}}catch(e){}})}catch(e){}
+/* (7) streak lastDay sanity — runs before every updateStreak */
+const _w6syOrigStreak=updateStreak;updateStreak=function(){
+  try{if(DB_URL&&!_w6sy.lp&&!G._cloudVerified)return}catch(e){}/* welcome screen, nobody logged in yet: the login will run it with the cloud's numbers */
+  try{
+    var now=new Date(),t0=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+    if(G.lastDay){var ld=new Date(G.lastDay);if(!isNaN(ld.getTime())&&ld.getTime()>t0)G.lastDay=now.toDateString()}/* future lastDay = the clock was ahead: never a reason to reset */
+    var la=window._w5cloudLastAct;
+    if(G._cloudVerified&&typeof la==='number'&&la>0&&_w6sy.cla!==G.userName+'|'+la){
+      _w6sy.cla=G.userName+'|'+la;
+      var ca=new Date(la);
+      if(ca.getTime()<=now.getTime()+60000){var cd=new Date(ca.getFullYear(),ca.getMonth(),ca.getDate()).getTime(),lt=G.lastDay?new Date(G.lastDay).getTime():NaN;if(G.lastDay&&!isNaN(lt)&&cd>lt)G.lastDay=ca.toDateString()}/* only a STALE local lastDay moves forward; a fresh browser keeps the original rule */
+    }
+  }catch(e){}
+  return _w6syOrigStreak.apply(this,arguments);
+};
+/* (8) earn retry with the same meta (server dedupes (user, meta) claims) */
+if(typeof _w5ecoPost==='function'){const _w6syOrigEcoPost=_w5ecoPost;_w5ecoPost=function(body){
+  var p=_w6syOrigEcoPost.apply(this,arguments);
+  try{if(body&&body.action==='economyEarn'&&body.meta){
+    /* lost on the network, or refused because another device holds the session token (strict-token backend): this device
+       saves first (the save re-binds its token), then re-asks with the SAME meta and its CURRENT token. ≤3 tries. */
+    var tries=0,again=function(){if(++tries>3)return;setTimeout(function(){
+      if(G.userName!==body.userName)return;try{syncToCloud()}catch(e){}
+      setTimeout(function(){if(G.userName!==body.userName)return;var b2=Object.assign({},body);try{b2.sessionToken=_w5ecoTok()}catch(e){}
+        _w6syOrigEcoPost(b2).then(function(d){try{_w5ecoApply(d)}catch(e){}if(d&&d.denied==='auth')again()}).catch(again)},9000);
+    },tries===1?6000:60000*tries)};
+    p.then(function(d){if(d&&d.denied==='auth')again()},again);
+  }}catch(e){}
+  return p;
+}}
+_w6syTypes();/* boot: ld() already ran */
+/* ===== /W6 SYNC INTEGRITY ===== */
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
