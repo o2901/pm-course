@@ -2579,6 +2579,49 @@ body.light .j-node.w7jc-locked{opacity:.86}
 .w7jc-hapbtn .w7jc-sv{width:16px;height:16px;vertical-align:-3px}
 @media(prefers-reduced-motion:reduce){.w7jc-hero .w7jc-rays{animation:none;opacity:1}#qfxCombo.w7jc-t5::before{animation:none}.w7jc-crown.w7jc-drop{animation:none}}
 /* ===== /W7 juice kit ===== */
+/* ===== W6: first-run guided tour (coach marks) ===== */
+#w6trRoot{position:fixed;inset:0;z-index:650;pointer-events:none;--w6tr-dim:rgba(6,8,14,.66)}
+body.light #w6trRoot{--w6tr-dim:rgba(30,26,18,.5)}
+#w6trRoot.w6tr-susp{display:none}
+.w6tr-block{position:absolute;inset:0;pointer-events:auto;background:transparent;-webkit-tap-highlight-color:transparent}
+.w6tr-spot{position:absolute;left:0;top:0;width:0;height:0;border-radius:14px;pointer-events:none;box-shadow:0 0 0 2px var(--p),0 0 0 7px color-mix(in srgb,var(--p) 24%,transparent),0 0 0 200vmax var(--w6tr-dim)}
+#w6trRoot.w6tr-anim .w6tr-spot{transition:transform .34s cubic-bezier(.22,1,.36,1),width .34s cubic-bezier(.22,1,.36,1),height .34s cubic-bezier(.22,1,.36,1),border-radius .34s ease}
+.w6tr-card{position:absolute;left:0;top:0;width:min(320px,calc(100% - 24px));box-sizing:border-box;background:var(--card);color:var(--t1);border:1px solid var(--line);border-radius:16px;padding:12px 16px 12px;box-shadow:0 18px 48px rgba(0,0,0,.48),0 2px 8px rgba(0,0,0,.28);pointer-events:auto;text-align:start;font-family:inherit;opacity:0;transform:translateY(6px);transition:opacity .2s ease,transform .22s ease}
+.w6tr-card.w6tr-in{opacity:1;transform:none}
+/* the app has a global p{direction:rtl} (only the app container and modal scopes are flipped in LTR) — pin the card to the tour's own dir */
+#w6trRoot[dir="ltr"] .w6tr-card,#w6trRoot[dir="ltr"] .w6tr-card *{direction:ltr}
+#w6trRoot[dir="rtl"] .w6tr-card,#w6trRoot[dir="rtl"] .w6tr-card *{direction:rtl}
+body.light .w6tr-card{box-shadow:0 18px 44px rgba(42,39,33,.24),0 2px 6px rgba(42,39,33,.12)}
+.w6tr-card.w6tr-nudge{animation:w6trNudge .42s ease}
+@keyframes w6trNudge{0%,100%{transform:none}35%{transform:scale(1.035)}}
+.w6tr-arrow{position:absolute;display:none;width:12px;height:12px;margin:-6px 0 0 -6px;background:var(--card);border:1px solid var(--line);transform:rotate(45deg);pointer-events:none}
+.w6tr-card[data-pl="b"] .w6tr-arrow{display:block;top:0;border-right:0;border-bottom:0}
+.w6tr-card[data-pl="t"] .w6tr-arrow{display:block;top:100%;border-left:0;border-top:0}
+.w6tr-card[data-pl="l"] .w6tr-arrow{display:block;left:100%;border-left:0;border-bottom:0}
+.w6tr-card[data-pl="r"] .w6tr-arrow{display:block;left:0;border-right:0;border-top:0}
+.w6tr-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:0 0 .25rem}
+.w6tr-kick{font-size:.7rem;font-weight:700;color:var(--p);letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.w6tr-h{font-size:1.02rem;font-weight:800;line-height:1.35;margin:0 0 .3rem;color:var(--t1)}
+.w6tr-b{font-size:.86rem;line-height:1.58;margin:0;color:var(--t2)}
+.w6tr-foot{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:.8rem}
+.w6tr-dots{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.w6tr-dots i{display:block;width:6px;height:6px;border-radius:3px;background:color-mix(in srgb,var(--t2) 38%,transparent);transition:width .2s ease,background .2s ease}
+.w6tr-dots i.on{width:16px;background:var(--p)}
+.w6tr-btns{display:flex;align-items:center;gap:.35rem}
+.w6tr-card button{font-family:inherit;font-size:.8rem;font-weight:700;line-height:1.2;border-radius:10px;padding:.45rem .9rem;min-height:34px;cursor:pointer;border:1px solid transparent;background:transparent;color:var(--t1)}
+.w6tr-card .w6tr-skip{padding:.3rem .55rem;min-height:28px;font-size:.76rem;font-weight:600;color:var(--t2)}
+.w6tr-card .w6tr-skip:hover{color:var(--t1)}
+.w6tr-card .w6tr-back{border-color:var(--line);color:var(--t1)}
+.w6tr-card .w6tr-back:hover{background:var(--cardh)}
+.w6tr-card .w6tr-next{background:var(--p);color:#fff;min-width:64px}
+.w6tr-card .w6tr-next:hover{background:var(--pd)}
+.w6tr-card.w6tr-sheet{width:calc(100% - 24px);border-radius:18px;padding:12px 16px calc(14px + env(safe-area-inset-bottom,0px))}
+.w6tr-card.w6tr-sheet[data-pl="st"]{padding-bottom:14px}
+.w6tr-card.w6tr-sheet .w6tr-arrow{display:none}
+.w6tr-card.w6tr-sheet button{min-height:40px}
+.w6tr-card.w6tr-sheet .w6tr-skip{min-height:32px}
+.w6tr-replay{font-size:.82rem;padding:.45rem 1rem}
+@media(prefers-reduced-motion:reduce){#w6trRoot .w6tr-spot,#w6trRoot .w6tr-card,.w6tr-dots i{transition:none!important}.w6tr-card{transform:none}.w6tr-card.w6tr-nudge{animation:none}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.6.1/chart.umd.min.js" defer></script>
@@ -9149,7 +9192,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.2';
+const APP_VERSION='1.10.3';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -17733,6 +17776,290 @@ if(typeof _w5ecoPost==='function'){const _w6syOrigEcoPost=_w5ecoPost;_w5ecoPost=
 }}
 _w6syTypes();/* boot: ld() already ran */
 /* ===== /W6 SYNC INTEGRITY ===== */
+/* ===== W6: first-run guided tour (coach marks) — map tour + stage tour, zero dependencies =====
+   AUTOMATION: auto-start is OFF when navigator.webdriver===true (the puppeteer smoke gate), so scripted flows are never
+   intercepted; ?tour=1 in the URL forces it on (tour tests). The profile 🧭 replay button always works.
+   No MutationObserver: geometry = self-stopping rAF loop (scroll/resize/step kick it) + 400ms health tick, change-guarded writes. */
+var _w6trSt=null,_w6trTm={},_w6trForce={};
+var _W6TR_BLOCK='#stageCerem,#todayHub,.daily-modal,#goalOv,#wbOv,.modal-overlay,#legalOv,#pwOv,#certOverlay,#satOverlay,.lang-pop,#duelPanel.open,#chatPanel:not(.hid),#duelConfig:not(.hid),#w7lnRecap,#w7lnWeek,#w7lnCertOv,#w7hbOv,#w7shOv,#w6dkSheet.w6dk-open,#w6stMs,[data-takeover],.dvo,.bug-modal,.adm-modal-overlay';
+function _w6trEn(){try{return !!_enLang()}catch(e){return false}}
+function _w6trRM(){try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}}
+function _w6trAuto(){try{if(/[?&]tour=1(&|$)/.test(location.search))return true;return navigator.webdriver!==true}catch(e){return true}}
+function _w6trKey(kind){var u='';try{u=(G&&G.userName)||''}catch(e){}return 'w6tr_'+kind+'_'+(u||'anon')}
+function _w6trSeen(kind){try{return localStorage.getItem(_w6trKey(kind))==='1'}catch(e){return true}}/* storage blocked → can't remember → never nag */
+function _w6trMark(kind){try{localStorage.setItem(_w6trKey(kind),'1')}catch(e){}}
+function _w6trShown(el){try{return !!el&&el.isConnected&&(typeof el.checkVisibility==='function'?el.checkVisibility():el.getClientRects().length>0)}catch(e){return false}}
+/* any overlay / takeover other than the tour itself: our own list + the W6 modal stack's overlay and takeover registries
+   (every wave registers there: recap, weekly recap, certificate, habits sheets, share sheet, dock sheet, streak takeover…) */
+function _w6trBlocked(){
+  var me=document.getElementById('w6trRoot'),lists=[_W6TR_BLOCK];
+  try{if(typeof _W6SK_OV==='string')lists.push(_W6SK_OV)}catch(e){}
+  try{if(typeof _W6SK_TK==='string')lists.push(_W6SK_TK)}catch(e){}
+  for(var k=0;k<lists.length;k++){try{var l=document.querySelectorAll(lists[k]);for(var i=0;i<l.length;i++){var el=l[i];if(me&&(el===me||me.contains(el)))continue;if(_w6trShown(el))return true}}catch(e){}}
+  try{var c=document.body.children;for(var j=0;j<c.length;j++){var b=c[j];if(b===me)continue;var n=(b.id||'')+' '+(typeof b.className==='string'?b.className:'');if(/takeover/i.test(n)&&_w6trShown(b))return true}}catch(e){}
+  return false;
+}
+/* nudge the W6 modal stack to re-read the screen now (z-index, focus, scroll lock, toast hold) instead of on its next poll */
+function _w6trSk(){try{if(typeof _w6skSync==='function'){_w6skSync();if(typeof _w6skPump==='function')_w6skPump()}}catch(e){}}
+function _w6trOnScreen(kind){try{var el=document.getElementById(kind==='map'?'mv':'sv');if(!el||el.classList.contains('hid'))return false;return G.v===(kind==='map'?'m':'s')}catch(e){return false}}
+function _w6trVis(el){try{if(!el||!el.isConnected)return false;var r=el.getBoundingClientRect();if(r.width<2||r.height<2)return false;var cs=getComputedStyle(el);return cs.display!=='none'&&cs.visibility!=='hidden'}catch(e){return false}}/* no opacity test: targets fade in (animation:fiu) and a busy first render can catch them at opacity 0 */
+function _w6trFirstVis(sel){var l=document.querySelectorAll(sel);for(var i=0;i<l.length;i++){if(_w6trVis(l[i]))return l[i]}return null}
+function _w6trEls(step){var r=null;try{r=step.t()}catch(e){r=null}if(!r)return [];if(!Array.isArray(r))r=[r];return r.filter(_w6trVis)}
+function _w6trRect(els){var L=1e9,T=1e9,R=-1e9,B=-1e9;for(var i=0;i<els.length;i++){if(!els[i].isConnected)continue;var r=els[i].getBoundingClientRect();if(r.width<1||r.height<1)continue;if(r.left<L)L=r.left;if(r.top<T)T=r.top;if(r.right>R)R=r.right;if(r.bottom>B)B=r.bottom}return R>L?{left:L,top:T,width:R-L,height:B-T}:null}
+function _w6trTopLim(){var b=0;['hd','ib','pb'].forEach(function(id){var e=document.getElementById(id);if(!e||e.classList.contains('hid'))return;var r=e.getBoundingClientRect();if(r.height>0&&r.bottom<innerHeight/3&&r.bottom>b&&getComputedStyle(e).position==='fixed')b=r.bottom});return b}/* bottom of the fixed chrome (header / info bar) */
+/* the VISIBLE box (visual viewport): survives pinch-zoom and pages whose content overflows the layout viewport, so the
+   card is never placed in an off-screen strip; excludes scrollbars */
+function _w6trVP(){var v=window.visualViewport;if(v&&v.width>0&&v.height>0)return {x:v.offsetLeft||0,y:v.offsetTop||0,w:v.width,h:v.height};return {x:0,y:0,w:document.documentElement.clientWidth||innerWidth,h:innerHeight}}
+function _w6trSheet(c,V){var nar=V.w<=560;if(c.classList.contains('w6tr-sheet')!==nar)c.classList.toggle('w6tr-sheet',nar);var w=nar?Math.round(V.w-24)+'px':'';if(c.style.width!==w)c.style.width=w;return nar}
+function _w6trSteps(kind){
+  var en=_w6trEn();
+  if(kind==='map'){
+    var nb=0;try{nb=document.querySelectorAll('#libWing .lw-spine').length}catch(e){}if(!nb)nb=26;
+    var cm=!!_w6trFirstVis('#continue-hero .w7ln-cm'),dock=!_w6trVis(document.getElementById('todayFab'));
+    return [
+      {t:function(){var n=document.querySelector('#sg .j-node.current');return n?[n,n.querySelector('.j-here')]:null},
+       h:en?'Pick up right here':'כאן ממשיכים ללמוד',b:en?'The highlighted stage is next on your journey — tap it to open.':'השלב המודגש הוא הבא בתור במסע שלכם — לחיצה עליו פותחת אותו.'},
+      /* continue card + the W7 certificate meter right under it (one spotlight: they sit together in #continue-hero) */
+      {t:function(){return [document.querySelector('#continue-hero .continue-hero'),_w6trFirstVis('#continue-hero .w7ln-cm')]},
+       h:cm?(en?'Continue & certificate meter':'המשך המסע ומד התעודה'):(en?'Continue card':'כרטיס ההמשך'),
+       b:cm?(en?'A shortcut to your next stage. The meter below counts the core stages left until your certificate.':'קיצור דרך לשלב הבא. המד שמתחתיו סופר כמה שלבי ליבה נשארו עד תעודת הסיום.')
+           :(en?'A shortcut to your next stage, with your progress through the core course.':'קיצור דרך לשלב הבא, יחד עם ההתקדמות שלכם בליבת הקורס.')},
+      /* My day: the floating button on desktop; on phones (≤640px) the FABs retire and the W6 dock slot takes its place */
+      {t:function(){var f=document.getElementById('todayFab');return _w6trVis(f)?f:_w6trFirstVis('#w6dkDock [data-w6dk="todayFab"]')},fx:1,
+       h:en?'My day':'היום שלי',b:dock?(en?'Daily quests and two games — always one tap away in the bar below.':'משימות יומיות ושני משחקים — תמיד במרחק לחיצה בסרגל התחתון.')
+           :(en?'Daily quests and two games — fresh every day, and they keep your streak alive.':'משימות יומיות ושני משחקים — מתחדשים כל יום ושומרים על הרצף.')},
+      {t:function(){return _w6trFirstVis('#sg .j-node.current .w5m-meter')||_w6trFirstVis('#sg .j-node .w5m-meter')},
+       h:en?'Mastery levels':'רמות שליטה',b:en?'Four pips per stage, from Attempted to Mastered — correct answers and reviews fill them in.':'ארבע נקודות לכל שלב, מ״ניסיתי״ ועד ״מאסטר״ — תשובות נכונות וחזרות ממלאות אותן.'},
+      {t:function(){return [].slice.call(document.querySelectorAll('#hd .hdr-stats .badge,#hd #stb'))},fx:1,
+       h:en?'Points, stages & streak':'נקודות, שלבים ורצף',b:en?'Your points, completed stages and day streak — always at the top of the screen.':'הניקוד שצברתם, השלבים שהושלמו ורצף הימים — תמיד בראש המסך.'},
+      {t:function(){return document.getElementById('libWing')},
+       h:en?(nb+' books to go deeper'):(nb+' ספרים להעמקה'),b:en?'Every book you finish fills its spine with color. Pick one to open it.':'כל ספר שמסיימים מקבל צבע על המדף. בחרו ספר כדי לפתוח אותו.'}
+    ];
+  }
+  var vid=!!_w6trFirstVis('#tc .pf-video');
+  return [
+    {t:function(){return document.querySelector('#sv .tabs')},
+     h:en?'Learn → Case → Test':'לימוד ← קייס ← מבחן',b:en?'Every stage has three tabs. Complete all three and the stage is marked done ✓':'כל שלב בנוי משלוש לשוניות. משלימים את שלושתן — והשלב מסומן כהושלם ✓'},
+    {t:function(){return _w6trFirstVis('#tc .stage-intro-card')},
+     h:en?'Stage opener':'פתיח השלב',b:en?'A short video with the big picture — worth watching before you dive in.':'סרטון קצר שנותן את התמונה הגדולה — כדאי לצפות לפני שצוללים לחומר.'},
+    vid?{t:function(){return _w6trFirstVis('#tc .pf-video')},
+     h:en?'Narrated presentation':'מצגת מוקראת',b:en?'Each topic also plays as a slideshow with narration — great on the go.':'כל נושא אפשר לראות גם כמצגת עם קריינות — מעולה לדרכים.'}
+       :{t:function(){return _w6trFirstVis('#tc .pf-narrate')},
+     h:en?'Listen':'הקראה',b:en?'Prefer to listen? Tap and the topic is read aloud.':'מעדיפים להאזין? לחיצה — והנושא מוקרא בקול.'}
+  ];
+}
+function _w6trStart(kind){
+  if(_w6trSt)return false;
+  var all=_w6trSteps(kind),steps=[];
+  for(var i=0;i<all.length;i++){if(_w6trOk(all[i]))steps.push(all[i])}
+  if(!steps.length)return false;
+  _w6trForce[kind]=0;
+  var en=_w6trEn(),root=document.createElement('div');
+  root.id='w6trRoot';root.dir=en?'ltr':'rtl';root.lang=en?'en':'he';
+  /* dialog semantics on the root itself, so the W6 stack (which manages #w6trRoot) keeps them instead of adding its own */
+  root.setAttribute('role','dialog');root.setAttribute('aria-modal','true');root.setAttribute('aria-labelledby','w6trH');root.setAttribute('aria-describedby','w6trB');
+  root.innerHTML='<div class="w6tr-block"></div><div class="w6tr-spot"></div><div class="w6tr-card"><i class="w6tr-arrow" aria-hidden="true"></i><div class="w6tr-top"><span class="w6tr-kick"></span><button type="button" class="w6tr-skip"></button></div><h3 class="w6tr-h" id="w6trH"></h3><p class="w6tr-b" id="w6trB" aria-live="polite"></p><div class="w6tr-foot"><span class="w6tr-dots" aria-hidden="true"></span><span class="w6tr-btns"><button type="button" class="w6tr-back"></button><button type="button" class="w6tr-next"></button></span></div></div>';
+  document.body.appendChild(root);
+  var st=_w6trSt={kind:kind,steps:steps,n:steps.length,i:-1,en:en,root:root,spot:root.querySelector('.w6tr-spot'),card:root.querySelector('.w6tr-card'),els:[],raf:0,still:0,last:'',shown:false,placed:false,t0:0,susp:false,sy0:window.scrollY||0,focus0:document.activeElement,tick:0,animT:0};
+  root.querySelector('.w6tr-skip').onclick=function(){_w6trEnd('skipped')};
+  root.querySelector('.w6tr-next').onclick=function(){_w6trGo(1)};
+  root.querySelector('.w6tr-back').onclick=function(){_w6trGo(-1)};
+  root.querySelector('.w6tr-block').onclick=_w6trNudge;
+  window.addEventListener('keydown',_w6trKeys,true);
+  window.addEventListener('resize',_w6trKick);
+  window.addEventListener('scroll',_w6trOnScroll,{capture:true,passive:true});
+  try{if(window.visualViewport){visualViewport.addEventListener('resize',_w6trKick);visualViewport.addEventListener('scroll',_w6trOnScroll)}}catch(e){}
+  st.tick=setInterval(_w6trTick,400);
+  _w6trGo(1);
+  _w6trSk();/* join the W6 modal stack now: z 400+10×depth, html scroll lock, toasts + hook banners held, others wait */
+  return true;
+}
+/* a step is showable if its target is rendered; a FIXED target (FAB / header) must also intersect the visible box —
+   it can't be scrolled into view (pinch-zoom, or a page whose overflow pans the visual viewport) */
+function _w6trOk(s){var els=_w6trEls(s);if(!els.length)return false;if(!s.fx)return true;var r=_w6trRect(els),V=_w6trVP();return !!r&&r.left<V.x+V.w&&r.left+r.width>V.x&&r.top<V.y+V.h&&r.top+r.height>V.y}
+function _w6trGo(d){
+  var st=_w6trSt;if(!st)return;
+  var j=st.i+d;
+  while(j>=0&&j<st.n&&!_w6trOk(st.steps[j]))j+=d;
+  if(j>=st.n){_w6trEnd('done');return}
+  if(j<0)return;
+  _w6trShow(j);
+}
+function _w6trShow(j){
+  var st=_w6trSt,s=st.steps[j],en=st.en,c=st.card;
+  st.i=j;st.els=_w6trEls(s);st.shown=false;st.t0=Date.now();st.still=0;st.last='';st.fixN=0;
+  c.classList.remove('w6tr-in');
+  c.querySelector('.w6tr-kick').textContent='🧭 '+(st.kind==='map'?(en?'Quick tour':'סיור קצר'):(en?'How a stage works':'איך עובד שלב'))+' · '+(j+1)+'/'+st.n;
+  c.querySelector('.w6tr-skip').textContent=en?'Skip':'דילוג';
+  c.querySelector('.w6tr-h').textContent=s.h;
+  c.querySelector('.w6tr-b').textContent=s.b;
+  var bk=c.querySelector('.w6tr-back');bk.textContent=en?'Back':'הקודם';bk.style.display=j>0?'':'none';
+  c.querySelector('.w6tr-next').textContent=j===st.n-1?(en?'Done':'סיום'):(en?'Next':'הבא');
+  var dots='';for(var k=0;k<st.n;k++)dots+='<i'+(k===j?' class="on"':'')+'></i>';
+  c.querySelector('.w6tr-dots').innerHTML=dots;
+  _w6trSheet(c,_w6trVP());
+  if(st.placed&&!_w6trRM()){st.root.classList.add('w6tr-anim');clearTimeout(st.animT);st.animT=setTimeout(function(){if(_w6trSt===st)st.root.classList.remove('w6tr-anim')},420)}
+  if(!s.fx)_w6trScroll(st);
+  _w6trPlace();st.placed=true;
+  _w6trKick();
+  try{c.querySelector('.w6tr-next').focus({preventScroll:true})}catch(e){}
+}
+/* bring a scrollable target into the free band: below the fixed header, above the bottom sheet (narrow) or with room
+   for the card underneath it (desktop); a target taller than the band is top-aligned */
+function _w6trScroll(st){
+  var r=_w6trRect(st.els);if(!r)return;
+  var V=_w6trVP(),top=Math.max(_w6trTopLim(),V.y)+14,nar=V.w<=560,ch=st.card.offsetHeight||150,gap=14;
+  var bot=V.y+V.h-14-(nar?ch+12:0),want;
+  if(nar)want=r.height<=bot-top?top+(bot-top-r.height)/2:top;
+  else{var need=r.height+gap+ch;want=need<=bot-top?top+(bot-top-need)/2:top}
+  var dy=r.top-want;if(Math.abs(dy)<6)return;
+  var y=Math.max(0,Math.round((window.scrollY||0)+dy));
+  try{window.scrollTo({top:y,behavior:_w6trRM()?'instant':'smooth'})}catch(e){try{window.scrollTo(0,y)}catch(_e){}}
+}
+function _w6trPlace(){
+  var st=_w6trSt;if(!st||st.susp||st.i<0)return false;
+  var r=_w6trRect(st.els);
+  if(!r){st.els=_w6trEls(st.steps[st.i]);r=_w6trRect(st.els);if(!r){_w6trGo(1);return true}}
+  var V=_w6trVP(),vx=V.x,vy=V.y,vw=V.w,vh=V.h,M=12,gap=12,small=r.width<60&&r.height<60,pad=small?5:7;
+  var sx=Math.round(r.left-pad),sy=Math.round(r.top-pad),sw=Math.round(r.width+pad*2),sh=Math.round(r.height+pad*2);
+  /* keep the ring fully on screen for targets flush with an edge (dock slots, header): clip the spot to the visible box
+     (2px inset) — unless the target is (still) off-screen, e.g. mid-scroll, where the raw rect slides in naturally */
+  var x1=Math.max(sx,Math.round(vx)+2),y1=Math.max(sy,Math.round(vy)+2),x2=Math.min(sx+sw,Math.round(vx+vw)-2),y2=Math.min(sy+sh,Math.round(vy+vh)-2);
+  if(x2-x1>=16&&y2-y1>=16){sx=x1;sy=y1;sw=x2-x1;sh=y2-y1}
+  var c=st.card;
+  var key=sx+','+sy+','+sw+','+sh+','+Math.round(vx)+','+Math.round(vy)+','+Math.round(vw)+','+Math.round(vh);
+  if(key===st.last)return false;
+  st.last=key;
+  var round=small&&Math.abs(r.width-r.height)<6&&!!st.steps[st.i].fx;
+  var sp=st.spot.style;sp.transform='translate('+sx+'px,'+sy+'px)';sp.width=sw+'px';sp.height=sh+'px';sp.borderRadius=round?'50%':'14px';
+  var nar=_w6trSheet(c,V);
+  var cw=c.offsetWidth,ch=c.offsetHeight,left,top,pl,ax=null,ay=null;
+  if(nar){
+    left=vx+M;var bTop=vy+vh-ch-M;
+    if(sy+sh>bTop-6&&sy-vy>ch+M*2){top=vy+M;pl='st'}else{top=bTop;pl='sb'}
+  }else{
+    var rtl=!st.en,cx=sx+sw/2,wide=sw>=cw;
+    var hx=wide?(rtl?sx+sw-cw:sx):cx-cw/2;/* wide target: align the card's START edge with it; narrow target: center on it */
+    if(vy+vh-(sy+sh)-gap-M>=ch){pl='b';top=sy+sh+gap;left=hx}
+    else if(sy-vy-gap-M>=ch){pl='t';top=sy-gap-ch;left=hx}
+    else{
+      var spL=sx-vx-gap-M,spR=vx+vw-(sx+sw)-gap-M;
+      var side=rtl?(spL>=cw?'l':(spR>=cw?'r':'')):(spR>=cw?'r':(spL>=cw?'l':''));/* RTL reads leftwards: prefer the target's left */
+      if(side){pl=side;left=side==='l'?sx-gap-cw:sx+sw+gap;top=sy+sh/2-ch/2}
+      else{pl='o';left=vx+vw/2-cw/2;top=vy+vh-ch-M}
+    }
+    left=Math.max(vx+M,Math.min(vx+vw-cw-M,left));top=Math.max(vy+M,Math.min(vy+vh-ch-M,top));
+    if(pl==='b'||pl==='t')ax=wide?(rtl?cw-30:30):Math.max(18,Math.min(cw-18,cx-left));
+    if(pl==='l'||pl==='r')ay=Math.max(18,Math.min(ch-18,sy+sh/2-top));
+  }
+  var cs=c.style;cs.left=Math.round(left)+'px';cs.top=Math.round(top)+'px';
+  if(c.getAttribute('data-pl')!==pl)c.setAttribute('data-pl',pl);
+  var ar=c.querySelector('.w6tr-arrow').style;ar.left=ax!=null?Math.round(ax)+'px':'';ar.top=ay!=null?Math.round(ay)+'px':'';
+  return true;
+}
+function _w6trLoop(){
+  var st=_w6trSt;if(!st)return;st.raf=0;if(st.susp)return;
+  var moved=_w6trPlace();if(_w6trSt!==st)return;
+  if(moved)st.still=0;else st.still++;
+  if(!st.shown&&(st.still>=5||Date.now()-st.t0>1100)){st.shown=true;st.card.classList.add('w6tr-in')}
+  if(st.still<24||!st.shown)st.raf=requestAnimationFrame(_w6trLoop);
+}
+function _w6trKick(){var st=_w6trSt;if(!st||st.susp)return;st.still=0;if(!st.raf)st.raf=requestAnimationFrame(_w6trLoop)}
+function _w6trOnScroll(){var st=_w6trSt;if(st)st.ls=Date.now();_w6trKick()}
+function _w6trTick(){
+  var st=_w6trSt;if(!st)return;
+  if(!_w6trOnScreen(st.kind)){_w6trEnd('abort');return}
+  var b=_w6trBlocked();
+  if(b&&!st.susp){st.susp=true;st.root.classList.add('w6tr-susp');if(st.raf){cancelAnimationFrame(st.raf);st.raf=0}_w6trSk()}/* hidden → the stack drops it (lock/focus go to the new overlay) */
+  else if(!b&&st.susp){st.susp=false;st.root.classList.remove('w6tr-susp');st.last='';st.shown=false;st.t0=Date.now();st.card.classList.remove('w6tr-in');
+    st.els=_w6trEls(st.steps[st.i]);if(!st.els.length){_w6trGo(1);return}
+    if(!st.steps[st.i].fx)_w6trScroll(st);_w6trKick();try{st.card.querySelector('.w6tr-next').focus({preventScroll:true})}catch(e){}_w6trSk()}
+  else if(!st.susp){
+    if(!st.raf&&_w6trPlace())_w6trKick();
+    /* a late layout shift / stray scroll left a scrollable target fully off-screen: once scrolling has been quiet for
+       700ms, bring it back (max 3x per step, so a user who scrolls away on purpose is not fought) */
+    var s=st.steps[st.i];
+    if(s&&!s.fx&&Date.now()-(st.ls||0)>700&&(st.fixN||0)<3){var r=_w6trRect(st.els),V=_w6trVP();
+      if(r&&(r.top+r.height<V.y+8||r.top>V.y+V.h-8)){st.fixN=(st.fixN||0)+1;_w6trScroll(st);_w6trKick()}}
+  }
+}
+function _w6trKeys(e){
+  var st=_w6trSt;if(!st||st.susp)return;
+  var k=e.key;
+  if(k==='Escape'||k==='Esc'){e.preventDefault();e.stopImmediatePropagation();_w6trEnd('skipped');return}
+  if(k==='ArrowRight'||k==='ArrowLeft'){e.preventDefault();e.stopImmediatePropagation();_w6trGo(((k==='ArrowLeft')===!st.en)?1:-1);return}
+  if(k==='Tab'){
+    var bs=[].slice.call(st.card.querySelectorAll('button')).filter(function(x){return x.offsetWidth>0});if(!bs.length)return;
+    e.preventDefault();e.stopImmediatePropagation();
+    var i=bs.indexOf(document.activeElement),n=e.shiftKey?(i<=0?bs.length-1:i-1):((i<0||i>=bs.length-1)?0:i+1);
+    try{bs[n].focus({preventScroll:true})}catch(_e){}
+  }
+}
+function _w6trNudge(){var st=_w6trSt;if(!st||_w6trRM())return;var c=st.card;c.classList.remove('w6tr-nudge');void c.offsetWidth;c.classList.add('w6tr-nudge');setTimeout(function(){c.classList.remove('w6tr-nudge')},450)}
+function _w6trEnd(how){
+  var st=_w6trSt;if(!st)return;_w6trSt=null;
+  try{if(st.raf)cancelAnimationFrame(st.raf)}catch(e){}clearInterval(st.tick);clearTimeout(st.animT);
+  window.removeEventListener('keydown',_w6trKeys,true);window.removeEventListener('resize',_w6trKick);window.removeEventListener('scroll',_w6trOnScroll,true);
+  try{if(window.visualViewport){visualViewport.removeEventListener('resize',_w6trKick);visualViewport.removeEventListener('scroll',_w6trOnScroll)}}catch(e){}
+  try{st.root.remove()}catch(e){}
+  _w6trSk();/* leave the W6 stack: scroll lock released before we scroll back */
+  if(how==='done'||how==='skipped'){
+    _w6trMark(st.kind);
+    try{trackEvent('tour',how,st.kind+':'+(st.i+1)+'/'+st.n)}catch(e){}
+    try{window.scrollTo({top:st.sy0,behavior:_w6trRM()?'instant':'smooth'})}catch(e){}
+  }
+  try{if(st.focus0&&st.focus0.isConnected&&st.focus0.focus)st.focus0.focus({preventScroll:true})}catch(e){}
+}
+/* arm a tour: waits (700ms poll, ~17 min cap) while any overlay is open or another tour runs; gives up if the user leaves
+   the screen — the next mp()/rs() re-arms it */
+function _w6trSchedule(kind,delay){
+  if(!_w6trForce[kind]&&(!_w6trAuto()||_w6trSeen(kind)))return;
+  clearTimeout(_w6trTm[kind]);
+  var tries=0,extra=0;
+  function tick(){
+    _w6trTm[kind]=0;
+    if(!_w6trOnScreen(kind))return;
+    if(_w6trSt&&_w6trSt.kind===kind)return;
+    if(!_w6trForce[kind]&&_w6trSeen(kind))return;
+    if(_w6trSt||_w6trBlocked()||document.hidden){if(++tries<1500)_w6trTm[kind]=setTimeout(tick,700);return}
+    /* settle: if a step's target is missing — or a fixed one (the phone dock) is still sliding back in after an overlay
+       closed — give it up to 3 more polls before starting without it (same predicate as _w6trStart) */
+    if(extra<3){var all=_w6trSteps(kind),have=0;for(var i=0;i<all.length;i++){if(_w6trOk(all[i]))have++}if(have<all.length){extra++;_w6trTm[kind]=setTimeout(tick,700);return}}
+    _w6trStart(kind);
+  }
+  _w6trTm[kind]=setTimeout(tick,delay);
+}
+function _w6trReplay(){
+  try{localStorage.removeItem(_w6trKey('map'));localStorage.removeItem(_w6trKey('stage'))}catch(e){}
+  try{trackEvent('tour','replay','profile')}catch(e){}
+  if(_w6trSt)_w6trEnd('abort');
+  _w6trForce.map=1;_w6trForce.stage=1;
+  try{mp()}catch(e){}
+}
+function _w6trProfileBtn(){
+  var pv=document.getElementById('pv');if(!pv||pv.classList.contains('hid')||pv.querySelector('.w6tr-replay'))return;
+  var en=_w6trEn(),b=document.createElement('button');
+  b.type='button';b.className='bs w6tr-replay';b.textContent='🧭 '+(en?'Tour':'הדרכה');
+  b.title=en?'Replay the guided tour (map + stage)':'הפעלה חוזרת של סיור ההדרכה (מפה + שלב)';b.setAttribute('aria-label',b.title);
+  b.onclick=function(){_w6trReplay()};
+  var snd=pv.querySelector('button[onclick^="toggleSound"]');
+  if(snd&&snd.parentNode)snd.parentNode.insertBefore(b,snd.nextSibling);else (pv.querySelector('.pv-wrap')||pv).appendChild(b);
+}
+/* monitoring registry (admin "every button monitored") */
+try{if(typeof TRACKED_FEATURES!=='undefined'&&TRACKED_FEATURES.indexOf('tour')<0){TRACKED_FEATURES.push('tour');if(typeof OTHER_FEATURES!=='undefined'&&OTHER_FEATURES.indexOf('tour')<0)OTHER_FEATURES.push('tour')}
+  if(typeof FEAT_META!=='undefined'&&!FEAT_META.tour)FEAT_META.tour={ic:'🧭',name:'סיור הדרכה',col:'#5C9DFF'};
+  if(typeof FEAT_ACT_NAMES!=='undefined'){if(!FEAT_ACT_NAMES.done)FEAT_ACT_NAMES.done='הושלם';if(!FEAT_ACT_NAMES.skipped)FEAT_ACT_NAMES.skipped='דילוג';if(!FEAT_ACT_NAMES.replay)FEAT_ACT_NAMES.replay='הפעלה חוזרת'}}catch(e){}
+/* W6 modal stack (when present): the tour is a stack OVERLAY (z 400+10×depth, html scroll lock, focus return; recap / weekly
+   recap / certificate / habits sheets consult _w6skOpen() and wait for it) AND a TAKEOVER (toasts + hook banners are held while
+   it is up). The stack's Escape (top-most only, runs before our own key handler) ends it through _w6trEnd instead of
+   removing the node. Registration is by selector, so it costs nothing while no tour is on screen. */
+try{if(typeof _W6SK_OV==='string'&&_W6SK_OV.indexOf('#w6trRoot')<0)_W6SK_OV+=',#w6trRoot';if(typeof _W6SK_TK==='string'&&_W6SK_TK.indexOf('#w6trRoot')<0)_W6SK_TK+=',#w6trRoot'}catch(e){}
+try{var _w6trSkC=window._w6skClose;if(typeof _w6trSkC==='function'&&!_w6trSkC._w6trW){var _w6trSkW=function(el){if(el&&el.id==='w6trRoot'){_w6trEnd('skipped');return}return _w6trSkC.apply(this,arguments)};_w6trSkW._w6trW=1;window._w6skClose=_w6trSkW}}catch(e){}
+/* wrappers — after the last existing mp / rs / showProfile wrappers */
+const _w6trOrigMp=mp;mp=function(){var r=_w6trOrigMp.apply(this,arguments);try{_w6trSchedule('map',_w6trForce.map?650:1700)}catch(e){}return r};
+const _w6trOrigRs=rs;rs=function(){var r=_w6trOrigRs.apply(this,arguments);try{_w6trSchedule('stage',_w6trForce.stage?700:1000)}catch(e){}return r};
+const _w6trOrigShowProfile=showProfile;showProfile=function(){var r=_w6trOrigShowProfile.apply(this,arguments);try{_w6trProfileBtn()}catch(e){}try{requestAnimationFrame(function(){try{_w6trProfileBtn()}catch(e){}})}catch(e){}return r};
+/* ===== /W6 guided tour ===== */
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
