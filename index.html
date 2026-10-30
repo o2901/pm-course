@@ -3329,6 +3329,134 @@ body.light #tdGame.w8g3-tgx .tg-b{box-shadow:0 4px 0 rgba(42,39,33,.12)}
   .w8g3-spk{display:none}
 }
 /* ===== /W8 games3 ===== */
+/* ===== W8 retention & flow (w8rn): stage path · quiz rounds · map panel · return flow ===== */
+.w8rn-path[dir="ltr"] :not([dir]),.w8rn-np[dir="ltr"] :not([dir]),.w8rn-finish[dir="ltr"] :not([dir]),.w8rn-round[dir="ltr"] :not([dir]),.w8rn-lc[dir="ltr"] :not([dir]){direction:inherit}
+.w8rn-path{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem .7rem;margin:.85rem 0 1.05rem;padding:.75rem .85rem;background:var(--card);border:1px solid var(--line);border-radius:16px;text-align:start;box-sizing:border-box;max-width:100%}
+.w8rn-ring{position:relative;flex:0 0 44px;width:44px;height:44px}
+.w8rn-ring svg{display:block;width:100%;height:100%;transform:rotate(-90deg)}
+.w8rn-rt{fill:none;stroke:var(--line);stroke-width:3.4}
+.w8rn-rf{fill:none;stroke:var(--a);stroke-width:3.4;stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.22,1,.36,1)}
+.w8rn-ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:.66rem;font-weight:800;color:var(--t1);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.w8rn-ph{flex:1 1 170px;min-width:0}
+.w8rn-pt{font-size:.9rem;font-weight:800;color:var(--t1);line-height:1.35}
+.w8rn-pl{font-size:.76rem;color:var(--t2);line-height:1.45;margin-top:.12rem}
+.w8rn-steps{flex:1 1 100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem}
+.w8rn-step{font:inherit;display:flex;align-items:center;justify-content:center;gap:.3rem;min-width:0;min-height:34px;padding:.28rem .45rem;border-radius:999px;border:1px solid var(--line);background:var(--cardh);color:var(--t2);font-size:.76rem;font-weight:700;cursor:pointer;line-height:1.2;transition:border-color .15s,color .15s,background .15s}
+.w8rn-step:hover{color:var(--t1)}
+.w8rn-sk{display:inline-grid;place-items:center;flex:0 0 19px;width:19px;height:19px;border-radius:50%;font-size:.64rem;font-weight:800;background:var(--line);color:var(--t2)}
+.w8rn-step.is-now{border-color:var(--p);color:var(--t1)}
+.w8rn-step.is-now .w8rn-sk{background:var(--p);color:#fff}
+.w8rn-step.is-done{color:var(--a);border-color:rgba(53,201,163,.45);background:rgba(53,201,163,.1)}
+.w8rn-step.is-done .w8rn-sk{background:var(--a);color:#fff}
+.w8rn-sc{font-variant-numeric:tabular-nums;opacity:.9;white-space:nowrap}
+.w8rn-sn{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.w8rn-next{flex:1 1 100%;display:flex;align-items:center;justify-content:space-between;gap:.6rem;font:inherit;font-size:.8rem;color:var(--t2);line-height:1.45;text-align:start;padding:.55rem .75rem;border-radius:12px;border:1px solid rgba(139,133,255,.38);background:rgba(139,133,255,.1);cursor:pointer;min-height:42px;transition:background .15s,border-color .15s}
+.w8rn-next:hover{background:rgba(139,133,255,.17);border-color:var(--p)}
+.w8rn-na{flex:0 0 auto;font-size:1.05rem;font-weight:800;color:var(--p)}
+.w8rn-nl{min-width:0}
+.w8rn-nl b{color:var(--t1);font-weight:800}
+.w8rn-nm{white-space:nowrap;opacity:.85}
+.w8rn-cel{flex:1 1 100%;font-size:.8rem;color:var(--t1);line-height:1.5;padding:.5rem .65rem;border-radius:11px;background:rgba(53,201,163,.12);border:1px solid rgba(53,201,163,.35)}
+.w8rn-cel b{color:var(--a)}
+.pf-acc-toggle .w8rn-acc{margin-inline-start:auto;margin-inline-end:.45rem;font-size:.68rem;font-weight:700;color:var(--t2);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:.12rem .5rem;white-space:nowrap;line-height:1.4}
+.pf-acc-toggle .w8rn-acc.is-done{color:var(--a);border-color:rgba(53,201,163,.4)}
+.w8rn-lc{display:block;margin:.2rem auto .8rem;max-width:520px;font-size:.86rem;line-height:1.6;color:var(--t2)}
+.w8rn-lc b{color:var(--t1)}
+.w8rn-lc-x{display:inline-block;margin:.35rem .25rem 0;padding:.4rem 1rem;font-size:.8rem;min-height:36px}
+.w8rn-round{display:flex;align-items:center;justify-content:center;gap:.5rem;margin:1.15rem 0 .7rem;font-size:.78rem;font-weight:800;color:var(--t2)}
+.w8rn-round::before,.w8rn-round::after{content:"";flex:1 1 auto;min-width:10px;height:1px;background:var(--line)}
+.w8rn-rp{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .75rem;border-radius:999px;background:var(--cardh);border:1px solid var(--line);white-space:nowrap;max-width:100%;box-sizing:border-box}
+.w8rn-round--now .w8rn-rp:last-child{color:var(--t1);border-color:var(--p)}
+.w8rn-round--done .w8rn-rp,.w8rn-rp--prev{color:var(--a);border-color:rgba(53,201,163,.4);background:rgba(53,201,163,.08)}
+.w8rn-round--next{opacity:.72}
+.q-streak.w8rn-fb{line-height:1.5}
+.w8rn-finish{margin:.95rem auto .25rem;max-width:440px;padding:.75rem .85rem .85rem;border-radius:14px;border:1px solid rgba(255,179,0,.45);background:rgba(255,179,0,.09);text-align:center;box-sizing:border-box}
+.w8rn-finish-t{font-weight:800;font-size:.95rem;color:var(--t1);margin-bottom:.2rem}
+.w8rn-finish-s{font-size:.8rem;color:var(--t2);line-height:1.5;margin-bottom:.6rem}
+.w8rn-finish .bp{margin:0}
+.w8rn-skip{display:block;margin:.5rem auto 0;font:inherit;font-size:.78rem;color:var(--t2);background:none;border:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:36px;padding:.3rem .6rem}
+.w8rn-skip:hover{color:var(--t1)}
+.j-node .w8rn-nr{position:absolute;inset:-5px;border-radius:50%;pointer-events:none;background:conic-gradient(var(--a) calc(var(--w8rn-p,0)*1%),rgba(128,128,128,.22) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 3px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 3px))}
+.w8rn-np{position:relative;z-index:2;box-sizing:border-box;width:85%;max-width:320px;margin:.15rem 0 .6rem;padding:.8rem .85rem .85rem;border-radius:16px;background:var(--card);border:1px solid var(--line);box-shadow:0 8px 22px rgba(0,0,0,.22);text-align:start;color:var(--t1)}
+body.light .w8rn-np{box-shadow:0 8px 22px rgba(42,39,33,.12)}
+.w8rn-np.w8rn-a{align-self:flex-end;margin-inline-end:2rem}
+.w8rn-np.w8rn-b{align-self:flex-start;margin-inline-start:2rem}
+.w8rn-np--return{border-color:rgba(139,133,255,.55);background:linear-gradient(160deg,rgba(139,133,255,.15),rgba(53,201,163,.06)),var(--card)}
+.w8rn-np--session{border-color:rgba(53,201,163,.45)}
+.w8rn-np-x{position:absolute;top:.35rem;inset-inline-end:.35rem;font:inherit;width:36px;height:36px;border-radius:10px;border:0;background:transparent;color:var(--t2);cursor:pointer;font-size:.95rem;line-height:1}
+.w8rn-np-x:hover{background:var(--cardh);color:var(--t1)}
+.w8rn-np-h{font-size:.95rem;font-weight:800;line-height:1.35;padding-inline-end:2.1rem}
+.w8rn-np-s{font-size:.8rem;color:var(--t2);line-height:1.5;margin:.15rem 0 .55rem}
+.w8rn-np-k{font-size:.74rem;font-weight:800;color:var(--t2);margin:.2rem 0 .3rem}
+.w8rn-np-ul{margin:0 0 .6rem;padding:0;list-style:none;display:grid;gap:.3rem}
+.w8rn-np-ul li{font-size:.8rem;line-height:1.45;color:var(--t1);padding:.35rem .55rem;border-radius:10px;background:var(--cardh);border:1px solid var(--line);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.w8rn-np-r{display:flex;align-items:center;gap:.6rem;margin:.1rem 0 .65rem}
+.w8rn-np-r .w8rn-ring{flex-basis:40px;width:40px;height:40px}
+.w8rn-np-rt{min-width:0;font-size:.79rem;line-height:1.45;color:var(--t2)}
+.w8rn-np-rt b{display:block;color:var(--t1);font-size:.86rem}
+.w8rn-np-d{font-size:.78rem;color:var(--t2);line-height:1.45;margin:-.3rem 0 .6rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.w8rn-np-parts{display:flex;flex-wrap:wrap;gap:.35rem;margin:.15rem 0 .55rem}
+.w8rn-np-parts span{font-size:.74rem;font-weight:700;padding:.25rem .55rem;border-radius:999px;background:var(--cardh);border:1px solid var(--line);color:var(--t1);white-space:nowrap}
+.w8rn-np .bp.w8rn-np-go{display:block;width:100%;margin:0;padding:.6rem 1rem;font-size:.88rem;min-height:42px;box-sizing:border-box}
+.w8rn-np-f{font-size:.72rem;color:var(--t2);margin-top:.45rem;text-align:center;line-height:1.45}
+.w8rn-hl{outline:2px solid transparent;outline-offset:4px}
+html[data-acc="amber"] body:not(.light) :is(#w8rnNp,#w8rnPath,.w8rn-finish) .bp{color:#1A1407}
+html[data-acc="amber"] body:not(.light) .w8rn-step.is-now .w8rn-sk{color:#1A1407}
+@media (max-width:600px){.w8rn-np{width:92%;max-width:none}.w8rn-np.w8rn-a{margin-inline-end:.6rem}.w8rn-np.w8rn-b{margin-inline-start:.6rem}}
+@media (max-width:480px){.w8rn-path{padding:.7rem .7rem}.w8rn-si{display:none}.w8rn-round{flex-wrap:wrap}.w8rn-round::before,.w8rn-round::after{display:none}.w8rn-rp{white-space:normal;text-align:center}}
+@media (max-width:820px){.w8rn-step{min-height:40px}.w8rn-np-x{width:40px;height:40px}.w8rn-skip{min-height:40px}}
+@media (prefers-reduced-motion:no-preference){
+#tc.w8rn-in{animation:w8rnIn .24s ease-out both}
+.w8rn-cel{animation:w8rnIn .35s ease-out both}
+.w8rn-round.w8rn-pop .w8rn-rp{animation:w8rnPop .55s cubic-bezier(.34,1.56,.64,1) both}
+.w8rn-hl{animation:w8rnHl 1.5s ease-out both}
+.w8rn-np{animation:w8rnIn .3s ease-out both}
+}
+@media (prefers-reduced-motion:reduce){.w8rn-rf{transition:none}.w8rn-hl{outline-color:var(--p)}}
+@keyframes w8rnIn{from{opacity:.35}to{opacity:1}}
+@keyframes w8rnPop{0%{transform:scale(.86);opacity:.45}60%{transform:scale(1.06);opacity:1}100%{transform:none;opacity:1}}
+@keyframes w8rnHl{0%{outline-color:transparent}15%{outline-color:var(--p)}70%{outline-color:var(--p)}100%{outline-color:transparent}}
+/* ===== /W8 retention ===== */
+/* ===== W8 UI sentinel (w8ui): overlap / tap-size / clipped-text fixes found by _video_factory/_ui_sentinel.js ===== */
+/* (2) bottom notices never sit on each other: resume toast + share nudge step above the update banner (its measured height,
+       --w6f-bb, set by the W6 fixes); a visible hook banner yields while either is up */
+body:has(#updateBanner) :is(.w7ln-rt,#w7shNudge){translate:0 calc(-1 * var(--w6f-bb,64px))}
+body:has(#w7lnRt) .hook-banner,body:has(#w7shNudge) .hook-banner{visibility:hidden;pointer-events:none}
+/* (6) the jump-to-current chip is a MAP control: its IntersectionObserver never fires when the map is hidden while the current
+       stage is already far away, so the chip stayed on over the stage screen (bottom-centre, on top of the resume toast) */
+body:has(#mv.hid) #jumpCurFab{opacity:0!important;pointer-events:none!important}
+/* (7) an open modal covers the update banner like any other page content (the banner's inline z 99999 sat on the More sheet's
+       bottom tiles on phones and on the My-day hub's game cards on desktop); it is back on top as soon as the modal closes.
+       Body-level overlays (z ≥ 200) simply cover it at z 170 (still above the dock); the two modals that live inside #app
+       (stacking context z 1: daily question, duel challenge) hide it while they are open */
+body:has(:is(#todayHub,#wbOv,#goalOv,#legalOv,#pwOv,#stageCerem,#certOverlay,#satOverlay,#modal,body>.daily-modal,.modal-overlay,.bug-modal,.adm-modal-overlay,#w7hbOv,#w7shOv,#w6stMs,.w7ln-ov,#langPop,.dvo,#w6dkSheet.w6dk-open,#w6trRoot)) #updateBanner{z-index:170!important}
+body:has(:is(#dailyModal .daily-modal,#duelConfig.duel-config)) #updateBanner{visibility:hidden!important}
+/* (8) duel panel on tablets/desktop: it opened over the bottom of the left FAB column (🎤 and 🎯 covered, My day half
+       covered and peeking out); it now floats beside the column, and steps above the update banner like the FABs do */
+@media (min-width:641px){.duel-panel{left:calc(1.5rem + 64px);bottom:1.5rem;border-radius:16px}}
+body:has(#updateBanner) .duel-panel{translate:0 calc(-1 * var(--w6f-bb,64px))}
+/* (5a) the 4px progress bar is decorative — it no longer eats taps meant for the header buttons under it */
+.pbar{pointer-events:none}
+/* (3) library spines: two lines + ellipsis instead of a third line cut off at the spine's edge (horizontal layout turned 90°
+       clockwise = the vertical-rl reading direction; vertical writing modes have no line-clamp) */
+.lw-spine span{inset:auto;left:50%;top:50%;width:104px;height:auto;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;writing-mode:horizontal-tb;unicode-bidi:plaintext;text-align:center;line-height:1.3;overflow:hidden;overflow-wrap:anywhere;transform:translate(-50%,-50%) rotate(90deg)}
+@media(max-width:520px){.lw-spine span{width:88px}}
+/* (4) primary controls ≥ 40×40 on phones/tablets */
+@media (max-width:820px){
+.ws-lang-btn,.bp{min-height:40px}
+#sv .tabs .tab{min-height:40px}
+.hub-x,.w7hb-x,.w7sh-x,.w7sh-nd-x,.w7ln-rt-x,#w6dkSheet .w6dk-x,#certOverlay button{min-width:40px;min-height:40px}
+.w7ln-rt-a,.w7sh-nd-go,.w6tr-card .w6tr-skip,.w6tr-card.w6tr-sheet .w6tr-skip,.w6tr-card .w6tr-next,.w6tr-card .w6tr-back,.duel-notif-btns button,#updateBanner button,#continue-hero button,#stageCerem .cer-btns button,.w5g-quit{min-height:40px}
+.duel-panel-close,#updateBanner>span[onclick],.hook-banner .hb-close,:is(.bug-modal,.adm-modal-overlay,.daily-modal) span[onclick*="remove()"]{display:inline-flex;align-items:center;justify-content:center;min-width:40px;min-height:40px;box-sizing:border-box}
+.sat-star{display:inline-flex;justify-content:center;min-width:40px}
+/* (5) header: 40px-tall hit areas, layout unchanged (centred ::after hit-slop; logo padding with an equal negative margin; the
+       two header groups clip sideways only, so the hit areas are not cut to the 26px row) */
+.hdr .w5i-hb{position:relative}
+.hdr .w5i-hb::after{content:"";position:absolute;left:-2px;right:-2px;top:50%;height:42px;margin-top:-21px}
+.hdr-logo{padding-block:10px;margin-block:-10px}
+@supports (overflow:clip){.hdr>div:first-child,.hdr-stats{overflow-x:clip;overflow-y:visible}.hdr-stats{padding-inline-start:4px;margin-inline-start:-4px}}
+}
+/* ===== /W8 UI sentinel ===== */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 </head>
@@ -9924,7 +10052,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.10';
+const APP_VERSION='1.10.11';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -21914,6 +22042,393 @@ function _w8s26Hero(currentId){
 (function(){if(typeof _w6syMerge!=='function')return;var o=_w6syMerge;_w6syMerge=function(c){var r=o.apply(this,arguments);try{if(r)_w8s26Seed(c)}catch(e){}return r}})();/* re-read after an offline login */
 (function(){if(typeof renderContinueHero!=='function')return;var o=renderContinueHero;renderContinueHero=function(currentId){var r=o.apply(this,arguments);try{_w8s26Hero(currentId)}catch(e){}return r}})();
 /* ===== /W8 stage 26 ===== */
+/* ===== W8 retention & flow (w8rn) — stage path checklist + ring · fair reading credit at the right moment · quiz rounds of 5 ·
+   human answer feedback · honest CTAs (no dead ends) · map rings + "continue here" panel · end-of-session next step · return
+   flow after 3+ days away. In-flow UI only (no fixed layer). Diagnosis and numbers: _video_factory/_w8_retention.md ===== */
+var _w8rn={cache:{},ses:{topics:0,answers:0,correct:0,cases:0,done:[],acts:0,first:false},snap:{},pct:{},boot:{last:0,user:''},away:null,rbClosed:false,npHide:-1,sent:{},just:null,cel:null};
+/* boot snapshot (parse time = before the boot/login updateStreak moves G.lastDay to today) */
+(function(){try{var t=0;if(G&&G.lastDay)t=new Date(G.lastDay).getTime()||0;var al=(G&&Array.isArray(G.activityLog))?G.activityLog:[];if(al.length){var x=+(al[al.length-1]&&al[al.length-1].t)||0;if(x>t)t=x}_w8rn.boot={last:t,user:String((G&&G.userName)||'')}}catch(e){}})();
+try{if(typeof TRACKED_FEATURES!=='undefined'&&TRACKED_FEATURES.indexOf('retention')<0){TRACKED_FEATURES.push('retention');if(typeof OTHER_FEATURES!=='undefined'&&OTHER_FEATURES.indexOf('retention')<0)OTHER_FEATURES.push('retention')}if(typeof FEAT_META!=='undefined'&&!FEAT_META.retention)FEAT_META.retention={ic:'🧭',name:'מסלול השלב וחזרה ללמידה',col:'#35C9A3'};if(typeof FEAT_ACT_NAMES!=='undefined'){var _w8rnAN={path_go:'מסלול השלב: הצעד הבא',path_step:'מסלול השלב: מעבר לחלק',part_done:'חלק בשלב הושלם',round_done:'סבב שאלות הושלם',fair_credit:'זיכוי קריאה הוגן (הכלל הקיים, בזמן אמת)',result_finish:'כרטיס תוצאות: להשלים את השלב',panel_show:'כרטיס במפה הוצג',panel_go:'כרטיס במפה: המשך',panel_close:'כרטיס במפה: סגירה',return_shown:'חזרה אחרי 3+ ימים: הוצג'};Object.keys(_w8rnAN).forEach(function(k){if(!FEAT_ACT_NAMES[k])FEAT_ACT_NAMES[k]=_w8rnAN[k]})}}catch(e){}
+
+function _w8rnEn(){try{return G.lang==='en'}catch(e){return false}}
+function _w8rnL(he,en){return _w8rnEn()?en:he}
+function _w8rnDir(){return _w8rnEn()?'ltr':'rtl'}
+function _w8rnE(x){return String(x==null?'':x).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function _w8rnTx(h){try{var t=document.createElement('template');t.innerHTML=String(h==null?'':h);return String(t.content.textContent||'').replace(/\s+/g,' ').trim()}catch(e){return String(h||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim()}}
+function _w8rnB(x){return '<bdi>'+_w8rnE(x)+'</bdi>'}
+function _w8rnQ(t){return _w8rnEn()?'“'+_w8rnE(t)+'”':'&quot;'+_w8rnE(t)+'&quot;'}
+function _w8rnTitle(h){var x=_w8rnTx(h);try{x=x.replace(new RegExp('^[^\\p{L}\\p{N}]+','u'),'')}catch(e){}return x.trim()}
+function _w8rnCut(t,n){t=String(t||'');return t.length>n?t.slice(0,n-1).replace(/\s+\S*$/,'')+'…':t}
+function _w8rnSt(sid){sid=parseInt(sid,10);if(isNaN(sid)||typeof S==='undefined')return null;for(var i=0;i<S.length;i++)if(S[i].id===sid)return S[i];return null}
+function _w8rnRM(){try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}}
+function _w8rnT(act,meta){try{trackEvent('retention',act,meta==null?'':String(meta))}catch(e){}}
+function _w8rnMin(m){var n=Math.max(1,Math.round(m||0));return _w8rnEn()?('~'+n+' min'):('כ־'+n+' דק׳')}
+function _w8rnHid(s){try{return typeof _stageHidden==='function'&&!!_stageHidden(s)}catch(e){return false}}
+function _w8rnDone(sid){try{return !!(G.done&&G.done.has(sid))}catch(e){return false}}
+function _w8rnSfx(k){try{if(typeof playSfx==='function')playSfx(k)}catch(e){}}
+function _w8rnHap(k){try{if(typeof window.juiceHaptic==='function')window.juiceHaptic(k)}catch(e){}}
+
+/* ---------- minutes per part: the SAME formula as the stage header's ⏱ (rs): lesson/case chars ÷ 2200, quiz 0.7 min/question ---------- */
+function _w8rnEst(s){
+  var k=s.id+'|'+(_w8rnEn()?'en':'he'),c=_w8rn.cache[k];if(c)return c;
+  var th=s.th||[],lens=[],L=0,i;for(i=0;i<th.length;i++){var n=String((th[i]&&th[i].c)||'').length;lens.push(n);L+=n}
+  var l=Math.max(2,Math.round(L/2200)),cc=Math.max(2,Math.round(String((s.cs&&s.cs.c)||'').length/2200)),q=Math.max(2,Math.round(((s.q&&s.q.length)||0)*0.7));
+  c={l:l,c:cc,q:q,tot:l+cc+q,topic:lens.map(function(n){return L?l*n/L:(th.length?l/th.length:0)})};
+  _w8rn.cache[k]=c;return c;
+}
+/* rounds of 5; a last round shorter than 3 joins the previous one (13 → 5·5·3 · 16 → 5·5·6 · 21 → 5·5·5·6); < 9 questions = one round */
+function _w8rnRounds(qn){
+  if(qn<9)return [{a:0,b:Math.max(0,qn-1)}];
+  var R=[],a=0;while(a<qn){var b=Math.min(qn-1,a+4);R.push({a:a,b:b});a=b+1}
+  var z=R[R.length-1];if(R.length>1&&(z.b-z.a+1)<3){R[R.length-2].b=z.b;R.pop()}
+  return R;
+}
+function _w8rnRoundOf(R,qi){for(var i=0;i<R.length;i++)if(qi>=R[i].a&&qi<=R[i].b)return i;return R.length-1}
+function _w8rnProg(s){
+  var e=_w8rnEst(s),seen=G._seenSec||{},tv=(G._tabVisits&&G._tabVisits[s.id])||{},qa=(G.qa&&G.qa[s.id])||{};
+  var n=(s.th||[]).length,qn=(s.q||[]).length,read=0,rm=0,first=-1,ans=0,ok=0,nextQ=-1,i;
+  for(i=0;i<n;i++){if(seen[s.id+'_'+i]){read++;rm+=e.topic[i]}else if(first<0)first=i}
+  for(i=0;i<qn;i++){if(qa[i]!==undefined){ans++;if(s.q[i]&&qa[i]===s.q[i].c)ok++}else if(nextQ<0)nextQ=i}
+  var cs=s.cs?!!tv.c:true,done=_w8rnDone(s.id),lLeft=Math.max(0,e.l-rm),cLeft=cs?0:e.c,qLeft=qn?e.q*(qn-ans)/qn:0;
+  var dm=e.tot-lLeft-cLeft-qLeft,pct=done?100:Math.max(0,Math.min(99,Math.round(100*dm/e.tot)));
+  return {s:s,e:e,n:n,read:read,first:first,qn:qn,ans:ans,ok:ok,nextQ:nextQ,cs:cs,done:done,pct:pct,lLeft:lLeft,cLeft:cLeft,qLeft:qLeft,
+    left:done?0:Math.max(1,Math.ceil(lLeft+cLeft+qLeft-0.01)),started:(read>0||!!tv.c||ans>0),lAll:read>=n,qAll:qn?ans>=qn:true,R:_w8rnRounds(qn)};
+}
+/* the next missing piece — the part the learner is in first (if unfinished), then the natural order read → case → quiz */
+function _w8rnNext(p,tab){
+  if(!p||p.done)return null;
+  if(tab==='q'&&!p.qAll)return {k:'q',qi:p.nextQ,min:p.qLeft};
+  if(!p.lAll)return {k:'l',sec:p.first,min:p.e.topic[p.first]||1};
+  if(!p.cs)return {k:'c',min:p.e.c};
+  if(!p.qAll)return {k:'q',qi:p.nextQ,min:p.qLeft};
+  return null;
+}
+function _w8rnNextLbl(p,nx){
+  if(!nx)return '';
+  if(nx.k==='l'){var t=(p.s.th&&p.s.th[nx.sec])?_w8rnCut(_w8rnTitle(p.s.th[nx.sec].t),40):'';
+    return _w8rnL('לקרוא עד הסוף את נושא ','read topic ')+_w8rnB(nx.sec+1)+_w8rnL('',' in full')+(t?' · '+_w8rnQ(t):'')}
+  if(nx.k==='c')return _w8rnL('לפתוח את הקייס','open the case');
+  var r=_w8rnRoundOf(p.R,nx.qi);
+  return _w8rnL('שאלה ','question ')+_w8rnB((nx.qi+1)+'/'+p.qn)+(p.R.length>1?' · '+_w8rnL('סבב ','round ')+_w8rnB((r+1)+'/'+p.R.length):'');
+}
+function _w8rnOff(pct){var c=2*Math.PI*15.5;return (c*(1-Math.max(0,Math.min(100,pct))/100)).toFixed(2)}
+function _w8rnRing(pct,shown,lbl){
+  var c=(2*Math.PI*15.5).toFixed(2);
+  return '<div class="w8rn-ring" role="img" aria-label="'+_w8rnE(lbl||(pct+'%'))+'"><svg viewBox="0 0 36 36" aria-hidden="true" focusable="false"><circle class="w8rn-rt" cx="18" cy="18" r="15.5"/><circle class="w8rn-rf" cx="18" cy="18" r="15.5" style="stroke-dasharray:'+c+';stroke-dashoffset:'+_w8rnOff(shown==null?pct:shown)+'"/></svg><b><bdi>'+pct+'%</bdi></b></div>';
+}
+
+/* =============================== 1 · STAGE PATH (under the tabs) =============================== */
+function _w8rnPathHtml(p,shown){
+  var tab=G.tab,nx=_w8rnNext(p,tab),fresh=!p.started;
+  var step=function(k,ok,num,ic,lbl,cnt){return '<button type="button" class="w8rn-step'+(ok?' is-done':(tab===k?' is-now':''))+'" onclick="_w8rnStep(\''+k+'\')"><span class="w8rn-sk" aria-hidden="true">'+(ok?'✓':num)+'</span><span class="w8rn-sn"><span class="w8rn-si" aria-hidden="true">'+ic+' </span>'+lbl+'</span>'+(cnt?' <span class="w8rn-sc">'+cnt+'</span>':'')+'</button>'};
+  var mood=p.pct>=85?_w8rnL('ממש קרוב','So close'):p.pct>=50?_w8rnL('יותר מחצי הדרך','Past the halfway mark'):_w8rnL('יופי של התחלה','Nice start');
+  var h=_w8rnRing(p.pct,shown,p.pct+'% '+_w8rnL('מהשלב הושלמו','of this stage done'));
+  h+='<div class="w8rn-ph"><div class="w8rn-pt">'+(fresh?_w8rnL('3 חלקים — והשלב שלכם','3 parts — and the stage is yours'):mood)+'</div>';
+  h+='<div class="w8rn-pl">'+(fresh?(_w8rnMin(p.e.tot)+' '+_w8rnL('בסך הכול · כל חלק נשמר מיד, אפשר לעצור בין חלקים','in total · each part saves instantly, pause between parts anytime'))
+      :(_w8rnMin(p.left)+' '+_w8rnL('נותרו · השלב נספר כשכל החלקים ✓','left · the stage counts once every part is ✓')))+'</div></div>';
+  h+='<div class="w8rn-steps">'+step('l',p.lAll,1,'📚',_w8rnL('קריאה','Read'),_w8rnB(p.read+'/'+p.n))+step('c',p.cs,2,'📋',_w8rnL('קייס','Case'),'')+step('q',p.qAll,3,'❓',_w8rnL('מבחן','Quiz'),_w8rnB(p.ans+'/'+p.qn))+'</div>';
+  if(_w8rn.cel&&_w8rn.cel.sid===p.s.id&&Date.now()-_w8rn.cel.at<7000)h+='<div class="w8rn-cel" role="status">'+_w8rn.cel.html+'</div>';
+  if(nx)h+='<button type="button" class="w8rn-next" onclick="_w8rnGo()"><span class="w8rn-nl"><b>'+_w8rnL('הצעד הבא:','Next:')+'</b> '+_w8rnNextLbl(p,nx)+' <span class="w8rn-nm">('+_w8rnMin(nx.min)+')</span></span><span class="w8rn-na" aria-hidden="true">'+_w8rnL('←','→')+'</span></button>';
+  return h;
+}
+function _w8rnPath(){
+  try{
+    if(!G||G.v!=='s')return;var sv=$('sv');if(!sv||sv.classList.contains('hid'))return;
+    var s=_w8rnSt(G.st);if(!s)return;var tabs=sv.querySelector('.tabs');if(!tabs)return;
+    var p=_w8rnProg(s),el=$('w8rnPath');_w8rnDiff(s,p);
+    if(p.done){if(el)el.remove();return}
+    if(!el){el=document.createElement('div');el.id='w8rnPath';el.className='w8rn-path';el.setAttribute('role','region')}
+    if(tabs.nextElementSibling!==el)tabs.insertAdjacentElement('afterend',el);
+    el.setAttribute('dir',_w8rnDir());el.setAttribute('aria-label',_w8rnL('ההתקדמות בשלב','Stage progress'));
+    var prev=_w8rn.pct[s.id],anim=(prev!=null&&prev!==p.pct&&!_w8rnRM());
+    el.innerHTML=_w8rnPathHtml(p,anim?prev:p.pct);_w8rn.pct[s.id]=p.pct;
+    if(anim){var c=el.querySelector('.w8rn-rf');if(c)requestAnimationFrame(function(){requestAnimationFrame(function(){try{c.style.strokeDashoffset=_w8rnOff(p.pct)}catch(e){}})})}
+  }catch(e){}
+}
+/* part transitions in THIS session → small, scaled celebrations (never on first render) */
+function _w8rnDiff(s,p){
+  var k=s.id,prev=_w8rn.snap[k],cur={read:p.read,l:p.lAll,ans:p.ans};_w8rn.snap[k]=cur;
+  if(!prev)return;
+  if(cur.read>prev.read){_w8rn.ses.topics+=cur.read-prev.read;_w8rn.ses.acts++}
+  if(!prev.l&&cur.l&&!p.done&&p.n)_w8rnPartDone(s,p);
+}
+function _w8rnPartDone(s,p){
+  var first=(G.done.size===0&&!_w8rn.ses.first);_w8rn.ses.first=true;
+  var nx=_w8rnNext(p,'l');
+  _w8rn.cel={sid:s.id,at:Date.now(),html:'<b>'+(first?_w8rnL('🎉 אבן הדרך הראשונה שלכם! ','🎉 Your first milestone! '):'')+_w8rnL('📚 הקריאה הושלמה — חלק 1 מתוך 3 ✓','📚 Reading done — part 1 of 3 ✓')+'</b>'
+    +(nx?' '+_w8rnL('הבא: ','Next: ')+_w8rnNextLbl(p,nx)+' ('+_w8rnMin(nx.min)+')':'')};
+  _w8rnSfx(first?'milestone':'pop');_w8rnHap('success');_w8rnT('part_done',s.id+':l');
+  if(first)_w8rnConfetti();
+}
+function _w8rnConfetti(){try{if(_w8rnRM()||typeof window.confetti!=='function')return;window.confetti({particleCount:42,spread:62,startVelocity:30,scalar:.85,ticks:140,origin:{x:.5,y:.62},zIndex:2400,disableForReducedMotion:true,colors:['#8B85FF','#E8C45C','#35C9A3','#F06A7E']})}catch(e){}}
+function _w8rnScrollTo(el){try{var off=0;['#hd','#ib'].forEach(function(q){var x=document.querySelector(q);if(!x)return;var cs=getComputedStyle(x);if(cs.position!=='fixed'||cs.display==='none'||x.classList.contains('hid'))return;var r=x.getBoundingClientRect();if(r.height>0&&r.top<140&&r.bottom>off)off=r.bottom});
+  var y=Math.max(0,el.getBoundingClientRect().top+(window.pageYOffset||0)-off-12);window.scrollTo({top:y,behavior:_w8rnRM()?'auto':'smooth'})}catch(e){}}
+function _w8rnHl(el){try{el.classList.remove('w8rn-hl');el.classList.add('w8rn-hl');setTimeout(function(){try{el.classList.remove('w8rn-hl')}catch(e){}},1600)}catch(e){}}
+function _w8rnGoPart(k,arg){
+  try{
+    if(k==='c'){if(G.tab!=='c')st('c');else window.scrollTo({top:0,behavior:_w8rnRM()?'auto':'smooth'});return}
+    var t=(k==='l')?'l':'q';if(G.tab!==t)st(t);
+    setTimeout(function(){try{
+      if(k==='l'){var sec=document.querySelector('#tc .csec[data-idx="'+arg+'"]');if(!sec)return;var tg=sec.querySelector('.pf-acc-toggle'),bd=sec.querySelector('.pf-acc-body');
+        if(tg&&bd&&!bd.classList.contains('open')){try{pfAccToggle(tg)}catch(e){}}_w8rnScrollTo(sec);_w8rnHl(sec)}
+      else{var q=document.querySelectorAll('#tc .qq')[arg];if(q){_w8rnScrollTo(q);_w8rnHl(q)}}
+    }catch(e){}},40);
+  }catch(e){}
+}
+function _w8rnGo(){var s=_w8rnSt(G.st);if(!s)return;var p=_w8rnProg(s),nx=_w8rnNext(p,G.tab);if(!nx)return;_w8rnT('path_go',nx.k);_w8rnGoPart(nx.k,nx.k==='l'?nx.sec:nx.qi)}
+function _w8rnStep(k){var s=_w8rnSt(G.st);if(!s)return;var p=_w8rnProg(s);_w8rnT('path_step',k);_w8rnGoPart(k,k==='l'?(p.first>=0?p.first:0):(p.nextQ>=0?p.nextQ:0))}
+
+/* =============================== lesson: accordion tags + honest lesson-end card =============================== */
+function _w8rnAccTags(){
+  try{if(G.v!=='s'||G.tab!=='l')return;var s=_w8rnSt(G.st);if(!s)return;var e=_w8rnEst(s),seen=G._seenSec||{};
+    var secs=document.querySelectorAll('#tc .csec[data-idx]');
+    for(var x=0;x<secs.length;x++){var sec=secs[x],i=parseInt(sec.getAttribute('data-idx'),10),tg=sec.querySelector('.pf-acc-toggle');if(!tg||isNaN(i))continue;
+      var t=tg.querySelector('.w8rn-acc');if(!t){t=document.createElement('span');t.setAttribute('aria-hidden','true');tg.insertBefore(t,tg.querySelector('.pf-acc-ic'))}
+      var ok=!!seen[s.id+'_'+i],txt=ok?_w8rnL('✓ נקרא','✓ read'):(_w8rnMin(e.topic[i]||1)+' · '+_w8rnL('נספר לשלב','counts'));
+      if(t.className!==('w8rn-acc'+(ok?' is-done':'')))t.className='w8rn-acc'+(ok?' is-done':'');if(t.textContent!==txt)t.textContent=txt;}
+  }catch(e){}
+}
+function _w8rnLearnCta(){
+  try{if(G.v!=='s'||G.tab!=='l')return;var s=_w8rnSt(G.st);if(!s||_w8rnDone(s.id))return;var box=document.querySelector('#tc .learn-cta');if(!box)return;
+    var p=_w8rnProg(s),el=box.querySelector('.w8rn-lc');
+    if(!el){el=document.createElement('p');el.className='w8rn-lc';var pp=box.querySelector('p');if(pp){pp.style.display='none';pp.insertAdjacentElement('afterend',el)}else box.insertBefore(el,box.firstChild)}
+    el.setAttribute('dir',_w8rnDir());
+    var h;
+    if(p.lAll){h='<b>'+_w8rnL('🏆 חלק 1 מתוך 3 הושלם — כל הנושאים נקראו.','🏆 Part 1 of 3 done — every topic is read.')+'</b> '+(p.cs?_w8rnL('הקייס כבר נפתח; נשאר המבחן','The case is open already; the quiz is what’s left')+' ('+_w8rnMin(p.qLeft)+').':_w8rnL('עכשיו הקייס','Next up: the case')+' ('+_w8rnMin(p.e.c)+').')}
+    else h=(p.read?_w8rnL('קראתם עד הסוף ','You have read ')+_w8rnB(p.read)+_w8rnL(' מתוך ',' of ')+_w8rnB(p.n)+_w8rnL(' נושאים.',' topics in full.'):_w8rnL('עוד לא סומן נושא כנקרא.','No topic is marked as read yet.'))+' '
+      +_w8rnL('נושא נספר כשפותחים את "הרחבת קריאה מלאה" וקוראים עד הסוף — או מאזינים / צופים בו עד הסוף. אפשר לעבור לקייס עכשיו ולחזור לנושאים אחר כך.','A topic counts once you open its full reading and get to the end — or listen to / watch it to the end. You can open the case now and come back to the topics later.')
+      +' <button type="button" class="bs w8rn-lc-x" onclick="_w8rnGoPart(\'l\','+p.first+')">'+_w8rnL('לנושא ','To topic ')+_w8rnB(p.first+1)+'</button>';
+    if(el.innerHTML!==h)el.innerHTML=h;
+    var b=box.querySelector('.bp');if(b&&p.lAll&&p.cs&&!p.qAll&&!b.getAttribute('data-w8rn')){b.setAttribute('data-w8rn','q');b.setAttribute('onclick',"st('q')");b.innerHTML=_w8rnE(_w8rnL('למבחן ←','To the quiz →'))}
+  }catch(e){}
+}
+function _w8rnFade(){try{if(_w8rnRM())return;var tc=$('tc');if(!tc)return;tc.classList.remove('w8rn-in');void 0;requestAnimationFrame(function(){tc.classList.add('w8rn-in');clearTimeout(_w8rn.fT);_w8rn.fT=setTimeout(function(){try{tc.classList.remove('w8rn-in')}catch(e){}},420)})}catch(e){}}
+
+/* =============================== 4 · 5 · quiz rounds + human feedback + 3 · result card =============================== */
+var _W8RN_FB={
+  he:{wrong:['לא נורא — ככה זה נשאר בראש. ההסבר למעלה הוא בדיוק מה ששווה לזכור.','טעות שימושית: עכשיו זה ייזכר. התשובה הנכונה מסומנת בירוק.','כמעט! קריאת ההסבר לוקחת עשר שניות — והן שוות את זה.','השאלה הזאת מבלבלת הרבה אנשים. ההסבר עושה בה סדר.','לא הפעם — אבל עכשיו זה אצלכם. ממשיכים.'],
+      broke:'רצף של {n} — מרשים. החטאה אחת לא מוחקת את זה.',two:'קטע מאתגר. נשימה, מבט בהסבר — והשאלה הבאה היא דף חדש.',back:['חזרה יפה ✨','בדיוק ככה — חזרתם למסלול.','יפה! ההסבר עשה את שלו.']},
+  en:{wrong:['No worries — this is how it sticks. The explanation above is the part worth keeping.','A useful miss: now it’ll stick. The right answer is marked in green.','Close! The explanation takes ten seconds — and they’re worth it.','This one trips up a lot of people. The explanation sorts it out.','Not this time — but now you know. Onward.'],
+      broke:'A run of {n} — impressive. One miss doesn’t erase that.',two:'Tricky stretch. Breathe, glance at the explanation — the next one is a fresh start.',back:['Nice comeback ✨','That’s the way — back on track.','Nice! The explanation did its job.']}
+};
+function _w8rnFeedback(s,blocks,qa){
+  var L=_w8rnEn()?_W8RN_FB.en:_W8RN_FB.he,qn=blocks.length,run=0,prevWrong=false,wk=0,bk=0,seed=Math.abs(s.id*7)%5;
+  for(var i=0;i<qn;i++){
+    if(qa[i]===undefined)continue;
+    var ok=!!(s.q[i]&&qa[i]===s.q[i].c),blk=blocks[i],nx=blk.nextElementSibling,line=(nx&&nx.classList&&nx.classList.contains('q-streak'))?nx:null;
+    if(!ok){
+      var txt=run>=3?L.broke.replace('{n}',run):(prevWrong?L.two:L.wrong[(seed+wk)%L.wrong.length]);wk++;
+      if(line&&line.classList.contains('cool')&&line.textContent!==txt){line.textContent=txt;line.classList.add('w8rn-fb')}
+      run=0;prevWrong=true;
+    }else{
+      if(prevWrong&&i<qn-1&&!line){var d=document.createElement('div');d.className='q-streak hot w8rn-fb w8rn-back';d.textContent=L.back[(seed+bk)%L.back.length];bk++;blk.insertAdjacentElement('afterend',d)}
+      run++;prevWrong=false;
+    }
+  }
+}
+function _w8rnQuiz(s){
+  try{
+    if(!s||!G||G.v!=='s'||G.tab!=='q'||parseInt(G.st,10)!==s.id)return;
+    var tc=$('tc');if(!tc)return;var blocks=tc.querySelectorAll('.qq'),qn=(s.q||[]).length;if(!qn||blocks.length!==qn)return;
+    var qa=(G.qa&&G.qa[s.id])||{};
+    _w8rnFeedback(s,blocks,qa);
+    var R=_w8rnRounds(qn);
+    if(R.length>1&&!tc.querySelector('.w8rn-round')){
+      var cur=-1,i,j;
+      for(i=0;i<R.length;i++){var r=R[i];r.size=r.b-r.a+1;r.ans=0;r.ok=0;for(j=r.a;j<=r.b;j++){if(qa[j]!==undefined){r.ans++;if(s.q[j]&&qa[j]===s.q[j].c)r.ok++}}if(cur<0&&r.ans<r.size)cur=i}
+      for(i=0;i<R.length;i++){var r2=R[i],stt=r2.ans>=r2.size?'done':(i===cur?'now':'next'),lbl='';
+        if(stt==='done')lbl='<span class="w8rn-rp">✓ '+_w8rnL('סבב ','Round ')+_w8rnB(i+1)+' · '+_w8rnB(r2.ok+'/'+r2.size)+(r2.ok===r2.size?' ⭐':'')+'</span>';
+        else{if(stt==='now'&&i>0&&R[i-1].ans>=R[i-1].size)lbl='<span class="w8rn-rp w8rn-rp--prev">✓ '+_w8rnL('סבב ','Round ')+_w8rnB(i)+' · '+_w8rnB(R[i-1].ok+'/'+R[i-1].size)+'</span>';
+          lbl+='<span class="w8rn-rp">'+_w8rnL('סבב ','Round ')+_w8rnB((i+1)+'/'+R.length)+' · '+_w8rnL('שאלות ','questions ')+_w8rnB((r2.a+1)+'–'+(r2.b+1))+(i===R.length-1&&R.length>1?' · '+_w8rnL('הסבב האחרון!','last round!'):'')+(stt==='next'?' · '+_w8rnMin(r2.size*0.7):'')+'</span>'}
+        var hd=document.createElement('div');hd.className='w8rn-round w8rn-round--'+stt;hd.setAttribute('data-r',String(i));hd.setAttribute('dir',_w8rnDir());hd.setAttribute('role','separator');hd.innerHTML=lbl;
+        blocks[r2.a].parentNode.insertBefore(hd,blocks[r2.a]);}
+    }
+    _w8rnResult(s);
+    _w8rnPath();
+  }catch(e){}
+}
+function _w8rnRoundCheck(sid,qi){
+  try{var s=_w8rnSt(sid);if(!s)return;var R=_w8rnRounds((s.q||[]).length);if(R.length<2)return;
+    var ri=_w8rnRoundOf(R,qi),r=R[ri],qa=G.qa[sid]||{},a=0,ok=0;for(var j=r.a;j<=r.b;j++){if(qa[j]!==undefined){a++;if(s.q[j]&&qa[j]===s.q[j].c)ok++}}
+    if(a<r.b-r.a+1)return;
+    _w8rn.just={sid:sid,r:ri,at:Date.now()};_w8rnT('round_done',sid+':'+(ri+1)+':'+ok);
+    if(ri<R.length-1){_w8rnSfx('coin');_w8rnHap('tap');var hd=document.querySelector('#tc .w8rn-round[data-r="'+(ri+1)+'"]');if(hd&&!_w8rnRM())hd.classList.add('w8rn-pop')}
+  }catch(e){}
+}
+function _w8rnResult(s){
+  try{var r=$('quizResult');if(!r||_w8rnDone(s.id)||r.querySelector('.w8rn-finish'))return;
+    var p=_w8rnProg(s);if(!p.qAll||(p.lAll&&p.cs))return;
+    var todo=[];if(!p.lAll)todo.push(_w8rnL('לקרוא עד הסוף ','read ')+((p.n-p.read)===1?_w8rnL('נושא אחד','1 more topic in full'):_w8rnB(p.n-p.read)+_w8rnL(' נושאים',' more topics in full')));if(!p.cs)todo.push(_w8rnL('לפתוח את הקייס','open the case'));
+    var box=document.createElement('div');box.className='w8rn-finish';box.setAttribute('dir',_w8rnDir());
+    var nextId=null,bs=r.querySelectorAll('button');for(var i=0;i<bs.length;i++){var b=bs[i],mm=/^ss\((\d+)\)$/.exec(b.getAttribute('onclick')||'');if(mm&&b.classList.contains('bp')){nextId=parseInt(mm[1],10);b.style.display='none';b.setAttribute('data-w8rn-moved','1')}}
+    box.innerHTML='<div class="w8rn-finish-t">🎯 '+_w8rnL('עוד צעד אחד — והשלב שלכם','One step left — and the stage is yours')+'</div><div class="w8rn-finish-s">'+_w8rnL('התשובות שלכם שמורות. נשאר ','Your answers are saved. Still to do: ')+todo.join(_w8rnL(' ו',' and '))+' ('+_w8rnMin(p.lLeft+p.cLeft)+').</div><button type="button" class="bp w8rn-finish-go" onclick="_w8rnFinish()">'+_w8rnL('להשלים את השלב ←','Finish the stage →')+'</button>'+(nextId!=null?'<button type="button" class="w8rn-skip" onclick="ss('+nextId+')">'+_w8rnL('או לדלג בינתיים לשלב הבא','or skip to the next stage for now')+'</button>':'');
+    var rr=r.querySelector('button[onclick^="rr("]'),row=rr?rr.parentNode:null;if(row&&row.parentNode===r)r.insertBefore(box,row);else r.appendChild(box);
+  }catch(e){}
+}
+function _w8rnFinish(){var s=_w8rnSt(G.st);if(!s)return;_w8rnT('result_finish',s.id);var p=_w8rnProg(s),nx=_w8rnNext(p,'l');if(nx)_w8rnGoPart(nx.k,nx.k==='l'?nx.sec:nx.qi)}
+
+/* =============================== 2 · fair credit — the app's own retro rule, at the moment it becomes true =============================== */
+function _w8rnFair(sid){
+  try{if(!G||!G.done||G.done.has(sid))return false;var s=_w8rnSt(sid);if(!s||_w8rnHid(s))return false;
+    var qn=(s.q&&s.q.length)||0;if(!qn)return false;
+    var qa=(G.qa&&G.qa[s.id])?Object.keys(G.qa[s.id]).length:0;if(qa<qn)return false;
+    var tv=(G._tabVisits&&G._tabVisits[s.id])||{};if(s.cs&&!tv.c)return false;
+    var topics=(s.th&&s.th.length)||0;if(!topics)return false;
+    var seen=G._seenSec||{},all=true,i;for(i=0;i<topics;i++)if(!seen[s.id+'_'+i]){all=false;break}if(all)return false;
+    var tl=parseInt((G.stageTime||{})[s.id+'_l'])||0;if(tl<Math.min(240,40*topics))return false;/* identical to _retroCompleteStages */
+    if(!G._seenSec)G._seenSec={};for(i=0;i<topics;i++)G._seenSec[s.id+'_'+i]=true;
+    _w8rnT('fair_credit',sid);return true;
+  }catch(e){return false}
+}
+
+/* =============================== 7 · 8 · map: rings + the panel under "you are here" =============================== */
+function _w8rnAway(){
+  var u=String((G&&G.userName)||'');if(!u||!G.s)return 0;
+  if(_w8rn.away&&_w8rn.away.u===u)return _w8rn.away.d;
+  var last=(_w8rn.boot.user===u)?_w8rn.boot.last:0,c=window._w5cloudLastAct;
+  if(typeof c==='number'&&c>last)last=c;/* another device was here more recently → not away */
+  var d=0;if(last){var A=new Date(last),B=new Date();A.setHours(0,0,0,0);B.setHours(0,0,0,0);d=Math.round((B-A)/864e5)}
+  d=(d>=3&&d<400)?d:0;_w8rn.away={u:u,d:d};return d;
+}
+function _w8rnTarget(cur){
+  try{var lv=parseInt(G.lastStageVisited,10);if(!isNaN(lv)&&!_w8rnDone(lv)){var s=_w8rnSt(lv);if(s&&!_w8rnHid(s)&&!(s.id===25&&!G.interviewUnlocked)){var p=_w8rnProg(s);if(p.started)return {s:s,p:p}}}}catch(e){}
+  var s2=(cur>=0)?_w8rnSt(cur):null;return s2?{s:s2,p:_w8rnProg(s2)}:null;
+}
+function _w8rnModel(){
+  if(!G||!G.userName||G.v!=='m')return null;
+  var cur=-1;try{cur=_currentMapStageId}catch(e){cur=-1}if(cur<0)return null;
+  if(_w8rn.npHide===_w8rn.ses.acts)return null;
+  var tg=_w8rnTarget(cur);if(!tg)return null;
+  var away=_w8rnAway();
+  if(away&&!_w8rn.rbClosed&&!_w8rn.ses.acts)return {k:'return',anchor:cur,tg:tg,d:away};
+  if(_w8rn.ses.acts)return {k:'session',anchor:cur,tg:tg};
+  if(tg.p.started)return {k:'resume',anchor:cur,tg:tg};
+  if(G.done.size===0)return {k:'new',anchor:cur,tg:tg};
+  return null;
+}
+function _w8rnRecap(tg){
+  var out=[],s=tg&&tg.s,i;
+  var tl=function(sid,k){try{if(typeof _w7lnTl==='function')return _w7lnTl(sid,k);var V=(typeof _VIS==='function')?_VIS(sid):null;return (V&&V.tldr&&V.tldr[k]!=null)?String(V.tldr[k]):null}catch(e){return null}};
+  if(s&&tg.p.read){for(i=0;i<(s.th||[]).length&&out.length<3;i++)if(G._seenSec&&G._seenSec[s.id+'_'+i]){var t=tl(s.id,i);if(t)out.push(_w8rnTx(t))}if(out.length)return {sid:s.id,items:out}}
+  var last=null;try{var al=G.activityLog||[];for(var k=al.length-1;k>=0;k--){if(al[k]&&al[k].a==='completeStage'){var n=parseInt(String(al[k].d||'').replace(/^\D*/,''),10);if(!isNaN(n)&&_w8rnDone(n)){last=n;break}}}}catch(e){}
+  if(last!=null){var ks=[];try{if(typeof _w7lnPick==='function')ks=_w7lnPick(last)}catch(e){}for(i=0;i<ks.length&&out.length<3;i++){var t2=tl(last,ks[i]);if(t2)out.push(_w8rnTx(t2))}if(out.length)return {sid:last,items:out}}
+  return null;
+}
+function _w8rnStageLine(tg){var s=tg.s;return '<b>'+(s.id>=100?'📚 ':_w8rnL('שלב ','Stage ')+_w8rnB(s.id)+' · ')+_w8rnE(_w8rnCut(_w8rnTitle(s.t),46))+'</b>'}
+function _w8rnNpHtml(m){
+  var tg=m.tg,s=tg.s,p=tg.p,nx=_w8rnNext(p,'l'),h='<button type="button" class="w8rn-np-x" onclick="_w8rnNpClose()" aria-label="'+_w8rnE(_w8rnL('סגירה','Close'))+'">✕</button>',cta='';
+  var name='<bdi>'+_w8rnE(_w8rnCut(String(G.userName||''),24))+'</bdi>';
+  var resumeRow=function(){return '<div class="w8rn-np-r">'+_w8rnRing(p.pct,p.pct,p.pct+'%')+'<div class="w8rn-np-rt">'+_w8rnStageLine(tg)+(p.started?_w8rnMin(p.left)+' '+_w8rnL('נותרו','left')+(nx?' · '+_w8rnL('הבא: ','next: ')+_w8rnNextLbl(p,nx):''):_w8rnMin(p.e.tot)+' · '+_w8rnL('3 חלקים קצרים','3 short parts'))+'</div></div>'};
+  if(m.k==='return'){
+    h+='<div class="w8rn-np-h">👋 '+_w8rnL('טוב שחזרתם, ','Welcome back, ')+name+'!</div><div class="w8rn-np-s">'+_w8rnL('עברו ','It’s been ')+_w8rnB(m.d)+_w8rnL(' ימים — שום דבר לא הלך לאיבוד, ההתקדמות שלכם שמורה.',' days — nothing is lost, your progress is saved.')+'</div>';
+    var rc=_w8rnRecap(tg);
+    if(rc){var rs2=_w8rnSt(rc.sid);h+='<div class="w8rn-np-k">🧠 '+_w8rnL('רענון של 20 שניות','A 20-second refresher')+(rs2?' · '+_w8rnL('שלב ','stage ')+_w8rnB(rc.sid):'')+'</div><ul class="w8rn-np-ul">'+rc.items.map(function(x){return '<li>'+_w8rnE(_w8rnCut(x,190))+'</li>'}).join('')+'</ul>'}
+    h+=resumeRow();cta=p.started?_w8rnL('להמשיך מאיפה שעצרתי ←','Pick up where I left off →'):_w8rnL('להתחיל את שלב ','Start stage ')+_w8rnB(s.id)+_w8rnL(' ←',' →');
+  }else if(m.k==='session'){
+    var dn=_w8rn.ses.done,justDone=dn.length?dn[dn.length-1]:null,firstEver=(dn.length>=1&&G.done.size===1);
+    if(justDone!=null){h+='<div class="w8rn-np-h">'+(justDone>=100?_w8rnL('📚 פרק הספר הושלם!','📚 Book chapter done!'):'🎉 '+_w8rnL('שלב ','Stage ')+_w8rnB(justDone)+_w8rnL(' הושלם!',' is done!'))+'</div><div class="w8rn-np-s">'+(firstEver?_w8rnL('השלב הראשון שלכם — החלק הכי קשה כבר מאחוריכם. ','Your first stage — the hardest part is behind you. '):'')+_w8rnL('הבא בתור:','Up next:')+'</div>'
+      +'<div class="w8rn-np-r">'+_w8rnRing(p.pct,p.pct,p.pct+'%')+'<div class="w8rn-np-rt">'+_w8rnStageLine(tg)+_w8rnMin(p.left||p.e.tot)+'</div></div>'+(s.d?'<div class="w8rn-np-d">'+_w8rnE(_w8rnTx(s.d))+'</div>':'');
+      cta=_w8rnL('להתחיל עכשיו ←','Start now →');
+      h+='';m.foot=_w8rnL('או מחר — הוא יחכה כאן בדיוק.','Or tomorrow — it will be right here.');}
+    else{var bits=[];if(_w8rn.ses.topics)bits.push('✓ '+_w8rnB(_w8rn.ses.topics)+' '+_w8rnL(_w8rn.ses.topics===1?'נושא':'נושאים',_w8rn.ses.topics===1?'topic':'topics'));if(_w8rn.ses.answers)bits.push('✓ '+_w8rnB(_w8rn.ses.answers)+' '+_w8rnL(_w8rn.ses.answers===1?'תשובה':'תשובות',_w8rn.ses.answers===1?'answer':'answers'));if(_w8rn.ses.cases)bits.push('✓ '+_w8rnL('קייס','case'));
+      h+='<div class="w8rn-np-h">'+_w8rnL('יפה, התקדמתם היום','Nice progress today')+'</div><div class="w8rn-np-s">'+(bits.length?_w8rnL('בסשן הזה: ','This session: ')+bits.join(' · '):'')+'</div>'+resumeRow();
+      cta=_w8rnL('להמשיך עכשיו ←','Continue now →');m.foot=nx?_w8rnL('או בפעם הבאה — נמשיך בדיוק מכאן (','Or next time — we’ll pick up right here (')+_w8rnMin(nx.min)+').':'';}
+  }else if(m.k==='resume'){
+    h+='<div class="w8rn-np-h">'+_w8rnL('ממשיכים מאיפה שעצרתם','Pick up where you left off')+'</div>'+resumeRow();cta=_w8rnL('להמשיך ←','Continue →');
+  }else{
+    var e=p.e;h+='<div class="w8rn-np-h">🧭 '+_w8rnL('השלב הראשון שלכם — 3 חלקים קצרים','Your first stage — 3 short parts')+'</div><div class="w8rn-np-s">'+_w8rnL('השלב נספר כשכל 3 החלקים מסומנים ✓. כל חלק נשמר מיד, אפשר לעצור ביניהם.','The stage counts once all 3 parts are ✓. Each part saves instantly — you can stop between them.')+'</div>'
+      +'<div class="w8rn-np-parts"><span>📚 '+_w8rnL('קריאה','Read')+' '+_w8rnMin(e.l)+'</span><span>📋 '+_w8rnL('קייס','Case')+' '+_w8rnMin(e.c)+'</span><span>❓ '+_w8rnL('מבחן','Quiz')+' '+_w8rnMin(e.q)+(p.R.length>1?' · '+_w8rnB(p.R.length)+' '+_w8rnL('סבבים','rounds'):'')+'</span></div>';
+    cta=_w8rnL('להתחיל בחלק 1 ←','Start part 1 →');
+  }
+  h+='<button type="button" class="bp w8rn-np-go" onclick="_w8rnNpGo()">'+cta+'</button>'+(m.foot?'<div class="w8rn-np-f">'+m.foot+'</div>':'');
+  return h;
+}
+function _w8rnPanel(){
+  var old=$('w8rnNp'),m=null;try{m=_w8rnModel()}catch(e){m=null}
+  if(!m){if(old)old.remove();return}
+  var node=document.querySelector('#sg .j-node[data-sid="'+m.anchor+'"]');if(!node){if(old)old.remove();return}
+  var el=old||document.createElement('div');el.id='w8rnNp';
+  el.className='w8rn-np w8rn-np--'+m.k+(node.classList.contains('j-side-a')?' w8rn-a':(node.classList.contains('j-side-b')?' w8rn-b':''));
+  el.setAttribute('dir',_w8rnDir());el.setAttribute('role','region');el.setAttribute('aria-label',m.k==='return'?_w8rnL('ברוכים השבים','Welcome back'):_w8rnL('ההמשך שלכם','Your next step'));
+  el.setAttribute('data-kind',m.k);el.innerHTML=_w8rnNpHtml(m);
+  if(node.nextElementSibling!==el)node.insertAdjacentElement('afterend',el);
+  if(!_w8rn.sent[m.k]){_w8rn.sent[m.k]=1;if(m.k==='return')_w8rnT('return_shown',m.d);else _w8rnT('panel_show',m.k)}
+}
+function _w8rnRings(){
+  var ns=document.querySelectorAll('#sg .j-node[data-sid]');
+  for(var x=0;x<ns.length;x++){var n=ns[x],sid=parseInt(n.getAttribute('data-sid'),10),s=_w8rnSt(sid),old=n.querySelector('.w8rn-nr'),p=null;
+    if(s&&!_w8rnDone(sid))p=_w8rnProg(s);
+    if(!p||!p.started||p.pct<=0){if(old)old.remove();continue}
+    var ic=n.querySelector('.j-ic');if(!ic)continue;
+    if(!old){old=document.createElement('span');old.className='w8rn-nr';old.setAttribute('aria-hidden','true');ic.appendChild(old)}
+    old.style.setProperty('--w8rn-p',String(p.pct));n.setAttribute('data-w8rn-pct',String(p.pct));}
+}
+function _w8rnMap(){try{if(!G||G.v!=='m')return;_w8rnRings();_w8rnPanel()}catch(e){}}
+function _w8rnNpGo(){var m=null;try{m=_w8rnModel()}catch(e){}_w8rnT('panel_go',m?m.k:'');if(!m||!m.tg)return;if(m.k==='return')_w8rn.rbClosed=true;
+  var sid=m.tg.s.id;try{if(m.tg.p.started&&typeof _w7lnGo==='function'){_w7lnGo(sid,'w8rn');return}}catch(e){}try{ss(sid);window.scrollTo(0,0)}catch(e){}}
+function _w8rnNpClose(){var m=null;try{m=_w8rnModel()}catch(e){}_w8rnT('panel_close',m?m.k:'');if(m&&m.k==='return')_w8rn.rbClosed=true;_w8rn.npHide=_w8rn.ses.acts;var el=$('w8rnNp');if(el)el.remove()}
+
+/* =============================== wrappers (installed after every existing wrapper; pass-through on error) =============================== */
+var _w8rnO={};
+_w8rnO.rs=rs;rs=function(){var r=_w8rnO.rs.apply(this,arguments);try{_w8rnPath()}catch(e){}return r};
+_w8rnO.rt=rt;rt=function(){var r=_w8rnO.rt.apply(this,arguments);try{if(G.v==='s'){_w8rnAccTags();_w8rnLearnCta();_w8rnPath();_w8rnFade()}}catch(e){}return r};
+_w8rnO.rq=rq;rq=function(s){var r=_w8rnO.rq.apply(this,arguments);try{_w8rnQuiz(s)}catch(e){}return r};
+_w8rnO.sa=sa;sa=function(sid,qi,sel){
+  var was=true;try{was=!!(G.qa&&G.qa[sid]&&G.qa[sid][qi]!==undefined)}catch(e){}
+  var r=_w8rnO.sa.apply(this,arguments);
+  try{if(!was&&G.qa&&G.qa[sid]&&G.qa[sid][qi]!==undefined){_w8rn.ses.answers++;_w8rn.ses.acts++;var s=_w8rnSt(sid);if(s&&s.q[qi]&&G.qa[sid][qi]===s.q[qi].c)_w8rn.ses.correct++;_w8rnRoundCheck(sid,qi);_w8rnPath()}}catch(e){}
+  return r;
+};
+_w8rnO.st=st;st=function(t){
+  var was=true;try{var tv=G._tabVisits&&G._tabVisits[G.st];was=!!(tv&&tv.c)}catch(e){}
+  var r=_w8rnO.st.apply(this,arguments);
+  try{if(t==='c'&&!was&&G.v==='s'){_w8rn.ses.cases++;_w8rn.ses.acts++;_w8rnPath()}}catch(e){}
+  return r;
+};
+_w8rnO.urp=_updateReadProgress;_updateReadProgress=function(){var r=_w8rnO.urp.apply(this,arguments);try{if(G.v==='s'){_w8rnAccTags();_w8rnLearnCta();_w8rnPath()}}catch(e){}return r};
+_w8rnO.tcs=tryCompleteStage;tryCompleteStage=function(sid,showHint){
+  var was=true;try{was=_w8rnDone(sid)}catch(e){}
+  try{if(!was)_w8rnFair(sid)}catch(e){}
+  var hint=showHint;try{if(showHint&&!was){var s=_w8rnSt(sid),ps=s?stagePartsStatus(s):null;if(ps&&ps.quizAll&&!ps.full)hint=false}}catch(e){}/* the result card's "One step left" box replaces the generic toast */
+  var r=_w8rnO.tcs.call(this,sid,hint);
+  try{if(!was&&_w8rnDone(sid)){if(_w8rn.ses.done.indexOf(sid)<0)_w8rn.ses.done.push(sid);_w8rn.ses.acts++;var el=$('w8rnPath');if(el&&parseInt(G.st,10)===sid)el.remove()}}catch(e){}
+  return r;
+};
+_w8rnO.rg=rg;rg=function(){var r=_w8rnO.rg.apply(this,arguments);try{_w8rnMap()}catch(e){}return r};
+if(typeof applyLanguage==='function'){_w8rnO.al=applyLanguage;applyLanguage=function(){var r=_w8rnO.al.apply(this,arguments);try{_w8rnPath();if(G.v==='s'){_w8rnAccTags();_w8rnLearnCta()}_w8rnMap()}catch(e){}return r}}
+/* ===== /W8 retention ===== */
+
+/* ===== W8 UI sentinel (w8ui): z-order fixes found by _video_factory/_ui_sentinel.js ===== */
+/* (1) the phone dock read a modal in the first frame of its fade-in (opacity 0) as closed and stayed on top of it: a listed
+       overlay whose own animation is running counts as open (read-only, runs inside the dock's rAF-batched sync) */
+(function(){
+  try{
+    var f=window._w6dkOverlay;if(typeof f!=='function'||f._w8ui)return;
+    var g=function(){
+      if(f.apply(this,arguments))return true;
+      try{
+        if(typeof _w6dkOVSEL!=='string')return false;
+        var l=document.querySelectorAll(_w6dkOVSEL);
+        for(var i=0;i<l.length;i++){
+          var e=l[i];if(e.classList.contains('hid')||e.classList.contains('dvo-out')||!e.getAnimations||!e.getClientRects().length)continue;
+          var cs=getComputedStyle(e);if(cs.display==='none'||cs.visibility==='hidden'||parseFloat(cs.opacity)>0)continue;
+          var a=e.getAnimations();for(var k=0;k<a.length;k++)if(a[k].playState==='running'||a[k].pending)return true;
+        }
+      }catch(x){}
+      return false;
+    };
+    g._w8ui=1;window._w6dkOverlay=g;
+  }catch(e){}
+})();
+/* (2) a hook banner waits in the W6 stack's park while the resume toast or the share nudge holds the bottom lane */
+(function(){
+  try{
+    var f=window._w6skHookBusy;if(typeof f!=='function'||f._w8ui)return;
+    var g=function(){if(f.apply(this,arguments))return true;try{return !!document.querySelector('#w7lnRt,#w7shNudge')}catch(x){return false}};
+    g._w8ui=1;window._w6skHookBusy=g;
+  }catch(e){}
+})();
+/* ===== /W8 UI sentinel ===== */
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
