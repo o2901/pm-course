@@ -5025,7 +5025,7 @@ function _renumId(id){id=parseInt(id,10);return(id>=18&&id<=24)?id+1:id;}
 function _renumNumKeys(o){if(!o||typeof o!=='object')return o;for(var id=24;id>=18;id--){var k=String(id),nk=String(id+1);if(Object.prototype.hasOwnProperty.call(o,k)){o[nk]=o[k];delete o[k];}}return o;}
 function _renumCompositeKeys(o){if(!o||typeof o!=='object')return o;var nw={};Object.keys(o).forEach(function(k){var m=/^(\d+)(_.*)?$/.exec(k);if(m){nw[_renumId(m[1])+(m[2]||'')]=o[k];}else{nw[k]=o[k];}});Object.keys(o).forEach(function(k){delete o[k];});Object.keys(nw).forEach(function(k){o[k]=nw[k];});return o;}
 function _migrateLocalRenumber(){
-  if(G._renum25)return;
+  if(G._renum25)return;if(G.navyArm!==undefined||G.isAdmin!==undefined||G._cloudRenumDone!==undefined){G._renum25=true;return}/* hotfix RT2-01: navyArm/isAdmin exist only in >=1.1.0 snapshots (ids already new) — a latch-less one came from a fresh browser, never from 1.0.x */
   if(G.done instanceof Set)G.done=new Set([...G.done].map(_renumId));
   ['sc','qa','quizAttempts','reflections','_pu','_quizPassed','_tabVisits'].forEach(function(p){if(G[p]&&typeof G[p]==='object')_renumNumKeys(G[p]);});
   ['_seenSec','stageTime'].forEach(function(p){if(G[p]&&typeof G[p]==='object')_renumCompositeKeys(G[p]);});
@@ -9180,7 +9180,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.6';
+const APP_VERSION='1.10.6.1';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -18050,6 +18050,8 @@ function _w6pfTcSnap(){var tc=document.getElementById('tc');return [tc,tc?Array.
 const _w6pfOrigRs=rs;rs=function(){var b=_w6pfTcSnap();var r=_w6pfOrigRs.apply(this,arguments);_w6pfLessonGc(b[0],b[1]);return r};
 const _w6pfOrigSt=st;st=function(){var b=_w6pfTcSnap();var r=_w6pfOrigSt.apply(this,arguments);_w6pfLessonGc(b[0],b[1]);return r};
 /* ===== /W6 perf ===== */
+/* hotfix RT2-01: latch the one-time local renumber for every snapshot this build writes (ld() already ran any genuine migration) */
+try{if(!G._renum25)G._renum25=true}catch(e){}
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
