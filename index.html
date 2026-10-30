@@ -9180,7 +9180,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.6';
+const APP_VERSION='1.10.7';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -18050,6 +18050,26 @@ function _w6pfTcSnap(){var tc=document.getElementById('tc');return [tc,tc?Array.
 const _w6pfOrigRs=rs;rs=function(){var b=_w6pfTcSnap();var r=_w6pfOrigRs.apply(this,arguments);_w6pfLessonGc(b[0],b[1]);return r};
 const _w6pfOrigSt=st;st=function(){var b=_w6pfTcSnap();var r=_w6pfOrigSt.apply(this,arguments);_w6pfLessonGc(b[0],b[1]);return r};
 /* ===== /W6 perf ===== */
+/* ===== W8 legacy archive (w8lg): prod build v1.6.70 (until 30/10/2026) as a sandboxed local-only page on the media host,
+   linked from the admin dashboard next to "🔄 רענן נתונים". API: _w8lgHtml(), _w8lgUrl(). ===== */
+var _W8LG={ver:'1.6.70',until:'30/10/2026',file:'legacy-v1.6.70.html'};
+function _w8lgUrl(){return (typeof MEDIA_HOST==='string'&&MEDIA_HOST?MEDIA_HOST.replace(/\/*$/,'/'):'https://pm-course-media.vercel.app/')+_W8LG.file}
+function _w8lgHtml(){
+  var en=(typeof G!=='undefined'&&G&&G.lang==='en');
+  var tip=en?'The prod build that ran until '+_W8LG.until+' · opens in a new tab · local only, nothing is saved to the cloud'
+            :'גרסת הפרוד שרצה עד '+_W8LG.until+' · נפתחת בלשונית חדשה · מקומית בלבד, שום דבר לא נשמר בענן';
+  return '<a class="bs" id="w8lgBtn" href="'+_w8lgUrl()+'" target="_blank" rel="noopener noreferrer" title="'+tip+'" aria-label="'+tip+'"'
+    +' style="font-size:.78rem;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem"'
+    +' onclick="try{trackEvent(\'admin\',\'legacyOpen\',{ver:_W8LG.ver})}catch(e){}">🕰️ '+(en?'Legacy v'+_W8LG.ver:'גרסת ארכיון '+_W8LG.ver)+'</a>';
+}
+function _w8lgInject(){
+  var a=$('adv');if(!a||document.getElementById('w8lgBtn'))return;
+  var r=a.querySelector('button[onclick="loadAdminData()"]');if(!r)return;
+  r.insertAdjacentHTML('afterend',_w8lgHtml());
+}
+(function(){if(typeof renderAdminDashboard!=='function')return;var _o=renderAdminDashboard;
+  renderAdminDashboard=function(){var x=_o.apply(this,arguments);try{_w8lgInject()}catch(e){}return x};})();
+
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
