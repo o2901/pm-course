@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <title>Product Master - קורס ניהול מוצר</title>
@@ -4739,6 +4739,96 @@ body.light .w10gm-tile{box-shadow:0 4px 0 rgba(42,39,33,.12)}
   .w10gm-mys::after{display:none}
 }
 /* ===== /W10 games4 ===== */
+/* ===== W10 MOBILE FEEL (w10mb): safe areas · overscroll · touch · input zoom · keyboard · landscape · sideways pan · svh/dvh ===== */
+/* 1 · safe areas: viewport-fit=cover makes env() live; every edge layer is inset additively (a 0 inset changes nothing) */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+/* v2: the header row's controls carry 10px invisible tap overhangs (.hdr-logo padding-block 10 / margin-block -10; navux counters'
+   ::after -9px), so the header (and with it the screens below it) gets the top inset + 10px when an inset exists — 0 / 0 when it does not */
+#mv,#sv,#miv,#ab,#duelView,#glv,#pv,#lbv,#adv{border-top:calc(env(safe-area-inset-top,0px) + min(10px,env(safe-area-inset-top,0px))) solid transparent}
+.hdr{border-top:calc(env(safe-area-inset-top,0px) + min(10px,env(safe-area-inset-top,0px))) solid transparent;border-left:env(safe-area-inset-left,0px) solid transparent;border-right:env(safe-area-inset-right,0px) solid transparent}
+.info-bar{border-left:env(safe-area-inset-left,0px) solid transparent;border-right:env(safe-area-inset-right,0px) solid transparent}
+#pb,.info-bar,.ach-toast,.duel-notif,#qfxCombo,#w7jcComboMsg,.w6ax-skip{margin-top:calc(env(safe-area-inset-top,0px) + min(10px,env(safe-area-inset-top,0px)))}
+#qfxCombo,#w7jcComboMsg{margin-left:env(safe-area-inset-left,0px);margin-right:env(safe-area-inset-right,0px)}
+[id$="Fab"]:not(#jumpCurFab){margin-left:env(safe-area-inset-left,0px);margin-right:env(safe-area-inset-right,0px);margin-bottom:env(safe-area-inset-bottom,0px)}
+:is(.modal-overlay,.bug-modal,.daily-modal,.duel-config,.adm-modal-overlay,#todayHub,#wbOv,#goalOv,#legalOv,#pwOv,#w7hbOv,.w7ln-ov,#w8gmOv,#w9plGoalOv,#w6stMs,#stageCerem,.w10mo-gh){border-style:solid;border-color:transparent;border-width:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+:is(#w7shOv,#w8g3Ov){border-style:solid;border-color:transparent;border-width:0 env(safe-area-inset-right,0px) 0 env(safe-area-inset-left,0px)}
+/* 2 · overscroll: no pull-to-refresh reload from the page; sheets and dialogs never chain their scroll to the page */
+html,body{overscroll-behavior-y:contain}
+:is(#todayHub,#wbOv,#goalOv,#legalOv,#pwOv,#w7hbOv,#w8gmOv,#w9plGoalOv,.w7ln-ov,.modal-overlay,.bug-modal,.daily-modal,.duel-config,.adm-modal-overlay,#w6stMs,.hub-box,.daily-modal-box,.modal-box,.bug-modal-box,.duel-config-box,.w7hb-box,.duel-panel-body,.adm-modal,textarea),.ti .tp{overscroll-behavior:contain}
+/* 3 · touch: no double-tap zoom / tap delay, no tap flash (motion10's press is the one feedback), no long-press selection or callout on controls */
+html{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:where(button,[role=button],[role=tab],[role=radio],[role=switch],[role=menuitem],.opt,.j-node,.tab,.bp,.bs,.btn-go,.glv-item,.continue-hero,.wk-opt,.hub-x,.sat-star,[id$="Fab"],.w6dk-it,.w6dk-tile,.intro-btn,.intro-rate,.pf-narrate){-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+:where(input,textarea,select,[contenteditable=true],[contenteditable=""]){-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+/* 4 · iOS focus zoom: text fields and pickers are 16px on touch screens */
+@media (pointer:coarse){input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=color]):not([type=button]):not([type=submit]):not([type=reset]):not([type=image]):not([type=hidden]):not([readonly]),textarea:not([readonly]),select{font-size:16px!important}}
+/* 5 · keyboard: the overlay holding the focused field is fitted to the visible band above the keyboard (set by _w10mbKbSync) */
+[data-w10mb-kb]{border-top-width:0!important;border-bottom-width:0!important;padding-top:calc(var(--w10mb-kbt,0px) + env(safe-area-inset-top,0px) + 8px)!important;padding-bottom:calc(var(--w10mb-kb,0px) + 8px)!important;overflow-y:auto!important;align-items:flex-start!important;align-content:start!important}
+[data-w10mb-kb]>:is(.modal-box,.bug-modal-box,.daily-modal-box,.duel-config-box,.hub-box,.w7hb-box){max-height:calc(var(--w10mb-vvh,100vh) - env(safe-area-inset-top,0px) - 16px)!important;overflow-y:auto!important;overscroll-behavior:contain;margin-top:0!important;margin-bottom:auto!important}
+/* 6 · landscape / short screens: centred dialogs never lose their top or bottom (safe centring + scroll) */
+.modal-overlay,.bug-modal,.daily-modal,.duel-config{overflow-y:auto;align-items:flex-start}
+.modal-overlay>.modal-box,.bug-modal>.bug-modal-box,.daily-modal>.daily-modal-box,.duel-config>.duel-config-box{margin-top:auto;margin-bottom:auto}
+@media (orientation:landscape) and (max-height:520px){
+.daily-modal-box div:has(>#avSlide){min-height:0!important;padding:.6rem 1rem!important}
+.daily-modal-box #avSlide img{max-height:min(110px,26dvh)!important}
+.stage-intro-card video{max-height:calc(100dvh - 7.5rem)!important}
+.daily-modal-box:has(iframe[allowfullscreen]){width:min(94vw,calc((100dvh - 6.5rem) * 16 / 9))!important}
+}
+/* 7 · sideways pan */
+#stageCerem{overflow-x:hidden}
+@media (max-width:340px){#lbv div[style*="overflow-x"]>table :is(th,td){padding-left:.2rem!important;padding-right:.2rem!important}}
+/* 8 · glossary search filters in place (JS) */
+#glv [data-w10mb-x]{display:none!important}
+/* 9 · vh → dvh / svh (boxes fit the visible area when the browser bars show; short screens do not rubber-band) */
+@supports (height:100dvh){
+.daily-modal-box{max-height:min(85dvh,calc(100dvh - 16px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)))}
+.hub-box{max-height:min(92dvh,calc(100dvh - 2.4rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)))}
+.w7hb-box{max-height:calc(100dvh - 2rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+.w8gm-box{max-height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+.duel-panel{max-height:70dvh}
+.duel-panel-body{max-height:calc(70dvh - 50px)}
+.ti .tp{max-height:60dvh}
+.adm-modal{max-height:85dvh}
+html.w6dk-on body .chat-panel,html.w6dk-on body .duel-panel{max-height:calc(100dvh - var(--w6dk-h) - 80px)!important}
+html.w6dk-on body .duel-panel .duel-panel-body{max-height:calc(100dvh - var(--w6dk-h) - 136px)!important}
+}
+@supports (height:100svh){body,.map,.stv,.mi-view,.glv-wrap,.pv-wrap,.about-page,.duel-screen{min-height:100svh}}
+/* ===== /W10 mobile feel ===== */
+/* ===== W10 ENTRY phase 2 (w10e2): no form flash on load · E2p · E5 link sent · confirm tap · 6-question warm-up ===== */
+[id^="w10e2"][hidden]{display:none!important}
+/* 1 · until the entry is built, the welcome's static markup (the old form) never shows: a neutral wordmark does. If the build
+   never comes (an error), the content appears after 4 s anyway (CSS only — no script needed for the fallback) */
+#ws:not(.w10en-on)>*{opacity:0;animation:w10e2Reveal 0s linear 4s forwards}
+#ws:not(.w10en-on)::after{content:"Product Master";position:fixed;inset:0;display:grid;place-items:center;font-weight:900;font-size:clamp(1.8rem,7vw,2.6rem);letter-spacing:-.01em;color:var(--p);pointer-events:none;z-index:2;animation:w10e2Hide 0s linear 4s forwards}
+@keyframes w10e2Reveal{to{opacity:1}}
+@keyframes w10e2Hide{to{opacity:0;visibility:hidden}}
+/* 3 · E2p: a device whose sign-up is waiting — its status card is the home step */
+#ws.w10en-on.w10e2-pend[data-w10en="home"] :is(#w9obHero,#w9obRet,#w10enNew,#lobbyRow){display:none!important}
+#ws.w10en-on:not([data-w10en="home"]) #w10e2Pend{display:none!important}
+.w10e2-card{width:100%;max-width:440px;margin:clamp(1rem,6vh,3.5rem) auto 0;box-sizing:border-box;position:relative;z-index:1;text-align:start;display:grid;gap:.8rem}
+#w10e2Pend{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1.2rem 1.15rem}
+.w10e2-h{margin:0;font-size:1.3rem;line-height:1.35;font-weight:800;color:var(--t1)}
+.w10e2-h:focus{outline:none}
+.w10e2-p{margin:0;font-size:.98rem;line-height:1.6;color:var(--t2)}
+.w10e2-muted{font-size:.86rem}
+.w10e2-go{display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;margin:0;border-radius:16px;font-size:1.04rem;box-sizing:border-box;text-decoration:none;text-align:center}
+.w10e2-link{margin:0 auto}
+:is(.w10e2-go,.w10e2-link,.w10e2-inl):focus-visible{outline:2px solid var(--p);outline-offset:2px}
+.w10e2-link[disabled]{opacity:.6;text-decoration:none;cursor:default}
+/* 4 · E5 "link sent" and the confirm step: their own steps */
+#ws.w10en-on :is(#w10e2Sent,#w10e2Conf){display:none}
+#ws.w10en-on[data-w10en="sent"] #w10e2Sent,#ws.w10en-on[data-w10en="confirm"] #w10e2Conf{display:grid;animation:w10enIn .18s ease both}
+#ws.w10en-on:is([data-w10en="sent"],[data-w10en="confirm"]) :is(#w9obRet,#w10enNew,#w10e2Pend,#w9obHero,#w9obInfo,#wsLogin,#w9obFaq,.w9ob-ranks,#w10enHowEnd,#lobbyRow){display:none!important}
+#ws.w10en-on:is([data-w10en="sent"],[data-w10en="confirm"]) .w10e2-card{margin-top:1rem}
+/* 5 · inline error links look like links inside the sentence */
+.w10e2-inl{font-weight:800;color:inherit;text-decoration:underline;text-underline-offset:2px}
+/* 6 · the warm-up hosts the check's questions: no × and no "no sign-up needed" line there */
+#w9obWait :is(.w9ob-qx,.w9ob-foot){display:none!important}
+@media(prefers-reduced-motion:reduce){#ws.w10en-on[data-w10en="sent"] #w10e2Sent,#ws.w10en-on[data-w10en="confirm"] #w10e2Conf{animation:none!important}}
+/* light theme: the deeper primary for the purple words */
+body.light #ws.w10en-on .w10e2-link{color:var(--pd)}
+html[data-acc="amber"] body:not(.light) #ws.w10en-on .w10e2-card .bp{color:#1A1407}
+/* ===== /W10 ENTRY phase 2 ===== */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 </head>
@@ -9148,7 +9238,7 @@ function pfVideo(stageId,topicIdx){
 // STAGE_INTRO['<stageId>_<lang>'] = video URL. Self-hosted .mp4 (deploy/av/intro/...) renders an
 // inline <video>; Drive/YouTube links render an embed iframe. The card sits at the TOP of the
 // stage's theory tab — watch first, then read. Monitored as video/intro_play.
-var STAGE_INTRO={'0_en':'av/intro/stage-00-en.mp4','0_he':'av/intro/stage-00-he.mp4','1_en':'av/intro/stage-01-en.mp4','1_he':'av/intro/stage-01-he.mp4','2_en':'av/intro/stage-02-en.mp4','2_he':'av/intro/stage-02-he.mp4','3_en':'av/intro/stage-03-en.mp4','3_he':'av/intro/stage-03-he.mp4','4_en':'av/intro/stage-04-en.mp4','4_he':'av/intro/stage-04-he.mp4','5_en':'av/intro/stage-05-en.mp4','5_he':'av/intro/stage-05-he.mp4','6_en':'av/intro/stage-06-en.mp4','6_he':'av/intro/stage-06-he.mp4','7_en':'av/intro/stage-07-en.mp4','7_he':'av/intro/stage-07-he.mp4','8_en':'av/intro/stage-08-en.mp4','8_he':'av/intro/stage-08-he.mp4','9_en':'av/intro/stage-09-en.mp4','9_he':'av/intro/stage-09-he.mp4','10_en':'av/intro/stage-10-en.mp4','10_he':'av/intro/stage-10-he.mp4','11_en':'av/intro/stage-11-en.mp4','11_he':'av/intro/stage-11-he.mp4','12_en':'av/intro/stage-12-en.mp4','12_he':'av/intro/stage-12-he.mp4','13_en':'av/intro/stage-13-en.mp4','13_he':'av/intro/stage-13-he.mp4','14_en':'av/intro/stage-14-en.mp4','14_he':'av/intro/stage-14-he.mp4','15_en':'av/intro/stage-15-en.mp4','15_he':'av/intro/stage-15-he.mp4','16_en':'av/intro/stage-16-en.mp4','16_he':'av/intro/stage-16-he.mp4','17_en':'av/intro/stage-17-en.mp4','17_he':'av/intro/stage-17-he.mp4','18_en':'av/intro/stage-18-en.mp4','18_he':'av/intro/stage-18-he.mp4','19_en':'av/intro/stage-19-en.mp4','19_he':'av/intro/stage-19-he.mp4','20_en':'av/intro/stage-20-en.mp4','20_he':'av/intro/stage-20-he.mp4','21_en':'av/intro/stage-21-en.mp4','21_he':'av/intro/stage-21-he.mp4','22_en':'av/intro/stage-22-en.mp4','22_he':'av/intro/stage-22-he.mp4','23_en':'av/intro/stage-23-en.mp4','23_he':'av/intro/stage-23-he.mp4','24_en':'av/intro/stage-24-en.mp4','24_he':'av/intro/stage-24-he.mp4','25_en':'av/intro/stage-25-en.mp4','100_he':'av/intro/stage-100-he.mp4','100_en':'av/intro/stage-100-en.mp4','101_he':'av/intro/stage-101-he.mp4','101_en':'av/intro/stage-101-en.mp4','102_he':'av/intro/stage-102-he.mp4','103_he':'av/intro/stage-103-he.mp4','103_en':'av/intro/stage-103-en.mp4','104_he':'av/intro/stage-104-he.mp4','104_en':'av/intro/stage-104-en.mp4','105_he':'av/intro/stage-105-he.mp4','105_en':'av/intro/stage-105-en.mp4','106_he':'av/intro/stage-106-he.mp4','106_en':'av/intro/stage-106-en.mp4','107_he':'av/intro/stage-107-he.mp4','107_en':'av/intro/stage-107-en.mp4','108_he':'av/intro/stage-108-he.mp4','108_en':'av/intro/stage-108-en.mp4','109_he':'av/intro/stage-109-he.mp4','109_en':'av/intro/stage-109-en.mp4','110_en':'av/intro/stage-110-en.mp4','110_he':'av/intro/stage-110-he.mp4','111_en':'av/intro/stage-111-en.mp4','111_he':'av/intro/stage-111-he.mp4','112_en':'av/intro/stage-112-en.mp4','112_he':'av/intro/stage-112-he.mp4','113_en':'av/intro/stage-113-en.mp4','113_he':'av/intro/stage-113-he.mp4','114_en':'av/intro/stage-114-en.mp4','114_he':'av/intro/stage-114-he.mp4','102_en':'av/intro/stage-102-en.mp4','115_en':'av/intro/stage-115-en.mp4','115_he':'av/intro/stage-115-he.mp4','116_en':'av/intro/stage-116-en.mp4','116_he':'av/intro/stage-116-he.mp4','117_en':'av/intro/stage-117-en.mp4','117_he':'av/intro/stage-117-he.mp4','118_en':'av/intro/stage-118-en.mp4','118_he':'av/intro/stage-118-he.mp4','119_en':'av/intro/stage-119-en.mp4','119_he':'av/intro/stage-119-he.mp4','120_en':'av/intro/stage-120-en.mp4','120_he':'av/intro/stage-120-he.mp4','121_en':'av/intro/stage-121-en.mp4','121_he':'av/intro/stage-121-he.mp4','122_en':'av/intro/stage-122-en.mp4','122_he':'av/intro/stage-122-he.mp4','123_en':'av/intro/stage-123-en.mp4','123_he':'av/intro/stage-123-he.mp4','124_en':'av/intro/stage-124-en.mp4','124_he':'av/intro/stage-124-he.mp4','125_he':'av/intro/stage-125-he.mp4','25_he':'av/intro/stage-25-he.mp4'};
+var STAGE_INTRO={'0_en':'av/intro/stage-00-en.mp4','0_he':'av/intro/stage-00-he.mp4','1_en':'av/intro/stage-01-en.mp4','1_he':'av/intro/stage-01-he.mp4','2_en':'av/intro/stage-02-en.mp4','2_he':'av/intro/stage-02-he.mp4','3_en':'av/intro/stage-03-en.mp4','3_he':'av/intro/stage-03-he.mp4','4_en':'av/intro/stage-04-en.mp4','4_he':'av/intro/stage-04-he.mp4','5_en':'av/intro/stage-05-en.mp4','5_he':'av/intro/stage-05-he.mp4','6_en':'av/intro/stage-06-en.mp4','6_he':'av/intro/stage-06-he.mp4','7_en':'av/intro/stage-07-en.mp4','7_he':'av/intro/stage-07-he.mp4','8_en':'av/intro/stage-08-en.mp4','8_he':'av/intro/stage-08-he.mp4','9_en':'av/intro/stage-09-en.mp4','9_he':'av/intro/stage-09-he.mp4','10_en':'av/intro/stage-10-en.mp4','10_he':'av/intro/stage-10-he.mp4','11_en':'av/intro/stage-11-en.mp4','11_he':'av/intro/stage-11-he.mp4','12_en':'av/intro/stage-12-en.mp4','12_he':'av/intro/stage-12-he.mp4','13_en':'av/intro/stage-13-en.mp4','13_he':'av/intro/stage-13-he.mp4','14_en':'av/intro/stage-14-en.mp4','14_he':'av/intro/stage-14-he.mp4','15_en':'av/intro/stage-15-en.mp4','15_he':'av/intro/stage-15-he.mp4','16_en':'av/intro/stage-16-en.mp4','16_he':'av/intro/stage-16-he.mp4','17_en':'av/intro/stage-17-en.mp4','17_he':'av/intro/stage-17-he.mp4','18_en':'av/intro/stage-18-en.mp4','18_he':'av/intro/stage-18-he.mp4','19_en':'av/intro/stage-19-en.mp4','19_he':'av/intro/stage-19-he.mp4','20_en':'av/intro/stage-20-en.mp4','20_he':'av/intro/stage-20-he.mp4','21_en':'av/intro/stage-21-en.mp4','21_he':'av/intro/stage-21-he.mp4','22_en':'av/intro/stage-22-en.mp4','22_he':'av/intro/stage-22-he.mp4','23_en':'av/intro/stage-23-en.mp4','23_he':'av/intro/stage-23-he.mp4','24_en':'av/intro/stage-24-en.mp4','24_he':'av/intro/stage-24-he.mp4','25_en':'av/intro/stage-25-en.mp4','100_he':'av/intro/stage-100-he.mp4','100_en':'av/intro/stage-100-en.mp4','101_he':'av/intro/stage-101-he.mp4','101_en':'av/intro/stage-101-en.mp4','102_he':'av/intro/stage-102-he.mp4','103_he':'av/intro/stage-103-he.mp4','103_en':'av/intro/stage-103-en.mp4','104_he':'av/intro/stage-104-he.mp4','104_en':'av/intro/stage-104-en.mp4','105_he':'av/intro/stage-105-he.mp4','105_en':'av/intro/stage-105-en.mp4','106_he':'av/intro/stage-106-he.mp4','106_en':'av/intro/stage-106-en.mp4','107_he':'av/intro/stage-107-he.mp4','107_en':'av/intro/stage-107-en.mp4','108_he':'av/intro/stage-108-he.mp4','108_en':'av/intro/stage-108-en.mp4','109_he':'av/intro/stage-109-he.mp4','109_en':'av/intro/stage-109-en.mp4','110_en':'av/intro/stage-110-en.mp4','110_he':'av/intro/stage-110-he.mp4','111_en':'av/intro/stage-111-en.mp4','111_he':'av/intro/stage-111-he.mp4','112_en':'av/intro/stage-112-en.mp4','112_he':'av/intro/stage-112-he.mp4','113_en':'av/intro/stage-113-en.mp4','113_he':'av/intro/stage-113-he.mp4','114_en':'av/intro/stage-114-en.mp4','114_he':'av/intro/stage-114-he.mp4','102_en':'av/intro/stage-102-en.mp4','115_en':'av/intro/stage-115-en.mp4','115_he':'av/intro/stage-115-he.mp4','116_en':'av/intro/stage-116-en.mp4','116_he':'av/intro/stage-116-he.mp4','117_en':'av/intro/stage-117-en.mp4','117_he':'av/intro/stage-117-he.mp4','118_en':'av/intro/stage-118-en.mp4','118_he':'av/intro/stage-118-he.mp4','119_en':'av/intro/stage-119-en.mp4','119_he':'av/intro/stage-119-he.mp4','120_en':'av/intro/stage-120-en.mp4','120_he':'av/intro/stage-120-he.mp4','121_en':'av/intro/stage-121-en.mp4','121_he':'av/intro/stage-121-he.mp4','122_en':'av/intro/stage-122-en.mp4','122_he':'av/intro/stage-122-he.mp4','123_en':'av/intro/stage-123-en.mp4','123_he':'av/intro/stage-123-he.mp4','124_en':'av/intro/stage-124-en.mp4','124_he':'av/intro/stage-124-he.mp4','125_he':'av/intro/stage-125-he.mp4','125_en':'av/intro/stage-125-en.mp4','25_he':'av/intro/stage-25-he.mp4'};
 function enhanceIntroVideo(){
   var tc=document.getElementById('tc');if(!tc)return;
   if(tc.querySelector('.stage-intro-card'))return;
@@ -9506,7 +9596,7 @@ function _avSpeak(){
   _avHush();
   var myTok=_av.tok;
   if(_av.aud){
-    var a=new Audio(_media('av/'+_av.aud+'/'+(G.avVoice==='hila'?'hila':(G.avVoice==='klasi'?'klasi':'avri'))+'-'+_av.i+'.mp3'));/* w7md */
+    var a=_w10mbAu(_media('av/'+_av.aud+'/'+(G.avVoice==='hila'?'hila':(G.avVoice==='klasi'?'klasi':'avri'))+'-'+_av.i+'.mp3'));/* w7md */
     _av.player=a;
     try{a.playbackRate=(G.narrRate&&G.narrRate>0)?G.narrRate:1;}catch(e){}
     a.onended=function(){_avAdvance(myTok);};
@@ -11365,7 +11455,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.21';
+const APP_VERSION='1.10.22';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -27303,14 +27393,14 @@ function _w10nvMapBack(e,from){
   if(from&&from.k==='s'&&_w10nvCenter(from.id))_w10nvMute();
 }
 /* rg() smooth-scrolls to the current stage 200ms after every map render; on a Back return that one scroll is swallowed */
-function _w10nvMute(sel){try{var n=document.querySelector(sel||'#sg .j-node.current');if(!n||n._w10nvM)return;n._w10nvM=1;n.scrollIntoView=function(){};setTimeout(function(){try{delete n.scrollIntoView;n._w10nvM=0}catch(e){}},1200)}catch(e){}}
+function _w10nvMute(sel){try{var n=document.querySelector(sel||'#sg .j-node.current');if(!n||n._w10nvM)return;n._w10nvM=1;var ui=_w10nv.ui,off=function(){try{delete n.scrollIntoView;n._w10nvM=0}catch(e){}};n.scrollIntoView=function(){if(_w10nv.ui!==ui){off();return n.scrollIntoView.apply(n,arguments)}/* the learner asked (jump chip, Map again): do it */};setTimeout(off,1200)}catch(e){}}/* only the app's OWN automatic re-centring after a Back restore is swallowed */
 function _w10nvCenter(id){try{var n=document.querySelector('#sg .j-node[data-sid="'+(+id)+'"]')||document.querySelector('#mv [data-sid="'+(+id)+'"]');if(!n)return false;var r=n.getBoundingClientRect();_w10nvScroll((window.scrollY||0)+r.top+r.height/2-innerHeight/2);return true}catch(e){return false}}
 function _w10nvScroll(y){try{window.scrollTo({top:Math.max(0,Math.round(y)),left:0,behavior:'instant'})}catch(e){try{window.scrollTo(0,Math.max(0,Math.round(y)))}catch(x){}}}
 function _w10nvTo(y){
-  y=Math.max(0,Math.round(+y||0));var ui=_w10nv.ui,sk=_w10nvKey(_w10nvCur());
-  var go=function(){var max=Math.max(0,document.documentElement.scrollHeight-innerHeight);_w10nvScroll(Math.min(y,max))};
+  y=Math.max(0,Math.round(+y||0));var ui=_w10nv.ui,sk=_w10nvKey(_w10nvCur()),set=null;
+  var go=function(){var max=Math.max(0,document.documentElement.scrollHeight-innerHeight);_w10nvScroll(Math.min(y,max));set=Math.round(window.scrollY||0)};
   go();
-  [300,800].forEach(function(ms){setTimeout(function(){if(_w10nv.ui!==ui||_w10nvKey(_w10nvCur())!==sk)return;/* the learner moved, or another screen is on view now: never fight them */var max=Math.max(0,document.documentElement.scrollHeight-innerHeight),t=Math.min(y,max);if(Math.abs((window.scrollY||0)-t)>40)go()},ms)});
+  [300,800].forEach(function(ms){setTimeout(function(){if(_w10nv.ui!==ui||_w10nvKey(_w10nvCur())!==sk)return;/* the learner moved, or another screen is on view now: never fight them */var now=Math.round(window.scrollY||0);if(set!=null&&Math.abs(now-set)>2)return;/* anything else scrolled since our restore (the app's own scrollIntoView, a check): leave it there */var max=Math.max(0,document.documentElement.scrollHeight-innerHeight),t=Math.min(y,max);if(Math.abs(now-t)>40)go()},ms)});
 }
 function _w10nvCloseAll(){
   var t=_w10nv.ovs.slice(),n=0;
@@ -29330,6 +29420,389 @@ function _w10scHtml(v){
 var _w10ln={v:1};
 function _w10lnSyncTip(){try{var el=document.getElementById('syncStatus');if(!el||typeof _w8dlSyncChip!=='function')return;var t=el.getAttribute('title')||'';if(!t)return;var M=[['אין חיבור','📴'],['Offline','📴'],['שיהוק','⚠️'],['A small sync','⚠️'],['נשמר בענן','☁️'],['Saved to the cloud','☁️']];for(var i=0;i<M.length;i++){if(t.indexOf(M[i][0])===0){_w8dlSyncChip(M[i][1]);return}}}catch(e){}}
 (function(){try{if(typeof applyLanguage!=='function'||applyLanguage._w10ln)return;var o=applyLanguage;applyLanguage=function(){var r=o.apply(this,arguments);_w10lnSyncTip();return r};applyLanguage._w10ln=1}catch(e){}})();
+/* ===== W10 MOBILE FEEL (w10mb): keyboard over fields · sticky hover · glossary search typing · shared narration player ·
+   sound context resume · fullscreen video → landscape · debug hook. Listeners only; no G state, no saves, no network. ===== */
+var _w10mb={on:false,kbOv:null,kbRaf:0,kbT:0,au:null,fsLock:false,hv:0,st:{kb:0,reveal:0,hover:0,gls:0,fs:0,au:0,snd:0}};
+/* ---------- keyboard: fit the overlay holding the focused field to the visible band ---------- */
+function _w10mbField(el){return !!el&&el.nodeType===1&&!el.disabled&&!el.readOnly&&(el.tagName==='TEXTAREA'||(el.tagName==='INPUT'&&!/^(checkbox|radio|range|file|color|button|submit|reset|image|hidden)$/i.test(el.type||''))||el.isContentEditable===true)}
+function _w10mbFixedRoot(el){
+  for(var p=el;p&&p!==document.body&&p!==document.documentElement;p=p.parentElement){
+    var cs;try{cs=getComputedStyle(p)}catch(e){return null}
+    if(cs.position==='fixed'){
+      var c=typeof p.className==='string'?p.className:'';
+      if(p.id==='hd'||p.id==='w6dkDock'||/(^|\s)(w8su|w9ob|w10en)/.test(c))return null;/* header / dock / the sign-up flow (entryux) keep their own behaviour */
+      return p}
+  }
+  return null}
+function _w10mbKbQ(){if(_w10mb.kbRaf)return;_w10mb.kbRaf=requestAnimationFrame(function(){_w10mb.kbRaf=0;try{_w10mbKbSync()}catch(e){}})}
+function _w10mbKbBlur(){/* v2: focus left every field → the overlay is restored at once (a hidden tab / busy frame never strands it) */if(_w10mb.kbOv&&!_w10mbField(document.activeElement)){_w10mbKbOff(_w10mb.kbOv);_w10mb.kbOv=null}_w10mbKbQ()}
+function _w10mbKbOff(R){try{R.removeAttribute('data-w10mb-kb');R.style.removeProperty('--w10mb-kb');R.style.removeProperty('--w10mb-kbt');R.style.removeProperty('--w10mb-vvh')}catch(e){}}
+function _w10mbKbSync(){
+  var vv=window.visualViewport,de=document.documentElement;
+  var H=de.clientHeight||window.innerHeight,vh=vv?vv.height:H,vt=vv?Math.max(0,vv.offsetTop||0):0;
+  var kb=Math.max(0,Math.round(H-(vt+vh)));
+  if(vv&&vv.scale&&Math.abs(vv.scale-1)>0.05)kb=0;/* pinch-zoom shrinks the visual viewport too — only an unzoomed shrink is a keyboard */
+  var a=document.activeElement,R=(kb>80&&_w10mbField(a))?_w10mbFixedRoot(a):null;
+  var old=_w10mb.kbOv;
+  if(old&&(old!==R||!old.isConnected)){_w10mbKbOff(old);_w10mb.kbOv=null}
+  if(!R)return;
+  var fresh=!R.hasAttribute('data-w10mb-kb');
+  R.style.setProperty('--w10mb-kb',kb+'px');R.style.setProperty('--w10mb-kbt',Math.round(vt)+'px');R.style.setProperty('--w10mb-vvh',Math.round(vh)+'px');
+  if(fresh){R.setAttribute('data-w10mb-kb','');_w10mb.st.kb++}
+  _w10mb.kbOv=R;
+  requestAnimationFrame(function(){try{_w10mbReveal(a,R)}catch(e){}});
+}
+function _w10mbNextBtn(f,R){var bs=R.querySelectorAll('button');for(var i=0;i<bs.length;i++){var x=bs[i];if((f.compareDocumentPosition(x)&4)&&!x.disabled&&x.getClientRects().length)return x}return null}
+function _w10mbReveal(f,R){
+  if(!f||!f.isConnected||document.activeElement!==f||!R.contains(f))return;
+  var sc=null;for(var p=f.parentElement;p;p=p.parentElement){var cs=getComputedStyle(p);if(/(auto|scroll)/.test(cs.overflowY)&&p.scrollHeight>p.clientHeight+1){sc=p;break}if(p===R)break}
+  if(!sc)return;
+  var vv=window.visualViewport,vt=vv?Math.max(0,vv.offsetTop||0):0,top=vt+8,bot=(vv?vt+vv.height:innerHeight)-8;
+  var s=sc.getBoundingClientRect();top=Math.max(top,s.top+4);bot=Math.min(bot,s.bottom-4);
+  var r=f.getBoundingClientRect(),want=r.bottom,b=_w10mbNextBtn(f,R);
+  if(b){var q=b.getBoundingClientRect();if(q.bottom-r.top<=bot-top)want=Math.max(want,q.bottom)}
+  var d=0;if(want>bot)d=want-bot;if(r.top-d<top)d=r.top-top;
+  if(Math.abs(d)>1){sc.scrollTop+=d;_w10mb.st.reveal++}
+}
+/* ---------- sticky hover: the :hover part of every selector moves into @media (hover:hover) (cascade position kept) ---------- */
+function _w10mbSplit(sel){var out=[],d=0,cur='',q='';for(var i=0;i<sel.length;i++){var c=sel.charAt(i);if(q){cur+=c;if(c===q&&sel.charAt(i-1)!=='\\')q='';continue}if(c==='"'||c==="'"){q=c;cur+=c;continue}if(c==='('||c==='[')d++;else if(c===')'||c===']')d--;if(c===','&&d===0){out.push(cur.trim());cur=''}else cur+=c}if(cur.trim())out.push(cur.trim());return out}
+function _w10mbHasHover(p){return /:hover/.test(String(p).replace(/:not\([^()]*\)/g,''))}
+function _w10mbHoverWalk(g){
+  var rules=g.cssRules,n=0;if(!rules)return 0;
+  for(var i=rules.length-1;i>=0;i--){var r=rules[i];
+    if(r.type===1){
+      var sel=r.selectorText||'';if(sel.indexOf(':hover')<0)continue;
+      var parts=_w10mbSplit(sel),hv=[],keep=[];for(var k=0;k<parts.length;k++)(_w10mbHasHover(parts[k])?hv:keep).push(parts[k]);
+      if(!hv.length)continue;
+      try{g.insertRule('@media (hover:hover){'+hv.join(',')+'{'+r.style.cssText+'}}',i+1)}catch(e){continue}
+      if(keep.length){try{r.selectorText=keep.join(',')}catch(e){}}else{try{g.deleteRule(i)}catch(e){}}
+      n++;
+    }else if(r.cssRules&&(r.type===4||r.type===12||(typeof CSSGroupingRule!=='undefined'&&r instanceof CSSGroupingRule))){
+      if(r.media&&/hover\s*:\s*hover/.test(r.media.mediaText||''))continue;
+      n+=_w10mbHoverWalk(r);
+    }
+  }
+  return n}
+function _w10mbHover(){if(_w10mb.hv)return;_w10mb.hv=1;var n=0,ss=document.styleSheets;for(var i=0;i<ss.length;i++){try{if(ss[i].href)continue;n+=_w10mbHoverWalk(ss[i])}catch(e){}}_w10mb.st.hover=n}
+function _w10mbHoverLive(){var n=0;function w(g,inHv){var rr;try{rr=g.cssRules}catch(e){return}if(!rr)return;for(var i=0;i<rr.length;i++){var r=rr[i];if(r.type===1){if(!inHv&&_w10mbHasHover(r.selectorText||''))n++}else if(r.cssRules&&r.type!==7)w(r,inHv||!!(r.media&&/hover\s*:\s*hover/.test(r.media.mediaText||'')))}}var ss=document.styleSheets;for(var i=0;i<ss.length;i++){if(!ss[i].href)w(ss[i],false)}return n}
+/* ---------- glossary search: filter the rendered cards in place — the focused input is never rebuilt ---------- */
+function _w10mbGlsInput(e){
+  var t=e.target;if(!t||!t.classList||!t.classList.contains('glv-search'))return;
+  var v=document.getElementById('glv');if(!v||!v.contains(t)||!v.querySelector('.glv-grid'))return;
+  e.stopImmediatePropagation();/* capture on document: the inline oninput (a full re-render that replaced this input) never runs */
+  _w10mbGlsFilter(v,t.value);
+}
+function _w10mbGlsFilter(v,q){
+  var en=_enLang(),raw=String(q||'').trim(),ql=raw.toLowerCase(),n=0,grid=v.querySelector('.glv-grid'),kids=grid?grid.children:[],L=null,LHas=false;
+  var tx=function(it,c){var e=it.querySelector(c);return e?(e.textContent||''):''};
+  for(var i=0;i<kids.length;i++){var it=kids[i];
+    if(it.classList.contains('glv-letter')){if(L)L.toggleAttribute('data-w10mb-x',!LHas);L=it;LHas=false;continue}
+    if(!it.classList.contains('glv-item'))continue;
+    var ok=!raw||tx(it,'.glv-term').toLowerCase().indexOf(ql)>=0||(!en&&tx(it,'.glv-heb').indexOf(raw)>=0)||tx(it,'.glv-desc').toLowerCase().indexOf(ql)>=0;
+    it.toggleAttribute('data-w10mb-x',!ok);if(ok){n++;LHas=true}
+  }
+  if(L)L.toggleAttribute('data-w10mb-x',!LHas);
+  var c=v.querySelector('.glv-count'),tot=(typeof GLOSSARY!=='undefined'&&GLOSSARY.length)||kids.length;
+  if(c)c.textContent=en?('Showing '+n+' of '+tot+' terms'):('מציג '+n+' מתוך '+tot+' מונחים');
+  _w10mb.st.gls++;
+}
+/* ---------- narration on iPhone: one shared player (iOS unlocks media per element on the learner's tap) ---------- */
+function _w10mbAu(url){
+  var a=_w10mb.au;
+  if(!a){a=_w10mb.au=new Audio();try{a.preload='auto'}catch(e){}}
+  else{try{a.onended=null;a.onerror=null;a.pause()}catch(e){}}
+  try{a.defaultPlaybackRate=(G.narrRate&&G.narrRate>0)?G.narrRate:1}catch(e){}
+  try{a.src=url}catch(e){}
+  _w10mb.st.au++;
+  return a}
+/* ---------- sounds: iOS leaves the WebAudio context suspended / interrupted (calls, app switch) — resume on the next tap ---------- */
+function _w10mbSnd(e){if(!e||!e.isTrusted)return;try{if(typeof zzfxX!=='undefined'&&zzfxX&&zzfxX.state!=='running'&&zzfxX.state!=='closed'){var r=zzfxX.resume();if(r&&r.catch)r.catch(function(){});_w10mb.st.snd++}}catch(x){}}
+/* ---------- fullscreen video on a phone → landscape while it lasts ---------- */
+function _w10mbFs(){
+  var el=document.fullscreenElement||document.webkitFullscreenElement||null,o=screen.orientation;
+  if(el){
+    var phone=false;try{phone=matchMedia('(pointer:coarse)').matches&&Math.min(screen.width,screen.height)<600}catch(e){}
+    var v=el.tagName==='VIDEO'?el:(el.querySelector?el.querySelector('video'):null),media=!!v||el.tagName==='IFRAME';
+    var tall=!!(v&&v.videoWidth&&v.videoHeight&&v.videoHeight>v.videoWidth);
+    if(phone&&media&&!tall&&o&&typeof o.lock==='function'){_w10mb.fsLock=true;_w10mb.st.fs++;try{var p=o.lock('landscape');if(p&&p.catch)p.catch(function(){})}catch(e){}}
+  }else if(_w10mb.fsLock){_w10mb.fsLock=false;try{if(o&&typeof o.unlock==='function')o.unlock()}catch(e){}}
+}
+/* ---------- debug hook (gates) ---------- */
+function _w10mbDbg(){var m=document.querySelector('meta[name="viewport"]');return {on:_w10mb.on,meta:m?m.getAttribute('content'):'',hoverMoved:_w10mb.st.hover,hoverLive:_w10mbHoverLive(),kbOv:_w10mb.kbOv?(_w10mb.kbOv.id||String(_w10mb.kbOv.className).split(' ')[0]):'',shared:!!_w10mb.au,fsLock:_w10mb.fsLock,st:JSON.parse(JSON.stringify(_w10mb.st))}}
+function _w10mbInstall(){
+  if(_w10mb.on)return;_w10mb.on=true;
+  try{document.documentElement.classList.add('w10mb-on')}catch(e){}
+  try{var vv=window.visualViewport;if(vv){vv.addEventListener('resize',_w10mbKbQ,{passive:true});vv.addEventListener('scroll',_w10mbKbQ,{passive:true})}}catch(e){}
+  window.addEventListener('resize',_w10mbKbQ,{passive:true});
+  document.addEventListener('focusin',_w10mbKbQ,true);
+  document.addEventListener('focusout',function(){clearTimeout(_w10mb.kbT);_w10mb.kbT=setTimeout(_w10mbKbBlur,120)},true);
+  document.addEventListener('input',_w10mbGlsInput,true);
+  document.addEventListener('touchend',_w10mbSnd,{capture:true,passive:true});
+  document.addEventListener('click',_w10mbSnd,{capture:true,passive:true});
+  document.addEventListener('fullscreenchange',_w10mbFs);document.addEventListener('webkitfullscreenchange',_w10mbFs);
+  var go=function(){try{_w10mbHover()}catch(e){}};
+  if(typeof requestIdleCallback==='function')requestIdleCallback(go,{timeout:2500});else setTimeout(go,1200);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',_w10mbInstall);else _w10mbInstall();
+/* ===== /W10 mobile feel ===== */
+/* ===== W10 ENTRY phase 2 (w10e2) — see _video_factory/_w10_entry2.js / _w10_entry2.md · spec: _research_entry.md =====
+   On top of W10 ENTRY phase 1 (w10en, live in 1.10.20):
+   1 · No flash of the old form on load: until the entry is built the welcome shows a neutral wordmark (CSS; if the build never
+       comes, the content shows after 4 s anyway). A known device lands on E2 directly.
+   2 · Browser / phone Back per step: every entry step is a history entry (state {w10en:1, step, d}); Back from sign-up /
+       sign-in / course details / check returns to E1, Back from "link sent" returns to sign-in. Contract agreed with navux:
+       history is touched only while signed out (welcome or waiting room on screen, navux router off); a w10en entry met while
+       signed in is skipped (navux r9 does it first; this listener is the fallback).
+   3 · E2p "your request is with us": a device with a pending registration (w8su's record) sees its status card on the entry.
+   4 · E5 "link sent" as its own step (non-enumerating, Gmail / Outlook, resend countdown), and a confirm tap before an emailed
+       one-time sign-in link is used (mail scanners never burn it).
+   5 · w8su's "name taken" / "e-mail mismatch" / "e-mail needed" dialogs become inline field errors on the step (spec §A5).
+   6 · The instinct check moved into the waiting room: the S8 warm-up is 6 questions (the check's 3, then the warm-up's 3);
+       the claim is unchanged (+10 per correct answer, cap 60). The ?check=1 campaign link still opens it on the entry.
+   Wrappers only (pass-through on error), no backend change, no new storage key, nothing in G, no observer. */
+var _w10e2={h:{busy:false,q:[],t:0,render:false},key:'',sent:{n:'',until:0,t:0},six:false,booted:false};
+function _w10e2En(){try{return G.lang==='en'}catch(e){return false}}
+function _w10e2T(he,en){return _w10e2En()?en:he}
+function _w10e2E(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function _w10e2Vis(id){var e=$(id);return !!(e&&!e.classList.contains('hid'))}
+function _w10e2Live(){return typeof _w10en!=='undefined'&&_w10en.built===true}
+/* signed out = the welcome or the waiting room is on screen and navux's router is off (navux contract (a)) */
+function _w10e2Out(){try{if(typeof _w10nv!=='undefined'&&_w10nv&&_w10nv.on)return false}catch(e){}return _w10e2Vis('ws')||_w10e2Vis('pendingView')}
+function _w10e2St(){try{var s=history.state;return (s&&s.w10en===1)?s:null}catch(e){return null}}
+var _W10E2_SUB=['signup','signin','how','check','sent','confirm'];
+try{if(typeof _W10EN_VIEWS!=='undefined'){['sent','confirm'].forEach(function(v){if(_W10EN_VIEWS.indexOf(v)<0)_W10EN_VIEWS.push(v)})}}catch(e){}
+
+/* ---------- 2 · history: one entry per step, only while signed out ---------- */
+function _w10e2Flush(){var h=_w10e2.h;h.busy=false;h.render=false;clearTimeout(h.t);var q=h.q;h.q=[];q.forEach(function(f){try{f()}catch(e){}})}
+function _w10e2Do(fn){if(_w10e2.h.busy){_w10e2.h.q.push(fn);return}try{fn()}catch(e){}}
+function _w10e2Go(n,render){var h=_w10e2.h;h.busy=true;h.render=!!render;clearTimeout(h.t);h.t=setTimeout(_w10e2Flush,1500);try{history.go(n)}catch(e){_w10e2Flush()}}
+function _w10e2Push(step,d){try{history.pushState({w10en:1,step:step,d:d},'')}catch(e){}}
+function _w10e2Repl(step,d){try{history.replaceState({w10en:1,step:step,d:d},'')}catch(e){}}
+/* the history op for a step the view has just switched to (decided when it runs: after any traversal still in flight) */
+function _w10e2Hist(v){
+  _w10e2Do(function(){
+    if(!_w10e2Out())return;
+    var s=_w10e2St(),d=s?(+s.d||0):0;
+    if(v==='home'){if(s&&d>0)_w10e2Go(-d,false);else if(!history.state||(s&&s.step!=='home'))_w10e2Repl('home',0);return}
+    if(v==='sent'){if(d>=1)_w10e2Push('sent',d+1);else _w10e2Push('sent',1);return}
+    if(_W10E2_SUB.indexOf(v)<0)return;
+    if(s&&d>=1){if(s.step==='sent'&&v==='signin'){_w10e2Go(-1,false);return}_w10e2Repl(v,d===2?1:d);return}
+    _w10e2Push(v,1);
+  });
+}
+/* Back / Forward (the browser, the phone, our own Back button) */
+function _w10e2Pop(ev){
+  var h=_w10e2.h,own=h.busy,ren=h.render;
+  if(own){h.busy=false;h.render=false;clearTimeout(h.t)}
+  var s=(ev&&ev.state&&ev.state.w10en===1)?ev.state:null;
+  try{
+    if(!_w10e2Live())return;
+    var onWs=_w10e2Vis('ws'),onPv=_w10e2Vis('pendingView');
+    var navOn=false;try{navOn=typeof _w10nv!=='undefined'&&!!_w10nv&&!!_w10nv.on}catch(e){}
+    /* an entry step under the signed-in app, reached by the learner's own Back: keep going. Never for our own traversal (a
+       sign-in can land between a goHome rewind and its popstate) */
+    if(!onWs&&!onPv){if(!own&&s&&!navOn&&typeof G!=='undefined'&&G.s){try{history.back()}catch(e){}}return}
+    if(own&&!ren)return;
+    if(onPv){if(s&&+s.d===0&&typeof _pendingBack==='function'){try{_pendingBack()}catch(e){}}return}
+    var step=s?String(s.step||'home'):'home';if(step==='pending')step='home';
+    if(_W10EN_VIEWS.indexOf(step)<0)step='home';
+    _w10e2.popping=true;
+    try{if(step==='signup'||step==='signin'){if(_w9ob.mode!==step&&_w10enO.mode)_w10enO.mode.call(null,step);_w10enView(step,{back:true,noFocus:false})}
+      else _w10enView(step,{back:step==='home',force:step==='home'})}finally{_w10e2.popping=false}
+  }finally{if(own)_w10e2Flush()}
+}
+try{window.addEventListener('popstate',function(ev){try{_w10e2Pop(ev)}catch(e){}})}catch(e){}
+
+/* ---------- 3 · E2p: this device registered and is waiting ---------- */
+function _w10e2Reg(){try{if(!DB_URL||typeof _w8suReg!=='function')return null;return _w8suReg()}catch(e){return null}}
+function _w10e2PendRender(){
+  var p=$('w10e2Pend'),ws=$('ws');if(!p||!ws)return;var rg=_w10e2Reg(),on=!!rg;
+  ws.classList.toggle('w10e2-pend',on);p.hidden=!on;if(!on)return;
+  var nm=_w10e2E(rg.n),h=24;try{h=_w10enSla()}catch(e){}
+  var html='<h2 class="w10e2-h" id="w10e2PendH" tabindex="-1">'+_w10e2T('הבקשה של <bdi dir="auto">'+nm+'</bdi> אצלנו','<bdi dir="auto">'+nm+'</bdi>\'s request is with us')+'</h2>'
+    +'<p class="w10e2-p">'+_w10e2T('אנחנו מאשרים כל הרשמה ידנית, בדרך כלל תוך <bdi>'+h+'</bdi> שעות, ושולחים מייל עם כפתור כניסה.','We approve every sign-up by hand, usually within <bdi>'+h+'</bdi> hours, and email you a sign-in button.')+'</p>'
+    +'<button type="button" class="bp w10e2-go" id="w10e2PendGo">'+_w10e2E(_w10e2T('לצפייה בסטטוס','View status'))+'</button>'
+    +'<button type="button" class="w10en-howlink w10e2-link" id="w10e2PendOther">'+_w10e2E(_w10e2T('כניסה לחשבון אחר','Sign in to another account'))+'</button>';
+  if(p.innerHTML!==html)p.innerHTML=html;p.setAttribute('dir',_w10e2En()?'ltr':'rtl');
+}
+function _w10e2Status(btn){
+  var rg=_w10e2Reg();if(!rg)return;
+  try{if(typeof _w10enEv==='function')_w10enEv('cta','which=status,from=e2p')}catch(e){}
+  try{if(typeof _w10enBusy==='function')_w10enBusy(btn)}catch(e){}
+  try{if(typeof _w8suFill==='function')_w8suFill(rg.n,rg.e);if(_w10enO.mode)_w10enO.mode.call(null,'signin');_tryLogin(rg.n,rg.e,!!rg.c)}catch(e){}
+}
+
+/* ---------- 4 · E5 "link sent" and the confirm tap ---------- */
+function _w10e2SendLink(){
+  var ni=$('nameInput'),raw=ni?String(ni.value||'').trim():'',name=(typeof sanitizeName==='function')?sanitizeName(raw):raw,msg=$('w9obLinkMsg');
+  var say=function(t){if(msg)msg.textContent=t};
+  if(!name||name.length<2){try{_w9obErr('name',_w10e2T('הזינו קודם את השם שאיתו נרשמתם.','Enter the name you signed up with first.'),'name_short')}catch(e){}return}
+  if(typeof _w8suPost!=='function'){say(_w10e2T('אין חיבור לשרת כרגע.','No connection to the server right now.'));return}
+  var btns=[$('w9obLinkBtn'),$('w10e2Resend')];btns.forEach(function(b){if(b)b.disabled=true});
+  var done=function(){btns.forEach(function(b){if(b&&b.id!=='w10e2Resend')b.disabled=false});_w10e2SentTick()};
+  _w8suPost({action:'w8suLoginLink',userName:name,lang:(_w10e2En()?'en':'he')}).then(function(d){
+    done();
+    if(d&&d.success){try{_w9obEv('signup','signin_link','a=sent')}catch(e){}_w10e2.sent={n:name,until:Date.now()+120000,t:0};_w10e2SentRender();if(_w10en.v!=='sent')_w10enView('sent');return}
+    if(d&&(d.error==='throttled'||d.retryAfterSec)){try{_w9obEv('signup','signin_link','a=throttled')}catch(e){}var w=+d.retryAfterSec||120;
+      if(_w10en.v==='sent'){_w10e2.sent.until=Date.now()+w*1000;_w10e2SentTick();return}
+      say(_w10e2T('כבר ביקשתם קישור. אפשר לבקש שוב בעוד ','You already asked for a link. You can ask again in ')+(typeof _w8suClock==='function'?_w8suClock(w):(w+'s'))+'.');return}
+    if(typeof _w8suUnknown==='function'&&_w8suUnknown(d)){say(_w10e2T('האפשרות הזו עוד לא זמינה — פנו למנהל הקורס.','This option is not available yet — please contact the course admin.'));return}
+    say(_w10e2T('לא הצלחנו לשלוח כרגע. נסו שוב בעוד רגע.','We could not send it right now. Please try again in a moment.'));
+  }).catch(function(){done();say(_w10e2T('אין חיבור לשרת כרגע. בדקו את החיבור ונסו שוב.','We can\'t reach the server right now. Check your connection and try again.'))});
+}
+function _w10e2SentRender(){
+  var box=$('w10e2Sent');if(!box)return;var nm=_w10e2E(_w10e2.sent.n||'');
+  var gm=(typeof _W8SU_GMAIL!=='undefined'&&_W8SU_GMAIL)?_W8SU_GMAIL:'https://mail.google.com/';
+  var html='<h2 class="w10e2-h" id="w10e2SentH" tabindex="-1">'+_w10e2E(_w10e2T('בדקו את תיבת המייל','Check your inbox'))+'</h2>'
+    +'<p class="w10e2-p">'+_w10e2T('אם לשם <bdi dir="auto">'+nm+'</bdi> יש כתובת מאומתת, שלחנו אליה קישור כניסה. הקישור עובד פעם אחת, במשך 30 דקות. פתחו אותו במכשיר הזה.','If the name <bdi dir="auto">'+nm+'</bdi> has a confirmed email address, we\'ve sent it a sign-in link. It works once, for 30 minutes. Open it on this device.')+'</p>'
+    +'<a class="bp w10e2-go" id="w10e2Gmail" href="'+_w10e2E(gm)+'" target="_blank" rel="noopener">'+_w10e2E(_w10e2T('פתיחת Gmail','Open Gmail'))+'</a>'
+    +'<a class="bs w10e2-go" id="w10e2Outlook" href="https://outlook.live.com/mail/0/" target="_blank" rel="noopener">'+_w10e2E(_w10e2T('פתיחת Outlook','Open Outlook'))+'</a>'
+    +'<p class="w10e2-p w10e2-muted">'+_w10e2E(_w10e2T('לא מוצאים? חפשו ״Product Master״, גם בספאם ובקידומי מכירות.','Can\'t find it? Search for “Product Master”, including Spam and Promotions.'))+'</p>'
+    +'<button type="button" class="w10en-howlink w10e2-link" id="w10e2Resend"></button><p class="w10e2-p w10e2-muted" id="w10e2SentMsg" role="status"></p>';
+  if(box.innerHTML!==html){box.innerHTML=html}box.setAttribute('dir',_w10e2En()?'ltr':'rtl');_w10e2SentTick();
+}
+function _w10e2SentTick(){
+  var b=$('w10e2Resend');clearTimeout(_w10e2.sent.t);if(!b)return;var left=Math.ceil((_w10e2.sent.until-Date.now())/1000);
+  if(left>0){var c=(typeof _w8suClock==='function')?_w8suClock(left):(left+'s'),t=_w10e2T('שליחה חוזרת בעוד ','Resend in ')+c;if(b.textContent!==t)b.textContent=t;b.disabled=true;b.setAttribute('aria-disabled','true');if(_w10en.v==='sent')_w10e2.sent.t=setTimeout(_w10e2SentTick,1000);return}
+  var t2=_w10e2T('שליחה חוזרת','Resend');if(b.textContent!==t2)b.textContent=t2;b.disabled=false;b.removeAttribute('aria-disabled');
+}
+/* a one-time sign-in link from the mail: never used without a tap on this device */
+function _w10e2ConfRender(){
+  var box=$('w10e2Conf');if(!box)return;
+  var html='<h2 class="w10e2-h" id="w10e2ConfH" tabindex="-1">'+_w10e2E(_w10e2T('להיכנס לחשבון במכשיר הזה?','Sign in on this device?'))+'</h2>'
+    +'<p class="w10e2-p">'+_w10e2E(_w10e2T('הקישור מהמייל עובד פעם אחת. כדי להיכנס, לחצו על הכפתור.','The link from the email works once. Tap the button to sign in.'))+'</p>'
+    +'<button type="button" class="bp w10e2-go" id="w10e2ConfGo">'+_w10e2E(_w10e2T('כניסה','Sign in'))+'</button>'
+    +'<button type="button" class="w10en-howlink w10e2-link" id="w10e2ConfNo">'+_w10e2E(_w10e2T('לא עכשיו','Not now'))+'</button>';
+  if(box.innerHTML!==html)box.innerHTML=html;box.setAttribute('dir',_w10e2En()?'ltr':'rtl');
+}
+function _w10e2ConfGo(btn){
+  var k=_w10e2.key;if(!k)return;_w10e2.key='';
+  try{if(typeof _w10enEv==='function')_w10enEv('cta','which=redeem,from=confirm')}catch(e){}
+  try{if(typeof _w10enBusy==='function')_w10enBusy(btn)}catch(e){}
+  try{if(_w10enO.mode)_w10enO.mode.call(null,'signin')}catch(e){}
+  try{_w10e2O.redeem(k)}catch(e){}
+}
+
+/* ---------- 5 · w8su's name / e-mail dialogs → inline field errors (spec §A5) ---------- */
+function _w10e2Inline(f,html,code){
+  try{_w9obErr(f,' ',code)}catch(e){}
+  var el=$(f==='name'?'w9obNameErr':'w9obEmailErr');if(el)el.innerHTML=html;
+}
+function _w10e2NameErr(name,email,why){
+  var si=(typeof _w9ob!=='undefined'&&_w9ob.mode==='signin'),nm=_w10e2E(name),sg=_w10e2E(typeof _w8suSuggest==='function'?_w8suSuggest(name):String(name)+' 2');
+  try{if(typeof _w8suTrack==='function')_w8suTrack('name_taken',why,(typeof _W8SU!=='undefined'?_W8SU.GUEST:'~guest'))}catch(e){}
+  if(!si){
+    _w10e2Inline('name',_w10e2T('השם הזה כבר תפוס. אם זה החשבון שלכם — <button type="button" class="w9ob-inl w10e2-inl" data-w10e2="signin">כניסה</button>. אחרת, בחרו שם אחר, למשל <bdi dir="auto">'+sg+'</bdi>.','This name is already taken. If it\'s your account, <button type="button" class="w9ob-inl w10e2-inl" data-w10e2="signin">sign in</button>. Otherwise, choose another name, like <bdi dir="auto">'+sg+'</bdi>.'),'taken');
+    return;
+  }
+  if(why==='need'||!email){_w10e2Inline('email',_w10e2E(_w10e2T('הזינו את המייל שאיתו נרשמתם לחשבון הזה.','Enter the email you signed up with for this account.')),'need');return}
+  _w10e2Inline('email',_w10e2T('המייל לא תואם לחשבון הזה. בדקו את הכתובת, או <button type="button" class="w9ob-inl w10e2-inl" data-w10e2="link">שליחת קישור כניסה</button> למייל של החשבון.','That email doesn\'t match this account. Check the address, or <button type="button" class="w9ob-inl w10e2-inl" data-w10e2="link">email me a sign-in link</button> to the account\'s address.'),'mismatch');
+  void nm;
+}
+
+/* ---------- 6 · the instinct check inside the waiting-room warm-up (6 questions) ---------- */
+function _w10e2InWait(){try{return typeof _w9obPendLive==='function'&&_w9obPendLive()&&!!$('w9obWarmQz')}catch(e){return false}}
+function _w10e2Done(k){try{var r=_w9obPre()[k];return !!(r&&typeof r.score==='number')}catch(e){return false}}
+function _w10e2Hdr(kind){
+  try{if(!_w10e2.six)return;var w=$('w9obWarm'),host=$('w9obWarmQz');if(!w||!host)return;
+    var k=w.querySelector('.w9ob-kick'),kt=_w10e2T('חימום','Warm-up');if(k&&k.textContent!==kt)k.textContent=kt;
+    var h=$('w9obWarmH'),ht=_w10e2T('6 שאלות חוש מוצר','6 product-instinct questions');if(h&&h.textContent!==ht)h.textContent=ht;
+    var q=host.querySelector('.w9ob-qk');if(!q)return;var st=_w9obQzState(kind);if(st.i>=3)return;
+    var n=(kind==='chk'?0:3)+st.i+1,t=_w10e2T('שאלה ','Question ')+n+_w10e2T(' מתוך 6',' of 6');if(q.textContent!==t)q.textContent=t}catch(e){}
+}
+function _w10e2WarmIntro(){
+  try{var w=$('w9obWarm');if(!w||$('w9obWarmQz'))return;var a=_w10e2Done('check'),b=_w10e2Done('warm');if(a||b)return;
+    var k=w.querySelector('.w9ob-kick'),h=$('w9obWarmH');
+    if(k){var kt=_w10e2T('כ־5 דקות','About 5 minutes');if(k.textContent!==kt)k.textContent=kt}
+    if(h){var ht=_w10e2T('חימום: 6 שאלות קצרות — הנקודות יחכו לכם בחשבון','Warm-up: 6 quick questions — your points will be waiting in your account');if(h.textContent!==ht)h.textContent=ht}}catch(e){}
+}
+
+/* ---------- build ---------- */
+function _w10e2Build(){
+  if(_w10e2.booted||!_w10e2Live())return;var ws=$('ws'),bar=$('w10enBar');if(!ws||!bar)return;
+  var mk=function(tag,id,cls){var e=document.createElement(tag);e.id=id;e.className=cls;e.hidden=true;return e};
+  var pend=mk('section','w10e2Pend','w10e2-card w10e2-pend'),sent=mk('section','w10e2Sent','w10e2-card'),conf=mk('section','w10e2Conf','w10e2-card');
+  sent.hidden=false;conf.hidden=false;
+  bar.parentNode.insertBefore(conf,bar.nextSibling);bar.parentNode.insertBefore(sent,bar.nextSibling);
+  var ret=$('w9obRet');if(ret)ret.parentNode.insertBefore(pend,ret);else bar.parentNode.insertBefore(pend,sent);
+  pend.addEventListener('click',function(e){var t=e.target&&e.target.closest?e.target.closest('button'):null;if(!t)return;if(t.id==='w10e2PendGo')_w10e2Status(t);else if(t.id==='w10e2PendOther'){try{_w10enEv('cta','which=other,from=e2p');var ni=$('nameInput'),ei=$('emailInput');if(ni)ni.value='';if(ei)ei.value='';_w9obMode('signin','e2p',true)}catch(x){}}});
+  sent.addEventListener('click',function(e){var t=e.target&&e.target.closest?e.target.closest('#w10e2Resend,#w10e2Gmail,#w10e2Outlook'):null;if(!t)return;if(t.id==='w10e2Resend'){if(!t.disabled)_w10e2SendLink()}else{try{_w9obEv('signup','open_mail','p='+(t.id==='w10e2Gmail'?'gmail':'outlook'))}catch(x){}}});
+  conf.addEventListener('click',function(e){var t=e.target&&e.target.closest?e.target.closest('button'):null;if(!t)return;if(t.id==='w10e2ConfGo')_w10e2ConfGo(t);else if(t.id==='w10e2ConfNo'){_w10e2.key='';try{_w10enBack()}catch(x){}}});
+  /* the inline error links: "sign in" (from sign-up: a step change that keeps the values) · "email me a sign-in link" */
+  document.addEventListener('click',function(e){var t=e.target&&e.target.closest?e.target.closest('[data-w10e2]'):null;if(!t)return;var a=t.getAttribute('data-w10e2');
+    try{if(a==='signin'){_w9obMode('signin','taken',true)}else if(a==='link'){_w10e2SendLink()}}catch(x){}});
+  _w10e2.booted=true;
+  /* the base entry: a null state, or our own state left by a reload on a sub-step (its entries below belong to the previous
+     document — this entry becomes the base). navux's states are never touched. */
+  try{var s=history.state;if((s==null||(s.w10en===1&&!s.w10nv))&&_w10e2Out())_w10e2Repl('home',0)}catch(e){}
+  _w10e2Paint();
+}
+function _w10e2Paint(){if(!_w10e2.booted)return;_w10e2PendRender();_w10e2ConfRender();if(_w10e2.sent.n)_w10e2SentRender();_w10e2Bind()}
+function _w10e2Bind(){var lb=$('w9obLinkBtn');if(lb&&lb.onclick!==_w10e2SendLink)lb.onclick=_w10e2SendLink}
+
+/* ---------- wrappers ---------- */
+var _w10e2O={};
+/* every step change: its history entry (signed out only) · the new steps' focus · E2p on the home step */
+if(typeof _w10enView==='function'){_w10e2O.view=_w10enView;_w10enView=function(v,o){
+  var prev=(typeof _w10en!=='undefined')?_w10en.v:'';o=o||{};
+  var r=_w10e2O.view.apply(this,arguments);
+  try{if(_w10e2.booted){
+    _w10e2Paint();
+    var cur=_w10en.v;
+    if(!_w10e2.popping&&(cur!==prev||cur==='home'))_w10e2Hist(cur);
+    if(!o.noFocus&&(cur==='sent'||cur==='confirm'||(cur==='home'&&$('ws').classList.contains('w10e2-pend')))){var f=$(cur==='sent'?'w10e2SentH':cur==='confirm'?'w10e2ConfH':'w10e2PendH');if(f)setTimeout(function(){try{f.focus({preventScroll:true})}catch(e){}},60)}
+  }}catch(e){}
+  return r;
+}}
+/* our Back button and Esc: the browser's Back when the entry above the base is ours (one model for both) */
+if(typeof _w10enBack==='function'){_w10e2O.back=_w10enBack;_w10enBack=function(){
+  try{var s=_w10e2St();if(_w10e2.booted&&s&&+s.d>0&&_w10e2Out()&&!_w10e2.h.busy){try{_w10enEv('step_back','from='+_w10en.v)}catch(e){}_w10e2Go(-1,true);return}}catch(e){}
+  return _w10e2O.back.apply(this,arguments);
+}}
+if(typeof _w10enChrome==='function'){_w10e2O.chrome=_w10enChrome;_w10enChrome=function(){var r=_w10e2O.chrome.apply(this,arguments);
+  try{if(_w10e2.booted){_w10e2PendRender();if(_w10en.v==='sent'){var t=$('w10enBackT'),l=_w10e2T('חזרה לכניסה','Back to sign in');if(t&&t.textContent!==l)t.textContent=l}}}catch(e){}return r}}
+if(typeof _w10enRender==='function'){_w10e2O.render=_w10enRender;_w10enRender=function(){var r=_w10e2O.render.apply(this,arguments);try{_w10e2Paint()}catch(e){}return r}}
+if(typeof _w10enForm==='function'){_w10e2O.form=_w10enForm;_w10enForm=function(){var r=_w10e2O.form.apply(this,arguments);try{_w10e2Bind()}catch(e){}return r}}
+/* the waiting room: its entry replaces the sign-up step's (Back from it never reopens a filled form) */
+if(typeof _showPendingScreen==='function'){_w10e2O.sps=_showPendingScreen;_showPendingScreen=function(){var r=_w10e2O.sps.apply(this,arguments);
+  try{_w10e2Do(function(){var s=_w10e2St();if(s&&_w10e2Out())_w10e2Repl('pending',+s.d||0)})}catch(e){}return r}}
+/* 5 · inline instead of the dialog while the entry is on screen */
+if(typeof _w8suNameDialog==='function'){_w10e2O.dlg=_w8suNameDialog;_w8suNameDialog=function(name,email,why){
+  try{if(_w10e2.booted&&_w10e2Vis('ws')){_w10e2NameErr(name,email,why);return}}catch(e){}
+  return _w10e2O.dlg.apply(this,arguments);
+}}
+/* 4 · the emailed sign-in link: a confirm step first */
+if(typeof _w8suRedeem==='function'){_w10e2O.redeem=_w8suRedeem;_w8suRedeem=function(key){
+  try{if(_w10e2.booted&&_w10e2Vis('ws')&&key){_w10e2.key=String(key);_w10e2ConfRender();_w10enView('confirm');try{_w10enEv('return','via=login_confirm')}catch(e){}return}}catch(e){}
+  return _w10e2O.redeem.apply(this,arguments);
+}}
+/* 6 · the warm-up = the check's 3 + the warm-up's 3 */
+if(typeof _w9obQzHost==='function'){_w10e2O.host=_w9obQzHost;_w9obQzHost=function(kind){try{if(kind==='chk'&&_w10e2InWait())return $('w9obWarmQz')}catch(e){}return _w10e2O.host.apply(this,arguments)}}
+/* W9's quiz host keeps the kind of its FIRST render in its click listener; with two sets in one host, clicks are routed here
+   (capture, then stopped) to the set that is on screen */
+function _w10e2Route(host){
+  if(!host||host._w10e2)return;host._w10e2=1;
+  host.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('[data-w9a]'):null;if(!b||!host.contains(b))return;
+    e.stopImmediatePropagation();try{_w9obQzAct(_w10e2.wk||'warm',b.getAttribute('data-w9a'),b)}catch(x){}},true);
+}
+if(typeof _w9obQzRender==='function'){_w10e2O.qr=_w9obQzRender;_w9obQzRender=function(kind,focus){
+  var inWait=false;
+  try{inWait=_w10e2InWait();if(inWait){
+    if(kind==='warm'&&!_w10e2Done('check')){_w10e2.six=true;try{_w9ob.chkSrc='wait'}catch(e){}return _w9obQzRender('chk',focus)}
+    if(kind==='chk'){var st=_w9obQzState('chk');if(st.i>=3)return _w9obQzRender('warm','.w9ob-opt')}
+    _w10e2.wk=kind;_w10e2Route($('w9obWarmQz'));
+  }}catch(e){}
+  var r=_w10e2O.qr.apply(this,arguments);
+  try{if(inWait){_w10e2Hdr(kind);if(kind==='warm'&&_w10e2.six&&_w10e2Done('warm')&&_w10e2Done('check')){var rt=document.querySelector('#w9obWarmQz .w9ob-rt'),p=_w9obPre(),sc=(+p.check.score||0)+(+p.warm.score||0),t=_w10e2T(sc+'/6 נכונות — נשמר',sc+'/6 correct — saved');if(rt&&rt.textContent!==t)rt.textContent=t}}}catch(e){}
+  return r;
+}}
+if(typeof _w9obChkView==='function'){_w10e2O.chk=_w9obChkView;_w9obChkView=function(on){try{if(typeof _w9obPendLive==='function'&&_w9obPendLive())return}catch(e){}return _w10e2O.chk.apply(this,arguments)}}
+if(typeof _w9obWaitRender==='function'){_w10e2O.wr=_w9obWaitRender;_w9obWaitRender=function(){var r=_w10e2O.wr.apply(this,arguments);try{_w10e2WarmIntro()}catch(e){}return r}}
+/* a learner signed in: nothing of this device's pending flow stays on the entry */
+if(typeof mp==='function'){_w10e2O.mp=mp;mp=function(){var r=_w10e2O.mp.apply(this,arguments);try{_w10e2.key='';if(_w10e2.booted)_w10e2PendRender()}catch(e){}return r}}
+
+try{_w10e2Build()}catch(e){}
+/* ===== /W10 ENTRY phase 2 ===== */
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
