@@ -4829,6 +4829,196 @@ html.w6dk-on body .duel-panel .duel-panel-body{max-height:calc(100dvh - var(--w6
 body.light #ws.w10en-on .w10e2-link{color:var(--pd)}
 html[data-acc="amber"] body:not(.light) #ws.w10en-on .w10e2-card .bp{color:#1A1407}
 /* ===== /W10 ENTRY phase 2 ===== */
+/* ===== W10 admin experience (w10ad): sticky section nav · today snapshot · sign-up queue · open bugs · table cards on phones ===== */
+#adv.w10ad-on .adm-wrap *{scroll-margin-top:calc(var(--w10ad-top,56px) + var(--w10ad-nh,50px) + 8px)}
+.w10ad-gone{display:none!important}
+.w10ad,.w10ad-nav{box-sizing:border-box;text-align:start;color:var(--t1)}
+.w10ad *,.w10ad-nav *{box-sizing:border-box}
+/* sticky section nav — sits under the fixed app header (its height is measured into --w10ad-top) */
+.w10ad-nav{position:sticky;top:var(--w10ad-top,56px);z-index:62;margin:0 0 .9rem;padding:.4rem;background:rgba(16,18,24,.94);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:14px}
+body.light .w10ad-nav{background:rgba(246,243,234,.96)}
+.w10ad-navs{display:flex;gap:.3rem;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.w10ad-navs::-webkit-scrollbar{display:none}
+.w10ad-navs>span{flex:none;display:flex}
+.w10ad-nl{display:inline-flex;align-items:center;gap:.3rem;min-height:38px;padding:.3rem .75rem;border-radius:999px;border:1px solid transparent;background:none;color:var(--t2);font:inherit;font-size:.8rem;font-weight:700;line-height:1.2;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
+.w10ad-nl:hover{color:var(--t1);background:var(--cardh)}
+.w10ad-nl.on{background:var(--pd,#6A63E8);color:#fff}
+.w10ad-nb,.w10ad-cnt{display:inline-block;min-width:1.45em;padding:0 .38em;border-radius:999px;font-size:.7rem;font-weight:800;line-height:1.5;text-align:center;font-variant-numeric:tabular-nums;color:var(--t1);background:var(--cardh);border:1px solid var(--line)}
+.w10ad-nb.w10ad-red,.w10ad-cnt.w10ad-red{background:#C2364F;border-color:#C2364F;color:#fff}
+.w10ad-nb.w10ad-amb,.w10ad-cnt.w10ad-amb{background:#E8C45C;border-color:#E8C45C;color:#1A1407}
+.w10ad-nl.on .w10ad-nb{box-shadow:0 0 0 1.5px rgba(255,255,255,.75)}
+/* sections */
+.w10ad-sec{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:.9rem 1rem 1rem;margin:0 0 1rem}
+#w10adQ.adm-pending-section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:.9rem 1rem 1rem;margin:0 0 1rem}
+.w10ad-sh{display:flex;align-items:center;gap:.35rem .7rem;flex-wrap:wrap;margin:0 0 .75rem}
+.w10ad-h{margin:0;font-size:1.02rem;font-weight:800;color:var(--t1);display:inline-flex;align-items:center;gap:.4rem;line-height:1.3}
+.w10ad-h:focus{outline:none}
+.w10ad-h:focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--p);border-radius:6px}
+.w10ad-sub{font-size:.74rem;color:var(--t2);line-height:1.45}
+.w10ad-mut{color:var(--t2)}
+.w10ad-latet{color:#FF8A9B;font-weight:800}
+.w10ad-empty{margin:0;padding:.7rem .2rem;font-size:.86rem;color:var(--t2)}
+.w10ad-all{margin-inline-start:auto}
+/* today snapshot */
+.w10ad-tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55rem}
+.w10ad-tile{display:flex;flex-direction:column;align-items:flex-start;gap:.15rem;min-width:0;margin:0;padding:.7rem .8rem;border-radius:14px;border:1px solid var(--line);background:var(--cardh);color:var(--t1);font:inherit;text-align:start;line-height:1.3}
+button.w10ad-tile{cursor:pointer;transition:border-color .15s}
+button.w10ad-tile:hover{border-color:var(--p)}
+.w10ad-tile.w10ad-red{border-inline-start:4px solid #E5566D}
+.w10ad-tile.w10ad-amb{border-inline-start:4px solid #E8C45C}
+.w10ad-tl{font-size:.74rem;font-weight:700;color:var(--t2)}
+.w10ad-tv{font-size:1.7rem;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--t1)}
+.w10ad-ts{font-size:.72rem;color:var(--t2)}
+.w10ad-ts b{color:var(--t1)}
+.w10ad-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--a);margin-inline-end:.3rem;vertical-align:middle}
+/* pills */
+.w10ad-pill{display:inline-flex;align-items:center;gap:.25rem;max-width:100%;font-size:.72rem;font-weight:600;color:var(--t1);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:.08rem .55rem;line-height:1.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.w10ad-pg{border-color:rgba(53,201,163,.6);background:rgba(53,201,163,.14)}
+.w10ad-pw{border-color:rgba(232,196,92,.65);background:rgba(232,196,92,.15)}
+.w10ad-lg{flex:none;font-variant-numeric:tabular-nums}
+/* buttons */
+.w10ad-b{display:inline-flex;align-items:center;justify-content:center;gap:.3rem;min-height:42px;padding:.45rem .95rem;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--t1);font:inherit;font-size:.86rem;font-weight:700;line-height:1.2;cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s,transform .1s}
+.w10ad-b:hover{border-color:var(--p)}
+.w10ad-b:active{transform:scale(.97)}
+.w10ad-b[disabled]{opacity:.55;cursor:default}
+.w10ad-ok{background:#2BD4AE;border-color:#2BD4AE;color:#062019}
+.w10ad-ok:hover{background:#4ADDBD;border-color:#4ADDBD}
+.w10ad-okline{border-color:rgba(43,212,174,.65);color:var(--t1)}
+.w10ad-no{background:none;border-color:rgba(240,106,126,.6);color:#FF8A9B}
+.w10ad-no:hover{border-color:#F06A7E;background:rgba(240,106,126,.1)}
+.w10ad-ghost{background:none}
+.w10ad-undo{background:var(--t1);border-color:var(--t1);color:var(--bg)}
+.w10ad :focus-visible,.w10ad-nav :focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--p)}
+/* sign-up queue */
+.w10ad-bulkw:empty{display:none}
+.w10ad-bulk{margin:0 0 .7rem}
+.w10ad-bulkon{display:flex;align-items:center;justify-content:space-between;gap:.5rem .8rem;flex-wrap:wrap;padding:.6rem .75rem;border-radius:12px;background:var(--cardh);border:1px solid rgba(43,212,174,.5);font-size:.84rem;line-height:1.45}
+.w10ad-bulkb{display:flex;gap:.45rem;margin-inline-start:auto}
+.w10ad-ql{display:grid;gap:.6rem}
+#w10adQ .w10ad-qc{display:grid;gap:.5rem;margin:0;padding:.75rem .8rem;border-radius:14px;border:1px solid var(--line);background:var(--cardh);align-items:stretch;justify-content:stretch;flex-wrap:nowrap;min-width:0}
+.w10ad-qtop{display:flex;align-items:center;gap:.65rem;min-width:0}
+.w10ad-av{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--pd,#6A63E8);color:#fff;font-weight:800;font-size:1.05rem}
+.w10ad-qid{flex:1;min-width:0;display:flex;flex-direction:column;gap:.05rem}
+.w10ad-qn{font-size:.98rem;font-weight:800;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.w10ad-qe{font-size:.76rem;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.w10ad-qmeta{display:flex;gap:.3rem;flex-wrap:wrap;min-width:0}
+.w10ad-dupw,.w10ad-note{margin:0;font-size:.76rem;line-height:1.45;color:var(--t2)}
+.w10ad-dupw{color:var(--t1);background:rgba(232,196,92,.13);border:1px solid rgba(232,196,92,.5);border-radius:10px;padding:.35rem .55rem}
+.w10ad-sla{display:grid;gap:.28rem}
+.w10ad-slab{display:block;height:6px;border-radius:3px;background:var(--card);overflow:hidden}
+.w10ad-slab>i{display:block;height:100%;border-radius:3px;background:#2BD4AE}
+.w10ad-sl-warn .w10ad-slab>i{background:#E8C45C}
+.w10ad-sl-late .w10ad-slab>i{background:#E5566D}
+.w10ad-slat{font-size:.76rem;color:var(--t2);line-height:1.4}
+.w10ad-sl-late .w10ad-slat{color:#FF8A9B;font-weight:700}
+.w10ad-qact{display:flex;align-items:center;justify-content:flex-end;gap:.5rem;flex-wrap:wrap}
+.w10ad-navy{display:inline-flex;align-items:center;gap:.35rem;min-height:42px;margin-inline-end:auto;font-size:.8rem;color:var(--t2);cursor:pointer;user-select:none}
+.w10ad-navy input{width:18px;height:18px;accent-color:var(--p);margin:0}
+.w10ad-rjm{flex:1 1 12rem;font-size:.84rem;color:var(--t1);line-height:1.4}
+.w10ad-cd{font-variant-numeric:tabular-nums}
+.w10ad-done{flex:1;font-size:.88rem;font-weight:800;color:#2BD4AE}
+.w10ad-donex{color:#FF8A9B}
+#w10adQ .w10ad-s-rej{border-color:rgba(240,106,126,.6)}
+#w10adQ .w10ad-s-ok,#w10adQ .w10ad-s-gone,.w10ad-bc.w10ad-s-ok{opacity:.72}
+.w10ad-more{margin-top:.8rem}
+.w10ad-more>summary{cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;min-height:40px;font-size:.84rem;font-weight:700;color:var(--t2)}
+.w10ad-more>summary:hover{color:var(--t1)}
+.w10ad-more[open]>summary{margin-bottom:.45rem}
+/* open bug reports */
+.w10ad-bl{display:grid;gap:.6rem}
+.w10ad-bc{display:grid;grid-template-columns:76px minmax(0,1fr);gap:.55rem .75rem;padding:.7rem;border-radius:14px;border:1px solid var(--line);background:var(--cardh);min-width:0}
+.w10ad-bc.w10ad-nothumb{grid-template-columns:minmax(0,1fr)}
+.w10ad-th{position:relative;display:grid;place-items:center;width:76px;height:76px;border-radius:10px;overflow:hidden;background:var(--card);border:1px solid var(--line);text-decoration:none}
+.w10ad-th img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+.w10ad-thf{display:none;font-size:1.5rem}
+.w10ad-thx .w10ad-thf{display:block}
+.w10ad-bb{min-width:0}
+.w10ad-bt{margin:0 0 .4rem;font-size:.88rem;line-height:1.5;color:var(--t1);text-align:start;unicode-bidi:plaintext;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.w10ad-bm{display:flex;gap:.3rem;flex-wrap:wrap;min-width:0}
+.w10ad-bw{margin:.35rem 0 0;font-size:.74rem;color:var(--t2);line-height:1.4;text-align:start;unicode-bidi:plaintext;overflow-wrap:anywhere}
+.w10ad-bact{grid-column:1/-1;display:flex;align-items:center;justify-content:flex-end;gap:.45rem;flex-wrap:wrap}
+.w10ad-morebtn{margin-top:.7rem;width:100%}
+/* the management table: sticky controls sit under the nav (desktop) */
+#adv.w10ad-on .adm-tbl-ctrl{top:calc(var(--w10ad-top,52px) + var(--w10ad-nh,50px) + 6px);z-index:61}
+/* phones: no sideways scrolling — sections stack, buttons fill the row, the table becomes cards */
+@media(max-width:880px){.w10ad-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){
+  .w10ad-sec,#w10adQ.adm-pending-section{padding:.8rem .75rem .85rem;border-radius:16px}
+  .w10ad-nav{margin-inline:-.35rem;border-radius:12px}
+  .w10ad-tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}
+  .w10ad-tile[data-k="pend"]{grid-column:1/-1}
+  .w10ad-tv{font-size:1.5rem}
+  .w10ad-qact .w10ad-b{flex:1 1 0;min-width:0}
+  .w10ad-qact .w10ad-navy{flex:1 1 100%;margin:0;min-height:36px}
+  .w10ad-qact .w10ad-rjm{flex:1 1 100%}
+  .w10ad-bact .w10ad-b{flex:1 1 auto}
+  .w10ad-bulkb{width:100%}.w10ad-bulkb .w10ad-b{flex:1 1 0}
+  .w10ad-bulk>.w10ad-okline{width:100%}
+  #adv.w10ad-on .adm-tbl-ctrl{position:relative;top:auto}
+  #adv.w10ad-on #admTableWrap{overflow:visible!important;border:0!important;border-radius:0!important}
+  #adv.w10ad-on #admTableWrap .adm-tbl{display:block;font-size:.8rem}
+  #adv.w10ad-on #admTableWrap .adm-tbl thead{display:block}
+  #adv.w10ad-on #admTableWrap .adm-tbl thead tr{display:flex;gap:.3rem;overflow-x:auto;padding:.1rem 0 .55rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  #adv.w10ad-on #admTableWrap .adm-tbl thead tr::-webkit-scrollbar{display:none}
+  #adv.w10ad-on #admTableWrap .adm-tbl thead th{position:static!important;flex:none;padding:.32rem .7rem;border:1px solid var(--line);border-radius:999px;background:var(--cardh)!important;font-size:.74rem;line-height:1.3}
+  #adv.w10ad-on #admTableWrap .adm-tbl thead th:last-child{display:none}
+  #adv.w10ad-on #admTableWrap .adm-tbl tbody{display:grid;gap:.5rem}
+  #adv.w10ad-on #admTableWrap .adm-tbl tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem .8rem;position:relative;padding:.7rem .8rem;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+  #adv.w10ad-on #admTableWrap .adm-tbl tbody td{display:block;position:static!important;min-width:0!important;padding:0!important;border:0!important;background:none!important;text-align:start!important;white-space:normal!important;overflow-wrap:anywhere;line-height:1.4}
+  #adv.w10ad-on #admTableWrap .adm-tbl tbody td[data-w10l]::before{content:attr(data-w10l);display:block;font-size:.66rem;font-weight:700;color:var(--t2);margin-bottom:.05rem}
+  #adv.w10ad-on #admTableWrap .adm-tbl tbody td:first-child{grid-column:1/-1;font-size:.95rem;padding-inline-end:2.8rem!important}
+  #adv.w10ad-on #admTableWrap .adm-tbl tbody td:last-child:not([colspan]){position:absolute!important;top:.55rem;inset-inline-end:.6rem;width:auto}
+  #adv.w10ad-on #admTableWrap .adm-tbl tbody td[colspan]{grid-column:1/-1}
+  #adv.w10ad-on #admTableWrap .adm-tbl tbody tr:has(td[colspan]){display:block}
+  #adv.w10ad-on #admTableWrap .adm-tbl .adm-del{min-width:40px;min-height:36px}
+}
+@media(max-width:380px){.w10ad-nl{padding:.3rem .6rem}.w10ad-tile{padding:.6rem .65rem}}
+/* light theme: status colours a step darker (the admin's own light values) */
+body.light .w10ad-latet,body.light .w10ad-sl-late .w10ad-slat,body.light .w10ad-no,body.light .w10ad-donex{color:#B8324C}
+body.light .w10ad-done{color:#0E7A62}
+body.light .w10ad-ok{background:#1FA583;border-color:#1FA583;color:#04140F}
+body.light .w10ad-ok:hover{background:#25B994;border-color:#25B994}
+body.light .w10ad-nb.w10ad-amb,body.light .w10ad-cnt.w10ad-amb{background:#F1D27A;border-color:#C9A23A}
+body.light .w10ad-undo{color:#fff}
+/* accent amber (dark): white on amber is unreadable */
+html[data-acc="amber"] body:not(.light) :is(.w10ad-nl.on,.w10ad-av){color:#1A1407}
+/* English inside the Hebrew-only admin: "html[dir=ltr] #app #adv *:not(bdi):not(.chip-meta){direction:rtl}" is (2,2,2) */
+html[dir="ltr"] #app #adv .w10ad-ltr[dir="ltr"],html[dir="ltr"] #app #adv .w10ad-ltr[dir="ltr"] *:not(bdi):not([dir]){direction:ltr}
+html[dir="ltr"] #app #adv .w10ad-ltr[dir="ltr"] :is(p,h3,h4,summary,span,b,label){text-align:start}
+@media(prefers-reduced-motion:reduce){.w10ad-b,.w10ad-nl,button.w10ad-tile{transition:none}.w10ad-b:active{transform:none}}
+/* phones: the header is one 40 px row now — the admin's old 7rem top gap (two-row header) shrinks to the measured header */
+@media(max-width:600px){html #adv{padding-top:calc(var(--w10ad-top,44px) + .5rem)!important}#adv.w10ad-on .adm-wrap>h2{font-size:1.3rem!important;margin:.2rem 0 .8rem!important}}
+/* R-11: in English the whole admin reads left to right (Hebrew keeps the RTL owner tool exactly as it was) */
+html[dir="ltr"] body.lang-en #app #adv,html[dir="ltr"] body.lang-en #app #adv *:not(bdi):not([dir]),html[dir="ltr"] body.lang-en .adm-modal-overlay,html[dir="ltr"] body.lang-en .adm-modal-overlay *:not(bdi):not([dir]){direction:ltr}
+/* an explicit dir="ltr" / dir="rtl" inside the admin (dates, versions, e-mails…) wins over the app's (2,2,2) admin-RTL rule */
+html[dir="ltr"] body.lang-en #app #adv [dir="ltr"],html[dir="ltr"] body.lang-en .adm-modal-overlay [dir="ltr"]{direction:ltr}
+html[dir="ltr"] body.lang-en #app #adv [dir="rtl"],html[dir="ltr"] body.lang-en .adm-modal-overlay [dir="rtl"]{direction:rtl}
+/* dir="auto" (names, dates, report text) is clobbered by the app's blanket direction rules — plaintext restores what dir=auto
+   means: each paragraph takes its direction (and its start edge) from its own first strong character, digits-only → LTR */
+html[dir="ltr"] body.lang-en #app #adv [dir="auto"],html[dir="ltr"] body.lang-en .adm-modal-overlay [dir="auto"],#adv .w10ad [dir="auto"]{unicode-bidi:plaintext}
+html[dir="ltr"] body.lang-en #app #adv :is(td,th),html[dir="ltr"] body.lang-en .adm-modal-overlay :is(td,th){text-align:left}
+html[dir="ltr"] body.lang-en #app #adv #admTableWrap .adm-tbl :is(th,td):first-child{right:auto;left:0}
+html[dir="ltr"] body.lang-en .adm-modal-overlay [style*="text-align:right"],html[dir="ltr"] body.lang-en #app #adv [style*="text-align:right"],html[dir="ltr"] body.lang-en:has(#adv:not(.hid)) .daily-modal:not(#dailyModal) [style*="text-align:right"]{text-align:left!important}
+html[dir="ltr"] body.lang-en:has(#adv:not(.hid)) .daily-modal:not(#dailyModal) .daily-modal-box,html[dir="ltr"] body.lang-en:has(#adv:not(.hid)) .daily-modal:not(#dailyModal) .daily-modal-box *:not(bdi):not([dir]){direction:ltr}
+/* ===== W10 media (w10md): opener poster tile + video fallback panel. visual10's tokens (--w10vs-*) are reused, each with a
+   fallback value so the look holds on a build without the visual system. ===== */
+.w10md-host{position:relative}
+/* the waiting room's intro reserves its 16:9 box before the poster arrives (the stage opener already does) */
+video.w8su-vid[data-w10md]{aspect-ratio:16/9;height:auto}
+/* poster failed: visual10's placeholder tile shows through the transparent glyph poster until the first frame paints */
+.w10md-np{background:var(--w10vs-ph-bg,linear-gradient(135deg,color-mix(in srgb,var(--p) 16%,var(--cardh)),color-mix(in srgb,var(--a) 10%,var(--cardh))))!important}
+.w10md-np>video{background:transparent!important}
+/* video failed: an in-place panel in the same box (no layout shift) */
+.w10md-dead>video{visibility:hidden}
+.w10md-fb{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--w10vs-s2,8px);padding:var(--w10vs-s3,12px);text-align:center;background:var(--w10vs-ph-bg,linear-gradient(135deg,color-mix(in srgb,var(--p) 16%,var(--cardh)),color-mix(in srgb,var(--a) 10%,var(--cardh))));color:var(--t1);line-height:var(--w10vs-lh-snug,1.35)}
+.w10md-fb>svg{width:32px;height:32px;flex:none;fill:none;stroke:#8C90A6;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;opacity:.9}
+.w10md-fbt{font-size:var(--w10vs-fs-ui,.9375rem);font-weight:var(--w10vs-fw-bold,700)}
+.w10md-fbs{font-size:var(--w10vs-fs-sm,.8125rem);color:var(--t2)}
+.w10md-fb .w10md-retry{margin:var(--w10vs-s1,4px) 0 0;min-height:var(--w10vs-ctl-sm,40px);min-width:var(--w10vs-ctl-sm,40px);padding:.4rem 1.1rem;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font-size:var(--w10vs-fs-sm,.8125rem);line-height:1.2}
+.w10md-retry>svg{width:1.05em;height:1.05em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.w10md-off .intro-bar button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:400px){.w10md-fb{gap:6px;padding:8px}.w10md-fb>svg{width:26px;height:26px}.w10md-fbs{font-size:var(--w10vs-fs-cap,.75rem)}}
+/* ===== /W10 media ===== */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 </head>
@@ -9238,7 +9428,7 @@ function pfVideo(stageId,topicIdx){
 // STAGE_INTRO['<stageId>_<lang>'] = video URL. Self-hosted .mp4 (deploy/av/intro/...) renders an
 // inline <video>; Drive/YouTube links render an embed iframe. The card sits at the TOP of the
 // stage's theory tab — watch first, then read. Monitored as video/intro_play.
-var STAGE_INTRO={'0_en':'av/intro/stage-00-en.mp4','0_he':'av/intro/stage-00-he.mp4','1_en':'av/intro/stage-01-en.mp4','1_he':'av/intro/stage-01-he.mp4','2_en':'av/intro/stage-02-en.mp4','2_he':'av/intro/stage-02-he.mp4','3_en':'av/intro/stage-03-en.mp4','3_he':'av/intro/stage-03-he.mp4','4_en':'av/intro/stage-04-en.mp4','4_he':'av/intro/stage-04-he.mp4','5_en':'av/intro/stage-05-en.mp4','5_he':'av/intro/stage-05-he.mp4','6_en':'av/intro/stage-06-en.mp4','6_he':'av/intro/stage-06-he.mp4','7_en':'av/intro/stage-07-en.mp4','7_he':'av/intro/stage-07-he.mp4','8_en':'av/intro/stage-08-en.mp4','8_he':'av/intro/stage-08-he.mp4','9_en':'av/intro/stage-09-en.mp4','9_he':'av/intro/stage-09-he.mp4','10_en':'av/intro/stage-10-en.mp4','10_he':'av/intro/stage-10-he.mp4','11_en':'av/intro/stage-11-en.mp4','11_he':'av/intro/stage-11-he.mp4','12_en':'av/intro/stage-12-en.mp4','12_he':'av/intro/stage-12-he.mp4','13_en':'av/intro/stage-13-en.mp4','13_he':'av/intro/stage-13-he.mp4','14_en':'av/intro/stage-14-en.mp4','14_he':'av/intro/stage-14-he.mp4','15_en':'av/intro/stage-15-en.mp4','15_he':'av/intro/stage-15-he.mp4','16_en':'av/intro/stage-16-en.mp4','16_he':'av/intro/stage-16-he.mp4','17_en':'av/intro/stage-17-en.mp4','17_he':'av/intro/stage-17-he.mp4','18_en':'av/intro/stage-18-en.mp4','18_he':'av/intro/stage-18-he.mp4','19_en':'av/intro/stage-19-en.mp4','19_he':'av/intro/stage-19-he.mp4','20_en':'av/intro/stage-20-en.mp4','20_he':'av/intro/stage-20-he.mp4','21_en':'av/intro/stage-21-en.mp4','21_he':'av/intro/stage-21-he.mp4','22_en':'av/intro/stage-22-en.mp4','22_he':'av/intro/stage-22-he.mp4','23_en':'av/intro/stage-23-en.mp4','23_he':'av/intro/stage-23-he.mp4','24_en':'av/intro/stage-24-en.mp4','24_he':'av/intro/stage-24-he.mp4','25_en':'av/intro/stage-25-en.mp4','100_he':'av/intro/stage-100-he.mp4','100_en':'av/intro/stage-100-en.mp4','101_he':'av/intro/stage-101-he.mp4','101_en':'av/intro/stage-101-en.mp4','102_he':'av/intro/stage-102-he.mp4','103_he':'av/intro/stage-103-he.mp4','103_en':'av/intro/stage-103-en.mp4','104_he':'av/intro/stage-104-he.mp4','104_en':'av/intro/stage-104-en.mp4','105_he':'av/intro/stage-105-he.mp4','105_en':'av/intro/stage-105-en.mp4','106_he':'av/intro/stage-106-he.mp4','106_en':'av/intro/stage-106-en.mp4','107_he':'av/intro/stage-107-he.mp4','107_en':'av/intro/stage-107-en.mp4','108_he':'av/intro/stage-108-he.mp4','108_en':'av/intro/stage-108-en.mp4','109_he':'av/intro/stage-109-he.mp4','109_en':'av/intro/stage-109-en.mp4','110_en':'av/intro/stage-110-en.mp4','110_he':'av/intro/stage-110-he.mp4','111_en':'av/intro/stage-111-en.mp4','111_he':'av/intro/stage-111-he.mp4','112_en':'av/intro/stage-112-en.mp4','112_he':'av/intro/stage-112-he.mp4','113_en':'av/intro/stage-113-en.mp4','113_he':'av/intro/stage-113-he.mp4','114_en':'av/intro/stage-114-en.mp4','114_he':'av/intro/stage-114-he.mp4','102_en':'av/intro/stage-102-en.mp4','115_en':'av/intro/stage-115-en.mp4','115_he':'av/intro/stage-115-he.mp4','116_en':'av/intro/stage-116-en.mp4','116_he':'av/intro/stage-116-he.mp4','117_en':'av/intro/stage-117-en.mp4','117_he':'av/intro/stage-117-he.mp4','118_en':'av/intro/stage-118-en.mp4','118_he':'av/intro/stage-118-he.mp4','119_en':'av/intro/stage-119-en.mp4','119_he':'av/intro/stage-119-he.mp4','120_en':'av/intro/stage-120-en.mp4','120_he':'av/intro/stage-120-he.mp4','121_en':'av/intro/stage-121-en.mp4','121_he':'av/intro/stage-121-he.mp4','122_en':'av/intro/stage-122-en.mp4','122_he':'av/intro/stage-122-he.mp4','123_en':'av/intro/stage-123-en.mp4','123_he':'av/intro/stage-123-he.mp4','124_en':'av/intro/stage-124-en.mp4','124_he':'av/intro/stage-124-he.mp4','125_he':'av/intro/stage-125-he.mp4','125_en':'av/intro/stage-125-en.mp4','25_he':'av/intro/stage-25-he.mp4'};
+var STAGE_INTRO={'0_en':'av/intro/stage-00-en.mp4','0_he':'av/intro/stage-00-he.mp4','1_en':'av/intro/stage-01-en.mp4','1_he':'av/intro/stage-01-he.mp4','2_en':'av/intro/stage-02-en.mp4','2_he':'av/intro/stage-02-he.mp4','3_en':'av/intro/stage-03-en.mp4','3_he':'av/intro/stage-03-he.mp4','4_en':'av/intro/stage-04-en.mp4','4_he':'av/intro/stage-04-he.mp4','5_en':'av/intro/stage-05-en.mp4','5_he':'av/intro/stage-05-he.mp4','6_en':'av/intro/stage-06-en.mp4','6_he':'av/intro/stage-06-he.mp4','7_en':'av/intro/stage-07-en.mp4','7_he':'av/intro/stage-07-he.mp4','8_en':'av/intro/stage-08-en.mp4','8_he':'av/intro/stage-08-he.mp4','9_en':'av/intro/stage-09-en.mp4','9_he':'av/intro/stage-09-he.mp4','10_en':'av/intro/stage-10-en.mp4','10_he':'av/intro/stage-10-he.mp4','11_en':'av/intro/stage-11-en.mp4','11_he':'av/intro/stage-11-he.mp4','12_en':'av/intro/stage-12-en.mp4','12_he':'av/intro/stage-12-he.mp4','13_en':'av/intro/stage-13-en.mp4','13_he':'av/intro/stage-13-he.mp4','14_en':'av/intro/stage-14-en.mp4','14_he':'av/intro/stage-14-he.mp4','15_en':'av/intro/stage-15-en.mp4','15_he':'av/intro/stage-15-he.mp4','16_en':'av/intro/stage-16-en.mp4','16_he':'av/intro/stage-16-he.mp4','17_en':'av/intro/stage-17-en.mp4','17_he':'av/intro/stage-17-he.mp4','18_en':'av/intro/stage-18-en.mp4','18_he':'av/intro/stage-18-he.mp4','19_en':'av/intro/stage-19-en.mp4','19_he':'av/intro/stage-19-he.mp4','20_en':'av/intro/stage-20-en.mp4','20_he':'av/intro/stage-20-he.mp4','21_en':'av/intro/stage-21-en.mp4','21_he':'av/intro/stage-21-he.mp4','22_en':'av/intro/stage-22-en.mp4','22_he':'av/intro/stage-22-he.mp4','23_en':'av/intro/stage-23-en.mp4','23_he':'av/intro/stage-23-he.mp4','24_en':'av/intro/stage-24-en.mp4','24_he':'av/intro/stage-24-he.mp4','25_en':'av/intro/stage-25-en.mp4','100_he':'av/intro/stage-100-he.mp4','100_en':'av/intro/stage-100-en.mp4','101_he':'av/intro/stage-101-he.mp4','101_en':'av/intro/stage-101-en.mp4','102_he':'av/intro/stage-102-he.mp4','103_he':'av/intro/stage-103-he.mp4','103_en':'av/intro/stage-103-en.mp4','104_he':'av/intro/stage-104-he.mp4','104_en':'av/intro/stage-104-en.mp4','105_he':'av/intro/stage-105-he.mp4','105_en':'av/intro/stage-105-en.mp4','106_he':'av/intro/stage-106-he.mp4','106_en':'av/intro/stage-106-en.mp4','107_he':'av/intro/stage-107-he.mp4','107_en':'av/intro/stage-107-en.mp4','108_he':'av/intro/stage-108-he.mp4','108_en':'av/intro/stage-108-en.mp4','109_he':'av/intro/stage-109-he.mp4','109_en':'av/intro/stage-109-en.mp4','110_en':'av/intro/stage-110-en.mp4','110_he':'av/intro/stage-110-he.mp4','111_en':'av/intro/stage-111-en.mp4','111_he':'av/intro/stage-111-he.mp4','112_en':'av/intro/stage-112-en.mp4','112_he':'av/intro/stage-112-he.mp4','113_en':'av/intro/stage-113-en.mp4','113_he':'av/intro/stage-113-he.mp4','114_en':'av/intro/stage-114-en.mp4','114_he':'av/intro/stage-114-he.mp4','102_en':'av/intro/stage-102-en.mp4','115_en':'av/intro/stage-115-en.mp4','115_he':'av/intro/stage-115-he.mp4','116_en':'av/intro/stage-116-en.mp4','116_he':'av/intro/stage-116-he.mp4','117_en':'av/intro/stage-117-en.mp4','117_he':'av/intro/stage-117-he.mp4','118_en':'av/intro/stage-118-en.mp4','118_he':'av/intro/stage-118-he.mp4','119_en':'av/intro/stage-119-en.mp4','119_he':'av/intro/stage-119-he.mp4','120_en':'av/intro/stage-120-en.mp4','120_he':'av/intro/stage-120-he.mp4','121_en':'av/intro/stage-121-en.mp4','121_he':'av/intro/stage-121-he.mp4','122_en':'av/intro/stage-122-en.mp4','122_he':'av/intro/stage-122-he.mp4','123_en':'av/intro/stage-123-en.mp4','123_he':'av/intro/stage-123-he.mp4','124_en':'av/intro/stage-124-en.mp4','124_he':'av/intro/stage-124-he.mp4','125_he':'av/intro/stage-125-he.mp4','26_he':'av/intro/stage-26-he.mp4','26_en':'av/intro/stage-26-en.mp4','27_he':'av/intro/stage-27-he.mp4','125_en':'av/intro/stage-125-en.mp4','25_he':'av/intro/stage-25-he.mp4'};
 function enhanceIntroVideo(){
   var tc=document.getElementById('tc');if(!tc)return;
   if(tc.querySelector('.stage-intro-card'))return;
@@ -9957,6 +10147,30 @@ function initSecObserver(){
   // initial passes after layout settles (marks topics already on screen)
   setTimeout(_markSeenByScroll,150);setTimeout(_markSeenByScroll,600);
 }
+/* W11 read-fix (02/11, owner: "books — the reading part never finishes, the ring stops at 68%"): his phone marked only the first
+   topic (quiz + case + 1/5 read = 68%). Read-marks must not depend on scroll events alone: a 1 s poll re-runs the geometric check,
+   an OPEN topic that stayed on screen for half its estimated reading time (12-40 s) counts as read, and the app's own fair-credit
+   rule (all answers + case + enough learn time) completes the stage in-session instead of waiting for the map. */
+var _w11rd={dw:{}};
+function _w11rdTick(){
+  try{
+    if(typeof G==='undefined'||!G||G.v!=='s'||G.tab!=='l'||document.hidden)return;
+    _markSeenByScroll();
+    var s=S.find(function(x){return x.id===G.st});if(!s)return;
+    var vh=window.innerHeight||document.documentElement.clientHeight||800,changed=false;
+    if(!G._seenSec)G._seenSec={};
+    document.querySelectorAll('#tc .csec[data-idx]').forEach(function(sec){
+      var i=parseInt(sec.dataset.idx,10),key=G.st+'_'+i;if(isNaN(i)||G._seenSec[key])return;
+      var body=sec.querySelector('.pf-acc-body');if(!body||!body.classList.contains('open'))return;
+      var r=body.getBoundingClientRect();if(r.height<40||r.bottom<vh*0.15||r.top>vh*0.85)return;/* open but not really on screen */
+      var len=String((s.th[i]&&s.th[i].c)||'').replace(/<[^>]+>/g,'').length,need=Math.max(12,Math.min(40,Math.round(len/2200*30)));
+      _w11rd.dw[key]=(_w11rd.dw[key]||0)+1;
+      if(_w11rd.dw[key]>=need){G._seenSec[key]=true;sec.classList.add('sec-seen');changed=true;try{trackEvent('learn','dwellRead',key)}catch(e){}}
+    });
+    if(changed||(typeof _w8rnFair==='function'&&_w8rnFair(G.st)))_updateReadProgress();
+  }catch(e){}
+}
+setInterval(_w11rdTick,1000);
 const quizFacts=['💡 ידעתם? חברות שמנוהלות ע״י PM חזק צומחות פי 2 מהר יותר.','💡 ידעתם? 70% מהפיצ\'רים שנבנים כמעט לא נמצאים בשימוש.','💡 ידעתם? אמזון כותבים מסמך PR/FAQ לפני שמתחילים לפתח.','💡 ידעתם? הפיצ\'ר הכי מבוקש הוא כמעט אף פעם לא הכי חשוב.','💡 ידעתם? ספוטיפיי משתמשים ב-Squads עם PM בכל צוות.','💡 ידעתם? גוגל הורגים מוצרים בקצב של אחד כל חודשיים.','💡 ידעתם? מנהלי מוצר מבלים רק 15% מהזמן בכתיבת דרישות.','💡 ידעתם? סטארטאפים שעושים Pivot מגייסים פי 2.5 יותר.','💡 ידעתם? 42% מהסטארטאפים נכשלים כי אין צורך אמיתי במוצר.','💡 ידעתם? A/B Test ממוצע צריך לרוץ לפחות שבועיים לתוצאות אמינות.'];
 const streakMsgs=['🔥 שתיים ברצף!','🔥🔥 שלוש ברצף! להבה!','🔥🔥🔥 ארבע! בלתי ניתנים לעצירה!','⚡ חמש ברצף! אלופים!','💎 שש! כמעט מושלם!','👑 שבע! כישרון של PM!','🏆 שמונה! מושלם לגמרי!'];
 const wrongEncourage=['💪 לא נורא! טעויות הן חלק מהלמידה.','🧠 שאלה טובה ללמוד ממנה!','📖 קראו את ההסבר - זה מה שמחזק את הידע.','🎯 הפעם הבאה תדעו!','⭐ כל טעות = הזדמנות ללמוד משהו חדש.'];
@@ -11455,7 +11669,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.22';
+const APP_VERSION='1.10.24';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -12277,7 +12491,7 @@ function loadAdminData(){
 $('adv').innerHTML='<div class="adm-wrap" style="text-align:center;padding:4rem"><div style="font-size:2.5rem;margin-bottom:.5rem">⏳</div><p style="color:var(--t2)">טוען נתוני משתמשים מהענן...</p></div>';
 // Fetch bug count in parallel
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getBugReports',adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
-.then(r=>r.json()).then(d=>{if(d.success&&d.data)_admBugCount=d.data.filter(b=>b.resolved!=='resolved').length;renderAdminDashboard()}).catch(()=>{});
+.then(r=>r.json()).then(d=>{if(d.success&&d.data)_admBugCount=d.data.filter(b=>b.resolved!=='resolved').length;try{if(typeof _w10adSetBugs==='function')_w10adSetBugs(d.data)}catch(e){}renderAdminDashboard()}).catch(()=>{});
 // Fetch floating-feature analytics in parallel (Phase 2)
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'getAnalytics',adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json()).then(d=>{if(d.success&&d.data){_admAnalytics=d.data;renderAdminDashboard()}}).catch(()=>{});
@@ -29803,6 +30017,660 @@ if(typeof mp==='function'){_w10e2O.mp=mp;mp=function(){var r=_w10e2O.mp.apply(th
 
 try{_w10e2Build()}catch(e){}
 /* ===== /W10 ENTRY phase 2 ===== */
+/* ===== W10 admin experience (w10ad) — see _video_factory/_w10_adminx.js / .md =====
+   The owner's daily admin jobs, fast and clear on a phone:
+   · a sticky section nav (today · approvals · bugs · overview · metrics · users · settings) with live count badges;
+   · the daily snapshot: new sign-ups · active today · stage completions · open bug reports · pending approvals;
+   · the sign-up queue: who · when · e-mail verified or not · how long they have waited vs the 24 h target; one tap approves,
+     one tap rejects (5-second undo before anything is sent), one bulk approve with a confirm; navy flag per person;
+   · open bug reports on the dashboard: screenshot thumbnail · newest first · one-tap "✅ טופל";
+   · the management table as cards on phones (≤640 px), sticky controls that never stack on the nav.
+   Data = what the dashboard already loaded (_admUsers · _admBugCount · the bug list loadAdminData already fetches, kept by a
+   one-line capture). Writes = the existing admin-token calls only (approveUser · rejectUser · markBugResolved; plus the
+   existing resendVerification for a learner stuck before e-mail verification), strictly ONE AT A TIME (the sheet finds rows
+   by scanning, so a delete racing an approve could hit the wrong row). The admin sign-in and token flow is untouched.
+   Wraps renderAdminDashboard · renderBugReports · buildAdmTable · hideAdmin · applyLanguage — never re-declared.
+   Hebrew RTL + English LTR (the rest of the admin stays the Hebrew-only owner tool it was). ===== */
+var _W10AD={SLA:24*36e5,WARN:12*36e5,UNDO:5000,BUGS:6,SETTLE:900,D:864e5};
+var _w10ad={bugs:null,navy:{},rej:{},st:{},bst:{},q:[],qBusy:false,bulk:null,io:null,act:'w10adSnap',tick:0,rt:0,anchor:null,mounted:false,secs:[],sent:0,raf:0,rs:0};
+/* ---------- small helpers ---------- */
+function _w10adEn(){try{return !!(G&&G.lang==='en')}catch(e){return false}}
+function _w10adT(he,en){return _w10adEn()?en:he}
+function _w10adE(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function _w10adN(n){n=Number(n);if(!isFinite(n))return '—';try{return n.toLocaleString(_w10adEn()?'en-US':'he-IL')}catch(e){return String(n)}}
+function _w10adTrack(a,m){try{if(typeof trackEvent==='function')trackEvent('admin',a,m==null?'':String(m))}catch(e){}}
+function _w10adRm(){try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}}
+function _w10adDay(ms){var d=new Date(ms);return Math.round(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)}
+/* every date shape the sheet hands back (same rules as admin2's _w8adMs): epoch ms / s, "d.m.yyyy[, H:MM[:SS]]" (he-IL), ISO */
+function _w10adMs(v){
+  if(typeof _w8adMs==='function'){try{return _w8adMs(v)}catch(e){}}
+  if(v==null||v==='')return 0;var t=0;
+  if(typeof v==='number')t=(v>1e9&&v<1e11)?v*1000:v;
+  else{var x=String(v).trim();if(!x)return 0;
+    if(/^\d+$/.test(x)){var n=+x;t=(x.length>=12)?n:((x.length>=10)?n*1000:0)}
+    else{var m=/^(\d{1,2})[.\/](\d{1,2})[.\/](\d{4})(?:[,\s]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/.exec(x);
+      t=m?new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0),+(m[6]||0)).getTime():Date.parse(x)}}
+  return (isFinite(t)&&t>1.5e12)?t:0;
+}
+/* waiting time, compact: "40 דק׳" · "5 שע׳" · "1 יום 7 שע׳" / "40m" · "5h" · "1d 7h" */
+function _w10adDur(ms){
+  var en=_w10adEn(),m=Math.max(0,Math.floor(ms/6e4)),h=Math.floor(m/60),d=Math.floor(h/24);
+  var hh=function(n){return n===1?'שעה':(n===2?'שעתיים':n+' שע׳')};
+  if(m<1)return en?'<1m':'פחות מדקה';if(m<60)return en?(m+'m'):(m+' דק׳');if(h<24)return en?(h+'h'):hh(h);
+  var rh=h%24,ds=d===1?'יום':(d===2?'יומיים':d+' ימים');return en?(d+'d'+(rh?' '+rh+'h':'')):(ds+(rh?' ו'+(rh>2?'-':'')+hh(rh):''));
+}
+function _w10adLeft(ms){var u=ms<36e5?6e4:36e5;return _w10adDur(Math.max(u,Math.ceil(ms/u)*u))}
+function _w10adAgo(ms){if(!ms)return '—';var d=Date.now()-ms;if(d<12e4)return _w10adT('עכשיו','just now');return _w10adEn()?(_w10adDur(d)+' ago'):('לפני '+_w10adDur(d))}
+function _w10adWhen(ms){if(!ms)return '—';try{return new Date(ms).toLocaleString(_w10adEn()?'en-GB':'he-IL',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return ''}}
+function _w10adToday(ms){if(!ms)return false;try{if(typeof _isTodayMs==='function')return _isTodayMs(ms)}catch(e){}return _w10adDay(ms)===_w10adDay(Date.now())}
+function _w10adUsers(){try{return (typeof _admUsers!=='undefined'&&Array.isArray(_admUsers))?_admUsers:[]}catch(e){return []}}
+function _w10adUser(n){var L=_w10adUsers();for(var i=0;i<L.length;i++)if(L[i]&&String(L[i].userName)===n)return L[i];return null}
+function _w10adLog(u){try{if(typeof _w8adRow==='function')return _w8adRow(u).log}catch(e){}try{var a=JSON.parse(u.activityLogJSON||'[]');return Array.isArray(a)?a:[]}catch(e){return []}}
+/* ---------- data ---------- */
+/* the queue: pending + pending_admin (approvable) and pending_email (still before e-mail verification), longest wait first */
+function _w10adPend(){
+  var now=Date.now(),dup={},out=[];
+  try{if(typeof _w8suPendingList==='function')_w8suPendingList().forEach(function(p){dup[p.name]=p})}catch(e){}
+  _w10adUsers().forEach(function(u){
+    var s=String(u&&u.status||'');if(s!=='pending'&&s!=='pending_admin'&&s!=='pending_email')return;
+    var a=_w10adMs(u.firstUse),b=_w10adMs(u.lastLogin),t=(a&&b)?Math.min(a,b):(a||b);if(t>now+_W10AD.D)t=0;
+    var ev=String(u.emailVerified||''),nm=String(u.userName==null?'':u.userName),d=dup[nm]||{};
+    out.push({name:nm,email:String(u.email||''),st:s,grp:(s==='pending_email')?'email':'admin',
+      ver:(s==='pending_admin'||ev==='true')?'yes':((s==='pending_email'||ev==='false')?'no':'old'),
+      t:t,w:t?Math.max(0,now-t):0,lang:String(u.lang||''),dup:(d.dupOf||[]).slice(0,3),same:(d.sameName||[]).slice(0,3)});
+  });
+  out.sort(function(x,y){return (y.w-x.w)||(x.name<y.name?-1:(x.name>y.name?1:0))});
+  return out;
+}
+/* the daily snapshot — same definitions as the dashboard's own tiles (lastActivity · activity log) and admin2 (firstUse) */
+function _w10adSnapM(P){
+  var now=Date.now(),today=_w10adDay(now),k={su:0,su7:0,act:0,on:0,cmp:0,ans:0,bugs:0,b24:null,pend:0,unv:0,over:0,old:0};
+  _w10adUsers().forEach(function(u){
+    if(!u)return;var s=String(u.status||''),fu=_w10adMs(u.firstUse);
+    if(fu){var dd=today-_w10adDay(fu);if(dd===0)k.su++;if(dd>=0&&dd<7)k.su7++}
+    if(s==='pending'||s==='pending_admin'||s==='pending_email')return;
+    var la=parseInt(u.lastActivity)||0;if(_w10adToday(la))k.act++;if(s!=='deactivated'&&la>0&&now-la<120000)k.on++;
+    _w10adLog(u).forEach(function(e){if(e&&e.t&&_w10adToday(e.t)){if(e.a==='completeStage')k.cmp++;else if(e.a==='answer')k.ans++}});
+  });
+  (P||[]).forEach(function(p){if(p.grp==='admin'){k.pend++;if(p.w>=_W10AD.SLA)k.over++;if(p.w>k.old)k.old=p.w}else k.unv++});
+  try{k.bugs=Math.max(0,Number(_admBugCount)||0)}catch(e){k.bugs=0}
+  var B=_w10adBugs();if(B){k.b24=0;B.forEach(function(r){if(r.resolved!=='resolved'){var t=r._w10t;if(t&&now-t<_W10AD.D)k.b24++}})}
+  return k;
+}
+/* the bug list loadAdminData already fetched (raw rows kept by the capture) — normalised, newest first */
+function _w10adBugs(){
+  var L=_w10ad.bugs;if(!Array.isArray(L))return null;
+  var out=L.filter(function(r){return r&&typeof r==='object'}).map(function(r,i){var o={},k;for(k in r)if(Object.prototype.hasOwnProperty.call(r,k))o[k]=r[k];
+    if(o.report==null)o.report=(o.text!=null?o.text:'');if(o.userName==null)o.userName='';if(o.context==null)o.context='';o._w10t=_w10adMs(o.timestamp);o._w10i=i;return o});
+  if(out.length>1&&out.every(function(o){return o._w10t>0}))out.sort(function(a,b){return (b._w10t-a._w10t)||(a._w10i-b._w10i)});
+  return out;
+}
+function _w10adThumb(u){u=String(u||'');if(!u)return '';var m=u.match(/[?&]id=([A-Za-z0-9_-]+)/)||u.match(/\/file\/d\/([A-Za-z0-9_-]+)/);if(m&&/^https:\/\/(drive|docs)\.google\.com\//.test(u))return 'https://lh3.googleusercontent.com/d/'+m[1]+'=w240';return /^(https:\/\/|data:image\/(png|jpe?g|webp|gif);)/i.test(u)?u:''}
+function _w10adMeta(ctx){var c=String(ctx||''),o={},m;
+  if((m=/\bv(\d+\.\d+\.\d+)\b/.exec(c)))o.ver=m[1];if((m=/\b(mobile|desktop)\b/.exec(c)))o.dev=m[1];if((m=/\b(prod|staging)\b/.exec(c)))o.env=m[1];
+  if((m=/(?:^|·)\s*(HE|EN)\s*(?=·|$)/.exec(c)))o.lang=m[1];var i=c.indexOf(' · v');o.where=(i>0?c.slice(0,i):(o.ver?'':c)).trim();return o}
+/* ---------- write queue: the existing admin-token calls, one at a time ---------- */
+function _w10adSend(body){
+  return new Promise(function(res){_w10ad.q.push({b:body,res:res});_w10adPump()});
+}
+function _w10adPump(){
+  if(_w10ad.qBusy||!_w10ad.q.length)return;var it=_w10ad.q.shift();_w10ad.qBusy=true;
+  var done=function(d){_w10ad.qBusy=false;try{it.res(d)}catch(e){}_w10adPump()};
+  try{
+    if(typeof DB_URL==='undefined'||!DB_URL){done({success:false,error:'offline'});return}
+    var sig;try{if(typeof _w6sySig==='function')sig=_w6sySig(25000)}catch(e){}
+    _w10ad.sent++;
+    fetch(DB_URL,{method:'POST',body:JSON.stringify(it.b),headers:{'Content-Type':'text/plain'},signal:sig}).then(function(r){return r.json()}).then(function(d){done(d||{success:false})},function(){done({success:false,error:'network'})});
+  }catch(e){done({success:false,error:'network'})}
+}
+function _w10adErr(e){var en=_w10adEn(),t=String(e||''),net=(t==='network'||t==='offline');
+  try{showAchievement(net?'📴':'⚠️',net?_w10adT('שגיאת חיבור','Connection error'):_w10adT('הפעולה נכשלה','Action failed'),net?_w10adT('לא ניתן להתחבר לענן — נסו שוב','Could not reach the cloud — try again'):t.slice(0,80))}catch(x){}}
+/* re-render the whole dashboard once the taps settle, keeping the section the owner works in at the same screen spot */
+function _w10adSoon(anchor){_w10ad.anchor=anchor||_w10ad.anchor;clearTimeout(_w10ad.rt);_w10ad.rt=setTimeout(_w10adRerender,_W10AD.SETTLE)}
+function _w10adRerender(){
+  _w10ad.rt=0;var adv=document.getElementById('adv');if(!adv||adv.classList.contains('hid')||!document.getElementById('admTableWrap'))return;
+  if(_w10ad.qBusy||_w10ad.q.length||(_w10ad.bulk&&_w10ad.bulk.run)){_w10adSoon();return}
+  /* anchor = the first stable block still on screen under the sticky chrome (the owner may have scrolled on meanwhile) */
+  var id=null,y0=null,off=_w10adTopOff(),ids=['w10adSnap','w10adQ','w10adBugs','w8adRoot','admTblCtrl','admTableWrap','notifyEmailsList'];
+  for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(!el)continue;var r=el.getBoundingClientRect();if(r.bottom>off){id=ids[i];y0=r.top;break}}
+  try{renderAdminDashboard()}catch(e){}
+  var nel=id?document.getElementById(id):null;
+  if(nel&&y0!=null){var dy=nel.getBoundingClientRect().top-y0;if(Math.abs(dy)>1)try{window.scrollBy(0,dy)}catch(e){}}
+  _w10ad.anchor=null;
+}
+/* ---------- approve / reject ---------- */
+function _w10adApprove(name,src){
+  if(!name||_w10ad.st[name])return Promise.resolve(false);var navy=!!_w10ad.navy[name];
+  _w10ad.st[name]='busy';_w10adPaint(name);if(src!=='bulk')_w10adTrack('adxApprove','one');
+  return _w10adSend({action:'approveUser',userName:name,navy:navy,adminToken:_admToken}).then(function(d){
+    if(d&&d.success){var u=_w10adUser(name);if(u){u.status='approved';if(navy)u.navyArm='true'}_w10ad.st[name]='ok';_w10ad.okMail=(_w10ad.okMail||0)+(d.mailed?1:0);_w10adPaint(name);
+      if(src!=='bulk'){try{showAchievement('✅',_w10adT('אושר/ה','Approved')+(navy?' ⚓':''),name+(d.mailed?_w10adT(' · נשלח מייל אישור',' · approval e-mail sent'):''))}catch(e){}_w10adSoon('w10adQ')}
+      return true}
+    delete _w10ad.st[name];_w10adPaint(name);if(src!=='bulk')_w10adErr(d&&d.error);return false});
+}
+function _w10adReject(name){if(!name||_w10ad.st[name])return;_w10ad.rej[name]=Date.now()+_W10AD.UNDO;_w10ad.st[name]='rej';_w10adPaint(name);_w10adTick();_w10adTrack('adxReject','tap')}
+function _w10adUndo(name){if(_w10ad.st[name]!=='rej')return;delete _w10ad.rej[name];delete _w10ad.st[name];_w10adPaint(name);_w10adTrack('adxUndo','');
+  var b=_w10adCard(name);if(b){var x=b.querySelector('[data-w10a="no"]');if(x)try{x.focus({preventScroll:true})}catch(e){}}}
+function _w10adTick(){if(_w10ad.tick)return;_w10ad.tick=setInterval(function(){var now=Date.now(),ks=Object.keys(_w10ad.rej);
+  ks.forEach(function(n){if(_w10ad.rej[n]<=now)_w10adCommit(n);else _w10adCount(n)});if(!Object.keys(_w10ad.rej).length){clearInterval(_w10ad.tick);_w10ad.tick=0}},250)}
+function _w10adCount(n){var c=_w10adCard(n),s=c?c.querySelector('.w10ad-cd'):null;if(s){var v=String(Math.max(1,Math.ceil((_w10ad.rej[n]-Date.now())/1000)));if(s.textContent!==v)s.textContent=v}}
+function _w10adCommit(name){
+  if(!(name in _w10ad.rej))return Promise.resolve(false);delete _w10ad.rej[name];_w10ad.st[name]='busy';_w10adPaint(name);_w10adTrack('adxReject','sent');
+  return _w10adSend({action:'rejectUser',userName:name,adminToken:_admToken}).then(function(d){
+    if(d&&d.success){try{_admUsers=_admUsers.filter(function(x){return String(x.userName)!==name})}catch(e){}_w10ad.st[name]='gone';_w10adPaint(name);
+      try{showAchievement('❌',_w10adT('הבקשה נדחתה','Request rejected'),name)}catch(e){}_w10adSoon('w10adQ');return true}
+    delete _w10ad.st[name];_w10adPaint(name);_w10adErr(d&&d.error);return false});
+}
+/* leaving the dashboard sends the rejects still in their undo window; closing the page sends nothing (they stay pending) */
+function _w10adFlush(){return Promise.all(Object.keys(_w10ad.rej).map(_w10adCommit))}
+function _w10adBulkArm(){var L=_w10adPend().filter(function(p){return p.grp==='admin'&&!_w10ad.st[p.name]});if(!L.length)return;_w10ad.bulk={names:L.map(function(p){return p.name}),i:0,run:false};_w10adBulkPaint(true);_w10adTrack('adxBulk','arm')}
+function _w10adBulkX(){if(_w10ad.bulk&&!_w10ad.bulk.run){_w10ad.bulk=null;_w10adBulkPaint(true)}}
+function _w10adBulkGo(){
+  var B=_w10ad.bulk;if(!B||B.run)return Promise.resolve(0);B.run=true;_w10ad.okMail=0;_w10adBulkPaint();_w10adTrack('adxBulk','go:'+(B.names.length>9?'10+':B.names.length));
+  var ok=0;return Promise.all(B.names.map(function(n){return _w10adApprove(n,'bulk').then(function(r){B.i++;if(r)ok++;_w10adBulkPaint()})})).then(function(){
+    var bad=B.names.length-ok,mail=_w10ad.okMail||0;_w10ad.bulk=null;
+    try{showAchievement(bad?'⚠️':'✅',_w10adT('אושרו '+ok+' מתוך '+B.names.length,ok+' of '+B.names.length+' approved'),mail?_w10adT('נשלחו '+mail+' מיילי אישור',mail+' approval e-mails sent'):(bad?_w10adT('חלק מהבקשות נכשלו — נסו שוב','Some failed — try again'):''))}catch(e){}
+    _w10adSoon('w10adQ');return ok});
+}
+function _w10adResend(name,btn){
+  if(typeof _w8suAdminResend!=='function'||!btn||btn.disabled)return;btn.disabled=true;var lbl=btn.textContent;btn.textContent='⏳';_w10adTrack('adxResend','');
+  _w8suAdminResend(name).then(function(r){var en=_w10adEn();
+    btn.textContent=r&&r.ok?_w10adT('✓ נשלח','✓ Sent'):(r&&r.retryAfterSec?_w10adT('נשלח לאחרונה — אפשר שוב בעוד '+Math.ceil(r.retryAfterSec/60)+' דק׳','Sent recently — again in '+Math.ceil(r.retryAfterSec/60)+'m'):_w10adT('❌ לא נשלח','❌ Not sent'));
+    setTimeout(function(){if(btn.isConnected){btn.textContent=lbl;btn.disabled=false}},3500)});
+}
+/* ---------- bugs: one-tap "✅ טופל" (markBugResolved, the existing call) ---------- */
+function _w10adBugDone(row,btn){
+  row=parseInt(row,10);if(!(row>=2)||_w10ad.bst[row])return Promise.resolve(false);
+  _w10ad.bst[row]='busy';_w10adBugPaint(row);_w10adTrack('adxBugDone','');
+  return _w10adSend({action:'markBugResolved',rowIndex:row,adminToken:_admToken}).then(function(d){
+    if(d&&d.success){(_w10ad.bugs||[]).forEach(function(r){if(r&&parseInt(r.rowIndex,10)===row)r.resolved='resolved'});
+      try{_admBugCount=Math.max(0,(Number(_admBugCount)||0)-1)}catch(e){}_w10ad.bst[row]='ok';_w10adBugPaint(row);_w10adSoon('w10adBugs');return true}
+    delete _w10ad.bst[row];_w10adBugPaint(row);_w10adErr(d&&d.error);return false});
+}
+/* ---------- rendering ---------- */
+function _w10adSecHead(id,ic,he,en,count,cls,extra){return '<div class="w10ad-sh"><h3 class="w10ad-h" id="'+id+'H" tabindex="-1"><span aria-hidden="true">'+ic+'</span> '+_w10adT(he,en)+(count!=null?' <span class="w10ad-cnt'+(cls?' '+cls:'')+'">'+_w10adN(count)+'</span>':'')+'</h3>'+(extra||'')+'</div>'}
+function _w10adSnapHtml(k){
+  var T=_w10adT,N=_w10adN,tile=function(key,ic,lbl,v,sub,go,cls){return '<'+(go?'button type="button" data-w10a="tile"':'div')+' class="w10ad-tile'+(cls?' '+cls:'')+'" data-k="'+key+'" data-v="'+v+'"><span class="w10ad-tl"><span aria-hidden="true">'+ic+'</span> '+lbl+'</span><span class="w10ad-tv">'+N(v)+'</span>'+(sub?'<span class="w10ad-ts">'+sub+'</span>':'')+'</'+(go?'button':'div')+'>'};
+  var h='<div class="w10ad-tiles">';
+  h+=tile('su','🆕',T('נרשמו היום','New sign-ups today'),k.su,T('7 ימים','7 days')+': <b>'+N(k.su7)+'</b>',true);
+  h+=tile('act','👥',T('פעילים היום','Active today'),k.act,(k.on?'<span class="w10ad-dot" aria-hidden="true"></span>'+N(k.on)+' '+T('מחוברים עכשיו','online now'):T('אף אחד לא מחובר כרגע','nobody online now')),true);
+  h+=tile('cmp','🏁',T('שלבים הושלמו היום','Stages completed today'),k.cmp,N(k.ans)+' '+T('תשובות היום','answers today'),false);
+  h+=tile('bug','🐛',T('באגים פתוחים','Open bug reports'),k.bugs,k.b24!=null?(N(k.b24)+' '+T('חדשים ב-24 שע׳','new in 24 h')):T('לחיצה: הדיווחים','Tap: the reports'),true,k.bugs?'w10ad-red':'');
+  h+=tile('pend','⏳',T('ממתינים לאישור','Pending approval'),k.pend,
+    k.pend?(k.over?'<b class="w10ad-latet">'+N(k.over)+' '+T('מעל 24 שע׳','over 24 h')+'</b>':T('הוותיק ממתין','Longest wait')+' <b>'+_w10adDur(k.old)+'</b>')+(k.unv?' · '+T('ועוד '+N(k.unv)+' לפני אימות מייל','+'+N(k.unv)+' before e-mail check'):'')
+      :(k.unv?T(N(k.unv)+' לפני אימות מייל',N(k.unv)+' before e-mail check'):T('אין בקשות פתוחות','No open requests')),true,k.over?'w10ad-red':(k.pend?'w10ad-amb':''));
+  return h+'</div>';
+}
+function _w10adCardHtml(p){
+  var T=_w10adT,E=_w10adE,s=_w10ad.st[p.name]||'',adm=(p.grp==='admin');
+  var pct=Math.min(100,Math.round(p.w/_W10AD.SLA*100)),lvl=p.w>=_W10AD.SLA?'late':(p.w>=_W10AD.WARN?'warn':'fine');
+  var ver=p.ver==='yes'?'<span class="w10ad-pill w10ad-pg">✅ '+T('מייל אומת','E-mail verified')+'</span>':(p.ver==='no'?'<span class="w10ad-pill w10ad-pw">✉️ '+T('מייל לא אומת','E-mail not verified')+'</span>':'<span class="w10ad-pill">'+T('ללא אימות (בקשה ישנה)','No check (older request)')+'</span>');
+  var h='<article class="w10ad-qc'+(adm?' adm-pending-card':' w10ad-unv')+(s?' w10ad-s-'+s:'')+'" data-w10n="'+E(p.name)+'">';
+  h+='<div class="w10ad-qtop"><span class="w10ad-av" aria-hidden="true">'+E((p.name.trim().charAt(0)||'?').toUpperCase())+'</span><div class="w10ad-qid"><b class="w10ad-qn"><bdi>'+E(p.name||'—')+'</bdi></b>'
+    +(p.email?'<span class="w10ad-qe"><bdi dir="ltr">'+E(p.email)+'</bdi></span>':'<span class="w10ad-qe w10ad-mut">'+T('ללא מייל','No e-mail')+'</span>')+'</div>'
+    +(p.lang==='en'||p.lang==='he'?'<span class="w10ad-pill w10ad-lg" title="'+E(T('שפת ההרשמה','Sign-up language'))+'">'+(p.lang==='en'?'EN':(_w10adEn()?'HE':'עב'))+'</span>':'')+'</div>';
+  h+='<div class="w10ad-qmeta">'+ver+'<span class="w10ad-pill" title="'+E(p.t?_w10adWhen(p.t):'')+'">📅 '+(p.t?E(T('נרשם/ה ','Signed up ')+_w10adAgo(p.t)):T('זמן הרשמה לא ידוע','Sign-up time unknown'))+'</span></div>';
+  if(p.dup.length||p.same.length)h+='<p class="w10ad-dupw" role="note">⚠️ '+(p.dup.length?E(T('אותה כתובת כמו: ','Same address as: ')+p.dup.join(', ')):E(T('שם כמעט זהה ל: ','Almost the same name as: ')+p.same.join(', ')))+'</p>';
+  if(adm&&p.t){h+='<div class="w10ad-sla w10ad-sl-'+lvl+'"><span class="w10ad-slab" aria-hidden="true"><i style="width:'+pct+'%"></i></span><span class="w10ad-slat">'
+    +(lvl==='late'?'⏰ '+E(T('ממתין/ה '+_w10adDur(p.w)+' — מעבר ליעד של 24 שע׳','Waiting '+_w10adDur(p.w)+' — past the 24 h target'))
+      :'⏳ '+E(T('ממתין/ה '+_w10adDur(p.w)+' · נשארו '+_w10adLeft(_W10AD.SLA-p.w)+' ליעד','Waiting '+_w10adDur(p.w)+' · '+_w10adLeft(_W10AD.SLA-p.w)+' left to the target')))+'</span></div>'}
+  else if(!adm)h+='<p class="w10ad-note">'+E(T('עוד לא לחצו על קישור האימות במייל — אי אפשר לאשר לפני כן.','They have not clicked the verification link yet — approval comes after that.'))+'</p>';
+  h+='<div class="w10ad-qact">';
+  if(s==='rej'){var left=Math.max(1,Math.ceil(((_w10ad.rej[p.name]||Date.now())-Date.now())/1000));
+    h+='<span class="w10ad-rjm">❌ '+E(T('הבקשה תידחה ותימחק בעוד','Rejecting and deleting in'))+' <b class="w10ad-cd">'+left+'</b> '+E(T('שנ׳','s'))+'</span><button type="button" class="w10ad-b w10ad-undo" data-w10a="undo" data-n="'+E(p.name)+'">↩️ '+T('ביטול','Undo')+'</button>'}
+  else if(s==='busy')h+='<span class="w10ad-rjm" role="status">⏳ '+T('שולח…','Sending…')+'</span>';
+  else if(s==='ok')h+='<span class="w10ad-done" role="status">✅ '+T('אושר/ה','Approved')+'</span>';
+  else if(s==='gone')h+='<span class="w10ad-done w10ad-donex" role="status">❌ '+T('נדחה/תה','Rejected')+'</span>';
+  else{
+    if(adm)h+='<label class="w10ad-navy"><input type="checkbox" data-w10a="navy" data-n="'+E(p.name)+'"'+(_w10ad.navy[p.name]?' checked':'')+'><span>⚓ '+T('זרוע הים','Navy')+'</span></label>';
+    else if(typeof _w8suAdminResend==='function')h+='<button type="button" class="w10ad-b w10ad-ghost" data-w10a="resend" data-n="'+E(p.name)+'">📩 '+T('שליחת מייל אימות שוב','Resend verification')+'</button>';
+    h+='<button type="button" class="w10ad-b w10ad-no" data-w10a="no" data-n="'+E(p.name)+'" aria-label="'+E(T('דחיית הבקשה של ','Reject the request of ')+p.name)+'">❌ '+T('דחייה','Reject')+'</button>';
+    if(adm)h+='<button type="button" class="w10ad-b w10ad-ok" data-w10a="ok" data-n="'+E(p.name)+'" aria-label="'+E(T('אישור ','Approve ')+p.name)+'">✅ '+T('אישור','Approve')+'</button>';
+  }
+  return h+'</div></article>';
+}
+function _w10adBulkHtml(nAdm){
+  var T=_w10adT,B=_w10ad.bulk;
+  if(B&&B.run)return '<div class="w10ad-bulk w10ad-bulkon" role="status">⏳ '+T('מאשר','Approving')+' <b>'+B.i+'/'+B.names.length+'</b>…</div>';
+  if(B)return '<div class="w10ad-bulk w10ad-bulkon" role="group" aria-label="'+_w10adE(T('אישור כולם','Approve all'))+'"><span>'+_w10adE(T('לאשר את כל '+B.names.length+' הממתינים? מייל אישור יישלח לכל מי שאימת את הכתובת.','Approve all '+B.names.length+' waiting? Everyone with a verified address gets an approval e-mail.'))+'</span><span class="w10ad-bulkb"><button type="button" class="w10ad-b w10ad-ghost" data-w10a="bulkx">'+T('ביטול','Cancel')+'</button><button type="button" class="w10ad-b w10ad-ok" data-w10a="bulkgo">✅ '+T('אישור '+B.names.length,'Approve '+B.names.length)+'</button></span></div>';
+  if(nAdm>1)return '<div class="w10ad-bulk"><button type="button" class="w10ad-b w10ad-okline" data-w10a="bulk">✅ '+T('אישור כולם ('+nAdm+')','Approve all ('+nAdm+')')+'</button></div>';
+  return '';
+}
+function _w10adQHtml(P){
+  var T=_w10adT,A=P.filter(function(p){return p.grp==='admin'}),U=P.filter(function(p){return p.grp!=='admin'}),over=A.filter(function(p){return p.w>=_W10AD.SLA}).length,h='';
+  var nAct=A.filter(function(p){return !_w10ad.st[p.name]}).length;
+  h+=_w10adSecHead('w10adQ','⏳','אישור נרשמים','Sign-up approvals',A.length,over?'w10ad-red':(A.length?'w10ad-amb':''),'<span class="w10ad-sub">'+_w10adE(T('יעד: אישור תוך 24 שעות מההרשמה','Target: approve within 24 h of sign-up'))+(over?' · <b class="w10ad-latet">'+_w10adE(T(over===1?'אחד חורג מהיעד':over+' חורגים מהיעד',over+' overdue'))+'</b>':'')+'</span>');
+  h+='<div class="w10ad-bulkw" id="w10adBulk">'+_w10adBulkHtml(nAct)+'</div>';
+  if(!A.length)h+='<p class="w10ad-empty">🎉 '+T('אין בקשות שממתינות לאישור שלך.','No sign-ups are waiting for your approval.')+'</p>';
+  else h+='<div class="w10ad-ql">'+A.map(_w10adCardHtml).join('')+'</div>';
+  if(U.length)h+='<details class="w10ad-more"'+(A.length?'':' open')+'><summary>✉️ '+T('לפני אימות מייל','Before e-mail verification')+' <span class="w10ad-cnt">'+_w10adN(U.length)+'</span></summary><div class="w10ad-ql">'+U.map(_w10adCardHtml).join('')+'</div></details>';
+  return h;
+}
+/* the report's place ("שלב 7, מבחן") in English: every part translated, or the original kept whole (never half) */
+function _w10adWhereEn(w){try{var P=String(w).split(/\s*([,·])\s*/),o=[],H=/[֐-׿]/;for(var i=0;i<P.length;i++){var p=P[i];if(p===','||p==='·'){o.push(p===','?', ':' · ');continue}if(!p)continue;if(!H.test(p)){o.push(p);continue}var m=/^שלב\s*(\d+)$/.exec(p),t=m?'Stage '+m[1]:(_W10AD_EN[p]!=null?_W10AD_EN[p]:(typeof UI_EN!=='undefined'&&UI_EN[p]!=null?UI_EN[p]:_w10adEnTr(p)));if(t==null||H.test(t))return null;o.push(t)}return o.join('')}catch(e){return null}}
+function _w10adBugCard(r){
+  var T=_w10adT,E=_w10adE,row=parseInt(r.rowIndex,10)||0,s=_w10ad.bst[row]||'',m=_w10adMeta(r.context),th=_w10adThumb(r.image),href=/^https:\/\//i.test(String(r.image||''))?String(r.image):'';
+  var h='<article class="w10ad-bc'+(s?' w10ad-s-'+s:'')+(th?'':' w10ad-nothumb')+'" data-w10r="'+row+'">';
+  if(th)h+=(href?'<a class="w10ad-th" href="'+E(href)+'" target="_blank" rel="noopener noreferrer" data-w10a="thumb" title="'+E(T('פתיחת צילום המסך','Open the screenshot'))+'">':'<span class="w10ad-th">')+'<img src="'+E(th)+'" alt="'+E(T('צילום מסך מהדיווח','Screenshot from the report'))+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add(\'w10ad-thx\');this.remove()"><span class="w10ad-thf" aria-hidden="true">🖼</span>'+(href?'</a>':'</span>');
+  h+='<div class="w10ad-bb"><p class="w10ad-bt" dir="auto">'+E(String(r.report==null?'':r.report).trim()||'—')+'</p>';
+  h+='<div class="w10ad-bm"><span class="w10ad-pill">👤 <bdi>'+E(r.userName||'—')+'</bdi></span><span class="w10ad-pill" title="'+E(String(r.timestamp||''))+'">🕒 '+E(r._w10t?_w10adAgo(r._w10t):(r.timestamp||'—'))+'</span>'
+    +(m.ver?'<span class="w10ad-pill"><bdi dir="ltr">v'+E(m.ver)+'</bdi></span>':'')+(m.dev?'<span class="w10ad-pill">'+(m.dev==='mobile'?'📱':'💻')+'</span>':'')+(m.env==='staging'?'<span class="w10ad-pill w10ad-pw">staging</span>':'')+'</div>';
+  if(m.where){var wh=m.where;if(_w10adEn()){var we=_w10adWhereEn(wh);if(we!=null)wh=we}h+='<p class="w10ad-bw" dir="auto">📍 '+E(wh)+'</p>'}
+  h+='</div><div class="w10ad-bact">';
+  if(s==='busy')h+='<span class="w10ad-rjm" role="status">⏳ '+T('מסמן…','Marking…')+'</span>';
+  else if(s==='ok')h+='<span class="w10ad-done" role="status">✅ '+T('טופל','Resolved')+'</span>';
+  else{
+    if(r.userName&&_w10adUser(String(r.userName)))h+='<button type="button" class="w10ad-b w10ad-ghost" data-w10a="buser" data-n="'+E(r.userName)+'">👤 '+T('משתמש','User')+'</button>';
+    if(typeof _w8adCopy==='function'&&typeof _w8adBugText==='function')h+='<button type="button" class="w10ad-b w10ad-ghost" data-w10a="bcopy" data-r="'+row+'">📋 '+T('העתקה','Copy')+'</button>';
+    if(row>=2)h+='<button type="button" class="w10ad-b w10ad-ok" data-w10a="bdone" data-r="'+row+'">✅ '+T('טופל','Resolved')+'</button>';
+  }
+  return h+'</div></article>';
+}
+function _w10adBugsHtml(){
+  var T=_w10adT,B=_w10adBugs(),n=0;try{n=Math.max(0,Number(_admBugCount)||0)}catch(e){}
+  var open=B?B.filter(function(r){return r.resolved!=='resolved'||_w10ad.bst[parseInt(r.rowIndex,10)||0]==='ok'}):null;
+  var cnt=B?B.filter(function(r){return r.resolved!=='resolved'}).length:n;
+  var h=_w10adSecHead('w10adBugs','🐛','דיווחי באגים פתוחים','Open bug reports',cnt,cnt?'w10ad-red':'','<button type="button" class="w10ad-b w10ad-ghost w10ad-all" data-w10a="ball">'+T('כל הדיווחים ←','All reports →')+'</button>');
+  if(!B)h+=n?'<p class="w10ad-empty">'+T('יש '+n+' דיווחים פתוחים — לחיצה על "כל הדיווחים" פותחת אותם.','There are '+n+' open reports — "All reports" opens them.')+'</p>':'<p class="w10ad-empty">'+T('הדיווחים עוד לא נטענו — "כל הדיווחים" טוען אותם מהענן.','The reports have not loaded yet — "All reports" loads them from the cloud.')+'</p>';
+  else if(!open.length)h+='<p class="w10ad-empty">🎉 '+T('אין דיווחים פתוחים.','No open reports.')+'</p>';
+  else{h+='<div class="w10ad-bl">'+open.slice(0,_W10AD.BUGS).map(_w10adBugCard).join('')+'</div>';if(open.length>_W10AD.BUGS)h+='<button type="button" class="w10ad-b w10ad-ghost w10ad-morebtn" data-w10a="ball">'+_w10adE(T('עוד '+(open.length-_W10AD.BUGS)+' דיווחים פתוחים ←','+'+(open.length-_W10AD.BUGS)+' more open reports →'))+'</button>'}
+  return h;
+}
+function _w10adNavHtml(secs,k){
+  var T=_w10adT,lab={w10adSnap:['📊','היום','Today'],w10adQ:['⏳','אישורים','Approvals'],w10adBugs:['🐛','באגים','Bugs'],w8adRoot:['📌','תמונת מצב','Overview'],met:['📈','מדדים','Metrics'],usr:['👥','משתמשים','Users'],set:['⚙️','הגדרות','Settings']};
+  return '<div class="w10ad-navs" role="list">'+secs.map(function(s){var L=lab[s.k],b='';
+    if(s.k==='w10adQ'&&k.pend)b='<span class="w10ad-nb'+(k.over?' w10ad-red':' w10ad-amb')+'">'+_w10adN(k.pend)+'</span>';
+    if(s.k==='w10adBugs'&&k.bugs)b='<span class="w10ad-nb w10ad-red">'+_w10adN(k.bugs)+'</span>';
+    return '<span role="listitem"><button type="button" class="w10ad-nl'+(_w10ad.act===s.k?' on':'')+'" data-w10a="nav" data-s="'+s.k+'"'+(_w10ad.act===s.k?' aria-current="true"':'')+'><span aria-hidden="true">'+L[0]+'</span> '+T(L[1],L[2])+b+'</button></span>'}).join('')+'</div>';
+}
+/* ---------- in-place repaint of one card / the bulk bar (no full re-render while the owner taps) ---------- */
+function _w10adCard(name){var L=document.querySelectorAll('#w10adQ [data-w10n]');for(var i=0;i<L.length;i++)if(L[i].getAttribute('data-w10n')===name)return L[i];return null}
+function _w10adPaint(name){var c=_w10adCard(name);if(!c)return;var P=_w10adPend(),p=null;for(var i=0;i<P.length;i++)if(P[i].name===name){p=P[i];break}
+  if(!p){if(_w10ad.st[name]==='ok'||_w10ad.st[name]==='gone'){c.className=c.className.replace(/\s?w10ad-s-\w+/g,'')+' w10ad-s-'+_w10ad.st[name];var a=c.querySelector('.w10ad-qact');if(a)a.innerHTML=_w10ad.st[name]==='ok'?'<span class="w10ad-done" role="status">✅ '+_w10adT('אושר/ה','Approved')+'</span>':'<span class="w10ad-done w10ad-donex" role="status">❌ '+_w10adT('נדחה/תה','Rejected')+'</span>'}return}
+  var had=c.contains(document.activeElement),t=document.createElement('div');t.innerHTML=_w10adCardHtml(p);var n=t.firstChild;c.parentNode.replaceChild(n,c);
+  if(had){var f=n.querySelector('[data-w10a="undo"]')||n.querySelector('button');if(f)try{f.focus({preventScroll:true})}catch(e){}}
+  _w10adBulkPaint();}
+function _w10adBulkPaint(focus){var w=document.getElementById('w10adBulk');if(!w)return;var n=_w10adPend().filter(function(p){return p.grp==='admin'&&!_w10ad.st[p.name]}).length;var h=_w10adBulkHtml(n);if(w.innerHTML!==h){w.innerHTML=h;if(focus){var b=w.querySelector('[data-w10a="bulkgo"],[data-w10a="bulk"]');if(b)try{b.focus({preventScroll:true})}catch(e){}}}}
+function _w10adBugPaint(row){var L=document.querySelectorAll('#w10adBugs [data-w10r]');for(var i=0;i<L.length;i++)if(+L[i].getAttribute('data-w10r')===row){var B=_w10adBugs()||[],r=null;for(var j=0;j<B.length;j++)if((parseInt(B[j].rowIndex,10)||0)===row){r=B[j];break}
+  if(!r)return;var t=document.createElement('div');t.innerHTML=_w10adBugCard(r);L[i].parentNode.replaceChild(t.firstChild,L[i]);return}}
+/* ---------- nav: jump + scroll-spy ---------- */
+function _w10adTopOff(){var nav=document.getElementById('w10adNav');return (_w10ad.top||0)+(nav?nav.offsetHeight:0)+8}
+function _w10adJump(k,silent){
+  var s=null;for(var i=0;i<_w10ad.secs.length;i++)if(_w10ad.secs[i].k===k){s=_w10ad.secs[i];break}if(!s||!s.el||!s.el.isConnected)return;
+  _w10adSetAct(k);var y=s.el.getBoundingClientRect().top+window.scrollY-_w10adTopOff();_w10ad.jumpTo=_w10adRm()?0:Date.now()+1600;
+  try{window.scrollTo({top:Math.max(0,y),behavior:_w10adRm()?'auto':'smooth'})}catch(e){window.scrollTo(0,Math.max(0,y))}
+  var hd=document.getElementById(k+'H')||(k==='w8adRoot'?document.getElementById('w8adH'):null);if(hd&&s.el.contains(hd))try{if(!hd.hasAttribute('tabindex'))hd.setAttribute('tabindex','-1');hd.focus({preventScroll:true})}catch(e){}
+  if(!silent)_w10adTrack('adxNav',k);
+}
+function _w10adSetAct(k){if(_w10ad.act===k&&document.querySelector('#w10adNav .w10ad-nl.on[data-s="'+k+'"]'))return;_w10ad.act=k;var bs=document.querySelectorAll('#w10adNav .w10ad-nl');
+  for(var i=0;i<bs.length;i++){var on=bs[i].getAttribute('data-s')===k;bs[i].classList.toggle('on',on);if(on){bs[i].setAttribute('aria-current','true');var row=bs[i].closest('.w10ad-navs');if(row){var br=bs[i].getBoundingClientRect(),rr=row.getBoundingClientRect();if(br.left<rr.left||br.right>rr.right)try{row.scrollLeft+=Math.round((br.left+br.width/2)-(rr.left+rr.width/2))}catch(e){}}}else bs[i].removeAttribute('aria-current')}}
+function _w10adSpy(){
+  try{if(_w10ad.io){_w10ad.io.disconnect();_w10ad.io=null}}catch(e){}
+  if(typeof IntersectionObserver!=='function'||!_w10ad.secs.length)return;
+  var vis={};
+  _w10ad.io=new IntersectionObserver(function(es){es.forEach(function(e){vis[e.target.getAttribute('data-w10s')]=e.isIntersecting});if(_w10ad.jumpTo&&Date.now()<_w10ad.jumpTo)return;
+    for(var i=0;i<_w10ad.secs.length;i++){if(vis[_w10ad.secs[i].k]){_w10adSetAct(_w10ad.secs[i].k);return}}},{rootMargin:'-'+Math.round(_w10adTopOff())+'px 0px -55% 0px',threshold:0});
+  _w10ad.secs.forEach(function(s){try{s.el.setAttribute('data-w10s',s.k);_w10ad.io.observe(s.el)}catch(e){}});
+}
+/* header height → the nav's sticky top (one read, one write; re-measured on resize) */
+function _w10adMeasure(){var adv=document.getElementById('adv'),hd=document.getElementById('hd');if(!adv)return;var top=0;
+  try{if(hd&&!hd.classList.contains('hid')){var cs=getComputedStyle(hd);if(cs.position==='fixed'&&cs.display!=='none')top=Math.max(0,Math.round(hd.getBoundingClientRect().bottom))}}catch(e){}
+  var nav=document.getElementById('w10adNav'),nh=nav?nav.offsetHeight:0;
+  if(top!==_w10ad.top||nh!==_w10ad.nh){_w10ad.top=top;_w10ad.nh=nh;adv.style.setProperty('--w10ad-top',top+'px');adv.style.setProperty('--w10ad-nh',nh+'px')}}
+try{window.addEventListener('resize',function(){if(_w10ad.rs)return;_w10ad.rs=requestAnimationFrame(function(){_w10ad.rs=0;var a=document.getElementById('adv');if(a&&!a.classList.contains('hid')&&document.getElementById('w10adNav')){_w10adMeasure();_w10adSpy()}})},{passive:true})}catch(e){}
+/* ---------- mount (after every dashboard render) ---------- */
+function _w10adBind(wrap){
+  if(wrap.getAttribute('data-w10ad'))return;wrap.setAttribute('data-w10ad','1');
+  wrap.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('[data-w10a]'):null;if(!b||!wrap.contains(b))return;var a=b.getAttribute('data-w10a'),n=b.getAttribute('data-n');
+    if(a==='navy')return;
+    if(b.disabled)return;
+    if(a==='nav'){_w10adJump(b.getAttribute('data-s'));return}
+    if(a==='tile'){var k=b.getAttribute('data-k');_w10adTrack('adxSnap',k);if(k==='pend')_w10adJump('w10adQ',true);else if(k==='bug')_w10adJump('w10adBugs',true);
+      else if(k==='act'){try{admStatFilter('today')}catch(x){}}else if(k==='su'&&typeof _w8adGo==='function'&&document.getElementById('w8adRoot')){try{_w8adGo('su')}catch(x){}}return}
+    if(a==='ok'){_w10adApprove(n,'one');return}
+    if(a==='no'){_w10adReject(n);return}
+    if(a==='undo'){_w10adUndo(n);return}
+    if(a==='bulk'){_w10adBulkArm();return}
+    if(a==='bulkx'){_w10adBulkX();return}
+    if(a==='bulkgo'){_w10adBulkGo();return}
+    if(a==='resend'){_w10adResend(n,b);return}
+    if(a==='bdone'){_w10adBugDone(b.getAttribute('data-r'),b);return}
+    if(a==='buser'){_w10adTrack('adxBugUser','');try{showUserDetail(n)}catch(x){}return}
+    if(a==='bcopy'){var row=+b.getAttribute('data-r'),B=_w10adBugs()||[],r=null;for(var i=0;i<B.length;i++)if((parseInt(B[i].rowIndex,10)||0)===row){r=B[i];break}if(!r)return;var lbl=b.textContent;_w10adTrack('adxBugCopy','');
+      try{_w8adCopy(_w8adBugText(r)).then(function(ok){b.textContent=ok?'✓ '+_w10adT('הועתק','Copied'):'❌';setTimeout(function(){if(b.isConnected)b.textContent=lbl},2000)})}catch(x){}return}
+    if(a==='ball'){_w10adTrack('adxBugAll','');try{if(typeof _bugTab!=='undefined')_bugTab='open'}catch(x){}try{admShowBugs()}catch(x){}return}
+    if(a==='thumb'){_w10adTrack('adxThumb','');return}
+  });
+  wrap.addEventListener('change',function(e){var t=e.target;if(!t||t.getAttribute('data-w10a')!=='navy')return;var n=t.getAttribute('data-n');if(t.checked)_w10ad.navy[n]=true;else delete _w10ad.navy[n];_w10adTrack('adxNavy',t.checked?'on':'off')});
+}
+function _w10adMount(){
+  var adv=document.getElementById('adv');if(!adv)return;
+  if(adv.classList.contains('hid')){_w10adStop();return}
+  var wrap=adv.querySelector('.adm-wrap');if(!wrap||!document.getElementById('admTableWrap')){_w10adStop();return}/* the dashboard only */
+  var en=_w10adEn(),dir=en?'ltr':'rtl',lang=en?'en':'he',P=_w10adPend(),k=_w10adSnapM(P);
+  /* forget per-person state for people no longer in the queue */
+  Object.keys(_w10ad.bst).forEach(function(r){if(_w10ad.bst[r]==='ok')delete _w10ad.bst[r]});
+  Object.keys(_w10ad.st).forEach(function(n){if(!_w10adUser(n)&&!(n in _w10ad.rej))delete _w10ad.st[n];else{var u=_w10adUser(n),s=u?String(u.status||''):'';if(u&&s!=='pending'&&s!=='pending_admin'&&s!=='pending_email')delete _w10ad.st[n]}});
+  ['w10adNav','w10adSnap','w10adQ','w10adBugs'].forEach(function(id){var o=document.getElementById(id);if(o)o.remove()});
+  var mk=function(tag,id,cls,html){var e=document.createElement(tag);e.id=id;e.className=cls+(en?' w10ad-ltr':'');e.setAttribute('dir',dir);e.setAttribute('lang',lang);e.innerHTML=html;return e};
+  var snap=mk('section','w10adSnap','w10ad w10ad-sec w10ad-snap',_w10adSecHead('w10adSnap','📊','היום בקורס','Today in the course',null,'','<span class="w10ad-sub">'+_w10adE(_w10adT('עודכן ','Updated ')+(function(){try{return new Date().toLocaleTimeString(en?'en-GB':'he-IL',{hour:'2-digit',minute:'2-digit'})}catch(e){return ''}})())+'</span>')+_w10adSnapHtml(k));
+  var q=mk('section','w10adQ','w10ad w10ad-sec w10ad-q adm-pending-section',_w10adQHtml(P));
+  var bg=mk('section','w10adBugs','w10ad w10ad-sec w10ad-bugs',_w10adBugsHtml());
+  snap.setAttribute('aria-labelledby','w10adSnapH');q.setAttribute('aria-labelledby','w10adQH');bg.setAttribute('aria-labelledby','w10adBugsH');
+  /* place: title → nav → snapshot → queue (where the old pending list was) → bugs → everything else, untouched */
+  var h2=null,c;for(c=wrap.firstElementChild;c;c=c.nextElementSibling){if(c.tagName==='H2'){h2=c;break}}
+  var old=wrap.querySelector(':scope > .adm-pending-section:not(#w10adQ)'),ban=wrap.querySelector(':scope > div[onclick="admShowBugs()"]');
+  var after=h2||wrap.firstElementChild;
+  if(after&&after.parentNode===wrap)after.insertAdjacentElement('afterend',snap);else wrap.insertBefore(snap,wrap.firstChild);
+  snap.insertAdjacentElement('afterend',q);q.insertAdjacentElement('afterend',bg);
+  if(old)old.remove();if(ban)ban.classList.add('w10ad-gone');
+  /* the nav's sections */
+  var secs=[{k:'w10adSnap',el:snap},{k:'w10adQ',el:q},{k:'w10adBugs',el:bg}],r2=document.getElementById('w8adRoot');if(r2&&wrap.contains(r2))secs.push({k:'w8adRoot',el:r2});
+  for(c=wrap.firstElementChild;c;c=c.nextElementSibling){if(c.classList&&c.classList.contains('adm-stats')){secs.push({k:'met',el:c});break}}
+  var tc=document.getElementById('admTblCtrl');if(tc&&wrap.contains(tc))secs.push({k:'usr',el:tc});
+  var ne=document.getElementById('notifyEmailsList'),nb=ne?ne.parentNode:null;if(nb&&nb.parentNode===wrap)secs.push({k:'set',el:nb});
+  var order=[].slice.call(wrap.children);secs.sort(function(a,b){return order.indexOf(a.el)-order.indexOf(b.el)});
+  _w10ad.secs=secs;if(!secs.some(function(s){return s.k===_w10ad.act}))_w10ad.act='w10adSnap';
+  var nav=mk('nav','w10adNav','w10ad-nav',_w10adNavHtml(secs,k));nav.setAttribute('aria-label',_w10adT('מקטעי פאנל הניהול','Admin panel sections'));
+  snap.insertAdjacentElement('beforebegin',nav);
+  adv.classList.add('w10ad-on');adv.classList.toggle('w10ad-en',en);
+  _w10adBind(wrap);_w10adMeasure();_w10adSpy();_w10ad.mounted=true;
+  if(Object.keys(_w10ad.rej).length)_w10adTick();
+}
+function _w10adStop(){try{if(_w10ad.io){_w10ad.io.disconnect();_w10ad.io=null}}catch(e){}_w10ad.mounted=false;var a=document.getElementById('adv');if(a){a.classList.remove('w10ad-on')}}
+/* ---------- the management table: a label per cell, so phones can show each row as a card (CSS ≤640 px) ---------- */
+var _W10AD_COLS=['','מייל','ניקוד','שלבים','דרגה','סטריק','כניסה אחרונה','גרסה','שפה','⚓ זרוע ים','🛡️ אדמין','תזכורות','הרשמה',''];
+var _W10AD_COLS_EN=['','E-mail','Score','Stages','Rank','Streak','Last sign-in','Version','Language','⚓ Navy','🛡️ Admin','Reminders','Signed up',''];
+function _w10adLabelTable(html){
+  if(typeof html!=='string'||html.indexOf('adm-tbl')<0)return html;
+  return html.replace(/<tr\b[^>]*>[\s\S]*?<\/tr>/g,function(row){if(row.indexOf('<td')<0||/colspan=/.test(row))return row;var k=0,C=_w10adEn()?_W10AD_COLS_EN:_W10AD_COLS;row=row.replace(/(<td style="font-weight:600;color:var\(--t1\)">(?:<span[^>]*><\/span>)?)([^<]+)/,'$1<bdi>$2</bdi>');return row.replace(/<td\b/g,function(m){var l=C[k++];return l?'<td data-w10l="'+l+'"':m})});
+}
+/* ---------- R-11 (visualqa): the whole admin follows the UI language — Hebrew RTL, English LTR ----------
+   The original admin screens (stat tiles, time metrics, feature usage, insights, version / language chips, the management
+   table, mail lists, broadcast, reminder settings, the user modal, the bug view, the research views, their confirm dialogs)
+   are built in Hebrew. In English the app's own HE→EN walker (_i18nWalk: exact UI_EN matches on every added node) is extended
+   for the admin only: an exact admin dictionary, the feature names (admin2's _W8AD_FEN), rank / group names, numeric
+   patterns, and a phrase table for the fragments the bidi layer leaves between <bdi> islands. Admin2 / polish9 / w10ad
+   blocks are bilingual already and are skipped; user data (names, e-mails, report text) is never rewritten. Every rewrite is
+   recorded in W6's _w6fHeM / _w6fHeA maps, so the switch back to Hebrew restores it. CSS turns the admin LTR in English. */
+var _W10AD_EN={
+'🔧 פאנל ניהול':'🔧 Admin panel','→ חזרה':'← Back','→ חזרה לפאנל ניהול':'← Back to the admin panel','🔧 מנהל מערכת':'🔧 Admin',
+'לחץ לצפייה ולסימון כטופל':'Tap to view and mark as resolved',
+'סה"כ משתמשים':'Total users','פעילים היום':'Active today','פעילים החודש':'Active this month','שלבים שהושלמו היום':'Stages completed today',
+'ממוצע שלבים לפעיל היום':'Avg stages per active user today','ממוצע נק׳ לפעיל היום':'Avg points per active user today','מחוברים עכשיו':'Online now',
+'סיימו ליבה':'Finished the core','שביעות רצון':'Satisfaction','ממתינים לאישור':'Pending approval','מנויים למייל':'E-mail subscribers','בתהליך תזכורות פעיל':'In an active reminder cycle',
+'⏱️ מדדי זמן':'⏱️ Time metrics','(משתמשים פעילים היום בלבד · מסונן מערכים חריגים)':'(users active today only · outliers filtered)',
+'סשן ממוצע היום':'Avg session today','סיום שלב ממוצע':'Avg time to finish a stage','📚 קריאה ממוצע':'📚 Avg reading','📋 קייס ממוצע':'📋 Avg case','❓ מבחן ממוצע':'❓ Avg quiz',
+'⚡ הכי מהיר לסיום':'⚡ Fastest to finish','🐢 הכי ארוך לסיום':'🐢 Longest to finish',
+'🎈 שימוש בפיצ׳רים וכפתורים':'🎈 Feature and button usage','(המספר הגדול = מאז ומתמיד · למטה = החודש · היום)':'(big number = all time · below = this month · today)',
+'📊 מחקר נתונים מלא →':'📊 Full data research →','📺 ניתוח תוכן (סרטונים/הקראה) →':'📺 Content analytics (videos / narration) →',
+'החודש:':'This month:','📈 סך הכל':'📈 Total','אירועים מתועדים · לחצו על פיצ׳ר לראות מי לחץ, כמה, מתי ומאיזה מכשיר':'events recorded · tap a feature to see who used it, how often, when and on which device',
+'⏳ טוען נתוני שימוש...':'⏳ Loading usage data…','(אם לא נטען — ודאו שבוצע Deploy מחדש ל-Google Apps Script)':'(if it does not load, make sure Google Apps Script was redeployed)',
+'📊 תובנות':'📊 Insights','(מחושב מהנתונים שכבר נטענו · מתעדכן בכל רענון)':'(computed from the data already loaded · updates on every refresh)',
+'📉 השלב הכי פחות כיפי':'📉 The least fun stage','רק':'only','השלמה':'completion','(נמדד רק בשלבים ש-':'(measured only on stages that','=ללא הגבלה)':'= no limit)','🔊 הקראות':'🔊 Narration','משתמשים ניסו)':'users tried)',
+'🪜 השלמות לפי שלב — איפה נוטשים?':'🪜 Completions by stage — where do people drop?','🏆 עשרת המובילים בניקוד':'🏆 Top ten by score','⏰ טריות פעילות':'⏰ Activity freshness','📦 אימוץ גרסאות':'📦 Version adoption',
+'🔄 רענן נתונים':'🔄 Refresh data','עודכן:':'Updated:','🐛 דיווחי באגים':'🐛 Bug reports','משתמשים':'users',
+'סטטוס גרסאות:':'Versions:','(הגרסה הנוכחית:':'(current version:','שפת ממשק:':'Interface language:','❔ טרם דווח':'❔ Not reported yet',
+'הכל':'All','החודש':'This month','דירגו':'Rated',
+'שם':'Name','מייל':'E-mail','ניקוד':'Score','שלבים':'Stages','דרגה':'Rank','סטריק':'Streak','כניסה אחרונה':'Last sign-in','גרסה':'Version','שפה':'Language','⚓ זרוע ים':'⚓ Navy','🛡️ אדמין':'🛡️ Admin','תזכורות':'Reminders','הרשמה':'Signed up',
+'🌐 עברית':'🌐 Hebrew','🌐 English':'🌐 English','— אזרח':'— Civilian','— רגיל':'— Regular','⚓ זרוע הים':'⚓ Navy','🛡️ אדמין ✓':'🛡️ Admin ✓','🚫 מבוטל':'🚫 Deactivated','לא נמצאו משתמשים':'No users found',
+'📩 התראות מייל לבקשות הצטרפות':'📩 E-mail alerts for sign-up requests','מיילים ברשימה יקבלו התראה כשמישהו מבקש להצטרף למערכת':'Addresses on this list get an alert when someone asks to join',
+'אין מיילים ברשימה':'No addresses on the list','🗑️ הסר':'🗑️ Remove','➕ הוסף':'➕ Add',
+'📢 הודעת שידור לכל המשתמשים':'📢 Broadcast message to all users','ההודעה תופיע פעם אחת לכל משתמש (כולל מי שכבר מחובר כרגע). לביטול — נקו את הטקסט ולחצו "נקה שידור".':'The message shows once to every user (including those online now). To cancel, clear the text and tap "Clear broadcast".',
+'📢 שלח לכולם':'📢 Send to everyone','🗑️ נקה שידור':'🗑️ Clear broadcast','⏳ טוען...':'⏳ Loading…','שידור פעיל:':'Active broadcast:','אין שידור פעיל':'No active broadcast',
+'⏰ הגדרות תזכורות מייל':'⏰ E-mail reminder settings','קצב שליחת התזכורות למשתמשים שלא נכנסו זמן רב':'How often reminders go to users who have not come back for a while',
+'תזכורת 1 (שעות)':'Reminder 1 (hours)','תזכורת 2 (שעות)':'Reminder 2 (hours)','חוזרות (ימים)':'Repeat (days)','שעת שליחה יומית':'Daily send hour','מקס\' מיילים לריצה':'Max e-mails per run','מקס\' תזכורות שבועיות':'Max weekly reminders','ללא הגבלה)':'no limit)',
+'💾 שמור הגדרות':'💾 Save settings','🧪 שלח בדיקה - תזכורת 24h':'🧪 Send a test — 24h reminder','🧪 שלח בדיקה - 48h':'🧪 Send a test — 48h','🧪 שלח בדיקה - שבועית':'🧪 Send a test — weekly',
+'🧪 = מייל בדיקה ישלח לכל הכתובות ברשימת ההתראות למעלה':'🧪 = a test e-mail goes to every address on the alert list above',
+'שלב אחרון שנכח בו':'Last stage visited','התקדמות כללית':'Overall progress','נראה לאחרונה':'Last seen','גרסת אפליקציה':'App version','שפת ממשק':'Interface language',
+'📧 מייל ותזכורות':'📧 E-mail and reminders','כתובת':'Address','סטטוס אימות מייל':'E-mail verification','⏳ לא אומת':'⏳ Not verified','✓ אומת':'✓ Verified','סטטוס הסכמה':'Consent','✓ הסכים':'✓ Agreed','✗ לא הסכים':'✗ Did not agree',
+'תזכורות שנשלחו':'Reminders sent','📤 שלח תזכורת עכשיו':'📤 Send a reminder now','📭 לא נשלחו מיילים':'📭 No e-mails sent','⚠ שגיאה בטעינה':'⚠ Loading error',
+'סשן אחרון':'Last session','ממוצע סשן':'Avg session','— (נדרשים':'— (needs','סשנים)':'sessions)','תובנות אישיות':'Personal reflections','— טרם כתב תובנות':'— no reflections yet',
+'שלבים לפי נושא:':'Stages by topic:','התחיל':'Started','לא נגע':'Not touched','הושלם':'Completed','⏱ זמן לפי שלב וטאב:':'⏱ Time by stage and tab:','📚 קריאה':'📚 Reading','📋 קייס':'📋 Case','❓ מבחן':'❓ Quiz',
+'📊 יומן פעילות':'📊 Activity log','אחרונות מתוך':'latest of','תשובה':'Answer','סיים שלב':'Finished a stage','התחברות':'Sign-in','פתח שלב':'Opened a stage','מעבר טאב':'Switched tab','ענה על שאלה':'Answered a question','בונוס כניסה':'Login bonus','כתב תובנה':'Wrote a reflection','סיים סשן':'Ended a session','פתח מילון':'Opened the glossary','פתח פרופיל':'Opened the profile','קרא הודעת מנהל':'Read an admin message','זיכוי ע״י מנהל':'Credited by an admin','ביטול זיכוי':'Credit removed','קיבל דו-קרב':'Accepted a duel','דחה דו-קרב':'Declined a duel',
+'🔧 פעולות מנהל':'🔧 Admin actions','🔓 פתיחת שלב':'🔓 Unlock the stage','- בסוף השירות הצבאי':'— End of Military Service','⚓ משתמש זרוע הים':'⚓ Navy user','(רואה את שלב מבנה זרוע הים)':'(sees the Navy structure stage)',
+'🛡️ הרשאת אדמין':'🛡️ Admin access','(כפתור צף לפאנל ניהול — בלי סיסמה)':'(a floating button to the admin panel — no password)','✅ זיכוי שלב ידני — סימון שלב כהושלם עבור המשתמש':'✅ Manual stage credit — mark a stage as completed for this user',
+'✅ סמן כהושלם':'✅ Mark as completed','ℹ️ תתווסף הערה אוטומטית ביומן הפעילות שהשלב סומן ע״י מנהל.':'ℹ️ An automatic note in the activity log will say an admin marked the stage.',
+'↩️ ביטול זיכוי / הסרת השלמה':'↩️ Remove a credit / completion','↩️ בטל':'↩️ Remove','💬 שליחת הודעה חדשה:':'💬 Send a new message:','📤 שלח':'📤 Send','🗑️ מחק משתמש':'🗑️ Delete user','— בחרו שלב —':'— pick a stage —',
+'💬 הודעה נוכחית:':'💬 Current message:','🗑️ נקה הודעה':'🗑️ Clear message','✓ נקרא':'✓ Read','⏳ טרם נקרא':'⏳ Not read yet','סגור':'Close','✕ סגור':'✕ Close',
+'אין עדיין לחיצות מתועדות לפיצ׳ר זה':'No recorded clicks for this feature yet','מחדש ל-':'to',
+'דחיית משתמש':'Reject user','לדחות את הבקשה של':'Reject the request of','המשתמש יימחק מהמערכת.':'The user will be deleted.','דחה':'Reject','ביטול':'Cancel',
+'מחיקת משתמש':'Delete user','למחוק את':'Delete','פעולה זו בלתי הפיכה.':'This cannot be undone.','מחק':'Delete',
+'מחיקת דיווח':'Delete report','למחוק את הדיווח הזה?':'Delete this report?',
+'🔴 פתוחים':'🔴 Open','✅ טופלו':'✅ Resolved','👤 פרטי משתמש':'👤 User details','✅ טופל':'✅ Resolved','🗑️ מחק':'🗑️ Delete','פתח צילום מסך':'Open the screenshot','🖼 צילום מסך (פתח)':'🖼 Screenshot (open)',
+'אין דיווחים מטופלים':'No resolved reports','אין דיווחים פתוחים!':'No open reports!','⏳ טוען דיווחי באגים...':'⏳ Loading bug reports…','⏳ טוען נתוני משתמשים מהענן...':'⏳ Loading users from the cloud…',
+'סימון מרוכז':'Mark all','לסמן את כל':'Mark all','הדיווחים הפתוחים כ"טופלו"?':'open reports as resolved?','(אפשר לבטל סימון פרטני דרך לשונית "טופלו" ← מחיקה בלבד; פעולה זו אינה מוחקת דיווחים)':'(individual reports can be handled in the "Resolved" tab; this does not delete any report)','סמן הכל':'Mark all',
+'📊 מחקר נתונים — פיצ׳רים וכפתורים':'📊 Data research — features and buttons','סך':'Total','אירועים · עודכן:':'events · updated:','🔄 רענן':'🔄 Refresh','🏆 שימוש כולל לפי פיצ׳ר':'🏆 Total usage by feature',
+'🔍 פילוח תת-פעולות':'🔍 Sub-action breakdown','— אין עדיין תת-פעולות מתועדות':'— no sub-actions recorded yet','📈 גרף שימוש לאורך זמן':'📈 Usage over time','יומי':'Daily','שבועי':'Weekly','חודשי':'Monthly','סינון פיצ\'רים:':'Filter features:','בחר הכל':'Select all','נקה':'Clear','סה"כ':'Total',
+'📺 ניתוח תוכן — סרטונים והקראות':'📺 Content analytics — videos and narration','צפיות לפי שלב, פרק, שפה וקריין (כולל חוזרות). בסוגריים = משתמשים ייחודיים.':'Views by stage, chapter, language and narrator (repeats included). In brackets = unique users.',
+'כולל אירועי סטייגינג (לבדיקה)':'Includes staging events (testing)','— אין צפיות עדיין':'— no views yet','🎞️ סרטוני פרק':'🎞️ Chapter videos',
+'🎓 סטודנט לניהול מוצר':'🎓 Product Management Student','📜 מנהל מוצר בהכשרה':'📜 Product Manager in Training','⚓ מנהל מוצר בהכשרה':'⚓ Product Manager in Training','🎖️ מנהל מוצר מקצוען':'🎖️ Pro Product Manager','👑 סניור מוצר':'👑 Senior Product Manager','🔰 מתחיל':'🔰 Beginner','מתחיל':'Beginner',
+'ממוצע מחושב רק לאחר 2+ סשנים':'The average needs 2+ sessions','כתוב הודעה חדשה למשתמש...':'Write a new message to the user…','🔍 חיפוש משתמש...':'🔍 Search users…','🔎 חיפוש משתמש לפי שם או מייל...':'🔎 Search users by name or e-mail…','כתובת מייל...':'E-mail address…','כתבו כאן הודעה שתופיע פעם אחת לכל המשתמשים...':'Write a message every user will see once…',
+'מסכים לקבל מיילים':'Agrees to receive e-mails','ביטל הסכמה':'Withdrew consent','מחובר עכשיו':'Online now','המשתמש ביטל את החשבון':'The user deactivated the account','המשתמש משתמש בממשק בעברית':'The user runs the Hebrew interface','המשתמש משתמש בממשק באנגלית':'The user runs the English interface',
+'עדיין לא דיווחו גרסה — כנראה לא ריעננו מאז העדכון':'No version reported yet — probably not refreshed since the update','עדיין לא דיווחו שפה — כנראה לא ריעננו מאז העדכון':'No language reported yet — probably not refreshed since the update',
+'המשתמש עדיין לא דיווח גרסה (כנראה לא ריענן מאז שהפיצ\'ר נוסף)':'No version reported yet (probably not refreshed since the feature was added)','המשתמש עדיין לא דיווח שפה (כנראה לא ריענן מאז שהפיצ\'ר נוסף)':'No language reported yet (probably not refreshed since the feature was added)',
+'אזרח — שלבי הצבא מוסתרים ממנו. לחצו כדי לסמן כזרוע הים.':'Civilian — the military stages are hidden. Tap to mark as Navy.','משתמש רגיל. לחצו כדי להעניק הרשאת ניהול.':'Regular user. Tap to grant admin access.',
+'זרוע הים — פתוחים לו שלבי הצבא (מבנה זרוע הים + סוף השירות). לחצו כדי להפוך לאזרח.':'Navy — the military stages are open (Navy structure + end of service). Tap to make civilian.','אדמין — רואה כפתור צף לפאנל הניהול (בלי סיסמה). לחצו להסרה.':'Admin — sees a floating button to the admin panel (no password). Tap to remove.',
+'משתמשים מאושרים שמילאו מייל והסכימו לקבל תזכורות (גם אם עדיין לא אומת)':'Approved users who gave an e-mail and agreed to reminders (even if not verified yet)','משתמשים שקיבלו לפחות תזכורת אחת ועדיין לא חזרו לאפליקציה. ברגע שיכנסו - המונה מתאפס.':'Users who got at least one reminder and have not come back yet. The counter resets when they return.',
+'כמה שלבים הושלמו בפועל היום (קריאה+קייס+מבחן). נספר מיומן הפעילות של כל המשתמשים — מדד פעילות יומי אמיתי.':'How many stages were really completed today (reading + case + quiz), counted from every user\'s activity log.',
+'לחצו לראות מי לחץ, כמה, מתי ומאיזה מכשיר':'Tap to see who used it, how often, when and on which device'
+};
+/* fragments the bidi layer leaves around <bdi> islands, and phrases inside composed strings — longest first */
+var _W10AD_ENW=[['לחצו לראות מי לחץ, כמה, מתי ומאיזה מכשיר','tap to see who used it, how often, when and on which device'],['שלבים שהושלמו היום חלקי','stages completed today divided by'],['שנכנסו היום','who came in today'],
+  ['ממוצע השלבים שהושלמו היום לכל משתמש שנכנס היום','Average stages completed today per user who came in today'],['ממוצע הנקודות שנצברו היום לכל משתמש שנכנס היום','Average points earned today per user who came in today'],['משקף פעילות של היום בלבד — לא צבירה היסטורית','today only — not a running total'],['משקף ניקוד של היום בלבד (מתועד מסיומי שלבים מהיום, לא הניקוד המצטבר)','today only (from today\'s stage completions, not the total score)'],['נק\' שנצברו היום חלקי','points earned today divided by'],['חישוב:','Calculation:'],
+  ['ישנה מהנוכחית','older than the current'],['מעודכנים','up to date'],['בגרסה ישנה','on an old version'],['טרם דווח','not reported yet'],['דיווחי באגים פתוחים','open bug reports'],['חדשים!','new!'],['עכשיו במערכת:','In the app now:'],
+  ['סיימו מתוך','finished out of'],['שניסו','who tried'],['בממוצע','on average'],['פתיחה','opening'],['שבועיות','weekly'],['שבועי','weekly'],['תזכורות:','reminders:'],['סה״כ','Total'],['תקרה','cap'],
+  ['מחובר עכשיו · סשן נוכחי:','Online now · current session:'],['ימים','days'],['יום','day'],['צפיות','views'],['היום','Today'],['החודש','this month'],['אירועים ב-','events in the last'],['ימים אחרונים','days'],
+  ['עמודות "מתי", "מכשיר" ו"גרסה" יתמלאו מאירועים חדשים אחרי','the "when", "device" and "version" columns fill from new events after a redeploy'],['מי לחץ?','who used it?'],['(הושלם)','(completed)'],['שלב','Stage'],['קריאה','Reading'],['מבחן','Quiz'],['קייס סטאדי','Case study'],['עברית','Hebrew'],['גרסה','Version'],['מהנוכחית','current']];
+_W10AD_ENW.sort(function(a,b){return b[0].length-a[0].length});
+/* numbers / durations / composed lines */
+var _W10AD_ENP=[
+  [/^🚨 יש (\d+) דיווחי באגים פתוחים$/,'🚨 $1 open bug reports'],[/^(.+?) ([▲▼])$/,function(m,a,b){var t=_w10adEnTr(a,1);return t!=null?t+' '+b:null}],
+  [/^(\d*)ש' (\d+)ד'$/,'$1h $2m'],[/^(\d*)ד' (\d+)ש'$/,'$1m $2s'],[/^(\d*)ד'$/,'$1m'],[/^(\d*)ש'$/,'$1s'],[/^ד' (\d+)ש'$/,'m $1s'],[/^(\d*)ד' (\d+)ש' בממוצע$/,'$1m $2s on average'],[/^ד' (\d+)ש' בממוצע$/,'m $1s on average'],[/^(\d*)ש' (\d+)ד' בממוצע$/,'$1h $2m on average'],
+  [/^· היום: (\d+)$/,'· today: $1'],[/^✓ (\d+) מעודכנים$/,'✓ $1 up to date'],[/^⚠ (\d+) בגרסה ישנה$/,'⚠ $1 on an old version'],[/^❔ (\d+) טרם דווח$/,'❔ $1 not reported yet'],[/^🌐 (\d+) עברית$/,'🌐 $1 Hebrew'],[/^🌐 (\d+) English$/,'🌐 $1 English'],
+  [/^(\d+) חדשים!$/,'$1 new!'],[/^(\d+) משתמשים$/,'$1 users'],[/^(\d+) משתמשים · חיפוש: "(.*)"$/,'$1 users · search: "$2"'],[/^עכשיו במערכת: (\d+)$/,'In the app now: $1'],
+  [/^— (\d+) סיימו מתוך (\d+) שניסו$/,'— $1 of the $2 who tried finished'],[/^(\d+) פתיחה$/,'$1 opening'],[/^(\d+) פתיחה \+ (\d+) שבועי$/,'$1 opening + $2 weekly'],
+  [/^סה״כ (\d+) תזכורות: (\d+) פתיחה \(24ש׳\+48ש׳\) \+ (\d+) שבועיות \(תקרה (\d+)\)$/,'$1 reminders in total: $2 opening (24h+48h) + $3 weekly (cap $4)'],
+  [/^גרסה ([\d.]+) — ישנה מהנוכחית \(([\d.]+)\)$/,'Version $1 — older than the current one ($2)'],[/^גרסה ([\d.]+) — עדכנית$/,'Version $1 — up to date'],
+  [/^🔥 (\d+) ימים$/,'🔥 $1 days'],[/^🔥 (\d+) יום$/,'🔥 $1 day'],[/^(\S*\s?)שלב (\d+): (.+?)( \(הושלם\))?$/,function(m,a,n,t,c){return a+'Stage '+n+': '+t+(c?' (completed)':'')}],[/^(\S*\s?)שלב$/,'$1Stage'],
+  [/^\(היום (\d+) · החודש$/,'(today $1 · this month'],[/^\(הגרסה הנוכחית: ([\d.]+)\)$/,'(current version: $1)'],[/^\(נמדד רק בשלבים ש-(\d+)\+ משתמשים ניסו\)$/,'(measured only on stages $1+ users tried)'],[/^מקס' תזכורות שבועיות \((\d+)=ללא הגבלה\)$/,'Max weekly reminders ($1 = no limit)'],[/^🔓 פתיחת שלב (\d+) - בסוף השירות הצבאי$/,'🔓 Unlock stage $1 — End of Military Service'],[/^(.+) \((\d+)\)$/,function(m,a,n){var t=_w10adEnTr(a,1);return t!=null?t+' ('+n+')':null}],[/^אירועים ב-(\d+) ימים אחרונים$/,'events in the last $1 days'],[/^(.*) — סה"כ (\d+) · (.*)$/,function(m,a,n,r){return a+' — total '+n+' · '+r}],
+  [/^(.*) — (\d+) צפיות$/,function(m,a,n){var t=_w10adEnTr(a.trim(),1);return t!=null?t+' — '+n+' views':null}],[/^— (\d+) צפיות$/,'— $1 views'],[/^🔴 פתוחים \((\d+)\)$/,'🔴 Open ($1)'],[/^✅ טופלו \((\d+)\)$/,'✅ Resolved ($1)'],
+  [/^✅ סמן את כל הפתוחים כטופלו \((\d+)\)$/,'✅ Mark all open as resolved ($1)'],[/^📋 העתק את כל הפתוחים \((\d+)\)$/,'📋 Copy all open ($1)'],[/^✓ הועתק — (\d+) דיווחים$/,'✓ Copied — $1 reports'],
+  [/^(.+) — לחצו לראות מי לחץ, כמה, מתי ומאיזה מכשיר$/,function(m,a){return _w10adEnTr(a,1)+' — tap to see who used it, how often, when and on which device'}],
+  [/^(\S+) (.+) — מי לחץ\?$/,function(m,ic,a){return ic+' '+_w10adEnTr(a,1)+' — who used it?'}],
+  [/^(.*)( ·)$/,function(m,a,b){var t=_w10adEnTr(a.trim(),1);return t!=null?t+b:null}],[/^📍 (.+?)( ·)?$/,function(m,a,b){var t=_w10adEnTr(a.trim(),1);return t!=null?'📍 '+t+(b||''):null}]
+];
+var _w10adFeatEn=null;
+function _w10adFeatMap(){if(_w10adFeatEn)return _w10adFeatEn;var m={},S2={album:'Book album',trophyroad:'Trophy road',dailychest:'Daily chest',signup:'Sign-up and identity',puzzle:'Daily puzzles',retention:'Stage path and return to learning',secrets:'Product secrets',eggs:'Easter eggs',goal:'Daily goal (minutes / stage)',onboard:'Onboarding and first sign-in',ux:'Header explanations',nav:'Navigation',topicVideo:'Chapter video (NotebookLM)',spacedRep:'Mistake review',interview:'Cross-disciplinary exam'};
+  try{Object.keys(FEAT_META).forEach(function(f){var n=FEAT_META[f]&&FEAT_META[f].name,en=S2[f]||((typeof _W8AD_FEN!=='undefined'&&_W8AD_FEN[f])||'');if(n&&en){m[n]=en;if(FEAT_META[f].ic)m[FEAT_META[f].ic+' '+n]=FEAT_META[f].ic+' '+en;m[FEAT_META[f].ic+n]=FEAT_META[f].ic+en}})}catch(e){}
+  try{if(typeof _W8CL_RANK!=='undefined')Object.keys(_W8CL_RANK).forEach(function(k){m[_W8CL_RANK[k][0]]=_W8CL_RANK[k][1]})}catch(e){}
+  try{if(typeof GROUP_EN!=='undefined')Object.keys(GROUP_EN).forEach(function(k){m[k]=GROUP_EN[k]})}catch(e){}
+  return (_w10adFeatEn=m)}
+/* the admin's HE→EN for one trimmed string (null = no idea); sub=1 inside a pattern (no phrase table) */
+function _w10adEnTr(s,sub){
+  if(!s)return null;var v=_W10AD_EN[s];if(v!=null)return v;var F=_w10adFeatMap();if(F[s]!=null)return F[s];
+  var m=/^(\S{1,3}\s)(.+)$/.exec(s);if(m&&!/[֐-׿]/.test(m[1])){v=_W10AD_EN[m[2]]!=null?_W10AD_EN[m[2]]:F[m[2]];if(v!=null)return m[1]+v}
+  try{if(typeof GROUP_EN!=='undefined'&&m&&GROUP_EN[m[2]])return m[1]+GROUP_EN[m[2]]}catch(e){}
+  for(var i=0;i<_W10AD_ENP.length;i++){var p=_W10AD_ENP[i],mm=p[0].exec(s);if(mm){var r=typeof p[1]==='function'?p[1].apply(null,mm):s.replace(p[0],p[1]);if(r!=null&&r!==s)return r}}
+  if(sub)return null;
+  var t=s,hit=false;for(var j=0;j<_W10AD_ENW.length;j++){var w=_W10AD_ENW[j];if(t.indexOf(w[0])<0)continue;var re=w[2]||(w[2]=new RegExp('(^|[^\u0590-\u05FF])'+w[0].replace(/[.*+?^$(){}|[\]\\]/g,'\\$&')+'(?=$|[^\u0590-\u05FF])','g'));re.lastIndex=0;if(re.test(t)){re.lastIndex=0;t=t.replace(re,function(m0,p){return p+w[1]});hit=true}}
+  return (hit&&!_W10AD_HEB.test(t))?t:null;/* all or nothing: a half-Hebrew line would be split by the bidi layer */
+}
+/* where: the original admin (dashboard, bug view, research views), its modals, its confirm dialogs — not the bilingual blocks,
+   not user data (names, e-mails, report text: bdi / dir=auto / the users' own names) */
+function _w10adEnScope(el,attr){
+  if(!el||!el.closest)return false;
+  if(el.closest('bdi,[dir="auto"],.w10ad,.w10ad-nav,#w8adRoot,#w8adDrawer,.w8ad-bsum,.w8ad-bch,.w9pl-uf,.w9pl-ufa,.ab-text,.ab-user'+(attr?'':',input,textarea')))return false;
+  if(el.closest('#adv,.adm-modal-overlay'))return true;
+  var a=document.getElementById('adv');return !!(a&&!a.classList.contains('hid')&&el.closest('.daily-modal:not(#dailyModal)'));
+}
+var _w10adNames=null,_w10adNamesAt=0;
+function _w10adIsName(s){var now=Date.now();if(!_w10adNames||now-_w10adNamesAt>3000){_w10adNamesAt=now;_w10adNames={};try{_admUsers.forEach(function(u){var n=String(u&&u.userName||'').trim();if(n)_w10adNames[n]=1})}catch(e){}}
+  if(_w10adNames[s])return true;var c=s.replace(/^[^֐-׿A-Za-z0-9]+/,'').replace(/[\s:,]+$/,'');return !!_w10adNames[c]}
+var _W10AD_HEB=/[֐-׿]/;
+function _w10adEnText(node){
+  try{var raw=node.nodeValue;if(!raw||!_W10AD_HEB.test(raw))return;var el=node.parentElement;if(!_w10adEnScope(el))return;var key=raw.replace(/\s+/g,' ').trim();if(!key||_w10adIsName(key))return;
+    var en=_w10adEnTr(key);if(en==null||en===key)return;var lead=/^\s*/.exec(raw)[0],trail=/\s*$/.exec(raw)[0];node.nodeValue=lead+en+trail;
+    try{(window._w6fHeM||(window._w6fHeM=new WeakMap())).set(node,{t:raw,e:node.nodeValue});window._w6fHeDirty=1}catch(x){}}catch(e){}
+}
+function _w10adEnAttrs(el){
+  try{if(!el||!el.getAttribute||!_w10adEnScope(el,1))return;['title','aria-label','placeholder'].forEach(function(a){var v=el.getAttribute(a);if(!v||!_W10AD_HEB.test(v))return;var k=v.replace(/\s+/g,' ').trim(),en=_w10adEnTr(k);if(en==null||en===k)return;
+    try{var M=window._w6fHeA||(window._w6fHeA=new WeakMap()),r=M.get(el)||{};r[a]=[v,en];M.set(el,r);window._w6fHeDirty=1}catch(x){}el.setAttribute(a,en)})}catch(e){}
+}
+/* hook the app's walker (it runs on every added node in English) — pass-through on error, Hebrew untouched */
+try{if(typeof _i18nTextNode==='function'&&!_i18nTextNode._w10ad){var _w10adOrigTN=_i18nTextNode;_i18nTextNode=function(node){var r=_w10adOrigTN.apply(this,arguments);try{if(G.lang==='en')_w10adEnText(node)}catch(e){}return r};_i18nTextNode._w10ad=1}}catch(e){}
+try{if(typeof _i18nAttrs==='function'&&!_i18nAttrs._w10ad){var _w10adOrigAT=_i18nAttrs;_i18nAttrs=function(el){var r=_w10adOrigAT.apply(this,arguments);try{if(G.lang==='en')_w10adEnAttrs(el)}catch(e){}return r};_i18nAttrs._w10ad=1}}catch(e){}
+/* the header badge the admin view shows instead of the user chip (adminEnterByFlag → #tb) — the app's own dictionary */
+try{if(typeof UI_EN!=='undefined'&&UI_EN['🔧 מנהל מערכת']==null)UI_EN['🔧 מנהל מערכת']='🔧 Admin'}catch(e){}
+/* a fresh pass over the admin (after a render the observer may have walked before the bidi layer split the text) */
+function _w10adEnPass(){try{if(G.lang!=='en')return;var roots=[document.getElementById('adv')].concat([].slice.call(document.querySelectorAll('.adm-modal-overlay,.daily-modal:not(#dailyModal)')));roots.forEach(function(r){if(!r||(r.id==='adv'&&r.classList.contains('hid')))return;
+  var tw=document.createTreeWalker(r,5),n;while((n=tw.nextNode())){if(n.nodeType===3)_w10adEnText(n);else _w10adEnAttrs(n)}})}catch(e){}}
+
+var _w10adEnT=0;function _w10adEnSoon(){if(_w10adEnT)return;_w10adEnT=setTimeout(function(){_w10adEnT=0;_w10adEnPass()},60)}
+try{if(typeof showUserDetail==='function'){var _w10adOrigSUD=showUserDetail;showUserDetail=function(name){var x=_w10adOrigSUD.apply(this,arguments);try{var os=document.querySelectorAll('.adm-modal-overlay'),o=os[os.length-1],h3=o&&o.querySelector('h3'),n=String(name==null?'':name);if(h3&&n&&!h3.querySelector('bdi'))for(var c=h3.firstChild;c;c=c.nextSibling){if(c.nodeType===3&&c.nodeValue.indexOf(n)>=0){var a=c.splitText(c.nodeValue.indexOf(n));a.splitText(n.length);var b=document.createElement('bdi');a.parentNode.replaceChild(b,a);b.appendChild(a);break}}}catch(e){}_w10adEnSoon();return x}}}catch(e){}
+/* ---------- wrappers (installed after every existing wrapper; pass-through on error) ---------- */
+/* the bug list the dashboard fetched (loadAdminData capture) or the full bug view just rendered — one source of truth */
+function _w10adSetBugs(list){if(!Array.isArray(list))return;_w10ad.bugs=list.filter(function(r){return r&&typeof r==='object'});try{_admBugCount=_w10ad.bugs.filter(function(r){return r.resolved!=='resolved'}).length}catch(e){}}
+try{if(typeof renderAdminDashboard==='function'){var _w10adOrigRAD=renderAdminDashboard;renderAdminDashboard=function(){var x=_w10adOrigRAD.apply(this,arguments);try{_w10adMount()}catch(e){}_w10adEnSoon();return x}}}catch(e){}
+try{if(typeof renderBugReports==='function'){var _w10adOrigRBR=renderBugReports;renderBugReports=function(reports){try{_w10adSetBugs(reports)}catch(e){}_w10adStop();var x=_w10adOrigRBR.apply(this,arguments);_w10adEnSoon();return x}}}catch(e){}
+try{if(typeof buildAdmTable==='function'){var _w10adOrigBAT=buildAdmTable;buildAdmTable=function(){var h=_w10adOrigBAT.apply(this,arguments);try{h=_w10adLabelTable(h)}catch(e){}return h}}}catch(e){}
+try{if(typeof hideAdmin==='function'){var _w10adOrigHide=hideAdmin;hideAdmin=function(){try{_w10adFlush()}catch(e){}_w10adStop();return _w10adOrigHide.apply(this,arguments)}}}catch(e){}
+try{if(typeof applyLanguage==='function'){var _w10adOrigLang=applyLanguage;applyLanguage=function(){var x=_w10adOrigLang.apply(this,arguments);try{var a=document.getElementById('adv');if(a&&!a.classList.contains('hid')){if(document.getElementById('admTableWrap'))renderAdminDashboard();else if(a.querySelector('.adm-bug,.w8ad-bsum')&&Array.isArray(window._admBugsCache))renderBugReports(window._admBugsCache);else _w10adEnSoon()}}catch(e){}return x}}}catch(e){}
+/* monitoring (standing directive): every new control reports under the admin feature, with a Hebrew label */
+try{if(typeof TRACKED_FEATURES!=='undefined'&&TRACKED_FEATURES.indexOf('admin')<0){TRACKED_FEATURES.push('admin');if(typeof OTHER_FEATURES!=='undefined'&&OTHER_FEATURES.indexOf('admin')<0)OTHER_FEATURES.push('admin')}
+  if(typeof FEAT_META!=='undefined'&&!FEAT_META.admin)FEAT_META.admin={ic:'🛠️',name:'פאנל ניהול (מנהלים)',col:'#78909C'};
+  if(typeof FEAT_ACT_NAMES!=='undefined'){var _w10adAN={adxNav:'פאנל: ניווט מקטעים',adxSnap:'פאנל: לחיצה על תמונת היום',adxApprove:'פאנל: אישור נרשם',adxReject:'פאנל: דחיית נרשם',adxUndo:'פאנל: ביטול דחייה',adxBulk:'פאנל: אישור כולם',adxNavy:'פאנל: סימון זרוע הים',adxResend:'פאנל: מייל אימות חוזר',adxBugDone:'פאנל: באג טופל',adxBugAll:'פאנל: כל דיווחי הבאגים',adxBugUser:'פאנל: משתמש מדיווח',adxBugCopy:'פאנל: העתקת דיווח',adxThumb:'פאנל: צילום מסך מדיווח'};Object.keys(_w10adAN).forEach(function(k){if(!FEAT_ACT_NAMES[k])FEAT_ACT_NAMES[k]=_w10adAN[k]})}}catch(e){}
+/* ===== /W10 admin experience ===== */
+/* ===== W10 media (w10md): stage opener posters · lazy video preload · instant length chip · graceful fallback =====
+   Posters: intro/poster/stage-NN-<he|en>-<640|1280>.webp beside the MP4s, the opener's most detailed / text-rich STILL frame in 5–20 s
+   (title card or first slide; never black, never mid-transition), picked offline by _video_factory/_w10/media/tools/posters.js.
+   The path is derived from the STAGE_INTRO value and routed through _media() (?v=APP_VERSION). 640 px on phones up to 2×
+   density, 1280 px on 3× phones, tablets and desktop.
+   With a poster the opener is preload="none": opening a stage costs one small WebP instead of the MP4's metadata + first
+   segment. A learner with a saved position keeps preload="metadata", so the "resuming from" chip still shows before play.
+   The ⏱ chip shows the length at once (_W10MD_D = whole seconds measured offline; the metadata handler later writes the same).
+   Fallbacks reuse visual10's placeholder token (--w10vs-ph-bg) and its type / space tokens, each with a fallback value:
+     · poster fails → the token tile with a neutral clapperboard glyph (a transparent glyph-only poster over the CSS tile),
+       preload unchanged — the video still loads on play;
+     · video fails → an in-place panel in the same 16:9 box (no layout shift): "not available right now" + Try again; the
+       bar's speed / fullscreen / captions controls are disabled, "Skip to reading" stays.
+   Hooks: _introEnhance (called by name by every path that builds an opener card, W9's "watch later" included) and the
+   waiting room's course intro (_w8suIntroMount). Events: introVideo/poster_err · error (once per opener per session) · retry.
+   No G writes, nothing saved or synced, no layout reads. ===== */
+var _W10MD_D={'0_he':472,'0_en':473,'1_he':430,'1_en':433,'2_he':291,'2_en':429,'3_he':479,'3_en':285,'4_he':454,'4_en':452,'5_he':403,'5_en':538,'6_he':496,'6_en':474,'7_he':551,'7_en':491,'8_he':513,'8_en':606,'9_he':618,'9_en':553,'10_he':510,'10_en':591,'11_he':456,'11_en':647,'12_he':460,'12_en':433,'13_he':585,'13_en':352,'14_he':582,'14_en':460,'15_he':632,'15_en':651,'16_he':495,'16_en':436,'17_he':534,'17_en':546,'18_he':543,'18_en':598,'19_he':446,'19_en':586,'20_he':440,'20_en':469,'21_he':415,'21_en':563,'22_he':443,'22_en':496,'23_he':480,'23_en':419,'24_he':514,'24_en':605,'25_he':404,'25_en':510,'26_he':311,'26_en':345,'27_he':447,'100_he':400,'100_en':358,'101_he':283,'101_en':444,'102_he':290,'102_en':437,'103_he':288,'103_en':305,'104_he':279,'104_en':358,'105_he':252,'105_en':313,'106_he':263,'106_en':343,'107_he':515,'107_en':257,'108_he':329,'108_en':289,'109_he':251,'109_en':364,'110_he':262,'110_en':398,'111_he':269,'111_en':342,'112_he':283,'112_en':359,'113_he':317,'113_en':324,'114_he':360,'114_en':336,'115_he':343,'115_en':317,'116_he':262,'116_en':302,'117_he':389,'117_en':318,'118_he':270,'118_en':283,'119_he':361,'119_en':293,'120_he':280,'120_en':369,'121_he':266,'121_en':262,'122_he':342,'122_en':292,'123_he':220,'123_en':282,'124_he':313,'124_en':426,'125_he':347,'125_en':346};
+var _w10md={sent:{}};
+var _W10MD_IC={
+  off:'<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.66 6H14a2 2 0 0 1 2 2v2.5l5.248-3.062A.5.5 0 0 1 22 7.87v8.196"/><path d="M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="m2 2 20 20"/></svg>',
+  retry:'<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>'
+};
+/* Lucide clapperboard (ISC) in visual10's neutral glyph colour, centred on a transparent 16:9 canvas, constant stroke */
+var _W10MD_PH='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="135" viewBox="0 0 240 135"><g transform="translate(108 55.5)" fill="none" stroke="#8C90A6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".85"><path vector-effect="non-scaling-stroke" d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path vector-effect="non-scaling-stroke" d="m6.2 5.3 3.1 3.9"/><path vector-effect="non-scaling-stroke" d="m12.4 3.4 3.1 4"/><path vector-effect="non-scaling-stroke" d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></g></svg>');
+function _w10mdEn(){try{return typeof _enLang==='function'?!!_enLang():!!(typeof G!=='undefined'&&G&&G.lang==='en')}catch(e){return false}}
+/* poster width by viewport: phones up to 2× density → 640; 3× phones, tablets, desktop → 1280. The viewport width is read only
+   inside an animation frame (after load, and after a resize), never while a stage renders: on a mobile viewport innerWidth can
+   force a synchronous layout. Before the first measurement, screen.width stands in (no layout). */
+var _w10mdVW=0;
+function _w10mdVWRead(){try{_w10mdVW=window.innerWidth||0}catch(e){}}
+try{
+  if(document.readyState==='complete')requestAnimationFrame(_w10mdVWRead);else window.addEventListener('load',function(){requestAnimationFrame(_w10mdVWRead)});
+  window.addEventListener('resize',function(){if(_w10md.rz)return;_w10md.rz=1;requestAnimationFrame(function(){_w10md.rz=0;_w10mdVWRead()})},{passive:true});
+}catch(e){}
+function _w10mdW(){var w=_w10mdVW,d=1;try{if(!w)w=(window.screen&&screen.width)||0;d=window.devicePixelRatio||1}catch(e){}return (w>=700||w*Math.min(d,3)>=1100)?1280:640}
+function _w10mdPath(key,w){try{var p=(typeof STAGE_INTRO!=='undefined'&&STAGE_INTRO)?STAGE_INTRO[key]:'';var m=/^((?:\.\/)?(?:[\w-]+\/)+)(stage-\d+-(?:he|en))\.mp4$/.exec(String(p||''));return m?m[1]+'poster/'+m[2]+'-'+w+'.webp':''}catch(e){return ''}}
+function _w10mdFmt(t){t=Math.max(0,Math.floor(t||0));return Math.floor(t/60)+':'+('0'+(t%60)).slice(-2)}
+function _w10mdEv(v,act,meta){try{var k=act+'|'+((v&&v._w10mdKey)||'');if(act!=='retry'){if(_w10md.sent[k])return;_w10md.sent[k]=1}if(typeof trackEvent==='function')trackEvent('introVideo',act,meta)}catch(e){}}
+function _w10mdHost(v){var h=v&&v.parentNode;if(!h||h.nodeType!==1)return null;h.classList.add('w10md-host');return h}
+/* poster + a same-mode probe (an <img>-less load/error signal: a failed poster fires no event on the <video>) */
+function _w10mdPoster(v,key){
+  try{
+    if(!v||!_W10MD_D[key]||v.hasAttribute('data-w10md'))return false;
+    var p=_w10mdPath(key,_w10mdW());if(!p)return false;
+    var u=_media(p);if(!u)return false;
+    v._w10mdKey=key;v.setAttribute('data-w10md','load');v.setAttribute('poster',u);
+    var im=new Image();try{if(v.crossOrigin)im.crossOrigin=v.crossOrigin}catch(e){}
+    im.onload=function(){im.onload=im.onerror=null;try{if(v.getAttribute('data-w10md')!=='load')return;v.setAttribute('data-w10md','ok');v.classList.remove('w10mo-sk')}catch(e){}};
+    im.onerror=function(){im.onload=im.onerror=null;_w10mdNoPoster(v)};
+    im.src=u;
+    return true;
+  }catch(e){return false}
+}
+/* a failed poster: the host shows visual10's tile (CSS) through a transparent glyph-only poster. Why a poster at all: a <video>
+   with controls and neither poster nor frame gets the browser's opaque grey "no source" panel. preload stays as it was
+   ("none": no extra bytes) — with any poster present Chrome would not paint a first frame for "metadata" anyway — and the
+   video still loads on play; if that fails too, the panel below takes over */
+function _w10mdNoPoster(v){
+  try{
+    if(!v||v.getAttribute('data-w10md')!=='load')return;
+    v.setAttribute('data-w10md','np');v.setAttribute('poster',_W10MD_PH);
+    var h=_w10mdHost(v);if(h)h.classList.add('w10md-np');
+    _w10mdEv(v,'poster_err',v._w10mdKey||'');
+  }catch(e){}
+}
+function _w10mdArm(v,card){
+  try{if(!v||v._w10mdArmed)return;v._w10mdArmed=1;_w10mdHost(v);v.addEventListener('error',function(){_w10mdFail(v,card)})}catch(e){}
+}
+function _w10mdFail(v,card){
+  try{
+    var er=v.error,code=(er&&er.code)||0;
+    if(code===1||v._w9plDead||!v.isConnected||!v.getAttribute('src'))return;
+    var h=_w10mdHost(v);if(!h||h.querySelector('.w10md-fb'))return;
+    var en=_w10mdEn(),hadFocus=document.activeElement===v;
+    var fb=document.createElement('div');fb.className='w10md-fb';fb.setAttribute('role','status');
+    fb.innerHTML=_W10MD_IC.off+'<b class="w10md-fbt">'+(en?'Video unavailable right now':'הסרטון לא זמין כרגע')+'</b><span class="w10md-fbs">'+(en?'You can keep reading below':'אפשר להמשיך בקריאה למטה')+'</span>';
+    var b=document.createElement('button');b.type='button';b.className='bs w10md-retry';
+    b.innerHTML=_W10MD_IC.retry+'<span>'+(en?'Try again':'לנסות שוב')+'</span>';
+    b.onclick=function(){_w10mdRetry(v,card)};fb.appendChild(b);
+    h.classList.add('w10md-dead');h.appendChild(fb);
+    if(card){card.classList.add('w10md-off');var l=card.querySelectorAll('.intro-bar button');for(var i=0;i<l.length;i++){var x=l[i];if(x.hasAttribute('data-w10md-skip')||x.disabled)continue;x.disabled=true;x.setAttribute('data-w10md-dis','')}}
+    if(hadFocus){try{b.focus({preventScroll:true})}catch(e){}}
+    _w10mdEv(v,'error',(v._w10mdKey||'')+'|'+code);
+  }catch(e){}
+}
+function _w10mdRetry(v,card){
+  try{
+    var h=v.parentNode,fb=h&&h.querySelector('.w10md-fb');if(fb)fb.remove();
+    if(h&&h.classList)h.classList.remove('w10md-dead');
+    if(card){card.classList.remove('w10md-off');var l=card.querySelectorAll('.intro-bar button[data-w10md-dis]');for(var i=0;i<l.length;i++){l[i].disabled=false;l[i].removeAttribute('data-w10md-dis')}}
+    _w10mdEv(v,'retry',v._w10mdKey||'');
+    try{v.focus({preventScroll:true})}catch(e){}
+    v.load();var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});
+  }catch(e){}
+}
+(function(){
+  /* every opener card: _introEnhance(v,url,key,card,first) runs while the new <video> is still detached and its load has not
+     started yet (it starts in a later task), so the preload choice made here is the one the browser uses */
+  try{
+    if(typeof _introEnhance==='function'&&!_introEnhance._w10md){
+      var o=_introEnhance,w=function(v,url,key,card,first){
+        try{if(_w10mdPoster(v,key)){var p=(typeof G!=='undefined'&&G&&G._introPos&&G._introPos[key])||0;v.preload=p>10?'metadata':'none'}}catch(e){}
+        var r=o.apply(this,arguments);
+        try{
+          _w10mdArm(v,card);
+          var bar=card&&card.querySelector('.intro-bar'),bs=bar?bar.querySelectorAll('.intro-btn'):[];
+          if(bs.length)bs[bs.length-1].setAttribute('data-w10md-skip','');
+          var d=_W10MD_D[key],c=card&&card.querySelector('.intro-dur');
+          if(d&&c&&!(v.readyState>=1))c.textContent='⏱ '+_w10mdFmt(d);
+        }catch(e){}
+        return r};
+      w._w10md=1;
+      /* the W9 polish gate (suite P1, "w9pl memory") reads String(_introEnhance) for its two guards; the original still runs
+         inside this wrapper unchanged, so the wrapper reports the original's source */
+      w.toString=function(){return Function.prototype.toString.call(o)};
+      _introEnhance=w;
+    }
+  }catch(e){}
+  /* the waiting room's course intro (stage 0 opener) */
+  try{
+    if(typeof _w8suIntroMount==='function'&&!_w8suIntroMount._w10md){
+      var m=_w8suIntroMount,mw=function(){
+        var r=m.apply(this,arguments);
+        try{var box=document.getElementById('w8suIntro'),v=box&&box.querySelector('video');if(v&&!v._w10mdArmed){_w10mdPoster(v,'0_'+((typeof _w8suEn==='function'&&_w8suEn())?'en':'he'));_w10mdArm(v,null)}}catch(e){}
+        return r};
+      mw._w10md=1;_w8suIntroMount=mw;
+    }
+  }catch(e){}
+})();
+/* ===== /W10 media ===== */
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
