@@ -4041,6 +4041,90 @@ body.light .w10mo-gh.w10mo-gh-hub{background:rgba(246,243,234,.95)}
 .w10mo-rk b{display:block;color:var(--g);font-size:.9rem;margin-bottom:.1rem}
 @media (prefers-reduced-motion:reduce){.w10mo-sk{animation:none!important;opacity:.72}html.w10mo-pf #pf.pfill{transition:none}}
 /* ===== /W10 motion ===== */
+/* ===== W10 ENTRY (w10en): the entry as a gate — E1 home · E2 returning · E3 sign-up · E4 sign-in · E10 course details ===== */
+[id^="w10en"][hidden]{display:none!important}
+/* ---- every step: wordmark + language only; W9's top "Sign in" pill, eyebrow, check button, score chip and × retire (their
+   elements stay for W9's code and its gate) ---- */
+#ws.w10en-on :is(#w9obSignin,#w9obCheckBtn,#w9obEye,#w9obSaved,.w9ob-qx){display:none!important}
+#ws.w10en-on .w9ob-top{max-width:440px;min-height:56px}
+#ws.w10en-on[data-w10en="how"] .w9ob-top{max-width:760px}
+#ws.w10en-on[data-w10en="check"] .w9ob-top{max-width:560px}
+/* ---- the step bar (Back + title), start side ---- */
+.w10en-bar{width:100%;max-width:440px;margin:.4rem auto 0;display:flex;align-items:center;gap:.6rem;position:relative;z-index:1;text-align:start}
+#ws.w10en-on[data-w10en="how"] .w10en-bar{max-width:760px}
+#ws.w10en-on[data-w10en="check"] .w10en-bar{max-width:560px}
+.w10en-back{display:inline-flex;align-items:center;gap:.25rem;min-height:44px;min-width:44px;padding:.35rem .85rem .35rem .55rem;margin:0;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--t1);font:inherit;font-size:.92rem;font-weight:700;cursor:pointer;flex:0 0 auto}
+.w10en-back:hover{border-color:var(--p);color:var(--p)}
+.w10en-bar[dir="rtl"] .w10en-back svg{transform:scaleX(-1)}
+:is(.w10en-back,.w10en-howlink,.w10en-have,.w10en-new,.w10en-howgo):focus-visible{outline:2px solid var(--p);outline-offset:2px}
+.w10en-bart{margin:0;font-size:1.12rem;font-weight:800;color:var(--t1);line-height:1.3;min-width:0}
+.w10en-bart:focus,#ws.w10en-on .w9ob-ft:focus{outline:none}
+/* ---- E1: one column (440 px), headline + sub + facts start-aligned, the two buttons full width, primary on top ---- */
+#ws.w10en-on .w9ob-hero{max-width:440px;grid-template-columns:minmax(0,1fr);gap:0;margin:clamp(1rem,7vh,4.5rem) auto 0;text-align:start;align-items:start}
+@media(min-width:768px) and (min-height:640px){#ws.w10en-on[data-w10en="home"] .w9ob-hero{margin-top:auto;margin-bottom:auto;padding:1rem 0}}
+#ws.w10en-on .w9ob-h{font-size:clamp(1.65rem,7vw,2.25rem);line-height:1.25;margin:0 0 .7rem}
+#ws.w10en-on .w9ob-sub{margin:0 0 .55rem;max-width:none;font-size:1.02rem;line-height:1.6}
+.w10en-facts{margin:0 0 1.5rem;min-height:1.6em;font-size:.92rem;line-height:1.6;font-weight:700;color:var(--t1)}
+#ws.w10en-on .w9ob-ctas{flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:.75rem;max-width:none;margin:0 0 .9rem}
+#ws.w10en-on .w9ob-ctas .bp,#ws.w10en-on .w9ob-ctas .bs{flex:0 0 auto;width:100%;min-height:52px;margin:0;font-size:1.04rem;border-radius:16px;box-sizing:border-box}
+#ws.w10en-on .w9ob-micro{margin:0 0 .2rem;text-align:center;font-size:.86rem}
+.w10en-price{margin:.2rem 0 0;text-align:center;font-size:.86rem;line-height:1.55;color:var(--t2)}
+.w10en-howlink,.w10en-new{display:flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;margin:.35rem auto 0;padding:.35rem .9rem;background:none;border:0;border-radius:10px;font:inherit;font-size:.92rem;font-weight:700;color:var(--p);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+:is(.w10en-howlink,.w10en-new):hover{color:var(--t1)}
+#ws.w10en-on .w9ob-link{min-height:44px}
+/* ---- E2: a known device gets its own screen — the card, then "Create a new account"; no marketing below ---- */
+#ws.w10en-on.w10en-ret[data-w10en="home"] #w9obHero{display:none!important}
+#ws.w10en-on[data-w10en="home"] .w9ob-ret{max-width:440px;margin:clamp(1rem,6vh,3.5rem) auto 0;padding:1.2rem 1.15rem;gap:.8rem}
+#ws.w10en-on .w9ob-av{width:56px;height:56px;font-size:1.3rem}
+#ws.w10en-on .w9ob-ret-t{font-size:1.3rem}
+.w10en-prog{position:relative;height:8px;border-radius:99px;background:var(--cardh);overflow:hidden}
+.w10en-prog>i{position:absolute;top:0;bottom:0;inset-inline-start:0;border-radius:inherit;background:var(--p)}
+#ws.w10en-on .w9ob-ret-go{min-height:52px;font-size:1.04rem;border-radius:16px}
+#ws.w10en-on .w10en-new{margin-top:.6rem}
+/* ---- one step at a time ---- */
+#ws.w10en-on[data-w10en="home"] :is(#w9obCheck,#w9obInfo,#wsLogin,#w9obFaq,.w9ob-ranks,#w10enHowEnd),
+#ws.w10en-on[data-w10en="home"] #w9obMain>:is(#w9obStats,#w9obProof){display:none!important}
+#ws.w10en-on:is([data-w10en="signup"],[data-w10en="signin"]) :is(#w9obRet,#w10enNew,#w9obHero,#w9obInfo,#w9obFaq,.w9ob-ranks,#w10enHowEnd,.legal-foot){display:none!important}
+#ws.w10en-on[data-w10en="how"] :is(#w9obRet,#w10enNew,#w9obHero,#wsLogin,#lobbyRow){display:none!important}
+#ws.w10en-on[data-w10en="check"] :is(#w9obRet,#w10enNew,#w9obMain,#w9obInfo,#wsLogin,#w9obFaq,.w9ob-ranks,#w10enHowEnd,.legal-foot,#lobbyRow){display:none!important}
+#ws.w10en-on .w9ob-check{display:none}
+#ws.w10en-on[data-w10en="check"] .w9ob-check{display:block;scroll-margin-top:9rem}
+#ws.w10en-on[data-w10en="check"] .w9ob-hero{max-width:560px;margin-top:1rem}
+/* ---- E3 / E4: the form card is the step ---- */
+#ws.w10en-on .ws-login{margin-top:.8rem;max-width:440px}
+#ws.w10en-on #wsLogin.w9ob-signin :is(#w9obNameHelp,#w9obEmailHelp){display:none}
+#ws.w10en-on .w9ob-legal{margin:.6rem 0 0;text-align:center}
+#ws.w10en-on .w9ob-linkrow{margin:.9rem 0 0;border-width:1px 0 0;border-style:dashed;border-radius:0;padding:.8rem 0 0;justify-items:stretch}
+#ws.w10en-on .w9ob-linkrow #w9obLinkBtn{width:100%;min-height:48px;justify-content:center}
+/* ---- E10 "What's in the course": who · how · rank path · FAQ · one action ---- */
+#ws.w10en-on[data-w10en="how"] #w9obInfo{order:1;margin-top:.9rem;max-width:760px}
+#ws.w10en-on[data-w10en="how"] .w9ob-ranks{order:2}
+#ws.w10en-on[data-w10en="how"] #w9obFaq{order:3;max-width:760px}
+#ws.w10en-on[data-w10en="how"] #w10enHowEnd{order:4}
+#ws.w10en-on[data-w10en="how"] .legal-foot{order:5}
+#ws.w10en-on[data-w10en="how"] .w10en-adm{order:6}
+.w10en-howend{width:100%;max-width:440px;margin:1.6rem auto 0;display:grid;gap:.6rem;position:relative;z-index:1;text-align:center}
+.w10en-howend .bp{width:100%;min-height:52px;margin:0;font-size:1.04rem;border-radius:16px;box-sizing:border-box}
+.w10en-hownote{margin:0;font-size:.84rem;line-height:1.55;color:var(--t2)}
+/* ---- footer + the faint admin entry ---- */
+#ws.w10en-on .legal-foot{margin-top:1.4rem}
+#ws.w10en-on .w10en-adm{margin-top:.6rem!important}
+/* ---- "Continue learning": visible progress while the account loads ---- */
+#ws.w10en-on .w10en-busy{pointer-events:none;opacity:.82}
+#ws.w10en-on #w9obRetGo.w10en-busy::after{content:"";display:inline-block;width:.95em;height:.95em;margin-inline-start:.55em;vertical-align:-.12em;border-radius:50%;border:2px solid currentColor;border-inline-end-color:transparent;animation:w10enSpin .8s linear infinite}
+@keyframes w10enSpin{to{transform:rotate(360deg)}}
+/* ---- a step change is visible: the new step fades in once, quickly (the old welcome's 0.5–1 s entrance animations on the start
+   button, the hero and the rank box would replay at every step change — replaced here) ---- */
+@keyframes w10enIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+#ws.w10en-on .btn-go{animation:none}
+#ws.w10en-on :is(.w9ob-hero,.w9ob-ranks,.w9ob-ret,.w10en-bar),#ws.w10en-on:is([data-w10en="signup"],[data-w10en="signin"]) #wsLogin,#ws.w10en-on[data-w10en="how"] #w9obInfo{animation:w10enIn .18s ease both!important}
+@media(prefers-reduced-motion:reduce){#ws.w10en-on :is(.w9ob-hero,.w9ob-ranks,.w9ob-ret,.w10en-bar),#ws.w10en-on:is([data-w10en="signup"],[data-w10en="signin"]) #wsLogin,#ws.w10en-on[data-w10en="how"] #w9obInfo{animation:none!important}#ws.w10en-on #w9obRetGo.w10en-busy::after{animation:none;border-inline-end-color:currentColor;opacity:.6}}
+/* light theme: purple words on the light page use the deeper primary (AA 4.5:1 for normal-size text) */
+body.light #ws.w10en-on :is(.w10en-have,.w10en-howlink,.w10en-new,.w10en-back:hover),body.light #ws.w10en-on #w9obLinkBtn{color:var(--pd);border-color:var(--pd)}
+body.light #ws.w10en-on :is(.w10en-howlink,.w10en-new){border-color:transparent}
+/* amber accent: dark text on the light primary, as every other surface does */
+html[data-acc="amber"] body:not(.light) #ws.w10en-on #w10enHowEnd .bp{color:#1A1407}
+/* ===== /W10 ENTRY ===== */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 </head>
@@ -10667,7 +10751,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.19';
+const APP_VERSION='1.10.20';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -25927,6 +26011,377 @@ function _w10moInstall(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',_w10moInstall);else _w10moInstall();
 /* ===== /W10 motion ===== */
+/* ===== W10 RED-TEAM v4 (_w10rt) — see _video_factory/_w10_redteam4.js / .md. Wrappers only, pass-through on error. ===== */
+var _w10rt={li:null,force:'',forceK:'',lob:null,row:null};
+function _w10rtEn(){try{return G.lang==='en'}catch(e){return false}}
+function _w10rtT(he,en){return _w10rtEn()?en:he}
+function _w10rtN(n){return String(n==null?'':n).replace(/\s+/g,' ').trim().toLowerCase()}
+function _w10rtWs(){try{var w=document.getElementById('ws');return !!(w&&!w.classList.contains('hid'))}catch(e){return false}}
+function _w10rtOb(){try{return typeof _w9ob!=='undefined'&&!!_w9ob&&_w9ob.built===true}catch(e){return false}}
+/* a learner this device already knows: the last signed-in account or a returning-device profile */
+function _w10rtKnown(n){try{var k=_w10rtN(n);if(!k)return false;if(G&&G.userName&&_w10rtN(G.userName)===k)return true;var p=JSON.parse(localStorage.getItem('pm_profiles')||'[]');return Array.isArray(p)&&p.some(function(x){return x&&_w10rtN(x.n)===k})}catch(e){return false}}
+function _w10rtDropProfile(n){try{var k=_w10rtN(n),p=JSON.parse(localStorage.getItem('pm_profiles')||'[]');if(!Array.isArray(p))return;var q=p.filter(function(x){return !(x&&_w10rtN(x.n)===k)});if(q.length!==p.length)localStorage.setItem('pm_profiles',JSON.stringify(q))}catch(e){}}
+/* an empty cloud account = no points and no completed stage (what the claim is for) */
+function _w10rtBlank(x){try{return !(parseFloat(x&&x.score)>0)&&!String((x&&x.stagesList)==null?'':x.stagesList).replace(/[^0-9]/g,'')}catch(e){return true}}
+/* a message next to the field (W9's inline error); a dialog when a rebuilt welcome has no such helper */
+function _w10rtSay(f,msg,code){try{if(typeof _w9obErr==='function'){_w9obErr(f,msg,code);return}}catch(e){}try{showModal('⚠️','',msg,_w10rtT('הבנתי','OK'))}catch(e){}}
+
+/* intent: every sign-in attempt remembers what the visitor asked for — 'signin' (sign-in mode · the returning-device card / lobby
+   chips · a mail deep link) or 'signup' ("Create account"). RT4-11: a sign-up of a name this device does not know, on a cloud
+   build, never falls into the offline fallback when the server cannot be reached (the load reply becomes a handled error). */
+const _w10rtOrigTry=_tryLogin;_tryLogin=function(name){
+  var n=String(name==null?'':name),li=null;
+  try{var m=_w10rt.force,k=_w10rt.forceK,lob=_w10rt.lob;
+    if(!m&&lob&&lob.n===n&&Date.now()-lob.at<600000){m='signin';k='lobby'}
+    if(!m)m=(_w10rtOb()&&_w9ob.mode==='signin')?'signin':'signup';
+    li=_w10rt.li={n:n,m:m,k:k||'',at:Date.now()}}catch(e){}
+  var guard=false;try{guard=!!(DB_URL&&li&&li.m==='signup'&&!li.k&&_w10rtOb()&&_w10rtWs()&&!_w10rtKnown(n)&&typeof window.fetch==='function')}catch(e){}
+  if(!guard)return _w10rtOrigTry.apply(this,arguments);
+  var of=window.fetch,used=false,fail=function(){return {ok:true,status:200,json:function(){return Promise.resolve({success:false,error:'w10rt_net'})}}};
+  window.fetch=function(u,o){
+    var p=of.apply(this,arguments);
+    try{if(used||!o||typeof o.body!=='string'||o.body.indexOf('"action":"load"')<0)return p}catch(e){return p}
+    used=true;
+    return p.then(function(r){return r.json().then(function(d){return {ok:true,status:200,json:function(){return Promise.resolve(d)}}},fail)},fail);
+  };
+  try{return _w10rtOrigTry.apply(this,arguments)}finally{window.fetch=of}
+};
+/* the returning-device card and the lobby chips sign in (RT4-03); "e-mail me the account" hint path included (10 min) */
+const _w10rtOrigLobby=_lobbyGo;_lobbyGo=function(btn){
+  try{var n=btn&&btn.getAttribute?String(btn.getAttribute('data-n')||''):'';if(n)_w10rt.lob={n:n,at:Date.now()}}catch(e){}
+  _w10rt.force='signin';_w10rt.forceK='lobby';
+  try{return _w10rtOrigLobby.apply(this,arguments)}finally{_w10rt.force='';_w10rt.forceK=''}
+};
+/* the mail deep links sign in (RT4-09) · RT4-10: a view restored from localStorage at boot, with the welcome on screen and no
+   sign-in started in this page, is not "already signed in" for redteam3's guard */
+const _w10rtOrigBoot=_w8suBoot;_w8suBoot=function(){
+  try{if(/[?&]w8su=/.test(location.search)&&G&&G.v&&G.v!=='w'&&_w10rtWs()){var b=document.querySelector('.btn-go');if(!(b&&b.disabled)&&!(typeof _w6sy!=='undefined'&&_w6sy&&_w6sy.lp))G.v='w'}}catch(e){}
+  _w10rt.force='signin';_w10rt.forceK='link';
+  try{return _w10rtOrigBoot.apply(this,arguments)}finally{_w10rt.force='';_w10rt.forceK=''}
+};
+/* an explicit mode switch (sign up / sign in / "not me") ends a remembered lobby intent */
+if(typeof _w9obMode==='function'){const _w10rtOrigMode=_w9obMode;_w9obMode=function(m,from){try{if(from)_w10rt.lob=null}catch(e){}return _w10rtOrigMode.apply(this,arguments)}}
+/* top of _tryLogin's reply: RT4-11 network message · RT4-06 the verified row · RT4-01 the stale retry without the optional box */
+const _w10rtOrigLH=_w8suLoadHook;_w8suLoadHook=function(name,email,consent,d){
+  try{
+    if(d&&d.success===false&&d.error==='w10rt_net'){_w10rtSay('email',_w10rtT('לא הצלחנו להתחבר לשרת. בדקו את החיבור ונסו שוב בעוד רגע.','We could not reach the server. Check your connection and try again in a moment.'),'network');return true}
+    if(d&&d.success&&d.data){var st=String(d.data.status||'');if(st==='approved'||st==='')_w10rt.row={u:String(name),blank:_w10rtBlank(d.data),at:Date.now()}}
+    var li=_w10rt.li,n=String(name==null?'':name);
+    if(d&&d.success===false&&d.error==='email_mismatch'&&!consent&&email&&li&&li.n===n&&li.m==='signup'&&!li.k&&_w10rtOb()&&_w9ob.mode!=='signin'&&typeof _w8su!=='undefined'&&_w8su.staleTried&&!_w8su.staleTried[n]&&typeof _requestApproval==='function'){
+      var em=String(email).trim().toLowerCase();_w8su.staleTried[n]=1;_pendingEmail=em;_pendingConsent=false;_requestApproval(n,em,false);return true}
+  }catch(e){}
+  return _w10rtOrigLH.apply(this,arguments);
+};
+/* RT4-06: the re-verify path (a login whose read failed, verified later) records the row too */
+if(typeof _w6syMerge==='function'){const _w10rtOrigMg=_w6syMerge;_w6syMerge=function(c){var r=_w10rtOrigMg.apply(this,arguments);try{if(r&&c&&G&&G.userName)_w10rt.row={u:String(G.userName),blank:_w10rtBlank(c),at:Date.now()}}catch(e){}return r}}
+/* RT4-02 / RT4-06: the claim — only for an empty verified account; a claim consumes the device's answers */
+if(typeof _w9obClaim==='function'){const _w10rtOrigClaim=_w9obClaim;_w9obClaim=function(){
+  try{var rw=_w10rt.row;if(rw&&G&&rw.u===String(G.userName)&&rw.blank===false&&!(G._w9obClaim&&G._w9obClaim.u===G.userName))return null}catch(e){}
+  var c=_w10rtOrigClaim.apply(this,arguments);
+  try{if(c&&G&&c.u===G.userName){var p=_w9obPre();if(p.check||p.warm||p.plan){p.w10rtUsed={u:String(c.u),at:Date.now()};delete p.check;delete p.warm;delete p.plan;_w9obPreSave(p)}
+    try{if(_w9ob.qz){delete _w9ob.qz.chk;delete _w9ob.qz.warm}}catch(e){}try{if(typeof _w9obQzRender==='function')_w9obQzRender('chk');if(typeof _w9obFormText==='function')_w9obFormText()}catch(e){}}}catch(e){}
+  return c;
+}}
+/* the "not found" branch of _tryLogin (a registration would follow): RT4-09 mail link · RT4-03 returning card / lobby · a sign-in
+   pressed before the mode was switched · RT4-05 "~" names */
+if(typeof _w9obNotFound==='function'){const _w10rtOrigNF=_w9obNotFound;_w9obNotFound=function(name,email,consent){
+  try{
+    if(_w10rtOb()){
+      var n=String(name==null?'':name),li=_w10rt.li,si=!!(li&&li.n===n&&Date.now()-li.at<120000&&li.m==='signin');
+      if(si&&li.k==='link'){
+        try{var rg=_w8suReg();if(rg&&rg.n===n)_w8suRegSet(null)}catch(e){}
+        if(typeof _w9rtPendGone==='function'){_w9rtPendGone(n,'not_found')}
+        else _w10rtSay('name',_w10rtT('בקשת ההרשמה הזו כבר לא קיימת — ייתכן שנדחתה או שפג תוקפה. אפשר להירשם מחדש.','This sign-up request no longer exists — it may have been declined or it expired. You can sign up again.'),'not_found');
+        return true}
+      if(si&&li.k==='lobby'){
+        _w10rt.lob=null;_w10rtDropProfile(n);try{if(typeof renderLobby==='function')renderLobby()}catch(e){}try{if(typeof _w9obRetRender==='function')_w9obRetRender()}catch(e){}
+        _w10rtSay('name',_w10rtT('לא מצאנו את החשבון הזה בשרת — ייתכן שהוא הוסר. אפשר להירשם מחדש עם השם הזה.','We could not find this account on the server — it may have been removed. You can sign up again with this name.'),'not_found');return true}
+      if(si&&_w9ob.mode!=='signin'){_w10rtSay('name',_w10rtT('לא מצאנו חשבון בשם הזה. בדקו את האיות או הירשמו.','We could not find an account with that name. Check the spelling or sign up.'),'not_found');return true}
+      if(/^~/.test(n)&&_w9ob.mode!=='signin'){_w10rtSay('name',_w10rtT('שם תצוגה לא יכול להתחיל ב־~. בחרו שם אחר.','A display name cannot start with "~". Please pick another name.'),'name_chars');return true}
+    }
+  }catch(e){}
+  return _w10rtOrigNF.apply(this,arguments);
+}}
+/* RT4-04: while the welcome screen is on screen the funnel is anonymous (per-visit ~id), whoever was signed in before */
+if(typeof _w9obEv==='function'){const _w10rtOrigEv=_w9obEv;_w9obEv=function(f,a,m){
+  try{if(DB_URL&&_w10rtOb()&&_w10rtWs()&&!(typeof _w9obPendLive==='function'&&_w9obPendLive())){_w9ob.q.push([f,a,(m==null)?'':String(m)]);if(_w9ob.q.length>40)_w9ob.q.shift();if(_w9ob.acted&&typeof _w9obFlush==='function')_w9obFlush();return}}catch(e){}
+  return _w10rtOrigEv.apply(this,arguments);
+}}
+/*   at boot W9 built the welcome before this pack: a welcome_view it filed under a REMEMBERED learner (persisted G.s) is moved to
+     the anonymous visit (still queued: the W6 analytics batch leaves 5 s after boot at the earliest) */
+try{if(DB_URL&&_w10rtOb()&&_w10rtWs()&&typeof _w6an!=='undefined'&&_w6an&&Array.isArray(_w6an.q)){var _w10rtMv=0;for(var _w10rtI=_w6an.q.length-1;_w10rtI>=0;_w10rtI--){var _w10rtX=_w6an.q[_w10rtI];if(_w10rtX&&_w10rtX.f==='signup'&&_w10rtX.a==='welcome_view'&&_w10rtX.u&&String(_w10rtX.u).charAt(0)!=='~'){_w6an.q.splice(_w10rtI,1);_w9ob.q.unshift(['signup','welcome_view',String(_w10rtX.m||'')]);_w10rtMv++}}if(_w10rtMv&&typeof _w6anSave==='function')_w6anSave();if(_w10rtMv&&_w9ob.acted&&typeof _w9obFlush==='function')_w9obFlush()}}catch(e){}
+/* RT4-07: W9 defers the goal question for a new learner (first win → inline card) — the question is then not "still due" */
+if(typeof _w10uxGoalDue==='function'){const _w10rtOrigGD=_w10uxGoalDue;_w10uxGoalDue=function(){
+  try{if(typeof _w9obAuto==='function'&&_w9obAuto()&&G&&G.s&&G.userName&&G.done&&(G.done.size===0||(typeof _w9obCommitPending==='function'&&_w9obCommitPending())))return false}catch(e){}
+  return _w10rtOrigGD.apply(this,arguments);
+}}
+/* RT4-08: "Not Dana? Sign in to another account" also clears Dana's e-mail (and its hint / typo line) */
+/*   one delegated capture listener (no wrapper on the card renderer): it survives a rebuilt card that keeps the id */
+try{document.addEventListener('click',function(e){try{var t=e.target&&e.target.closest?e.target.closest('#w9obRetOther'):null;if(!t)return;var ei=document.getElementById('emailInput');if(ei)ei.value='';var y=document.getElementById('w9obTypo');if(y){y.hidden=true;y.innerHTML=''}if(typeof _w9obErrSet==='function')_w9obErrSet('email','');if(typeof _w6rtHint==='function')_w6rtHint(null);_w10rt.lob=null}catch(x){}},true)}catch(e){}
+/* ===== /W10 RED-TEAM v4 ===== */
+/* ===== W10 ENTRY (w10en) — see _video_factory/_w10_entry.js / _w10_entry.md · spec: _video_factory/_research_entry.md =====
+   The entry is a GATE, not a landing page. Owner, 2026-10-30: "I got confused 7 times" · "the welcome links into itself" ·
+   "it says free a lot" · "make it understandable, clean and coherent with our messages; also on mobile".
+   Steps inside #ws, exactly one at a time, each with its own heading and a visible way back (and Esc):
+     E1 home   · wordmark + language · headline · one sub-line · one facts line · [Create account] (the ONE primary) ·
+                 [I already have an account] · "every sign-up is approved by hand…" · (PRICE_LINE, empty) · "What's in the course?"
+     E2 home   · a device that knows a learner: its own screen — "Welcome back, Dana" · progress · [Continue learning] ·
+                 "Not Dana? Sign in to another account" · "Create a new account" (no marketing below it)
+     E3 signup · Back · "Create your account" (W9's labelled form: inline errors, typo fix, optional UNCHECKED reminders, terms)
+     E4 signin · Back · "Sign in" (same inputs, never registers) · "Email me a sign-in link"
+     E10 how   · Back · "What's in the course": who · how · rank path · FAQ (no "free" item) · [Create account]
+     check     · only from the ?check=1 campaign link (the instinct check left the entry) · W9's component, W9's storage
+   No in-page jumps, no mode flip on one card: every action opens its own step at the top; focus moves to the step's heading
+   (the first field with a fine pointer — phones never pop the keyboard). No "free" promise anywhere.
+   Builds on W9 onboarding (w9ob: same DOM ids, form, validation, sign-in rules, funnel events) and w8su (a mail deep-link
+   banner opens the sign-in step). Nothing re-implemented, nothing in G, no storage, no backend call, no observer. Every
+   wrapper is a pass-through on error; every rule is scoped to #ws.w10en-on (set only after a complete build). */
+
+/* OWNER: the entry's words in ONE place — Hebrew first, English second. {h} = approval hours (_W8SU.SLA_H) · {s} = stages ·
+   {q} = questions (both computed, never typed). */
+var _W10EN_MSG={
+  head:['קורס ניהול מוצר מעשי — מהיסודות ועד ראיון העבודה','A hands-on product management course — from the basics to the job interview'],/* w10 entry copy (owner 02/11) */
+  sub:['שלבי ליבה וספרייה של ספרי מוצר מסוכמים. בכל שלב: שיעור, קייס אמיתי ומבחן עם הסברים. בדרך: פאזל יומי, דו־קרבות וליגה שבועית.','Core stages plus a library of summarized product books. Each stage has a lesson, a real-world case and a quiz with explanations. Along the way: a daily puzzle, duels and a weekly league.'],
+  facts:['{s} שלבים · {q} שאלות · תעודה עם קישור אימות','{s} stages · {q} questions · a certificate with a verification link'],
+  join:['יצירת חשבון','Create account'],
+  have:['כבר יש לי חשבון','I already have an account'],
+  next:['כל הרשמה מאושרת ידנית, בדרך כלל תוך {h} שעות.','We approve every sign-up by hand, usually within {h} hours.'],
+  more:['מה לומדים בקורס?','What\'s in the course?']
+};
+/* OWNER: one honest price line under the approval line — EMPTY until the monetization model is decided (spec §A7.3). Never
+   "free" unless the whole core path is free with no time limit. */
+var _W10EN_PRICE_LINE={he:'',en:''};
+var _w10en={v:'home',from:'home',built:false,opener:null,busy:null,busyT:0,sync:false,ft:0};
+var _W10EN_VIEWS=['home','signup','signin','how','check'];
+var _w10enO={};
+
+/* ---------- helpers ---------- */
+function _w10enEn(){try{return G.lang==='en'}catch(e){return false}}
+function _w10enT(he,en){return _w10enEn()?en:he}
+function _w10enE(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function _w10enSla(){try{return (typeof _w9obSla==='function')?_w9obSla():24}catch(e){return 24}}
+function _w10enM(k){var m=_W10EN_MSG[k]||['',''];return String(_w10enEn()?m[1]:m[0]).split('{h}').join(String(_w10enSla()))}
+function _w10enRM(){try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}}
+function _w10enFine(){try{return matchMedia('(pointer:fine)').matches}catch(e){return false}}
+function _w10enRet(){var ws=$('ws'),c=$('w9obRet');return !!(ws&&(ws.classList.contains('w9ob-ret1')||ws.classList.contains('w9ob-retn'))&&c&&!c.hidden)}
+function _w10enOn(){var ws=$('ws');return !!(_w10en.built&&ws&&!ws.classList.contains('hid'))}
+function _w10enEv(a,m){try{if(typeof _w9obEv==='function')_w9obEv('signup',a,m)}catch(e){}}
+function _w10enSet(id,txt){var e=$(id);if(e&&e.textContent!==txt)e.textContent=txt}
+function _w10enHtml(id,h){var e=$(id);if(e&&e.innerHTML!==h)e.innerHTML=h}
+var _W10EN_BACK='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 18l-6-6 6-6"/></svg>';
+
+/* ---------- the step controller ---------- */
+function _w10enView(v,o){
+  o=o||{};var ws=$('ws');if(!ws||!_w10en.built)return;
+  if(_W10EN_VIEWS.indexOf(v)<0)v='home';
+  var cur=_w10en.v;
+  if(v===cur&&!o.force){_w10enChrome();return}
+  if(v==='check')_w10en.from=(cur==='how')?'how':'home';
+  if(v!=='home'&&cur==='home'&&!o.back){try{var a=document.activeElement;_w10en.opener=(a&&ws.contains(a)&&a.id)?a.id:null}catch(e){}}
+  /* leaving the check: W9's own state goes back to the hero (no recursion — _w10en.sync) */
+  if(v!=='check'){var hero=$('w9obHero');if(hero&&hero.classList.contains('w9ob-chk-on')&&typeof _w9obChkView==='function'){_w10en.sync=true;try{_w9obChkView(false)}catch(e){}_w10en.sync=false}}
+  /* the home step has no mode: back on it, the form returns to its default (sign-up) quietly — the next step is the visitor's
+     choice, and go()'s default stays what it always was */
+  if(v==='home'&&typeof _w9ob!=='undefined'&&_w9ob.mode==='signin'&&_w10enO.mode){try{_w10enO.mode.call(null,'signup')}catch(e){}}
+  _w10en.v=v;ws.setAttribute('data-w10en',v);
+  _w10enChrome();_w10enForm();
+  if(!o.keep){try{window.scrollTo(0,0)}catch(e){}}
+  if(o.noFocus)return;
+  /* focus: the step's heading (phones never pop the keyboard); the first field with a fine pointer; Back → the opener */
+  var f=null;
+  if(v==='signup'||v==='signin')f=_w10enFine()?$('nameInput'):$('w9obFt');
+  else if(v==='how'||v==='check')f=$('w10enBarT');
+  else if(o.back&&_w10en.opener)f=$(_w10en.opener);
+  if(f){clearTimeout(_w10en.ft);_w10en.ft=setTimeout(function(){try{if(_w10en.v===v&&_w10enOn())f.focus({preventScroll:true})}catch(e){}},_w10enRM()?0:60)}
+}
+function _w10enBack(){
+  var v=_w10en.v;if(v==='home')return;
+  _w10enEv('step_back','from='+v);
+  _w10enView(v==='check'?(_w10en.from||'home'):'home',{back:true});
+}
+/* chrome texts + which action is the primary on the home step */
+function _w10enChrome(){
+  if(!_w10en.built)return;var v=_w10en.v,ws=$('ws');if(!ws)return;
+  var bar=$('w10enBar');if(bar){bar.setAttribute('dir',_w10enEn()?'ltr':'rtl');bar.hidden=(v==='home')}
+  _w10enSet('w10enBackT',_w10enT('חזרה','Back'));
+  var bt=$('w10enBack');if(bt)bt.setAttribute('aria-label',_w10enT('חזרה למסך הפתיחה','Back to the start screen'));
+  var t=$('w10enBarT');if(t){var tt=v==='how'?_w10enT('מה לומדים בקורס','What\'s in the course'):(v==='check'?_w10enT('בדיקת חוש מוצר','Product instinct check'):'');if(t.textContent!==tt)t.textContent=tt;t.hidden=!tt}
+  var ret=_w10enRet();ws.classList.toggle('w10en-ret',ret);
+  var nw=$('w10enNew');if(nw){nw.hidden=!ret;_w10enSet('w10enNew',_w10enT('יצירת חשבון חדש','Create a new account'))}
+}
+/* every word of the entry (re-applied after every W9 render — W9 writes its own first) */
+function _w10enRender(){
+  if(!_w10en.built)return;var en=_w10enEn();
+  _w10enSet('w9obH',_w10enM('head'));
+  _w10enSet('w9obSub',_w10enM('sub'));
+  _w10enFacts();
+  _w10enSet('w9obSignupBtn',_w10enM('join'));
+  _w10enSet('w10enHave',_w10enM('have'));
+  _w10enHtml('w9obMicro',_w10enE(_w10enM('next')).split(String(_w10enSla())).join('<bdi>'+_w10enSla()+'</bdi>'));
+  var pl=$('w10enPrice');if(pl){var p=String((en?_W10EN_PRICE_LINE.en:_W10EN_PRICE_LINE.he)||'').trim();if(pl.textContent!==p)pl.textContent=p;pl.hidden=!p}
+  _w10enSet('w10enHowLink',_w10enM('more'));
+  _w10enSet('w10enHowGo',_w10enM('join'));
+  _w10enSet('w10enHowNote',_w10enM('next'));
+  var hero=$('w9obHero');if(hero)hero.setAttribute('aria-label',_w10enT('מאסטר המוצר — קורס ניהול מוצר','Product Master — a product management course'));
+  var he=$('w10enHowEnd');if(he)he.setAttribute('dir',en?'ltr':'rtl');
+  var nw=$('w10enNew');if(nw)nw.setAttribute('dir',en?'ltr':'rtl');
+  _w10enFaq();_w10enCard();_w10enForm();_w10enChrome();
+}
+/* the facts line: the welcome's own computed numbers (copylegal / W9), never typed */
+function _w10enFacts(){
+  var f=$('w10enFacts');if(!f)return;var s='',q='';
+  try{s=String(typeof _w9obStages==='function'?_w9obStages():'')}catch(e){}
+  try{q=String(typeof _w9obQText==='function'?_w9obQText():'')}catch(e){}
+  var m=_w10enE(_w10enM('facts')).split('{s}').join('<bdi>'+_w10enE(s)+'</bdi>').split('{q}').join('<bdi dir="ltr">'+_w10enE(q)+'</bdi>');
+  if(f.innerHTML!==m)f.innerHTML=m;
+}
+/* no "free" promise anywhere on the entry (owner, spec D5) — W9's FAQ item goes */
+function _w10enFaq(){try{var f=$('w9obFaq');if(!f)return;var d=f.querySelector('details[data-k="free"]');if(d)d.remove()}catch(e){}}
+/* E2: the known learner's own screen — W9's card with the spec's words + a progress bar */
+function _w10enCard(){
+  try{var c=$('w9obRet');if(!c||c.hidden)return;var go=$('w9obRetGo'),nm=go?String(go.getAttribute('data-n')||''):'';
+    var t=c.querySelector('.w9ob-ret-t'),h=_w10enT('שלום שוב, <bdi dir="auto">'+_w10enE(nm)+'</bdi>','Welcome back, <bdi dir="auto">'+_w10enE(nm)+'</bdi>');if(t&&t.innerHTML!==h)t.innerHTML=h;
+    if(go&&!go.classList.contains('w10en-busy'))_w10enSet('w9obRetGo',_w10enT('המשך ללמוד','Continue learning'));
+    var pc=0;try{var pr=JSON.parse(localStorage.getItem('pm_profiles')||'[]');pr.forEach(function(p){if(p&&String(p.n)===nm)pc=Math.max(0,Math.min(100,parseInt(p.p,10)||0))})}catch(e){}
+    var b=c.querySelector('.w10en-prog');if(!b){b=document.createElement('div');b.className='w10en-prog';b.setAttribute('role','progressbar');b.setAttribute('aria-valuemin','0');b.setAttribute('aria-valuemax','100');b.innerHTML='<i></i>';var m=c.querySelector('.w9ob-ret-h');if(m&&m.parentNode)m.parentNode.insertBefore(b,m.nextSibling)}
+    b.setAttribute('aria-valuenow',String(pc));b.setAttribute('aria-label',_w10enT('התקדמות בקורס','Course progress'));var i=b.querySelector('i');if(i)i.style.width=pc+'%';
+  }catch(e){}
+}
+/* the form card's words, per step (spec E3 / E4); neutral copy; field attributes (spec §A4) */
+function _w10enForm(){
+  if(!_w10en.built)return;var si=(typeof _w9ob!=='undefined'&&_w9ob.mode==='signin'),en=_w10enEn();
+  _w10enSet('w9obFt',si?_w10enT('כניסה לחשבון','Sign in'):_w10enT('יצירת חשבון','Create your account'));
+  _w10enSet('w9obFs',si?_w10enT('עם השם והמייל שאיתם נרשמתם.','With the name and email you signed up with.'):_w10enT('שני פרטים, ומיד נשלח לכם קישור לאימות המייל.','Two details, then we email you a link to confirm your address.'));
+  if(!si){
+    _w10enHtml('w9obNameHelp',_w10enT('כך תופיעו בליגה ובדו־קרבות. אפשר שם פרטי ואות, עד <bdi>20</bdi> תווים.','How you\'ll appear in the league and duels. A first name and an initial is fine, up to 20 characters.'));
+    _w10enSet('w9obEmailHelp',_w10enT('לכאן נשלח את קישור האימות ואת ההודעה כשהחשבון יאושר.','We\'ll send the confirmation link here, and a note when your account is approved.'));
+    _w10enHtml('w9obLegal',_w10enT('ביצירת החשבון אתם מאשרים את <a href="#" role="button" class="w9ob-inl" data-w9l="tos">תנאי השימוש</a> ואת <a href="#" role="button" class="w9ob-inl" data-w9l="priv">מדיניות הפרטיות</a>.','By creating an account you agree to the <a href="#" role="button" class="w9ob-inl" data-w9l="tos">Terms of Use</a> and the <a href="#" role="button" class="w9ob-inl" data-w9l="priv">Privacy Policy</a>.'));
+  }
+  var ct=$('w9obConsentTxt');if(ct){var c=_w10enT('שלחו לי תזכורות ללמידה במייל (אפשר להפסיק בכל רגע)','Email me study reminders (you can stop any time)');if(ct.textContent!==c)ct.textContent=c}
+  var lr=$('w9obLinkRow'),lp=lr&&lr.querySelector('p.w9ob-help');if(lp){var lt=_w10enT('לא זוכרים את המייל? נשלח קישור כניסה לכתובת שבחשבון.','Can\'t remember the email? We\'ll send a sign-in link to the address on the account.');if(lp.textContent!==lt)lp.textContent=lt}
+  /* the switch line under the button: a step change, worded as such */
+  var alt=$('w9obAlt');if(alt){var b1=$('w9obToSignin'),b2=$('w9obToSignup'),lead=alt.firstChild;
+    if(b1){if(lead&&lead.nodeType===3){var l1=_w10enT('כבר יש לכם חשבון? ','Already have an account? ');if(lead.nodeValue!==l1)lead.nodeValue=l1}_w10enSet('w9obToSignin',_w10enT('כניסה','Sign in'))}
+    if(b2){if(lead&&lead.nodeType===3){var l2=_w10enT('אין לכם חשבון? ','No account yet? ');if(lead.nodeValue!==l2)lead.nodeValue=l2}_w10enSet('w9obToSignup',_w10enT('יצירת חשבון','Create one'))}}
+  var ni=$('nameInput'),ei=$('emailInput');
+  if(ni){ni.setAttribute('name',si?'username':'displayName');ni.setAttribute('autocomplete',si?'username':'nickname');ni.setAttribute('autocorrect','off');ni.required=true}
+  if(ei){ei.setAttribute('name','email');ei.setAttribute('autocorrect','off');ei.setAttribute('dir','ltr');ei.required=true}
+  var ft=$('w9obFt');if(ft&&ft.getAttribute('tabindex')!=='-1')ft.setAttribute('tabindex','-1');
+  var L=$('wsLogin');if(L)L.setAttribute('dir',en?'ltr':'rtl');
+}
+
+/* ---------- busy feedback on "Continue learning" (the form's own button is not on the home step) ---------- */
+function _w10enBusy(btn){
+  _w10enBusyEnd();if(!btn)return;_w10en.busy=btn;btn.setAttribute('aria-busy','true');btn.classList.add('w10en-busy');
+  var t0=Date.now();
+  _w10en.busyT=setInterval(function(){try{var g=document.querySelector('#ws .btn-go'),ws=$('ws');if(!ws||ws.classList.contains('hid')||!(g&&g.disabled)||Date.now()-t0>30000)_w10enBusyEnd()}catch(e){_w10enBusyEnd()}},250);
+}
+function _w10enBusyEnd(){clearInterval(_w10en.busyT);_w10en.busyT=0;var b=_w10en.busy;_w10en.busy=null;if(b){try{b.removeAttribute('aria-busy');b.classList.remove('w10en-busy')}catch(e){}}}
+/* back on the entry (🏠 sign-out, the waiting room's "back"): the first step, no stale message */
+function _w10enFresh(){try{if(typeof _w9obErrSet==='function'){_w9obErrSet('name','');_w9obErrSet('email','')}var y=$('w9obTypo');if(y){y.hidden=true;y.innerHTML=''}var lm=$('w9obLinkMsg');if(lm)lm.textContent=''}catch(e){}}
+
+/* ---------- build (after W9's welcome is complete) ---------- */
+function _w10enBuild(){
+  if(_w10en.built)return;
+  if(typeof _w9ob==='undefined'||!_w9ob.built)return;
+  var ws=$('ws'),top=$('w9obTop'),main=$('w9obMain'),sb=$('w9obSignupBtn'),mi=$('w9obMicro'),sub=$('w9obSub'),L=$('wsLogin'),go=L&&L.querySelector('.btn-go'),ret=$('w9obRet');
+  if(!ws||!top||!main||!sb||!mi||!sub||!L||!go||!ret)return;
+  var mk=function(tag,id,cls,html){var e=document.createElement(tag);if(id)e.id=id;if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e};
+  /* the step bar: Back + the step title (hidden on the home step) */
+  var bar=mk('div','w10enBar','w10en-bar','<button type="button" class="w10en-back" id="w10enBack">'+_W10EN_BACK+'<span id="w10enBackT"></span></button><h2 class="w10en-bart" id="w10enBarT" tabindex="-1" hidden></h2>');bar.hidden=true;
+  top.parentNode.insertBefore(bar,top.nextSibling);
+  /* E1: the facts line under the sub-line · the secondary action under the primary · price line + one quiet link */
+  sub.parentNode.insertBefore(mk('p','w10enFacts','w10en-facts'),sub.nextSibling);
+  sb.classList.remove('bs');sb.classList.add('bp');
+  var hv=mk('button','w10enHave','bs w10en-have');hv.type='button';sb.parentNode.insertBefore(hv,sb.nextSibling);
+  var pl=mk('p','w10enPrice','w10en-price');pl.hidden=true;mi.parentNode.insertBefore(pl,mi.nextSibling);
+  var hl=mk('button','w10enHowLink','w10en-howlink');hl.type='button';pl.parentNode.insertBefore(hl,pl.nextSibling);
+  /* E2: "Create a new account" under the card */
+  var nw=mk('button','w10enNew','w10en-new');nw.type='button';nw.hidden=true;ret.parentNode.insertBefore(nw,ret.nextSibling);
+  /* E10: its one action at the end */
+  var end=mk('div','w10enHowEnd','w10en-howend','<button type="button" class="bp w10en-howgo" id="w10enHowGo"></button><p class="w10en-hownote" id="w10enHowNote"></p>');
+  var lf=ws.querySelector('.legal-foot');ws.insertBefore(end,lf||null);
+  /* E3 / E4 order (spec): the submit button right after the fields; terms / the sign-in-link box after it */
+  try{var lg=$('w9obLegal'),lr=$('w9obLinkRow');if(lr)go.parentNode.insertBefore(lr,go.nextSibling);if(lg)go.parentNode.insertBefore(lg,go.nextSibling)}catch(e){}
+  /* the faint admin entry stays (password-gated), just without the 4rem gap */
+  try{var ab=ws.querySelector('button[onclick="showAdmin()"]');if(ab&&ab.parentNode&&ab.parentNode!==ws)ab.parentNode.classList.add('w10en-adm')}catch(e){}
+  /* actions */
+  $('w10enBack').addEventListener('click',function(){try{_w10enBack()}catch(e){}});
+  hv.addEventListener('click',function(){try{_w10enEv('cta','which=have,from=e1');_w9obMode('signin','e1',true)}catch(e){}});
+  hl.addEventListener('click',function(){try{_w10enEv('cta','which=more,from=e1');_w10enView('how')}catch(e){}});
+  nw.addEventListener('click',function(){try{_w10enEv('cta','which=new,from=e2');var ni=$('nameInput'),ei=$('emailInput');if(ni)ni.value='';if(ei)ei.value='';_w9obMode('signup','e2',true)}catch(e){}});
+  $('w10enHowGo').addEventListener('click',function(){try{_w10enEv('cta','which=join,from=e10');_w9obMode('signup','e10',true)}catch(e){}});
+  document.addEventListener('keydown',function(e){try{if(e.key!=='Escape'||!_w10enOn()||_w10en.v==='home')return;if(document.querySelector('.modal-overlay,#legalOv,#w8suDlg,#modal,#langPop'))return;e.preventDefault();_w10enBack()}catch(x){}});
+  ws.classList.add('w10en-on');ws.setAttribute('data-w10en','home');_w10en.built=true;_w10en.v='home';
+  _w10enRender();
+  if($('w8suBanner'))_w10enView('signin',{noFocus:true});
+  /* the ?check=1 campaign link (spec D4): the instinct check as its own step; its result leads to "Create account" */
+  try{if(/[?&]check=1(&|$)/.test(location.search))_w10enCheck('campaign')}catch(e){}
+}
+/* the instinct check as its own step (W9's component, W9's storage, W9's events) */
+function _w10enCheck(src){
+  try{_w9ob.chkSrc=src||'campaign';var st=_w9obQzState('chk');_w10enView('check',{noFocus:true});_w9obChkView(true);_w9obQzRender('chk',st.i>=3?'.w9ob-res-cta':'.w9ob-opt')}catch(e){}
+}
+
+/* ---------- wrappers (pass-through on error) ---------- */
+/* a mode change is a STEP change: Create account / Sign in each open their own step (W9 scrolled the long page to the form) */
+if(typeof _w9obMode==='function'){_w10enO.mode=_w9obMode;_w9obMode=function(m,from,focus){
+  if(!_w10en.built)return _w10enO.mode.apply(this,arguments);
+  var r=_w10enO.mode.call(this,m,from,false);
+  try{var v=(_w9ob.mode==='signin')?'signin':'signup';
+    if(focus)_w10enView(v);
+    else if(_w10en.v==='signup'||_w10en.v==='signin')_w10enView(v,{keep:true,noFocus:true});
+    _w10enForm();
+  }catch(e){}
+  return r;
+}}
+/* W9 re-renders its texts (language switch, 🏠): ours go on top */
+if(typeof _w9obWsRender==='function'){_w10enO.wr=_w9obWsRender;_w9obWsRender=function(){var r=_w10enO.wr.apply(this,arguments);try{_w10enRender()}catch(e){}return r}}
+if(typeof _w9obFormText==='function'){_w10enO.ft=_w9obFormText;_w9obFormText=function(){var r=_w10enO.ft.apply(this,arguments);try{_w10enForm()}catch(e){}return r}}
+if(typeof _w9obFaqRender==='function'){_w10enO.fq=_w9obFaqRender;_w9obFaqRender=function(){var r=_w10enO.fq.apply(this,arguments);try{_w10enFaq()}catch(e){}return r}}
+if(typeof _w9obRetRender==='function'){_w10enO.rr=_w9obRetRender;_w9obRetRender=function(){var r=_w10enO.rr.apply(this,arguments);try{_w10enCard();_w10enChrome()}catch(e){}return r}}
+/* the check's result button: no "free" promise there either (it leads to "Create account") */
+if(typeof _w9obQzRender==='function'){_w10enO.qr=_w9obQzRender;_w9obQzRender=function(kind){var r=_w10enO.qr.apply(this,arguments);try{if(_w10en.built&&kind==='chk'){var b=document.querySelector('#w9obCheck .w9ob-res-cta');if(b){var t=_w10enT('שמרו את התוצאה — יצירת חשבון','Save my score — create an account');if(b.textContent!==t)b.textContent=t}}}catch(e){}return r}}
+/* the check opens / closes its own step */
+if(typeof _w9obChkView==='function'){_w10enO.chk=_w9obChkView;_w9obChkView=function(on){
+  var r=_w10enO.chk.apply(this,arguments);
+  try{if(_w10en.built&&!_w10en.sync){if(on){if(_w10en.v!=='check')_w10enView('check',{noFocus:true})}else if(_w10en.v==='check')_w10enView(_w10en.from||'home',{back:true,noFocus:true})}}catch(e){}
+  return r;
+}}
+/* an inline error is always visible: the form's step opens first (e.g. "not found" after Continue on a stale profile) */
+if(typeof _w9obErr==='function'){_w10enO.err=_w9obErr;_w9obErr=function(f,msg,code){
+  try{if(_w10en.built&&msg&&_w10en.v!=='signup'&&_w10en.v!=='signin'&&_w10enOn())_w10enView(_w9ob.mode==='signin'?'signin':'signup',{noFocus:true})}catch(e){}
+  try{_w10enBusyEnd()}catch(e){}
+  return _w10enO.err.apply(this,arguments);
+}}
+/* a deep-link banner from the mails (approved / verified elsewhere / admin / spent link) belongs to the sign-in step */
+if(typeof _w8suBannerRender==='function'){_w10enO.bn=_w8suBannerRender;_w8suBannerRender=function(){
+  var r=_w10enO.bn.apply(this,arguments);
+  try{if(_w10en.built&&$('w8suBanner')&&_w10en.v!=='signin'&&_w10enOn()){_w10enFresh();if(_w9ob.mode!=='signin')_w10enO.mode.call(this,'signin','link',false);_w10enView('signin',{noFocus:true})}}catch(e){}
+  return r;
+}}
+/* "Continue learning" / a lobby chip: visible progress on the tapped button while the account loads. When this device does
+   not know the account's e-mail, W6's lobby asks for it (a hint under the e-mail field): that field lives on the sign-in
+   step, so the sign-in step opens with the name filled and the e-mail field focused — never a silent, dead tap. */
+if(typeof _lobbyGo==='function'){_w10enO.lg=_lobbyGo;_lobbyGo=function(btn){
+  try{if(_w10en.built&&btn&&btn.closest&&btn.closest('#ws'))_w10enBusy(btn)}catch(e){}
+  var r=_w10enO.lg.apply(this,arguments);
+  try{if(_w10en.built&&_w10enOn()&&$('w6rtLobbyHint')&&_w10en.v!=='signin'){_w10enBusyEnd();if(_w9ob.mode!=='signin')_w10enO.mode.call(this,'signin','lobby',false);_w10enView('signin',{noFocus:true});var em=$('emailInput');if(em){setTimeout(function(){try{em.focus({preventScroll:true})}catch(e){}},_w10enRM()?0:60)}}}catch(e){}
+  return r;
+}}
+_w10enO.gh=goHome;goHome=function(){var r=_w10enO.gh.apply(this,arguments);try{_w10enBusyEnd();if(_w10en.built){_w10enFresh();_w10enView('home',{noFocus:true,force:true})}}catch(e){}return r};
+if(typeof _pendingBack==='function'){_w10enO.pb=_pendingBack;_pendingBack=function(){var r=_w10enO.pb.apply(this,arguments);try{if(_w10en.built){_w10enFresh();_w10enView('home',{noFocus:true,force:true})}}catch(e){}return r}}
+/* the sign-in button's "checking…" label in English too (the login code writes a Hebrew-only text) */
+function _w10enGuard(){
+  try{var b=document.querySelector('#ws .btn-go');if(!b||b._w10en)return;var d=Object.getOwnPropertyDescriptor(b,'textContent')||Object.getOwnPropertyDescriptor(Node.prototype,'textContent');if(!d||!d.set||!d.get)return;b._w10en=1;
+    Object.defineProperty(b,'textContent',{configurable:true,enumerable:true,get:function(){return d.get.call(this)},set:function(v){if(v==='⏳ בודק...'&&_w10enEn())v='⏳ Checking…';d.set.call(this,v)}});
+  }catch(e){}
+}
+try{if(typeof FEAT_ACT_NAMES!=='undefined'&&!FEAT_ACT_NAMES.step_back)FEAT_ACT_NAMES.step_back='חזרה צעד בכניסה'}catch(e){}
+
+/* boot: right after W9's build; on any error the W9 welcome stays as it was */
+try{_w10enBuild();_w10enGuard()}catch(e){}
+/* ===== /W10 ENTRY ===== */
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
