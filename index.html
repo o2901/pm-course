@@ -400,7 +400,6 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--t1);min-hei
 @media(max-width:600px){.opts{grid-template-columns:1fr}}
 .opt{padding:.85rem 1.2rem;border-radius:10px;border:2px solid rgba(255,255,255,.1);cursor:pointer;transition:.3s;font-size:.88rem;line-height:1.5;background:rgba(255,255,255,.02);min-height:3.6rem;display:flex;align-items:center;justify-content:center;text-align:center}
 .opt:hover{border-color:var(--p);background:rgba(108,99,255,.1)}
-.opt.sel{border-color:var(--p);background:rgba(108,99,255,.12)}
 .opt.ok{border-color:var(--a)!important;background:rgba(0,201,167,.12)!important}
 .opt.no{border-color:var(--s)!important;background:rgba(255,101,132,.12)!important}
 .opt.dis{pointer-events:none;opacity:.6}
@@ -431,7 +430,6 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--t1);min-hei
 /* Stage header reward preview */
 .stage-reward{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:.6rem;flex-wrap:wrap}
 .stage-reward .sr-item{font-size:.78rem;color:var(--t2);display:flex;align-items:center;gap:.3rem;padding:.2rem .6rem;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
-.stage-reward .sr-item span{font-size:.9rem}
 /* Quiz power-ups */
 .quiz-powerups{display:flex;justify-content:center;align-items:center;gap:.5rem;margin-top:.8rem;margin-bottom:.3rem;direction:rtl;position:relative;z-index:1}
 .powerup-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .7rem;border-radius:10px;border:1.5px solid rgba(108,99,255,.2);background:rgba(108,99,255,.05);color:var(--p);font-size:.72rem;font-weight:600;cursor:pointer;font-family:'Heebo';transition:.3s;line-height:1.3}
@@ -492,8 +490,6 @@ body.b-navy .civ-only{display:none!important}
 .daily-tip{background:linear-gradient(135deg,rgba(108,99,255,.12),rgba(255,101,132,.08));border:1px solid rgba(108,99,255,.2);border-radius:14px;padding:.8rem 1.2rem;margin-bottom:1rem;text-align:center;font-size:.85rem;color:var(--t2);direction:rtl}
 .daily-tip .dt-icon{font-size:1.1rem;margin-left:.4rem}
 .daily-tip strong{color:var(--a)}
-.challenge-banner{background:linear-gradient(135deg,rgba(255,152,0,.15),rgba(255,101,132,.1));border:1px solid rgba(255,152,0,.25);border-radius:14px;padding:.7rem 1.2rem;margin-bottom:1rem;text-align:center;font-size:.85rem;color:var(--t2);direction:rtl}
-.challenge-banner strong{color:#FF9800}
 .info-bar{position:fixed;top:48px;left:0;right:0;z-index:98;background:linear-gradient(180deg,rgba(15,14,23,.92),rgba(15,14,23,.85));backdrop-filter:blur(16px);border-bottom:1px solid rgba(108,99,255,.1);padding:.4rem 1rem;display:flex;justify-content:safe center;gap:.8rem;align-items:center;direction:rtl;font-size:.77rem;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;white-space:nowrap;scrollbar-width:none}
 .info-bar::-webkit-scrollbar{display:none}
 .info-bar .ib-item{flex:0 0 auto}
@@ -502,7 +498,6 @@ body.b-navy .civ-only{display:none!important}
 .ib-item strong{color:var(--a);font-weight:600}
 .ib-sep{width:1px;height:16px;background:rgba(108,99,255,.25);flex-shrink:0}
 .ltr{direction:ltr;display:inline-block;unicode-bidi:isolate}
-.csec,.case,.qq,.qres,.shdr,.ms,.daily-tip,.challenge-banner{direction:rtl;unicode-bidi:isolate}
 /* RTL/bidi fix: ALL content blocks are forced RTL with `unicode-bidi: isolate`.
    This guarantees Hebrew reading order even when the bullet/paragraph starts with
    English (e.g. "<strong>PM</strong> - ממוקד שוק..."). `plaintext` would let the
@@ -678,11 +673,9 @@ body.light .hdr{background:rgba(240,240,245,.95);border-bottom-color:rgba(0,0,0,
 body.light .particle{opacity:.05}
 body.light ::-webkit-scrollbar-track{background:var(--bg)}
 body.light .ti .tp{background:#fff;border-color:rgba(108,99,255,.3);box-shadow:0 10px 40px rgba(0,0,0,.15)}
-body.light .modal-overlay{background:rgba(0,0,0,.4)}
 body.light .modal-box{background:#fff}
 body.light .opt{background:rgba(0,0,0,.02);border-color:rgba(0,0,0,.1)}
 body.light .opt:hover{border-color:var(--p);background:rgba(108,99,255,.05)}
-body.light .glv-search{background:#fff}
 body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 
 /* ========== WEEKLY CHALLENGE ========== */
@@ -821,7 +814,6 @@ body.light .hook-banner{background:#fff;border-color:rgba(108,99,255,.2)}
 .intro-rate{border:none;background:transparent;color:var(--t2);font-size:.74rem;padding:.2rem .45rem;border-radius:6px;cursor:pointer;font-family:Heebo}
 .intro-rate.on{background:var(--p);color:#fff;font-weight:700}
 .intro-btn{border:1px solid rgba(108,99,255,.35);background:rgba(108,99,255,.1);color:var(--t1);font-size:.76rem;padding:.25rem .55rem;border-radius:8px;cursor:pointer;font-family:Heebo}
-.intro-cc.on{background:var(--p);color:#fff;border-color:var(--p)}
 .adm-tbl-ctrl{position:sticky;top:52px;z-index:60;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;padding:.6rem .7rem;margin:.4rem 0 .5rem;background:rgba(15,14,23,.94);backdrop-filter:blur(10px);border:1px solid rgba(108,99,255,.25);border-radius:12px}
 .adm-search{flex:1;min-width:180px;padding:.45rem .7rem;border-radius:9px;border:1px solid rgba(108,99,255,.3);background:rgba(255,255,255,.05);color:var(--t1);font-family:Heebo;font-size:.82rem}
 .adm-chip-row{display:flex;gap:.35rem;align-items:center;flex-wrap:wrap}
@@ -1143,7 +1135,6 @@ body.light .tabs.seg .seg-thumb{box-shadow:0 1px 4px rgba(42,39,33,.22)}
 .tabs.seg .tab.act .tab-badge.tb-empty{border-color:rgba(255,255,255,.75);opacity:.9}
 @media(max-width:430px){.tabs.seg .tab .tab-eta{display:none}.tabs.seg .tab{font-size:.78rem;padding:.5rem .2rem;gap:.28rem}}
 /* (2) stage header: quiet meta chips + ghost back button (inline SVG arrow mirrors in LTR) */
-.stage-reward .sr-item{background:var(--cardh);border:1px solid var(--line);color:var(--t2);border-radius:10px}
 .stv .sv-back{display:inline-flex;align-items:center;gap:.45rem;background:transparent;border:1px solid var(--line);border-radius:12px;padding:.42rem .85rem;color:var(--t2);font-size:.85rem;font-weight:600;transition:color .18s,border-color .18s,background .18s}
 .stv .sv-back:hover{color:var(--t1);border-color:var(--p);background:var(--cardh)}
 .stv .sv-back .svb-ar{flex:0 0 auto;display:block}
@@ -1529,7 +1520,6 @@ body.light .w5g-en{background:var(--cardh)}
 @keyframes w5ecoGot{0%{transform:scale(1)}35%{transform:scale(1.025)}100%{transform:scale(1)}}
 @media(max-width:430px){.w5eco-item{padding:.55rem .65rem;gap:.55rem}.w5eco-buy{min-width:58px;padding:.4rem .6rem;font-size:.76rem}.w5eco-sh-h h3{font-size:.9rem}}
 /* ===== W6 fixes ===== */
-/* (1) EN map width (#sg): W6 integration — owned by _w6_vis_a.js (deterministic column + 2-line titles); removed here */
 /* EN profile radar: long English axis labels ("Marketing & Growth") ran ~30px off a phone screen */
 @media(max-width:430px){html[dir="ltr"] .pv-radar-svg{width:212px;height:212px}}
 /* (4) mobile light theme: the header pills were rgba(255,255,255,.07) on a light header (invisible) */
@@ -1849,7 +1839,6 @@ body.light .j-node .j-score{color:#13775e}
 body.light .j-node .j-tag.tg1{color:#12735b}body.light .j-node .j-tag.tg2{color:var(--pd)}body.light .j-node .j-tag.tg3{color:#a8364a}body.light .j-node .j-tag.tg4{color:#76591a}body.light .j-node .j-tag.tg5{color:#00707f}body.light .j-node .j-tag.tg6{color:#9a5500}
 body.light .journey .j-section .j-sec-prog{opacity:1}
 .cal .c.today{outline-offset:2px}
-html[data-acc="amber"] .cal .c.on{color:#1d1606}
 #todayHub .q-item .qi-chk{display:inline-grid;place-items:center;flex-shrink:0;width:20px;height:20px;border-radius:50%;border:2px solid color-mix(in srgb,var(--t2) 45%,transparent);font-size:0;line-height:1;box-sizing:border-box}
 #todayHub .q-item.done .qi-chk{background:var(--a);border-color:var(--a);color:#fff;font-size:.7rem;font-weight:800}
 .hdr-logo.w6va-mini{font-size:0!important;overflow:visible;text-overflow:clip}
@@ -1901,7 +1890,6 @@ html[data-acc="amber"] body:not(.light) :is(#pv,#glv,#lbv,#adv,#duelView,.duel-c
 #legalOv .hub-box{box-sizing:border-box}
 #legalOv .hub-box h3{margin:0 0 .55rem;font-size:1.12rem}
 #legalOv .hub-box ul{margin:0}
-.w6vc-legal{text-align:left;color:var(--t2);font-size:.82rem;line-height:1.75;padding-left:1.1rem;margin:0}
 #legalOv[dir="ltr"],#legalOv[dir="ltr"] *{direction:ltr}/* the global Hebrew rule pins h3/li to RTL */
 #legalOv[dir="ltr"] h3{text-align:left}
 /* bug report dialog (EN): the global Hebrew rule forced RTL on its paragraph + textarea */
@@ -1947,8 +1935,6 @@ body.light :is(#adv,.adm-modal-overlay,.daily-modal) [style*="color:#ffd700" i]{
 #tc .case li{color:var(--t2);line-height:1.75;margin-bottom:.35rem}
 #tc .case ul,#tc .case ol{margin:.35rem 0 .9rem}
 /* (3) segmented tabs: AA ink on the accent thumb; inactive ETA at full --t2 */
-html:not([data-acc="amber"]) body:not(.light) .tabs.seg .seg-thumb{background:var(--pd)}
-html[data-acc="amber"] .tabs.seg .tab.act{color:#1B1405}
 html[data-acc="amber"] .tabs.seg .tab.act .tab-badge.tb-current,html[data-acc="amber"] .tabs.seg .tab.act .tab-badge.tb-done{background:#1B1405}
 html[data-acc="amber"] .tabs.seg .tab.act .tab-badge.tb-empty{border-color:rgba(27,20,5,.7)}
 .tabs.seg .tab:not(.act) .tab-eta{opacity:1}
@@ -1974,11 +1960,9 @@ body.light .pf-acc-close,body.light #tc .pf-acc-close{color:#11735A}
 body.light .case-reflect .reveal-btn{color:#0F6E55}
 body.light .q-streak.cool{color:#11735A}
 body.light .q-streak.hot{color:#9A4A00}
-body.light .powerup-btn .pu-cost{color:#B8304B}
 body.light .sec-divider{opacity:1}
 body.light .learn-insight strong{color:#7A5E14}
 body.light .qres .bonus-msg{color:#8A6A1E}
-body.light .grade-badge.grade-s{color:#8A6A1E}
 .tbl-scroll-hint{opacity:1}
 body.light .tbl-scroll-hint{color:var(--pd)}
 /* (6) reflection prompt after the ceremony: token field (was a hard-coded dark fill) */
@@ -2045,7 +2029,6 @@ body.light #w6dkDock{box-shadow:0 -8px 24px rgba(42,39,33,.10)}
 #w6dkDock .w6dk-it:focus-visible{outline:none;box-shadow:none}
 #w6dkDock .w6dk-it:focus-visible .w6dk-ic{box-shadow:0 0 0 2px var(--p)}
 #w6dkDock .w6dk-bd,#w6dkSheet .w6dk-bd{position:absolute;top:-5px;inset-inline-end:0;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--s);color:#fff;font-size:10px;line-height:17px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;box-shadow:0 0 0 2px var(--card);pointer-events:none;box-sizing:border-box}
-#w6dkDock .w6dk-bd.w6dk-bd-a,#w6dkSheet .w6dk-bd.w6dk-bd-a{background:var(--a);color:#05221a}
 #w6dkDock .w6dk-dot,#w6dkSheet .w6dk-dot{position:absolute;top:1px;inset-inline-end:7px;width:9px;height:9px;border-radius:50%;background:var(--s);box-shadow:0 0 0 2px var(--card);pointer-events:none}
 /* More sheet: rises out of the dock's top edge (the clip box ends where the dock begins), so the dock stays visible,
    un-dimmed and live underneath — More shows active and toggles it closed */
@@ -2084,7 +2067,6 @@ html.w6dk-on body:has(#updateBanner){padding-bottom:calc(var(--w6dk-h) + env(saf
 /* bottom-anchored layers sit above the dock */
 html.w6dk-on body #updateBanner{bottom:calc(var(--w6dk-h) + env(safe-area-inset-bottom,0px))!important}
 html.w6dk-on body .hook-banner{bottom:calc(var(--w6dk-h) + env(safe-area-inset-bottom,0px) + 12px)!important;max-width:calc(100vw - 32px)!important}
-html.w6dk-on body .chat-panel{bottom:calc(var(--w6dk-h) + env(safe-area-inset-bottom,0px) + 10px)!important;max-height:calc(100vh - var(--w6dk-h) - 80px)!important}
 html.w6dk-on body .duel-panel{left:8px!important;right:8px!important;width:auto!important;max-width:none!important;bottom:calc(var(--w6dk-h) + env(safe-area-inset-bottom,0px) + 8px)!important;border-radius:18px!important;max-height:calc(100vh - var(--w6dk-h) - 80px)!important}
 html.w6dk-on body .duel-panel .duel-panel-body{max-height:calc(100vh - var(--w6dk-h) - 136px)!important}
 /* sync chip: never a tap target; while the dock shows it lives INSIDE the dock, between the last two slots (x measured by JS) */
@@ -2115,7 +2097,6 @@ body.light .w7sh-box{box-shadow:0 24px 64px rgba(42,39,33,.24)}
 .w7sh-opts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0 2px}
 .w7sh-seg{display:inline-flex;gap:2px;padding:3px;border-radius:12px;background:var(--cardh);border:1px solid var(--line)}
 .w7sh-seg button{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:.3rem .75rem;border:0;border-radius:9px;background:transparent;color:var(--t2);font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
-.w7sh-seg button[aria-pressed="true"]{background:var(--p);color:#fff}
 .w7sh-r{display:inline-block;border:2px solid currentColor;border-radius:3px;opacity:.9}
 .w7sh-rp{width:10px;height:13px}.w7sh-rl{width:15px;height:9px}
 .w7sh-nm{display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 0 2px;font-size:.84rem;color:var(--t2);cursor:pointer;-webkit-user-select:none;user-select:none}
@@ -2177,7 +2158,6 @@ body.light .w7hb-box{box-shadow:0 18px 50px rgba(42,39,33,.16)}
 .w7hb-lbl{font-size:.74rem;font-weight:700;color:var(--t2);margin:.55rem 0 .3rem}
 .w7hb-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:0 0 .45rem}
 .w7hb-chip{font:inherit;font-size:.8rem;font-weight:600;color:var(--t1);background:var(--cardh);border:1px solid var(--line);border-radius:999px;padding:.4rem .8rem;min-height:36px;cursor:pointer;white-space:nowrap;line-height:1.2;transition:background .15s,border-color .15s,color .15s}
-.w7hb-chip[aria-pressed="true"]{background:var(--p);border-color:var(--p);color:#fff}
 .w7hb-chip:disabled{opacity:.45;cursor:default}
 .w7hb-days{display:grid;grid-template-columns:repeat(7,1fr);gap:.3rem;margin:0 0 .45rem}
 .w7hb-days .w7hb-chip{padding:.4rem 0;min-width:0;text-align:center;border-radius:12px}
@@ -2323,7 +2303,6 @@ body.light .w7ln-tg-s{background:rgba(42,39,33,.22)}
 .w7ln-tg input:focus-visible+.w7ln-tg-s{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--p)}
 /* buttons */
 .w7ln-btn{font:inherit;font-size:.84rem;font-weight:700;min-height:40px;padding:.5rem .95rem;border-radius:11px;border:1px solid var(--line);background:var(--card);color:var(--t1);cursor:pointer;line-height:1.25}
-.w7ln-btn.pri{background:var(--gr1);border-color:transparent;color:#fff}
 html[data-acc="amber"] .w7ln-btn.pri{color:#1A1407}
 .w7ln-btn.ok{border-color:var(--a)}
 .w7ln-btn.no{border-color:var(--s)}
@@ -2825,7 +2804,6 @@ body.light .w8gm-box{box-shadow:0 22px 60px rgba(42,39,33,.16)}
 .w8gm-tb .w8gm-im{width:24px;height:24px}
 .w8gm-tb.w8gm-on{background:var(--card);color:var(--t1);box-shadow:inset 0 -3px 0 var(--p),0 6px 16px -10px rgba(0,0,0,.6)}
 .w8gm-bd{position:absolute;top:3px;inset-inline-end:6px;min-width:18px;height:18px;padding:0 5px;box-sizing:border-box;border-radius:9px;background:var(--s);color:#fff;font-size:.64rem;font-weight:800;display:grid;place-items:center;line-height:1}
-.w8gm-bd.w8gm-bd-new{background:var(--a);color:#06231b}
 .w8gm-note{font-size:.74rem;color:var(--t2);line-height:1.5;margin:.15rem 0 .8rem}
 .w8gm-bar{display:block;height:8px;border-radius:6px;background:var(--line);overflow:hidden;margin:.2rem 0 .7rem}
 .w8gm-bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--a),var(--p))}
@@ -3089,11 +3067,6 @@ body.light .w8gm-fx-fr{background:rgba(255,255,255,.7);border-color:var(--line)}
 .w8su-sm{font-size:.82rem!important;padding:.5rem .95rem!important}
 .w8su-msg{min-height:1.2em;margin:.45rem 0 0;font-size:.8rem;color:var(--t2)}
 .w8su-muted{font-size:.8rem;color:var(--t2);margin:.4rem 0 0}
-.w8su-steps{list-style:none;margin:.1rem 0 .8rem;padding:0;display:grid;gap:.45rem}
-.w8su-steps li{display:flex;gap:.55rem;align-items:flex-start;background:var(--cardh);border:1px solid var(--line);border-radius:12px;padding:.5rem .7rem}
-.w8su-steps li>span:first-child{flex:none;width:1.3em;text-align:center}
-.w8su-steps .w8su-ok>span:first-child{color:var(--a);font-weight:800}
-.w8su-steps b{overflow-wrap:anywhere}
 .w8su-sub{margin:.2rem 0 .4rem;font-size:.8rem;color:var(--t2);font-weight:700}
 .w8su-acts{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center}
 .w8su-vidw{margin:.7rem 0 0;border-radius:12px;overflow:hidden;background:#000}
@@ -3365,9 +3338,7 @@ body.light #tdGame.w8g3-tgx .tg-b{box-shadow:0 4px 0 rgba(42,39,33,.12)}
 .w8rn-step:hover{color:var(--t1)}
 .w8rn-sk{display:inline-grid;place-items:center;flex:0 0 19px;width:19px;height:19px;border-radius:50%;font-size:.64rem;font-weight:800;background:var(--line);color:var(--t2)}
 .w8rn-step.is-now{border-color:var(--p);color:var(--t1)}
-.w8rn-step.is-now .w8rn-sk{background:var(--p);color:#fff}
 .w8rn-step.is-done{color:var(--a);border-color:rgba(53,201,163,.45);background:rgba(53,201,163,.1)}
-.w8rn-step.is-done .w8rn-sk{background:var(--a);color:#fff}
 .w8rn-sc{font-variant-numeric:tabular-nums;opacity:.9;white-space:nowrap}
 .w8rn-sn{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .w8rn-next{flex:1 1 100%;display:flex;align-items:center;justify-content:space-between;gap:.6rem;font:inherit;font-size:.8rem;color:var(--t2);line-height:1.45;text-align:start;padding:.55rem .75rem;border-radius:12px;border:1px solid rgba(139,133,255,.38);background:rgba(139,133,255,.1);cursor:pointer;min-height:42px;transition:background .15s,border-color .15s}
@@ -3421,7 +3392,6 @@ body.light .w8rn-np{box-shadow:0 8px 22px rgba(42,39,33,.12)}
 .w8rn-np-f{font-size:.72rem;color:var(--t2);margin-top:.45rem;text-align:center;line-height:1.45}
 .w8rn-hl{outline:2px solid transparent;outline-offset:4px}
 html[data-acc="amber"] body:not(.light) :is(#w8rnNp,#w8rnPath,.w8rn-finish) .bp{color:#1A1407}
-html[data-acc="amber"] body:not(.light) .w8rn-step.is-now .w8rn-sk{color:#1A1407}
 @media (max-width:600px){.w8rn-np{width:92%;max-width:none}.w8rn-np.w8rn-a{margin-inline-end:.6rem}.w8rn-np.w8rn-b{margin-inline-start:.6rem}}
 @media (max-width:480px){.w8rn-path{padding:.7rem .7rem}.w8rn-si{display:none}.w8rn-round{flex-wrap:wrap}.w8rn-round::before,.w8rn-round::after{display:none}.w8rn-rp{white-space:normal;text-align:center}}
 @media (max-width:820px){.w8rn-step{min-height:40px}.w8rn-np-x{width:40px;height:40px}.w8rn-skip{min-height:40px}}
@@ -4148,7 +4118,7 @@ html.w10nv-on #hd.w10nv-deep~#sv .sv-back{display:none}
 /* counters: each one is a button that explains itself (tap → one explainer); the hit area spans the whole header row (≥ 40px
    tall), 8px apart on phones */
 #hd [data-w10nv-c]{cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-#hd [data-w10nv-c]::after{content:"";position:absolute;left:-3px;right:-3px;top:-9px;bottom:-12px}
+#hd [data-w10nv-c]::after{content:"";position:absolute;left:-3px;right:-3px;top:-9px;bottom:-14px}
 #hd [data-w10nv-c]:hover{border-color:var(--p)}
 @media (max-width:640px){html.w10nv-on #hd .hdr-stats{gap:8px}}
 .w10nv-u{display:none}
@@ -4782,6 +4752,8 @@ html{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 /* 9 · vh → dvh / svh (boxes fit the visible area when the browser bars show; short screens do not rubber-band) */
 @supports (height:100dvh){
 .daily-modal-box{max-height:min(85dvh,calc(100dvh - 16px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)))}
+/* W11 fallback-fit: phones — the daily box fits its Close without an inner scroll */
+@media (max-width:640px){.daily-modal-box{max-height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}}
 .hub-box{max-height:min(92dvh,calc(100dvh - 2.4rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)))}
 .w7hb-box{max-height:calc(100dvh - 2rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
 .w8gm-box{max-height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
@@ -5423,6 +5395,50 @@ body.light .w11wc-fi{color:#8A6A16}
 body.light .w11wc-nl.w11wc-nlc{color:#8A6A16}
 html[data-acc="amber"] body:not(.light) #ws.w11wc-on #w11wcEndGo{color:#1A1407}
 /* ===== /W11 WELCOME 3 ===== */
+/* ===== W11 navigation & orientation (w11nv) — one close ✕, one Back, one thing at a time — see _video_factory/_w11_nav.md =====
+   Only the close control, the backdrop cue and the orientation chrome are styled here, with the existing tokens
+   (--card/--cardh/--t1/--t2/--p) and visual10's border tokens when present. No animations (motion10 owns motion). */
+/* THE close ✕: a 44×44 round chip in the top-END corner of the overlay's panel (top-left in Hebrew, top-right in English).
+   .w11nv-x = the look + size (an overlay's own ✕ adopted, or the standard one injected); placement by one of:
+   .w11nv-xa = absolute in the panel's corner (the panel becomes its containing block: .w11nv-xp) ·
+   .w11nv-xr = in the panel's top row (a flex row): pushed to the row's END, row padded so the title never runs under it */
+.w11nv-x{box-sizing:border-box!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;max-width:44px!important;max-height:44px!important;
+  margin:0!important;padding:0!important;border-radius:50%!important;
+  background:var(--cardh)!important;color:var(--t1)!important;border:1px solid var(--w10vs-bd-strong,rgba(127,127,127,.35))!important;
+  box-shadow:0 1px 4px rgba(0,0,0,.28)!important;opacity:1!important;visibility:visible!important;
+  font:700 19px/1 system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important;text-decoration:none!important;letter-spacing:0!important;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;float:none!important;
+  transform:none!important;flex:none!important;overflow:hidden!important;text-indent:0!important}
+.w11nv-x>svg{width:18px!important;height:18px!important;display:block!important;flex:none}
+.w11nv-x:hover{border-color:var(--p)!important}
+.w11nv-x:focus-visible{outline:2px solid var(--p)!important;outline-offset:2px!important}
+.w11nv-x::before,.w11nv-x::after{content:none!important}
+.w11nv-xp{position:relative!important}
+.w11nv-xa{position:absolute!important;top:var(--w11nv-t,12px)!important;bottom:auto!important;inset-inline-end:var(--w11nv-e,12px)!important;inset-inline-start:auto!important;z-index:40!important}
+.w11nv-xr{order:99!important;margin-inline-start:auto!important;margin-inline-end:0!important;align-self:flex-start!important;position:relative!important;z-index:40!important}
+/* the panel keeps room for the ✕ so a centred title / first line never runs under it */
+.w11nv-xpad{padding-top:64px!important}
+.w11nv-xrow{min-height:44px}
+/* the ✕ rides a zero-height sticky rail at the top of the card's content box (Chromium/WebKit stick to the content edge), offset
+   back into the padding: so it sits in the corner and stays in view while a long card scrolls */
+.w11nv-rail{position:sticky!important;top:0!important;height:0!important;margin:0!important;padding:0!important;z-index:41!important;display:block!important;pointer-events:none;overflow:visible!important}
+.w11nv-rail>.w11nv-x{position:absolute!important;top:calc(var(--w11nv-t,8px) - var(--w11nv-pt,0px))!important;inset-inline-end:calc(var(--w11nv-e,8px) - var(--w11nv-pe,0px))!important;inset-inline-start:auto!important;pointer-events:auto}
+/* full-screen takeovers (ceremony, streak milestone): the ✕ sits under the notch / status bar */
+.w11nv-xfix{position:fixed!important;top:max(10px,calc(env(safe-area-inset-top,0px) + 8px))!important;inset-inline-end:max(10px,calc(env(safe-area-inset-right,0px) + 8px))!important;inset-inline-start:auto!important;z-index:2147483000!important}
+html[dir="rtl"] .w11nv-xfix,[dir="rtl"] .w11nv-xfix{inset-inline-end:max(10px,calc(env(safe-area-inset-left,0px) + 8px))!important}
+/* small non-modal layers (the update banner, a hint banner, the share nudge, the return toast, the streak-risk chip, the
+   next-puzzle chip): their ✕ keeps its look and place, its hit area grows to 44×44 (an invisible ring, no layout change) */
+:is(#updateBanner>span[onclick],.hook-banner .hb-close,.w7sh-nd-x,.w7ln-rt-x,.w6st-risk-x,.w8rn-np-x){position:relative}
+:is(#updateBanner>span[onclick],.hook-banner .hb-close,.w7sh-nd-x,.w7ln-rt-x,.w6st-risk-x,.w8rn-np-x)::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);border-radius:50%}
+/* the backdrop says "tap to close" only where a tap closes */
+.w11nv-bd{cursor:pointer}
+.w11nv-bd>*{cursor:auto}
+/* the desktop More menu on a short window (phone landscape 812×375: max-height 303 px, "English" / "Report a problem" below
+   the fold and the list ends on an item boundary): a soft edge shows at the bottom (and top) only while more items are
+   there to scroll to — scroll shadows (covers scroll with the list, the edges stay with the panel); the menu itself is W10's */
+html #w10nvMenu .w10nv-mp{background:linear-gradient(var(--card) 40%,transparent) center top/100% 34px no-repeat local,linear-gradient(transparent,var(--card) 60%) center bottom/100% 34px no-repeat local,radial-gradient(farthest-side at 50% 0,color-mix(in srgb,var(--t1) 30%,transparent),transparent) center top/100% 14px no-repeat scroll,radial-gradient(farthest-side at 50% 100%,color-mix(in srgb,var(--t1) 30%,transparent),transparent) center bottom/100% 14px no-repeat scroll,var(--card)}
+/* ===== /W11 navigation & orientation ===== */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 </head>
@@ -5541,7 +5557,6 @@ html[data-acc="amber"] body:not(.light) #ws.w11wc-on #w11wcEndGo{color:#1A1407}
 <div id="dtip"></div>
 <div class="map-actions" id="ma"></div>
 <div id="sg"></div>
-<div id="dchal" class="hid"></div>
 </div>
 <div id="dailyModal" class="hid"></div>
 <div id="sv" class="stv hid"></div>
@@ -8002,7 +8017,7 @@ const S_EN_DATA={
   try{Object.defineProperty(window,'S_EN_DATA',{configurable:true,get:load,set:function(x){v=x}})}catch(e){}
 })();
 const GROUP_EN={"טרום הבסיס":"Pre-Basics","בסיסי":"Basic","ביניים":"Intermediate","מתקדם":"Advanced","מתקדם מאוד":"Expert","התמחות":"Specialization","בונוס מיוחד":"Special Bonus","בונוס - ספר":"Bonus — Books"};
-const UI_EN={"הכרת המסע":"Getting to know the journey","מבנה ומתודולוגיה":"Structure and methodology","ניתוח וכלים":"Analysis and tools","שליטה מתקדמת":"Advanced mastery","ספרינט, בקלוג וגרסאות":"Sprint, backlog, and versions","רמה גבוהה":"High level","הכנה לשירות":"Service preparation","הקפאת רצף!":"Streak frozen!","הרצף נשמר למרות שדילגתם יום":"Your streak was saved even though you skipped a day","נא להזין שם משתמש (לפחות 2 תווים) כדי להתחיל.":"Please enter a username (at least 2 characters) to get started.","השם מכיל תווים לא מורשים. נסו שם אחר.":"The name contains invalid characters. Try a different name.","כתובת המייל שהזנת לא נראית תקינה. ודאו שיש @ ונקודה.":"The email address you entered doesn't look valid. Make sure it has an @ and a period.","כדי להיכנס לחשבון יש להזין את כתובת המייל שלך.":"To sign in to your account, please enter your email address.","שם המשתמש הזה כבר בשימוש. נא לבחור שם משתמש אחר כדי להמשיך.":"That username is already taken. Please choose a different username to continue.","חשבון זה בוטל. אם זו טעות — פנו למנהל המערכת לחיבור מחדש.":"This account was canceled. If this is a mistake, contact the administrator to reconnect.","שגיאת שרת זמנית":"Temporary server error","אירעה שגיאה זמנית בתקשורת עם השרת. ההתקדמות שלך שמורה במכשיר — נסו שוב בעוד רגע.":"A temporary error occurred while communicating with the server. Your progress is saved on this device. Try again in a moment.","נדרש מייל לרישום":"Email required to register","כדי להירשם לקורס נא להזין כתובת מייל. נשלח קישור אימות, ולאחר אישור מנהל המערכת תוכלו להתחיל.":"To register for the course, please enter an email address. We'll send a verification link, and once the administrator approves, you can get started.","נדרש אישור":"Confirmation required","כדי להירשם נא לסמן את הסכמתכם לקבל תזכורות במייל. תוכלו לבטל בכל עת.":"To register, please check the box to agree to receive email reminders. You can opt out at any time.","אנא הזינו כתובת מייל תקינה.":"Please enter a valid email address.","אנא סמנו את הסכמתכם לקבל תזכורות.":"Please check the box to agree to receive reminders.","מייל לא תואם":"Email mismatch","שם משתמש זה כבר רשום עם כתובת מייל אחרת.":"This username is already registered with a different email address.","נשלח מייל אימות":"Verification email sent","בדקו את תיבת הדואר ולחצו על קישור האימות. עד אז נזכיר לכם מפעם לפעם.":"Check your inbox and click the verification link. Until then, we'll remind you from time to time.","לא הצלחנו לשמור את המייל. נסו שוב מאוחר יותר.":"We couldn't save the email. Try again later.","לא ניתן":"Not available","יש להיכנס לחשבון תחילה.":"Please sign in to your account first.","אין מייל רשום":"No email registered","אין כתובת מייל בחשבון להסיר.":"There is no email address on the account to remove.","המייל הוסר":"Email removed","לא תקבלו עוד תזכורות":"You'll no longer receive reminders","שגיאת אבטחה":"Security error","הכניסה במכשיר הזה כבר לא בתוקף. נסו להיכנס מחדש.":"Your sign-in on this device is no longer valid. Try signing in again.","לא הצלחנו להסיר את המייל. נסו שוב.":"We couldn't remove the email. Try again.","לא הצלחנו להסיר את המייל. נסו שוב מאוחר יותר.":"We couldn't remove the email. Try again later.","כבר מאומת":"Already verified","המייל שלך כבר אומת — אין צורך לשלוח שוב.":"Your email is already verified. No need to send again.","אין מייל":"No email","אין מייל רשום בחשבון. השתמשו בכפתור \"הוספה\" כדי להזין כתובת.":"No email is registered on the account. Use the \"Add\" button to enter one.","המייל נשלח":"Email sent","בדקו את תיבת הדואר שלכם":"Check your inbox","רק רגע":"Hold on a moment","נא להמתין דקה לפני שליחה נוספת.":"Please wait a minute before sending again.","לא הצלחנו לשלוח. נסו שוב.":"We couldn't send it. Try again.","לא הצלחנו לשלוח. נסו שוב מאוחר יותר.":"We couldn't send it. Try again later.","כדי להירשם לקורס יש להזין כתובת מייל.":"To register for the course, please enter an email address.","לא ניתן לשלוח בקשת הרשמה. נסו שוב מאוחר יותר.":"Unable to send the registration request. Try again later.","נשלח מייל חדש":"New email sent","המייל אומת!":"Email verified!","הבקשה הועברה לאישור מנהל":"Your request was sent to the administrator for approval","סיימתם הכל!":"You finished everything!","אין שלבים חדשים - חזרו על שלב כדי לשפר ציון":"No new stages - replay a stage to improve your score","שלב אקראי!":"Random stage!","שלב \"בסוף השירות הצבאי\" נעול כרגע.<br>פנו למנהל המערכת כדי לפתוח גישה.":"The \"End of Military Service\" stage is currently locked.<br>Contact the admin to unlock access.","2 תשובות הוסרו (קנס: -5 נק')":"2 answers removed (penalty: -5 pts)","חלק מההסבר נגלה (קנס: -3 נק')":"Part of the explanation was revealed (penalty: -3 pts)","+10 נקודות בונוס · נצנוצים זהובים":"+10 bonus points · golden sparkles","+15 נקודות · עניתם מהר ובדיוק":"+15 points · you answered fast and accurately"," ו-":" and ","+20 נק׳ · המשך לעוד שלב!":"+20 pts · on to the next stage!","בחינה רב-תחומית נעולה":"Cross-Disciplinary Exam Locked","כל הכבוד!":"Well done!","אין שאלות לחזרה - עניתם נכון על הכל!":"No questions to review - you answered everything correctly!","מעולה":"Excellent","הכל נקי!":"All clear!","אין שאלות לחזרה - כל הטעויות תוקנו!":"No questions to review - all mistakes have been fixed!","אין חיבור":"No connection","לא ניתן לבטל חשבון במצב לא־מקוון.":"You can't cancel an account while offline.","החשבון בוטל בהצלחה.":"The account was canceled successfully.","לא ניתן לבטל את החשבון. נסו שוב מאוחר יותר.":"Unable to cancel the account. Try again later.","לא ניתן לבטל את החשבון כרגע.":"Unable to cancel the account right now.","תעודת השלמה נעולה":"Completion certificate locked","+10 נק׳ בונוס כניסה יומית · המשך כך":"+10 pts daily login bonus · keep it up","מייל בדיקה נשלח":"Test email sent","לא ניתן לשלוח. ודאו שיש מיילים ברשימה.":"Unable to send. Make sure there are emails in the list.","לא הצלחנו לשלוח בדיקה.":"We couldn't send a test.","תזכורת נשלחה":"Reminder sent","לא ניתן לשלוח.":"Unable to send.","לא הצלחנו לשלוח.":"We couldn't send it.","אין היסטוריה":"No history","נא להזין כתובת מייל תקינה.":"Please enter a valid email address.","כבר קיים":"Already exists","המייל הזה כבר ברשימה.":"This email is already in the list.","רשימת מיילים עודכנה":"Email list updated","לא הצלחנו לשמור. נסו שוב.":"We couldn't save. Try again.","לא ניתן לעדכן":"Unable to update","לא ניתן למחוק":"Unable to delete","משתמש אושר!":"User approved!","לא ניתן לאשר":"Unable to approve","לא ניתן להתחבר לענן":"Unable to connect to the cloud","בקשה נדחתה":"Request rejected","לא ניתן לדחות":"Unable to reject","מחיקת משתמש":"Delete user","משתמש נמחק":"User deleted","עדיין אין נושאים עם ציון 90%+. המשיכו להתאמן!":"No topics with a 90%+ score yet. Keep practicing!","כל המונחים המקצועיים בניהול מוצר - לחצו לקפיצה לשלב הרלוונטי":"All the professional product-management terms — click to jump to the relevant stage","טרום הבסיס ובסיסי":"Pre-Basics & Basic","ביניים":"Intermediate","מתקדם":"Advanced","מתקדם מאוד":"Expert","תובנות שכתבתם בסיום שלבים":"Insights you wrote when finishing stages","אם תרצו להפסיק להשתמש במערכת — תוכלו לבטל את החשבון. הגישה תיחסם ולא יישלחו תזכורות נוספות.":"If you'd like to stop using the system, you can deactivate your account. Access will be blocked and no further reminders will be sent.","למדו והגיעו לראש הטבלה החודשית":"Learn and climb to the top of the monthly leaderboard","הכניסו שם במסך הכניסה והתחילו ללמוד.":"Enter a name on the login screen and start learning.","צלילים כבויים":"Sounds off","צלילים פעילים":"Sounds on","ינשוף לילה":"Night Owl","ציפור מוקדמת":"Early Bird","שד מהירות":"Speed Demon","פרפקציוניסט":"Perfectionist","לוחם השבוע":"Week Warrior","חוקר":"Explorer","+25 נק׳ · למידה אחרי 23:00 או לפני 05:00":"+25 pts · Learning after 11 PM or before 5 AM","+25 נק׳ · התחלת היום ב-5-7 בבוקר":"+25 pts · Started the day at 5–7 AM","+30 נק׳ · 10 תשובות נכונות ברצף!":"+30 pts · 10 correct answers in a row!","+50 נק׳ · 5 שלבים עם ציון מושלם!":"+50 pts · 5 stages with a perfect score!","+50 נק׳ · רצף של 7 ימים רצופים!":"+50 pts · A 7-day streak!","+20 נק׳ · פתחתם את המילון 10 פעמים":"+20 pts · Opened the glossary 10 times","3 שלבים הושלמו - ההרגל מתחיל":"3 stages done — the habit begins","5 שלבים - אתם בקצב טוב":"5 stages — you're on a good pace","7 שלבים - יודעים איפה להתמקד":"7 stages — you know where to focus","12 שלבים - עברתם חצי דרך":"12 stages — you're halfway there","17 שלבים - אגדה מתחילה":"17 stages — a legend begins","20 שלבים - מומחה מתפתח":"20 stages — an expert in the making","נקודות להמר":"Points to wager","נסה שוב":"Try again","האתגר נדחה":"Challenge declined",
+const UI_EN={"הכרת המסע":"Getting to know the journey","מבנה ומתודולוגיה":"Structure and methodology","ניתוח וכלים":"Analysis and tools","שליטה מתקדמת":"Advanced mastery","ספרינט, בקלוג וגרסאות":"Sprint, backlog, and versions","רמה גבוהה":"High level","הכנה לשירות":"Service preparation","הקפאת רצף!":"Streak frozen!","הרצף נשמר למרות שדילגתם יום":"Your streak was saved even though you skipped a day","נא להזין שם משתמש (לפחות 2 תווים) כדי להתחיל.":"Please enter a username (at least 2 characters) to get started.","השם מכיל תווים לא מורשים. נסו שם אחר.":"The name contains invalid characters. Try a different name.","כתובת המייל שהזנת לא נראית תקינה. ודאו שיש @ ונקודה.":"The email address you entered doesn't look valid. Make sure it has an @ and a period.","כדי להיכנס לחשבון יש להזין את כתובת המייל שלך.":"To sign in to your account, please enter your email address.","שם המשתמש הזה כבר בשימוש. נא לבחור שם משתמש אחר כדי להמשיך.":"That username is already taken. Please choose a different username to continue.","חשבון זה בוטל. אם זו טעות — פנו למנהל המערכת לחיבור מחדש.":"This account was canceled. If this is a mistake, contact the administrator to reconnect.","שגיאת שרת זמנית":"Temporary server error","אירעה שגיאה זמנית בתקשורת עם השרת. ההתקדמות שלך שמורה במכשיר — נסו שוב בעוד רגע.":"A temporary error occurred while communicating with the server. Your progress is saved on this device. Try again in a moment.","נדרש מייל לרישום":"Email required to register","כדי להירשם לקורס נא להזין כתובת מייל. נשלח קישור אימות, ולאחר אישור מנהל המערכת תוכלו להתחיל.":"To register for the course, please enter an email address. We'll send a verification link, and once the administrator approves, you can get started.","נדרש אישור":"Confirmation required","כדי להירשם נא לסמן את הסכמתכם לקבל תזכורות במייל. תוכלו לבטל בכל עת.":"To register, please check the box to agree to receive email reminders. You can opt out at any time.","אנא הזינו כתובת מייל תקינה.":"Please enter a valid email address.","אנא סמנו את הסכמתכם לקבל תזכורות.":"Please check the box to agree to receive reminders.","מייל לא תואם":"Email mismatch","שם משתמש זה כבר רשום עם כתובת מייל אחרת.":"This username is already registered with a different email address.","נשלח מייל אימות":"Verification email sent","בדקו את תיבת הדואר ולחצו על קישור האימות. עד אז נזכיר לכם מפעם לפעם.":"Check your inbox and click the verification link. Until then, we'll remind you from time to time.","לא הצלחנו לשמור את המייל. נסו שוב מאוחר יותר.":"We couldn't save the email. Try again later.","לא ניתן":"Not available","יש להיכנס לחשבון תחילה.":"Please sign in to your account first.","אין מייל רשום":"No email registered","אין כתובת מייל בחשבון להסיר.":"There is no email address on the account to remove.","המייל הוסר":"Email removed","לא תקבלו עוד תזכורות":"You'll no longer receive reminders","שגיאת אבטחה":"Security error","הכניסה במכשיר הזה כבר לא בתוקף. נסו להיכנס מחדש.":"Your sign-in on this device is no longer valid. Try signing in again.","לא הצלחנו להסיר את המייל. נסו שוב.":"We couldn't remove the email. Try again.","לא הצלחנו להסיר את המייל. נסו שוב מאוחר יותר.":"We couldn't remove the email. Try again later.","כבר מאומת":"Already verified","המייל שלך כבר אומת — אין צורך לשלוח שוב.":"Your email is already verified. No need to send again.","אין מייל":"No email","אין מייל רשום בחשבון. השתמשו בכפתור \"הוספה\" כדי להזין כתובת.":"No email is registered on the account. Use the \"Add\" button to enter one.","המייל נשלח":"Email sent","בדקו את תיבת הדואר שלכם":"Check your inbox","רק רגע":"Hold on a moment","נא להמתין דקה לפני שליחה נוספת.":"Please wait a minute before sending again.","לא הצלחנו לשלוח. נסו שוב.":"We couldn't send it. Try again.","לא הצלחנו לשלוח. נסו שוב מאוחר יותר.":"We couldn't send it. Try again later.","כדי להירשם לקורס יש להזין כתובת מייל.":"To register for the course, please enter an email address.","לא ניתן לשלוח בקשת הרשמה. נסו שוב מאוחר יותר.":"Unable to send the registration request. Try again later.","נשלח מייל חדש":"New email sent","המייל אומת!":"Email verified!","הבקשה הועברה לאישור מנהל":"Your request was sent to the administrator for approval","סיימתם הכל!":"You finished everything!","אין שלבים חדשים - חזרו על שלב כדי לשפר ציון":"No new stages - replay a stage to improve your score","שלב אקראי!":"Random stage!","שלב \"בסוף השירות הצבאי\" נעול כרגע.<br>פנו למנהל המערכת כדי לפתוח גישה.":"The \"End of Military Service\" stage is currently locked.<br>Contact the admin to unlock access.","2 תשובות הוסרו (קנס: -5 נק')":"2 answers removed (penalty: -5 pts)","חלק מההסבר נגלה (קנס: -3 נק')":"Part of the explanation was revealed (penalty: -3 pts)","+10 נקודות בונוס · נצנוצים זהובים":"+10 bonus points · golden sparkles","+15 נקודות · עניתם מהר ובדיוק":"+15 points · you answered fast and accurately"," ו-":" and ","+20 נק׳ · המשך לעוד שלב!":"+20 pts · on to the next stage!","בחינה רב-תחומית נעולה":"Cross-Disciplinary Exam Locked","כל הכבוד!":"Well done!","אין שאלות לחזרה - עניתם נכון על הכל!":"No questions to review - you answered everything correctly!","מעולה":"Excellent","הכל נקי!":"All clear!","אין שאלות לחזרה - כל הטעויות תוקנו!":"No questions to review - all mistakes have been fixed!","אין חיבור":"No connection","לא ניתן לבטל חשבון במצב לא־מקוון.":"You can't cancel an account while offline.","החשבון בוטל בהצלחה.":"The account was canceled successfully.","לא ניתן לבטל את החשבון. נסו שוב מאוחר יותר.":"Unable to cancel the account. Try again later.","לא ניתן לבטל את החשבון כרגע.":"Unable to cancel the account right now.","תעודת השלמה נעולה":"Completion certificate locked","+10 נק׳ בונוס כניסה יומית · המשך כך":"+10 pts daily login bonus · keep it up","מייל בדיקה נשלח":"Test email sent","לא ניתן לשלוח. ודאו שיש מיילים ברשימה.":"Unable to send. Make sure there are emails in the list.","לא הצלחנו לשלוח בדיקה.":"We couldn't send a test.","תזכורת נשלחה":"Reminder sent","לא ניתן לשלוח.":"Unable to send.","לא הצלחנו לשלוח.":"We couldn't send it.","אין היסטוריה":"No history","נא להזין כתובת מייל תקינה.":"Please enter a valid email address.","כבר קיים":"Already exists","המייל הזה כבר ברשימה.":"This email is already in the list.","רשימת מיילים עודכנה":"Email list updated","לא הצלחנו לשמור. נסו שוב.":"We couldn't save. Try again.","לא ניתן לעדכן":"Unable to update","לא ניתן למחוק":"Unable to delete","משתמש אושר!":"User approved!","לא ניתן לאשר":"Unable to approve","לא ניתן להתחבר לענן":"Unable to connect to the cloud","בקשה נדחתה":"Request rejected","לא ניתן לדחות":"Unable to reject","מחיקת משתמש":"Delete user","משתמש נמחק":"User deleted","עדיין אין נושאים עם ציון 90%+. המשיכו להתאמן!":"No topics with a 90%+ score yet. Keep practicing!","כל המונחים המקצועיים בניהול מוצר - לחצו לקפיצה לשלב הרלוונטי":"All the professional product-management terms — click to jump to the relevant stage","טרום הבסיס ובסיסי":"Pre-Basics & Basic","ביניים":"Intermediate","מתקדם":"Advanced","מתקדם מאוד":"Expert","תובנות שכתבתם בסיום שלבים":"Insights you wrote when finishing stages","אם תרצו להפסיק להשתמש במערכת — תוכלו לבטל את החשבון. הגישה תיחסם ולא יישלחו תזכורות נוספות.":"If you'd like to stop using the system, you can deactivate your account. Access will be blocked and no further reminders will be sent.","הכניסו שם במסך הכניסה והתחילו ללמוד.":"Enter a name on the login screen and start learning.","צלילים כבויים":"Sounds off","צלילים פעילים":"Sounds on","ינשוף לילה":"Night Owl","ציפור מוקדמת":"Early Bird","שד מהירות":"Speed Demon","פרפקציוניסט":"Perfectionist","לוחם השבוע":"Week Warrior","חוקר":"Explorer","+25 נק׳ · למידה אחרי 23:00 או לפני 05:00":"+25 pts · Learning after 11 PM or before 5 AM","+25 נק׳ · התחלת היום ב-5-7 בבוקר":"+25 pts · Started the day at 5–7 AM","+30 נק׳ · 10 תשובות נכונות ברצף!":"+30 pts · 10 correct answers in a row!","+50 נק׳ · 5 שלבים עם ציון מושלם!":"+50 pts · 5 stages with a perfect score!","+50 נק׳ · רצף של 7 ימים רצופים!":"+50 pts · A 7-day streak!","+20 נק׳ · פתחתם את המילון 10 פעמים":"+20 pts · Opened the glossary 10 times","3 שלבים הושלמו - ההרגל מתחיל":"3 stages done — the habit begins","5 שלבים - אתם בקצב טוב":"5 stages — you're on a good pace","7 שלבים - יודעים איפה להתמקד":"7 stages — you know where to focus","12 שלבים - עברתם חצי דרך":"12 stages — you're halfway there","17 שלבים - אגדה מתחילה":"17 stages — a legend begins","20 שלבים - מומחה מתפתח":"20 stages — an expert in the making","נקודות להמר":"Points to wager","נסה שוב":"Try again","האתגר נדחה":"Challenge declined",
 // ===== Phase-4 enrichment labels =====
 "בקצרה:":"In short:",
 "הרחבת קריאה מלאה":"Read more",
@@ -8011,7 +8026,6 @@ const UI_EN={"הכרת המסע":"Getting to know the journey","מבנה ומת�
 "נושא":"Topic",
 "לקייס סטאדי":"To the Case Study",
 "למבחן":"To the Quiz",
-"🔮 הצצה לשלב הבא":"🔮 Peek at the next stage",
 // ===== welcome / header =====
 "קורס אינטראקטיבי לניהול מוצר":"Interactive Product Management Course",
 "🎮 מה יש במשחק?":"🎮 What's in the game?",
@@ -8057,9 +8071,9 @@ const UI_EN={"הכרת המסע":"Getting to know the journey","מבנה ומת�
 "⚔️ שחקנים אונליין":"⚔️ Players Online",
 // ===== rank / title names =====
 "סטודנט לניהול מוצר":"Product Management Student","מנהל מוצר בהכשרה":"Product Manager in Training",
-"מנהל מוצר מקצוען":"Pro Product Manager","סניור מוצר":"Senior Product Manager","מזל טוב, מפקד!":"Congratulations, Commander!","כל הכבוד, מקצוען!":"Well done, Pro!","מתחיל":"Beginner",
+"מנהל מוצר מקצוען":"Pro Product Manager","סניור מוצר":"Senior Product Manager","מתחיל":"Beginner",
 // ===== title ceremony modals =====
-"אגדה!":"Legend!","כל הכבוד מקצוען!":"Well done, Pro!","מזל טוב מפקד!":"Congratulations, Commander!","ברוכים הבאים!":"Welcome!",
+"כל הכבוד מקצוען!":"Well done, Pro!","מזל טוב מפקד!":"Congratulations, Commander!",
 "המשך ללמוד ←":"Keep Learning →","המשך ללמוד":"Keep Learning",
 // ===== login / registration =====
 "נדרש שם משתמש":"Username required","שם לא תקין":"Invalid name","מייל לא תקין":"Invalid email","נדרשת כתובת מייל":"Email address required",
@@ -9853,7 +9867,7 @@ function pfVideo(stageId,topicIdx){
 // STAGE_INTRO['<stageId>_<lang>'] = video URL. Self-hosted .mp4 (deploy/av/intro/...) renders an
 // inline <video>; Drive/YouTube links render an embed iframe. The card sits at the TOP of the
 // stage's theory tab — watch first, then read. Monitored as video/intro_play.
-var STAGE_INTRO={'0_en':'av/intro/stage-00-en.mp4','0_he':'av/intro/stage-00-he.mp4','1_en':'av/intro/stage-01-en.mp4','1_he':'av/intro/stage-01-he.mp4','2_en':'av/intro/stage-02-en.mp4','2_he':'av/intro/stage-02-he.mp4','3_en':'av/intro/stage-03-en.mp4','3_he':'av/intro/stage-03-he.mp4','4_en':'av/intro/stage-04-en.mp4','4_he':'av/intro/stage-04-he.mp4','5_en':'av/intro/stage-05-en.mp4','5_he':'av/intro/stage-05-he.mp4','6_en':'av/intro/stage-06-en.mp4','6_he':'av/intro/stage-06-he.mp4','7_en':'av/intro/stage-07-en.mp4','7_he':'av/intro/stage-07-he.mp4','8_en':'av/intro/stage-08-en.mp4','8_he':'av/intro/stage-08-he.mp4','9_en':'av/intro/stage-09-en.mp4','9_he':'av/intro/stage-09-he.mp4','10_en':'av/intro/stage-10-en.mp4','10_he':'av/intro/stage-10-he.mp4','11_en':'av/intro/stage-11-en.mp4','11_he':'av/intro/stage-11-he.mp4','12_en':'av/intro/stage-12-en.mp4','12_he':'av/intro/stage-12-he.mp4','13_en':'av/intro/stage-13-en.mp4','13_he':'av/intro/stage-13-he.mp4','14_en':'av/intro/stage-14-en.mp4','14_he':'av/intro/stage-14-he.mp4','15_en':'av/intro/stage-15-en.mp4','15_he':'av/intro/stage-15-he.mp4','16_en':'av/intro/stage-16-en.mp4','16_he':'av/intro/stage-16-he.mp4','17_en':'av/intro/stage-17-en.mp4','17_he':'av/intro/stage-17-he.mp4','18_en':'av/intro/stage-18-en.mp4','18_he':'av/intro/stage-18-he.mp4','19_en':'av/intro/stage-19-en.mp4','19_he':'av/intro/stage-19-he.mp4','20_en':'av/intro/stage-20-en.mp4','20_he':'av/intro/stage-20-he.mp4','21_en':'av/intro/stage-21-en.mp4','21_he':'av/intro/stage-21-he.mp4','22_en':'av/intro/stage-22-en.mp4','22_he':'av/intro/stage-22-he.mp4','23_en':'av/intro/stage-23-en.mp4','23_he':'av/intro/stage-23-he.mp4','24_en':'av/intro/stage-24-en.mp4','24_he':'av/intro/stage-24-he.mp4','25_en':'av/intro/stage-25-en.mp4','100_he':'av/intro/stage-100-he.mp4','100_en':'av/intro/stage-100-en.mp4','101_he':'av/intro/stage-101-he.mp4','101_en':'av/intro/stage-101-en.mp4','102_he':'av/intro/stage-102-he.mp4','103_he':'av/intro/stage-103-he.mp4','103_en':'av/intro/stage-103-en.mp4','104_he':'av/intro/stage-104-he.mp4','104_en':'av/intro/stage-104-en.mp4','105_he':'av/intro/stage-105-he.mp4','105_en':'av/intro/stage-105-en.mp4','106_he':'av/intro/stage-106-he.mp4','106_en':'av/intro/stage-106-en.mp4','107_he':'av/intro/stage-107-he.mp4','107_en':'av/intro/stage-107-en.mp4','108_he':'av/intro/stage-108-he.mp4','108_en':'av/intro/stage-108-en.mp4','109_he':'av/intro/stage-109-he.mp4','109_en':'av/intro/stage-109-en.mp4','110_en':'av/intro/stage-110-en.mp4','110_he':'av/intro/stage-110-he.mp4','111_en':'av/intro/stage-111-en.mp4','111_he':'av/intro/stage-111-he.mp4','112_en':'av/intro/stage-112-en.mp4','112_he':'av/intro/stage-112-he.mp4','113_en':'av/intro/stage-113-en.mp4','113_he':'av/intro/stage-113-he.mp4','114_en':'av/intro/stage-114-en.mp4','114_he':'av/intro/stage-114-he.mp4','102_en':'av/intro/stage-102-en.mp4','115_en':'av/intro/stage-115-en.mp4','115_he':'av/intro/stage-115-he.mp4','116_en':'av/intro/stage-116-en.mp4','116_he':'av/intro/stage-116-he.mp4','117_en':'av/intro/stage-117-en.mp4','117_he':'av/intro/stage-117-he.mp4','118_en':'av/intro/stage-118-en.mp4','118_he':'av/intro/stage-118-he.mp4','119_en':'av/intro/stage-119-en.mp4','119_he':'av/intro/stage-119-he.mp4','120_en':'av/intro/stage-120-en.mp4','120_he':'av/intro/stage-120-he.mp4','121_en':'av/intro/stage-121-en.mp4','121_he':'av/intro/stage-121-he.mp4','122_en':'av/intro/stage-122-en.mp4','122_he':'av/intro/stage-122-he.mp4','123_en':'av/intro/stage-123-en.mp4','123_he':'av/intro/stage-123-he.mp4','124_en':'av/intro/stage-124-en.mp4','124_he':'av/intro/stage-124-he.mp4','125_he':'av/intro/stage-125-he.mp4','26_he':'av/intro/stage-26-he.mp4','26_en':'av/intro/stage-26-en.mp4','27_he':'av/intro/stage-27-he.mp4','125_en':'av/intro/stage-125-en.mp4','25_he':'av/intro/stage-25-he.mp4'};
+var STAGE_INTRO={'0_en':'av/intro/stage-00-en.mp4','0_he':'av/intro/stage-00-he.mp4','1_en':'av/intro/stage-01-en.mp4','1_he':'av/intro/stage-01-he.mp4','2_en':'av/intro/stage-02-en.mp4','2_he':'av/intro/stage-02-he.mp4','3_en':'av/intro/stage-03-en.mp4','3_he':'av/intro/stage-03-he.mp4','4_en':'av/intro/stage-04-en.mp4','4_he':'av/intro/stage-04-he.mp4','5_en':'av/intro/stage-05-en.mp4','5_he':'av/intro/stage-05-he.mp4','6_en':'av/intro/stage-06-en.mp4','6_he':'av/intro/stage-06-he.mp4','7_en':'av/intro/stage-07-en.mp4','7_he':'av/intro/stage-07-he.mp4','8_en':'av/intro/stage-08-en.mp4','8_he':'av/intro/stage-08-he.mp4','9_en':'av/intro/stage-09-en.mp4','9_he':'av/intro/stage-09-he.mp4','10_en':'av/intro/stage-10-en.mp4','10_he':'av/intro/stage-10-he.mp4','11_en':'av/intro/stage-11-en.mp4','11_he':'av/intro/stage-11-he.mp4','12_en':'av/intro/stage-12-en.mp4','12_he':'av/intro/stage-12-he.mp4','13_en':'av/intro/stage-13-en.mp4','13_he':'av/intro/stage-13-he.mp4','14_en':'av/intro/stage-14-en.mp4','14_he':'av/intro/stage-14-he.mp4','15_en':'av/intro/stage-15-en.mp4','15_he':'av/intro/stage-15-he.mp4','16_en':'av/intro/stage-16-en.mp4','16_he':'av/intro/stage-16-he.mp4','17_en':'av/intro/stage-17-en.mp4','17_he':'av/intro/stage-17-he.mp4','18_en':'av/intro/stage-18-en.mp4','18_he':'av/intro/stage-18-he.mp4','19_en':'av/intro/stage-19-en.mp4','19_he':'av/intro/stage-19-he.mp4','20_en':'av/intro/stage-20-en.mp4','20_he':'av/intro/stage-20-he.mp4','21_en':'av/intro/stage-21-en.mp4','21_he':'av/intro/stage-21-he.mp4','22_en':'av/intro/stage-22-en.mp4','22_he':'av/intro/stage-22-he.mp4','23_en':'av/intro/stage-23-en.mp4','23_he':'av/intro/stage-23-he.mp4','24_en':'av/intro/stage-24-en.mp4','24_he':'av/intro/stage-24-he.mp4','25_en':'av/intro/stage-25-en.mp4','100_he':'av/intro/stage-100-he.mp4','100_en':'av/intro/stage-100-en.mp4','101_he':'av/intro/stage-101-he.mp4','101_en':'av/intro/stage-101-en.mp4','102_he':'av/intro/stage-102-he.mp4','103_he':'av/intro/stage-103-he.mp4','103_en':'av/intro/stage-103-en.mp4','104_he':'av/intro/stage-104-he.mp4','104_en':'av/intro/stage-104-en.mp4','105_he':'av/intro/stage-105-he.mp4','105_en':'av/intro/stage-105-en.mp4','106_he':'av/intro/stage-106-he.mp4','106_en':'av/intro/stage-106-en.mp4','107_he':'av/intro/stage-107-he.mp4','107_en':'av/intro/stage-107-en.mp4','108_he':'av/intro/stage-108-he.mp4','108_en':'av/intro/stage-108-en.mp4','109_he':'av/intro/stage-109-he.mp4','109_en':'av/intro/stage-109-en.mp4','110_en':'av/intro/stage-110-en.mp4','110_he':'av/intro/stage-110-he.mp4','111_en':'av/intro/stage-111-en.mp4','111_he':'av/intro/stage-111-he.mp4','112_en':'av/intro/stage-112-en.mp4','112_he':'av/intro/stage-112-he.mp4','113_en':'av/intro/stage-113-en.mp4','113_he':'av/intro/stage-113-he.mp4','114_en':'av/intro/stage-114-en.mp4','114_he':'av/intro/stage-114-he.mp4','102_en':'av/intro/stage-102-en.mp4','115_en':'av/intro/stage-115-en.mp4','115_he':'av/intro/stage-115-he.mp4','116_en':'av/intro/stage-116-en.mp4','116_he':'av/intro/stage-116-he.mp4','117_en':'av/intro/stage-117-en.mp4','117_he':'av/intro/stage-117-he.mp4','118_en':'av/intro/stage-118-en.mp4','118_he':'av/intro/stage-118-he.mp4','119_en':'av/intro/stage-119-en.mp4','119_he':'av/intro/stage-119-he.mp4','120_en':'av/intro/stage-120-en.mp4','120_he':'av/intro/stage-120-he.mp4','121_en':'av/intro/stage-121-en.mp4','121_he':'av/intro/stage-121-he.mp4','122_en':'av/intro/stage-122-en.mp4','122_he':'av/intro/stage-122-he.mp4','123_en':'av/intro/stage-123-en.mp4','123_he':'av/intro/stage-123-he.mp4','124_en':'av/intro/stage-124-en.mp4','124_he':'av/intro/stage-124-he.mp4','125_he':'av/intro/stage-125-he.mp4','27_en':'av/intro/stage-27-en.mp4','26_he':'av/intro/stage-26-he.mp4','26_en':'av/intro/stage-26-en.mp4','27_he':'av/intro/stage-27-he.mp4','125_en':'av/intro/stage-125-en.mp4','25_he':'av/intro/stage-25-he.mp4'};
 function enhanceIntroVideo(){
   var tc=document.getElementById('tc');if(!tc)return;
   if(tc.querySelector('.stage-intro-card'))return;
@@ -12094,7 +12108,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.25';
+const APP_VERSION='1.10.26';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -16899,7 +16913,7 @@ document.addEventListener('keydown',function(e){try{if(e.key==='Escape')setTimeo
    Render layer only. Every original is wrapped AFTER its definition (never re-declared). No MutationObserver; every DOM write is
    change-guarded (stored markup / textContent / class compare), so the i18n + bidi observers can never be fed a loop.
    Hebrew About path untouched: showAbout() still restores _abOrigHTML byte-for-byte; English renders a structural twin of it. */
-var _W6AG_AB_EN={"→ חזרה למסך הראשי":"← Back to the main screen","👨‍💻 על עומרי דזבלי":"👨‍💻 About Omri Degibly","Omri Degibly | יוצר מערכת Product Master":"Omri Degibly | Creator of Product Master","💼 רקע מקצועי":"💼 Professional Background","מנהל מוצר בכיר עם ניסיון עשיר בהובלת מוצרים ומערכות מורכבות — מאסטרטגיה ועד ביצוע. יוצר מערכת Product Master.":"Senior product manager with extensive experience leading complex products and systems — from strategy through execution. Creator of Product Master.","⚓ רקע מקצועי":"⚓ Professional Background","רס\"ן במילואים בזרוע הים, בעל ניסיון עשיר בניהול מוצר בדגש על מערכות השליטה והמודיעין.":"Lieutenant Commander (Reserve) in the Israeli Navy (Naval Arm), with extensive product management experience focused on command and control (C2) and intelligence systems.","🎖️ תפקידים בשירות הצבאי":"🎖️ Military Service Roles","רע״ן צל מערכות מידע במילואים":"Head of Information Systems Branch — Reserve (Shadow) Billet","יחידת מפת״ח, מספן ציוד, זרוע הים":["MAPTACH Unit (Navy Computing & Software Development Center), Naval Materiel Division, Israeli Navy","MAPTACH Unit, Naval Materiel Division, Israeli Navy"],"CPO (Chief Product Officer) זרוע הים":"Chief Product Officer (CPO), Israeli Navy","קצין סיור":"Maritime Patrol Officer","גס״י, יחידת השליטה, מספן ים, זרוע הים":"Maritime Patrol Flight (GASI), Naval Control Unit, Naval Operations Division, Israeli Navy","רמ״ד יכולות שילוב":"Head, Integration Capabilities Section","ענף שילובים, יחידת מפת״ח, מספן ציוד, זרוע הים":"Integration Branch, MAPTACH Unit, Naval Materiel Division, Israeli Navy","רמ״ד מערכות שליטה מבצעיות":"Head, Operational Command and Control (C2) Systems Section","ענף מערכות מידע, יחידת מפת״ח, מספ״ן ציוד, זרוע הים":"Information Systems Branch, MAPTACH Unit, Naval Materiel Division, Israeli Navy","רמ״ד לומ״ר מודיעין":"Head, Intelligence Network-Centric Warfare (NCW) Section","ענף לומ״ר, מחלקת תקשוב, מספן מטה, זרוע הים":"Network-Centric Warfare (NCW) Branch, C4I Department, Naval Staff Division, Israeli Navy","קמ״ן אופרטיבי":"Operational Intelligence Officer","ענף מל״מ, מחלקת הפעלה, מספן המודיעין, זרוע הים":"Intelligence Support to Operations (MALAM) Branch, Operations Department, Naval Intelligence Division, Israeli Navy","מ״מ רת״ח מחקר":"Deputy Head of Research","ענף ארגון, מחלקת תוא״ר, מספן מטה, זרוע הים":"Organization Branch, Planning and Organization (TOAR) Department, Naval Staff Division, Israeli Navy","קמ״ט אקדמיזציה ואו״מ":"Staff Officer, Academization & OM","מדור עתודה אקדמית, יחידת מיטב, והדור המייסד של מנט״א אכ״א":"Academic Reserve (Atuda) Section, MEITAV Screening & Placement Unit, and the founding generation of MANTA (Technological & Academic Manpower Administration), IDF Personnel Directorate"};
+var _W6AG_AB_EN={"→ חזרה למסך הראשי":"← Back to the main screen","👨‍💻 על עומרי דזבלי":"👨‍💻 About Omri Degibly","Omri Degibly | יוצר מערכת Product Master":"Omri Degibly | Creator of Product Master","💼 רקע מקצועי":"💼 Professional Background","מנהל מוצר בכיר עם ניסיון עשיר בהובלת מוצרים ומערכות מורכבות — מאסטרטגיה ועד ביצוע. יוצר מערכת Product Master.":"Senior product manager with extensive experience leading complex products and systems — from strategy through execution. Creator of Product Master.","⚓ רקע מקצועי":"⚓ Professional Background","🎖️ תפקידים בשירות הצבאי":"🎖️ Military Service Roles","רע״ן צל מערכות מידע במילואים":"Head of Information Systems Branch — Reserve (Shadow) Billet","יחידת מפת״ח, מספן ציוד, זרוע הים":["MAPTACH Unit (Navy Computing & Software Development Center), Naval Materiel Division, Israeli Navy","MAPTACH Unit, Naval Materiel Division, Israeli Navy"],"CPO (Chief Product Officer) זרוע הים":"Chief Product Officer (CPO), Israeli Navy","קצין סיור":"Maritime Patrol Officer","גס״י, יחידת השליטה, מספן ים, זרוע הים":"Maritime Patrol Flight (GASI), Naval Control Unit, Naval Operations Division, Israeli Navy","רמ״ד יכולות שילוב":"Head, Integration Capabilities Section","ענף שילובים, יחידת מפת״ח, מספן ציוד, זרוע הים":"Integration Branch, MAPTACH Unit, Naval Materiel Division, Israeli Navy","רמ״ד מערכות שליטה מבצעיות":"Head, Operational Command and Control (C2) Systems Section","ענף מערכות מידע, יחידת מפת״ח, מספ״ן ציוד, זרוע הים":"Information Systems Branch, MAPTACH Unit, Naval Materiel Division, Israeli Navy","רמ״ד לומ״ר מודיעין":"Head, Intelligence Network-Centric Warfare (NCW) Section","ענף לומ״ר, מחלקת תקשוב, מספן מטה, זרוע הים":"Network-Centric Warfare (NCW) Branch, C4I Department, Naval Staff Division, Israeli Navy","קמ״ן אופרטיבי":"Operational Intelligence Officer","ענף מל״מ, מחלקת הפעלה, מספן המודיעין, זרוע הים":"Intelligence Support to Operations (MALAM) Branch, Operations Department, Naval Intelligence Division, Israeli Navy","מ״מ רת״ח מחקר":"Deputy Head of Research","ענף ארגון, מחלקת תוא״ר, מספן מטה, זרוע הים":"Organization Branch, Planning and Organization (TOAR) Department, Naval Staff Division, Israeli Navy","קמ״ט אקדמיזציה ואו״מ":"Staff Officer, Academization & OM","מדור עתודה אקדמית, יחידת מיטב, והדור המייסד של מנט״א אכ״א":"Academic Reserve (Atuda) Section, MEITAV Screening & Placement Unit, and the founding generation of MANTA (Technological & Academic Manpower Administration), IDF Personnel Directorate"};
 var _w6agAbCache=null;
 function _w6agAbNorm(x){return String(x==null?'':x).replace(/\s+/g,' ').trim()}
 /* English twin of _abOrigHTML: same nodes, classes and navy-only/civ-only sections — only element texts are swapped */
@@ -17570,7 +17584,6 @@ function _w6skWrap(n){
     w._w6sk=1;window[n]=w;
   }catch(e){}
 }
-function _w6skDbg(){return {stack:_w6skStk.map(function(e){return (e.el.id?'#'+e.el.id:'.'+String(e.el.className).split(' ')[0])+'@'+e.el.style.zIndex}),queue:_w6skQ.map(function(i){return i.title+(i.n>1?' ×'+i.n:'')}),cur:_w6skCur?(_w6skCur.it.title+(_w6skCur.it.n>1?' ×'+_w6skCur.it.n:'')):null,held:_w6skTake(),hook:!!_w6skHk,locked:!!_w6skLk,poll:!!_w6skPoll}}
 /* ---------- wrappers (after every existing wrapper; the originals are never re-declared) ---------- */
 const _w6skPrevAch=showAchievement;
 showAchievement=function(icon,title,sub){try{_w6skAdd(icon,title,sub)}catch(e){try{return _w6skPrevAch.apply(this,arguments)}catch(x){}}};
@@ -20454,7 +20467,6 @@ function _w7jcInstall(){
   if(typeof window.juiceQueue!=='function')window.juiceQueue=_w7jcQueue;
   try{_w7jcMapChrome();_w7jcBadges();_w7jcXp();_w7jcGoal()}catch(e){}
 }
-function _w7jcDbg(){var c=_w7jc.cer;return {on:_w7jc.on,wrapped:Object.keys(_w7jcOrig),cer:c?{sid:c.sid,final:c.final,pts:c.pts,acc:c.acc,la:c.la,lb:c.lb,rankUp:c.rankUp}:null,held:_w7jc.held,mb:_w7jc.mb,hap:_w7jcHapShown()}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',_w7jcInstall);else setTimeout(_w7jcInstall,0);
 /* ===== /W7 juice kit ===== */
 /* ===== W6 SYNC INTEGRITY (_w6sy) — read-before-write for every column · re-verify with backoff · no lost tail ·
@@ -20856,6 +20868,23 @@ function _w6trSchedule(kind,delay){
   }
   _w6trTm[kind]=setTimeout(tick,delay);
 }
+/* W11 tour-skip (03/11, owner): the tours' "seen" flags live on the device, so a learner with 20 stages done saw the map tour
+   again on a new phone. An automatic map / nav / stage tour is now skipped (and marked seen here) once ≥3 stages are done;
+   a tour the learner asks for (profile → 🧭, which sets _w6trForce) always runs. */
+(function(){
+  try{
+    var o=_w6trStart;if(typeof o!=='function'||o._w11ts)return;
+    _w6trStart=function(kind){
+      try{
+        if((kind==='map'||kind==='nav'||kind==='stage')&&!(_w6trForce&&_w6trForce[kind])&&G&&G.done&&G.done.size>=3){
+          _w6trMark(kind);try{trackEvent('tour','autoSkip',kind)}catch(e){}return false;
+        }
+      }catch(e){}
+      return o.apply(this,arguments);
+    };
+    _w6trStart._w11ts=1;
+  }catch(e){}
+})();
 function _w6trReplay(){
   try{localStorage.removeItem(_w6trKey('map'));localStorage.removeItem(_w6trKey('stage'))}catch(e){}
   try{trackEvent('tour','replay','profile')}catch(e){}
@@ -23503,7 +23532,6 @@ function _w8g3PtGet(){
   }
   return _w8g3.cache.pt;
 }
-function _w8g3PtName(k,both){var P=_w8g3PtGet(),s=P.q.s[k];return both&&!_w8g3En()?(s[0]+' · '+s[1]):s[0]}
 function _w8g3PtCnt(P,p){var c=[],i;for(i=0;i<P.K;i++)c.push(0);for(i=0;i<p.length;i++)c[P.reg[p[i]]]++;return c}
 /* phase glyphs (colour-blind safe: every phase also has its own shape) */
 function _w8g3Glyph(k,r){r=r||12;var a=r*.95;
@@ -23955,7 +23983,6 @@ function _w8g3KsDemo(){
    analytics (minigame start/end termMatch). Adds: round pips, match combo with a pentatonic climb, sparkle bursts, haptics,
    cascading card entry, a richer end card with a personal best. Everything is presentation; scoring is untouched. ---------- */
 var _w8g3Tg={c:0,best:0};
-function _w8g3TgBest(){var x=_w8g3St();return x?(+x.tgb||0):0}
 function _w8g3TgRound(){
   var el=_w8g3$('tdGame');if(!el||typeof _tg==='undefined'||!_tg.on)return;
   var top=el.querySelector('.tg-top');
@@ -30982,7 +31009,7 @@ try{if(typeof TRACKED_FEATURES!=='undefined'&&TRACKED_FEATURES.indexOf('admin')<
    Hooks: _introEnhance (called by name by every path that builds an opener card, W9's "watch later" included) and the
    waiting room's course intro (_w8suIntroMount). Events: introVideo/poster_err · error (once per opener per session) · retry.
    No G writes, nothing saved or synced, no layout reads. ===== */
-var _W10MD_D={'0_he':472,'0_en':473,'1_he':430,'1_en':433,'2_he':291,'2_en':429,'3_he':479,'3_en':285,'4_he':454,'4_en':452,'5_he':403,'5_en':538,'6_he':496,'6_en':474,'7_he':551,'7_en':491,'8_he':513,'8_en':606,'9_he':618,'9_en':553,'10_he':510,'10_en':591,'11_he':456,'11_en':647,'12_he':460,'12_en':433,'13_he':585,'13_en':352,'14_he':582,'14_en':460,'15_he':632,'15_en':651,'16_he':495,'16_en':436,'17_he':534,'17_en':546,'18_he':543,'18_en':598,'19_he':446,'19_en':586,'20_he':440,'20_en':469,'21_he':415,'21_en':563,'22_he':443,'22_en':496,'23_he':480,'23_en':419,'24_he':514,'24_en':605,'25_he':404,'25_en':510,'26_he':311,'26_en':345,'27_he':447,'100_he':400,'100_en':358,'101_he':283,'101_en':444,'102_he':290,'102_en':437,'103_he':288,'103_en':305,'104_he':279,'104_en':358,'105_he':252,'105_en':313,'106_he':263,'106_en':343,'107_he':515,'107_en':257,'108_he':329,'108_en':289,'109_he':251,'109_en':364,'110_he':262,'110_en':398,'111_he':269,'111_en':342,'112_he':283,'112_en':359,'113_he':317,'113_en':324,'114_he':360,'114_en':336,'115_he':343,'115_en':317,'116_he':262,'116_en':302,'117_he':389,'117_en':318,'118_he':270,'118_en':283,'119_he':361,'119_en':293,'120_he':280,'120_en':369,'121_he':266,'121_en':262,'122_he':342,'122_en':292,'123_he':220,'123_en':282,'124_he':313,'124_en':426,'125_he':347,'125_en':346};
+var _W10MD_D={'0_he':472,'0_en':473,'1_he':430,'1_en':433,'2_he':291,'2_en':429,'3_he':479,'3_en':285,'4_he':454,'4_en':452,'5_he':403,'5_en':538,'6_he':496,'6_en':474,'7_he':551,'7_en':491,'8_he':513,'8_en':606,'9_he':618,'9_en':553,'10_he':510,'10_en':591,'11_he':456,'11_en':647,'12_he':460,'12_en':433,'13_he':585,'13_en':352,'14_he':582,'14_en':460,'15_he':632,'15_en':651,'16_he':495,'16_en':436,'17_he':534,'17_en':546,'18_he':543,'18_en':598,'19_he':446,'19_en':586,'20_he':440,'20_en':469,'21_he':415,'21_en':563,'22_he':443,'22_en':496,'23_he':480,'23_en':419,'24_he':514,'24_en':605,'25_he':404,'25_en':510,'26_he':311,'26_en':345,'27_he':447,'27_en':709,'100_he':400,'100_en':358,'101_he':283,'101_en':444,'102_he':290,'102_en':437,'103_he':288,'103_en':305,'104_he':279,'104_en':358,'105_he':252,'105_en':313,'106_he':263,'106_en':343,'107_he':515,'107_en':257,'108_he':329,'108_en':289,'109_he':251,'109_en':364,'110_he':262,'110_en':398,'111_he':269,'111_en':342,'112_he':283,'112_en':359,'113_he':317,'113_en':324,'114_he':360,'114_en':336,'115_he':343,'115_en':317,'116_he':262,'116_en':302,'117_he':389,'117_en':318,'118_he':270,'118_en':283,'119_he':361,'119_en':293,'120_he':280,'120_en':369,'121_he':266,'121_en':262,'122_he':342,'122_en':292,'123_he':220,'123_en':282,'124_he':313,'124_en':426,'125_he':347,'125_en':346};
 var _w10md={sent:{}};
 var _W10MD_IC={
   off:'<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.66 6H14a2 2 0 0 1 2 2v2.5l5.248-3.062A.5.5 0 0 1 22 7.87v8.196"/><path d="M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="m2 2 20 20"/></svg>',
@@ -31554,6 +31581,314 @@ if(typeof _w9obFaqRender==='function'){_w11wcO.fq=_w9obFaqRender;_w9obFaqRender=
 /* boot: right after the entry's two phases; on any error the entry stays as it was */
 try{_w11wcBuild()}catch(e){}
 /* ===== /W11 WELCOME 3 ===== */
+/* ===== W11 navigation & orientation (w11nv) — see _video_factory/_w11_nav.md =====
+   Builds on W10 nav (_w10nv: history model, header Back, places) and the W6 modal stack (_w6sk) — wrappers only, every
+   original is called unchanged, every hook is pass-through on error. Layout is read only inside requestAnimationFrame (never
+   in a tap handler / timer), so the forced-layout budgets are untouched; nothing runs while no overlay is open.
+   1) ONE CLOSE ✕ — every overlay gets the same ✕ in the same corner (top-END), 44×44, same look and name. Its own ✕ is
+      adopted in place (same element + handler; only its look and placement change), else the standard ✕ is added, wired to
+      the overlay's own close path (what Escape does).
+   2) Backdrop tap closes non-destructive overlays; Escape and Back close the layers outside the W6 stack too.
+   3) One auto-opening overlay per load (the rest wait for the next visit); toasts wait while it is open.
+   4) Orientation: the dock / bar never shows two "current" places. */
+var _w11nv={raf:0,seen:0,auto:{n:0,id:'',t:0,log:[]},bdT:0,ver:1};
+function _w11nvEn(){try{return !!_enLang()}catch(e){return false}}
+function _w11nvT(he,en){return _w11nvEn()?en:he}
+function _w11nvShown(el){try{return !!el&&el.isConnected&&(typeof el.checkVisibility==='function'?el.checkVisibility():el.getClientRects().length>0)}catch(e){return false}}
+function _w11nvTrack(a,m){try{trackEvent('nav',a,String(m==null?'':m).slice(0,40))}catch(e){}}
+
+/* ---------------- 1) the overlay table ----------------
+   s  root selector (as the W6 stack sees it)        p  the visible panel inside it ('' = the root itself is the panel)
+   x  its own ✕ (adopted); '' = none → the standard ✕ is added (unless add:0)
+   bd backdrop tap: 1 = closes (added here) · 'own' = already closes · 0 = never (a game, a form, a confirmation, the tour)
+   fix full-screen takeover (✕ pinned under the status bar) · lbl [he,en] a better name than "Close"
+   cl  how the standard ✕ closes it (default: the W6 stack's close path for this root = Escape) */
+var _W11NV_OV=[
+  {s:'#todayHub',p:'.hub-box',x:'.hub-x',bd:'own'},
+  {s:'#dailyModal .daily-modal',p:'.daily-modal-box',x:'',bd:'own'},
+  {s:'#w6dkSheet',p:'.w6dk-sh',x:'.w6dk-x',bd:'own'},
+  {s:'#w10nvMenu',p:'',x:'',bd:'own',add:0},/* a menu: Esc / a tap outside / Back close it (no ✕, like every menu) */
+  {s:'#w10nvStats',p:'.w10nv-sp',x:'.w10nv-sx',bd:'own'},
+  {s:'#w8gmOv',p:'.w8gm-box',x:'[data-w8gm-a="x"]',bd:'own'},
+  {s:'#w8gmCd',p:'.w8gm-box',x:'[data-w8gm-a="x"]',bd:'own'},
+  {s:'#w8gmFx',p:'',x:'[data-w8gm-a="x"]',bd:0,add:0},/* the reward animation: closes itself */
+  {s:'#w8g3Ov',p:'',x:'[data-a="x"]',bd:0},/* a game in progress: never closed by a stray tap */
+  {s:'#w8g3Help',p:'.w8g3-hcard',x:'',bd:1,cl:function(r){var b=r.querySelector('[data-a="helpx"]');if(b)b.click();else r.remove()}},
+  {s:'#w9plGoalOv',p:'.hub-box',x:'',bd:'own'},
+  {s:'#w7lnCertOv',p:'.hub-box',x:'.hub-x',bd:'own'},
+  {s:'#w7lnWeek',p:'.hub-box',x:'.hub-x',bd:'own'},
+  {s:'#w7lnRecap',p:'.hub-box',x:'.hub-x',bd:'own'},
+  {s:'#w7shOv',p:'.w7sh-box',x:'.w7sh-x',bd:'own'},
+  {s:'#w7hbOv',p:'.w7hb-box',x:'.w7hb-x',bd:'own'},
+  {s:'#stageCerem',p:'',x:'',bd:'own',fix:1},
+  {s:'#w6stMs',p:'',x:'',bd:'own',fix:1},
+  {s:'#modal',p:'.modal-box',x:'',bd:'own'},
+  {s:'.bug-modal',p:'.bug-modal-box',x:'',bd:0},/* a typed report */
+  {s:'#legalOv',p:'.hub-box',x:'',bd:'own'},
+  {s:'#pwOv',p:'.pw-box',x:'.hub-x',bd:1},
+  {s:'#satOverlay',p:'.daily-modal-box',x:'',bd:1,cl:function(r){if(typeof _satSkip==='function')_satSkip();else r.remove()}},/* ✕ = "Later" */
+  {s:'#goalOv',p:'.hub-box',x:'',bd:1},
+  {s:'#wbOv',p:'.hub-box',x:'',bd:1},
+  {s:'#certOverlay',p:'',x:'',bd:'own'},
+  {s:'#emailPromptOverlay',p:'.daily-modal-box',x:'',bd:0},/* a typed e-mail */
+  {s:'#w8adDrawer',p:'',x:'.w8ad-x',bd:'own'},
+  {s:'#duelPanel',p:'',x:'.duel-panel-close',bd:0},
+  {s:'#duelConfig',p:'',x:'',bd:0,add:0},/* a challenge being set up: its own buttons */
+  {s:'.adm-modal-overlay',p:'',x:'',bd:0},
+  {s:'.daily-modal',p:'.daily-modal-box',x:'',bd:1},
+  {s:'.modal-overlay',p:'',x:'',bd:'own'}
+];
+var _W11NV_XTXT=/^(✕|×|✖|✖️|x|X)$/;
+function _w11nvCfg(root){for(var i=0;i<_W11NV_OV.length;i++){try{if(root.matches(_W11NV_OV[i].s))return _W11NV_OV[i]}catch(e){}}return null}
+function _w11nvLbl(c){var l=c&&c.lbl;return l?(_w11nvEn()?l[1]:l[0]):_w11nvT('סגירה','Close')}
+/* the visible panel of an overlay root: the table's panel, else the root itself when it is not a full-screen layer, else
+   its largest visible child that is smaller than it (measured — called from the animation frame only) */
+function _w11nvPanel(root,c){
+  try{if(c&&c.p){var p=root.querySelector(c.p);if(p&&_w11nvShown(p))return p}}catch(e){}
+  try{
+    var R=root.getBoundingClientRect(),W=innerWidth,H=innerHeight;
+    if(R.width<W-4||R.height<H-4)return root;
+    var best=null,ba=0,k=root.children;
+    for(var i=0;i<k.length;i++){var e=k[i];if(!_w11nvShown(e)||e.classList.contains('w11nv-x')||e.classList.contains('w11nv-rail'))continue;var r=e.getBoundingClientRect(),a=r.width*r.height;if(a>ba&&(r.width<R.width-8||r.height<R.height-8)&&r.width>120&&r.height>80){best=e;ba=a}}
+    return best||root;
+  }catch(e){return root}
+}
+/* its own ✕: the table's selector, else a control showing only a ✕ glyph near the top of the panel */
+function _w11nvOwnX(root,P,c){
+  var l=[],i;
+  try{if(c&&c.x)l=[].slice.call(P.querySelectorAll(c.x));}catch(e){}
+  if(!l.length){try{var a=P.querySelectorAll('button,[role="button"],span[onclick]');for(i=0;i<a.length;i++){var t=(a[i].textContent||'').replace(/\s+/g,'');if(_W11NV_XTXT.test(t))l.push(a[i])}}catch(e){}}
+  for(i=0;i<l.length;i++){var b=l[i];if(b.classList.contains('w11nv-xi'))continue;if(!_w11nvShown(b))continue;var q=b.closest('#w8g3Help');if(q&&q!==root)continue;return b}
+  return null;
+}
+function _w11nvScrolls(P,root){
+  try{for(var e=P;e&&e!==root.parentElement;e=e.parentElement){var cs=getComputedStyle(e);if(/auto|scroll/.test(cs.overflowY)&&e.scrollHeight>e.clientHeight+4)return true}}catch(x){}
+  return false;
+}
+function _w11nvName(b,c){
+  var cur=(b.getAttribute('aria-label')||'').trim(),lbl=_w11nvLbl(c);
+  if(!cur||_W11NV_XTXT.test(cur))b.setAttribute('aria-label',lbl);
+  if(!b.getAttribute('title'))b.setAttribute('title',b.getAttribute('aria-label')||lbl);
+  if(b.tagName!=='BUTTON'){if(!b.getAttribute('role'))b.setAttribute('role','button');if(!b.hasAttribute('tabindex'))b.setAttribute('tabindex','0');
+    if(!b._w11nvK){b._w11nvK=1;b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();b.click()}})}}
+}
+/* close one layer the way Escape does (the W6 stack's close path for it, with every pack's hook), else its own close */
+function _w11nvCloseEl(root,c){
+  try{
+    if(c&&typeof c.cl==='function'){c.cl(root);return}
+    if(root.id==='w6stMs'&&typeof _w6stMsClose==='function'){_w6stMsClose();return}
+    if(root.id==='duelPanel'&&typeof _toggleDuelPanel==='function'){if(root.classList.contains('open'))_toggleDuelPanel();return}
+    if(root.id==='w8g3Help'){root.remove();return}
+    if(root.id==='w6trRoot'&&typeof _w6trEnd==='function'){_w6trEnd('skipped');return}
+    if(typeof window._w6skClose==='function'){window._w6skClose(root);return}
+    root.remove();
+  }catch(e){try{root.remove()}catch(x){}}
+  try{if(typeof _w6skSync==='function')_w6skSync()}catch(e){}
+}
+var _W11NV_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+/* the corner of a card: the ✕ sits its padding (clamped to 8…16 px) from the top and the END edge */
+function _w11nvPad(P){
+  var cs=getComputedStyle(P),rtl=cs.direction==='rtl',pt=parseFloat(cs.paddingTop)||0,pe=parseFloat(rtl?cs.paddingLeft:cs.paddingRight)||0;
+  var k=function(v){return Math.max(8,Math.min(16,v))};
+  return {pt:pt,pe:pe,t:k(pt),e:k(pe),flow:/flex|grid/.test(cs.display)};
+}
+/* the zero-height sticky rail at the top of a card that carries the ✕ (so it never scrolls away) */
+function _w11nvRail(P){
+  var rl=P.querySelector(':scope>.w11nv-rail'),k=_w11nvPad(P);
+  if(!rl){rl=document.createElement('div');rl.className='w11nv-rail';rl.setAttribute('role','presentation');P.insertBefore(rl,P.firstChild)}
+  rl.style.setProperty('--w11nv-pt',k.pt+'px');rl.style.setProperty('--w11nv-pe',k.pe+'px');rl.style.setProperty('--w11nv-t',k.t+'px');rl.style.setProperty('--w11nv-e',k.e+'px');
+  return rl;
+}
+/* a long title / an icon running under the ✕ gets room: the card's content starts below it (text measured per line box) */
+function _w11nvRoom(b,P){
+  try{
+    var r=b.getBoundingClientRect();if(!r.width)return;
+    var hit=function(q){return q.width>0&&q.height>0&&q.left<r.right-2&&q.right>r.left+2&&q.top<r.bottom-2&&q.bottom>r.top+2};
+    var bad=false,w=document.createTreeWalker(P,5,null),n,k=0;/* 5 = elements + text */
+    while(!bad&&(n=w.nextNode())&&k<5000){k++;
+      if(n.nodeType===1){if(n===b||b.contains(n)||n.contains(b))continue;if(/^(IMG|SVG|BUTTON|INPUT|SELECT|TEXTAREA|CANVAS|VIDEO|IFRAME)$/i.test(n.tagName)&&hit(n.getBoundingClientRect()))bad=true;continue}
+      if(!n.nodeValue.trim()||b.contains(n))continue;
+      var pe=n.parentElement;if(!pe||!hit(pe.getBoundingClientRect()))continue;
+      var rg=document.createRange();rg.selectNodeContents(n);var rs=rg.getClientRects();for(var i=0;i<rs.length;i++){if(hit(rs[i])){bad=true;break}}
+    }
+    if(bad){P.classList.add('w11nv-xpad');var rl=b.parentElement;if(rl&&rl.classList.contains('w11nv-rail'))rl.style.setProperty('--w11nv-pt',(parseFloat(getComputedStyle(P).paddingTop)||0)+'px')}
+  }catch(e){}
+}
+/* give one open overlay its ✕ (idempotent: a ✕ that is still in place is left alone, without reading layout) */
+function _w11nvFix(root){
+  try{
+    var X=root._w11nvX,c0=root._w11nvC;
+    if(X&&X.isConnected&&root.contains(X)&&X.classList.contains('w11nv-x')){
+      var fresh=null;try{if(c0&&c0.x){var q=root.querySelectorAll(c0.x);for(var i=0;i<q.length;i++){if(q[i]!==X&&!q[i].classList.contains('w11nv-x')&&_w11nvShown(q[i])){fresh=q[i];break}}}}catch(e){}
+      if(!fresh){if(X._w11nvL!==_w11nvEn()){X._w11nvL=_w11nvEn();if(X._w11nvI){X.setAttribute('aria-label',_w11nvLbl(c0));X.setAttribute('title',_w11nvLbl(c0))}}return}
+      /* the overlay re-rendered its header with a new ✕: that one is THE ✕ now, the old one goes */
+      try{X.remove()}catch(e){}
+    }
+    var c=_w11nvCfg(root)||{};root._w11nvC=c;
+    var P=_w11nvPanel(root,c),own=_w11nvOwnX(root,P,c),b=null;
+    if(own){
+      b=own;b.classList.add('w11nv-x');_w11nvName(b,c);var hadF=document.activeElement===b;
+      if(c.fix){b.classList.add('w11nv-xfix')}
+      else{
+        var sc=_w11nvScrolls(P,root),pa=b.parentElement,ps=pa&&pa!==P?getComputedStyle(pa):null,Pr=P.getBoundingClientRect();
+        var row=ps&&/flex/.test(ps.display)&&!/column/.test(ps.flexDirection)&&pa.getBoundingClientRect().top-Pr.top<48;
+        if(row&&!sc){b.classList.add('w11nv-xr');pa.classList.add('w11nv-xrow')}
+        else if(_w11nvPad(P).flow){if(getComputedStyle(P).position==='static')P.classList.add('w11nv-xp');b.classList.add('w11nv-xa');if(b.parentElement!==P)P.insertBefore(b,P.firstChild)}
+        else{_w11nvRail(P).appendChild(b);_w11nvRoom(b,P)}
+        if(hadF&&document.activeElement!==b)try{b.focus({preventScroll:true})}catch(e){}/* a moved control keeps the focus it had */
+      }
+    }else if(c.add!==0){
+      b=document.createElement('button');b.type='button';b.className='w11nv-x w11nv-xi';b.setAttribute('data-w11nv-x','');b.innerHTML=_W11NV_SVG;b._w11nvI=1;
+      b.setAttribute('aria-label',_w11nvLbl(c));b.setAttribute('title',_w11nvLbl(c));
+      b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();_w11nvTrack('x',root.id||String(root.className).split(' ')[0]);_w11nvCloseEl(root,c)});
+      if(c.fix){b.classList.add('w11nv-xfix');root.appendChild(b)}
+      else if(_w11nvPad(P).flow){if(getComputedStyle(P).position==='static')P.classList.add('w11nv-xp');b.classList.add('w11nv-xa');P.insertBefore(b,P.firstChild);_w11nvRoom(b,P)}
+      else{_w11nvRail(P).appendChild(b);_w11nvRoom(b,P)}
+    }
+    if(b){b._w11nvL=_w11nvEn();root._w11nvX=b}
+    if(c.bd===1&&root!==P)root.classList.add('w11nv-bd');
+    root._w11nvT0=root._w11nvT0||Date.now();
+  }catch(e){}
+}
+/* every open layer: the W6 stack + the layers outside it (streak milestone, duel panel, the puzzle's help card, an album
+   card opened inside the game room) */
+function _w11nvOpen(){
+  var out=[],i;
+  try{if(typeof _w6skStk!=='undefined')for(i=0;i<_w6skStk.length;i++){var el=_w6skStk[i]&&_w6skStk[i].el;if(el&&el.isConnected)out.push(el)}}catch(e){}
+  try{['w6stMs','w8g3Help','w8gmCd'].forEach(function(id){var e=document.getElementById(id);if(e&&out.indexOf(e)<0&&_w11nvShown(e))out.push(e)})}catch(e){}
+  try{var dp=document.getElementById('duelPanel');if(dp&&dp.classList.contains('open')&&out.indexOf(dp)<0)out.push(dp)}catch(e){}
+  return out;
+}
+function _w11nvTick(){
+  _w11nv.raf=0;
+  var o=_w11nvOpen();if(!o.length)return;
+  for(var i=0;i<o.length;i++){if(o[i].id==='w6trRoot')continue;_w11nvFix(o[i])}
+  _w11nvSmall();
+}
+function _w11nvKick(){if(_w11nv.raf)return;try{_w11nv.raf=requestAnimationFrame(_w11nvTick)}catch(e){_w11nv.raf=0}}
+/* small non-modal layers (banners, nudges, return toast, streak-risk chip): the same name on their ✕ (size via CSS) */
+var _W11NV_SMALL='#updateBanner>span[onclick],.hook-banner .hb-close,.w7sh-nd-x,.w7ln-rt-x,.w6st-risk-x,.w8rn-np-x';
+function _w11nvSmall(){
+  try{var l=document.querySelectorAll(_W11NV_SMALL);for(var i=0;i<l.length;i++){var b=l[i];if(b._w11nvS===_w11nvEn())continue;b._w11nvS=_w11nvEn();_w11nvName(b,null)}}catch(e){}
+}
+/* typed text is never thrown away by a stray tap on the backdrop */
+function _w11nvDirty(root){
+  try{var f=root.querySelectorAll('input:not([type=hidden]):not([type=radio]):not([type=checkbox]),textarea');for(var i=0;i<f.length;i++){if(String(f[i].value||'').trim()&&f[i].value!==f[i].defaultValue)return true}}catch(e){}
+  return false;
+}
+/* 2) a tap on the dimmed backdrop (the root itself, outside its panel) closes a non-destructive overlay; popovers without a
+   backdrop (the counters explainer, the daily question card) close on a tap outside them, which never reaches the page under */
+document.addEventListener('click',function(ev){
+  try{
+    var t=ev.target;if(!t||!t.classList)return;
+    if(t.classList.contains('w11nv-bd')){
+      var c=t._w11nvC;if(!c||c.bd!==1)return;
+      if(Date.now()-(t._w11nvT0||0)<400||_w11nvDirty(t))return;
+      ev.preventDefault();ev.stopImmediatePropagation();_w11nvTrack('backdrop',t.id||String(t.className).split(' ')[0]);_w11nvCloseEl(t,c);return;
+    }
+  }catch(e){}
+},true);
+var _W11NV_POP=['w10nvStats','dailyModal'];
+document.addEventListener('pointerdown',function(ev){
+  try{
+    var t=ev.target;if(!t||!t.closest||ev.button>0)return;
+    for(var i=0;i<_W11NV_POP.length;i++){
+      var p=document.getElementById(_W11NV_POP[i]);if(!p||p.classList.contains('hid')||!_w11nvShown(p))continue;
+      if(p.contains(t))return;
+      if(t.closest('#hd [data-w10nv-c],.ach-toast,#w6trRoot,[id$="Fab"],#w6dkDock,#w10nvBar,.w6sk-x'))return;/* its opener / the places / a toast: theirs */
+      if(typeof _w6skStk!=='undefined'&&_w6skStk.length&&_w6skStk[_w6skStk.length-1].el!==p)return;/* not the top layer */
+      if(Date.now()-(p._w11nvT0||0)<400)return;
+      _w11nv.swallow=Date.now();
+      _w11nvTrack('outside',p.id);_w11nvCloseEl(p,_w11nvCfg(p));return;
+    }
+  }catch(e){}
+},true);
+/* the tap that closed a popover from outside does not also press what was under it */
+document.addEventListener('click',function(ev){if(_w11nv.swallow&&Date.now()-_w11nv.swallow<700){_w11nv.swallow=0;ev.preventDefault();ev.stopImmediatePropagation()}},true);
+/* ---------------- 4) orientation ----------------
+   One "current" place: while the More sheet / menu is open only More is lit (the place you are in is not lit twice);
+   About and Review (they live in More) light More, like the glossary and the exam already do. */
+/* the tab / window title and the screen reader say where you are: "<place> · Product Master" */
+var _w11nvTitle0='';
+function _w11nvTitle(to){
+  try{
+    if(!_w11nvTitle0)_w11nvTitle0=document.title||'Product Master';
+    var k=String(to||''),n='';
+    if(/^stage:/.test(k)){var id=+k.split(':')[1],s=null;try{s=S.find(function(x){return x.id===id})}catch(e){}n=(id===0?_w11nvT('מבוא','Intro'):_w11nvT('שלב ','Stage ')+id)+(s&&s.t?' · '+String(s.t).replace(/^[^\p{L}\p{N}]+/u,'').slice(0,40):'')}
+    else n={map:_w11nvT('מפת המסע','Journey map'),profile:_w11nvT('פרופיל','Profile'),ranks:_w11nvT('טבלת מובילים','Leaderboard'),glossary:_w11nvT('מילון מונחים','Glossary'),about:_w11nvT('על היוצר','About the creator'),exam:_w11nvT('בחינה רב-תחומית','Practice exam'),review:_w11nvT('חזרה על טעויות','Review mistakes'),admin:_w11nvT('ניהול המערכת','Admin'),duel:_w11nvT('דו-קרב','Duel')}[k.split(':')[0]]||'';
+    var t=n?n+' · Product Master':_w11nvTitle0;if(document.title!==t)document.title=t;
+  }catch(e){}
+}
+document.addEventListener('w10:navigate',function(e){try{_w11nvTitle(e.detail&&e.detail.to);_w11nvHook();requestAnimationFrame(_w11nvSmall)}catch(x){}});
+/* the dock (phones) and the bar (desktop) are re-rendered from their models; the fix is re-applied after each render
+   (idempotent, class-only — aria-current stays on the page you are on). Whenever More is lit (its sheet / menu is open, a
+   panel launched from it is open, or the screen lives in it: About, Glossary, Exam, Review), More is the ONE lit place. */
+function _w11nvPlaces(){
+  try{
+    var cv=(typeof _w10nvCur==='function')?_w10nvCur():null,k=cv&&cv.k,inMore=k==='ab'||k==='sr'||k==='g'||k==='mi';
+    [['w6dkDock','.w6dk-it','w6dk-act','data-w6dk'],['w10nvBar','.w10nv-it','w10nv-act','data-w10nv']].forEach(function(d){
+      var bar=document.getElementById(d[0]);if(!bar)return;
+      var more=bar.querySelector(d[1]+'['+d[3]+'="more"]');if(!more)return;
+      var open=more.getAttribute('aria-expanded')==='true',app=more.classList.contains(d[2])&&!more.hasAttribute('data-w11nv-lit'),on=open||inMore||app,its=bar.querySelectorAll(d[1]);
+      for(var i=0;i<its.length;i++){var it=its[i];if(it===more)continue;
+        if(on&&it.classList.contains(d[2])){it.classList.remove(d[2]);it.setAttribute('data-w11nv-dim','')}
+        else if(!on&&it.hasAttribute('data-w11nv-dim')){it.removeAttribute('data-w11nv-dim');if(it.getAttribute('aria-current')==='page')it.classList.add(d[2])}}
+      if(on&&!more.classList.contains(d[2])){more.classList.add(d[2]);more.setAttribute('data-w11nv-lit','')}
+      else if(!on&&more.hasAttribute('data-w11nv-lit')){more.removeAttribute('data-w11nv-lit');more.classList.remove(d[2])}
+    });
+  }catch(e){}
+}
+/* ---------------- hooks (wrappers: the original always runs first and unchanged) ---------------- */
+function _w11nvHook(){
+  try{
+    if(typeof _w6skSync==='function'&&!_w6skSync._w11nv){var s0=_w6skSync;_w6skSync=function(){var r=s0.apply(this,arguments);_w11nvKick();return r};_w6skSync._w11nv=1}
+    /* after W10's wrappers (they mark themselves _w10nv; ours carries the mark on so W10 never re-wraps over it) */
+    var w10=typeof _w10nvDkHook==='function';
+    if(typeof _w6dkSync==='function'&&!_w6dkSync._w11nv&&(!w10||_w6dkSync._w10nv)){var d0=_w6dkSync;_w6dkSync=function(){var r=d0.apply(this,arguments);_w11nvPlaces();return r};_w6dkSync._w10nv=d0._w10nv;_w6dkSync._w11nv=1}
+    if(typeof _w10nvBar==='function'&&!_w10nvBar._w11nv){var b0=_w10nvBar;_w10nvBar=function(){var r=b0.apply(this,arguments);_w11nvPlaces();return r};_w10nvBar._w11nv=1}
+    ['_toggleDuelPanel','_w6stTakeover','_w8g3Help','_w8gmCardOpen'].forEach(function(n){var f=window[n];if(typeof f==='function'&&!f._w11nv){var w=function(){var r=f.apply(this,arguments);_w11nvKick();return r};w._w11nv=1;for(var p in f)if(Object.prototype.hasOwnProperty.call(f,p)&&!(p in w))w[p]=f[p];window[n]=w}});
+    if(typeof applyLanguage==='function'&&!applyLanguage._w11nv){var l0=applyLanguage;applyLanguage=function(){var r=l0.apply(this,arguments);try{var c=(typeof _w10nvCur==='function')?_w10nvCur():null;_w11nvTitle(c&&typeof _w10nvKey==='function'?_w10nvKey(c):'');_w11nvKick();_w11nvPlaces()}catch(e){}return r};applyLanguage._w11nv=1}
+    _w11nvAutoHook();
+  }catch(e){}
+}
+/* ---------------- 5) one auto-opening overlay per load ----------------
+   The overlays that open by themselves when the app loads (nobody tapped anything): welcome-back, the goal question, the
+   weekly recap, the map / navigation tour, the first e-mail prompt. The first one to open wins this load; each of the
+   others simply does not open now — its own "seen" flag is untouched, so it comes on the next visit. Overlays the
+   learner causes (a finished stage, a streak day, a rank, the survey after progress …) are not load-time and keep their
+   own "one at a time" waits. A tour the learner asks for (Help → tour) always runs. */
+function _w11nvAutoOk(id){
+  var a=_w11nv.auto;if(!a.n||a.id===id)return true;
+  if(a.log.length<20)a.log.push({id:id,t:Date.now(),held:1});
+  if(!a['h_'+id]){a['h_'+id]=1;_w11nvTrack('auto_wait',id+'<'+a.id)}
+  return false;
+}
+function _w11nvAutoGot(id){var a=_w11nv.auto;if(a.n&&a.id===id)return;a.n++;a.id=id;a.t=Date.now();if(a.log.length<20)a.log.push({id:id,t:a.t})}
+function _w11nvAutoHook(){
+  try{
+    if(typeof maybeWelcomeBack==='function'&&!maybeWelcomeBack._w11nv){var wb=maybeWelcomeBack;maybeWelcomeBack=function(){if(!_w11nvAutoOk('wb'))return;var r=wb.apply(this,arguments);if(document.getElementById('wbOv'))_w11nvAutoGot('wb');return r};maybeWelcomeBack._w11nv=1}
+    if(typeof maybeAskGoal==='function'&&!maybeAskGoal._w11nv){var ga=maybeAskGoal;maybeAskGoal=function(){if(!_w11nvAutoOk('goal'))return;var r=ga.apply(this,arguments);if(document.getElementById('goalOv'))_w11nvAutoGot('goal');return r};maybeAskGoal._w11nv=1}
+    if(typeof _w7lnWhenFree==='function'&&!_w7lnWhenFree._w11nv){var wf=_w7lnWhenFree;_w7lnWhenFree=function(key,fn,o){
+        if(key==='week'&&typeof fn==='function'){var f0=fn;fn=function(){if(!_w11nvAutoOk('week'))return;var r=f0.apply(this,arguments);if(document.getElementById('w7lnWeek'))_w11nvAutoGot('week');return r}}
+        return wf.call(this,key,fn,o)};_w7lnWhenFree._w11nv=1}
+    if(typeof _w6trStart==='function'&&!_w6trStart._w11nv){var ts=_w6trStart;_w6trStart=function(kind){
+        var auto=(kind==='map'||kind==='nav')&&!(typeof _w6trForce!=='undefined'&&_w6trForce&&_w6trForce[kind]);
+        if(auto&&!_w11nvAutoOk('tour'))return false;
+        var r=ts.apply(this,arguments);if(auto&&r!==false&&typeof _w6trSt!=='undefined'&&_w6trSt)_w11nvAutoGot('tour');return r};_w6trStart._w11nv=1}
+    /* the e-mail prompt's first cadence tick (30 s after sign-in) is load-time; the later ones (5 / 15 / 45 min) are not */
+    if(typeof _maybePromptEmail==='function'&&!_maybePromptEmail._w11nv){var me=_maybePromptEmail;_maybePromptEmail=function(){var early=(Date.now()-(_w11nv.t0||0))<4*60000;if(early&&!_w11nvAutoOk('email'))return;_w11nv.mailT=early?Date.now():0;return me.apply(this,arguments)};_maybePromptEmail._w11nv=1}
+    if(typeof _promptAddEmail==='function'&&!_promptAddEmail._w11nv){var pe=_promptAddEmail;_promptAddEmail=function(){var tick=_w11nv.mailT&&Date.now()-_w11nv.mailT<20000;_w11nv.mailT=0;if(tick&&!_w11nvAutoOk('email'))return;var r=pe.apply(this,arguments);if(tick&&document.getElementById('emailPromptOverlay'))_w11nvAutoGot('email');return r};_promptAddEmail._w11nv=1}
+    /* the goal question and the survey hold the toasts too (welcome-back and the weekly recap already do) */
+    if(typeof _W6SK_TK==='string'&&_W6SK_TK.indexOf('#goalOv')<0)_W6SK_TK+=',#goalOv,#satOverlay';
+  }catch(e){}
+}
+/* sign-in = the load's start for the cadence above (the page may sit on the welcome screen first) */
+_w11nv.t0=Date.now();
+document.addEventListener('w10:navigate',function(e){try{if(e.detail&&e.detail.from===''&&!_w11nv.t1){_w11nv.t1=1;_w11nv.t0=Date.now()}}catch(x){}});
+_w11nvHook();
+setTimeout(_w11nvHook,0);
+setTimeout(_w11nvHook,1500);
+/* ===== /W11 navigation & orientation ===== */
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
