@@ -12649,7 +12649,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.27';
+const APP_VERSION='1.10.28';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -18390,8 +18390,8 @@ var _w6dkFILL=['glossaryFab','chatFab','srFab'];
 var _w6dkMORE=['glossaryFab','srFab','certFab','chatFab','bugFab','adminFab','adminMsgFab','jumpCurFab'];
 var _w6dkLBL={todayFab:['היום שלי','My day'],dailyFab:['שאלה יומית','Daily'],duelFab:['דו-קרב','Duel'],lbFab:['דירוג','Ranks'],more:['עוד','More'],
   glossaryFab:['מילון מונחים','Glossary'],srFab:['חזרה על טעויות','Review mistakes'],certFab:['תעודת השלמה','Certificate'],chatFab:['בחינה רב‑תחומית','Practice exam'],
-  bugFab:['דיווח על תקלה','Report a bug'],adminFab:['ניהול המערכת','Admin panel'],adminMsgFab:['הודעה מהמנהל','Admin message'],jumpCurFab:['לשלב הנוכחי','Current stage']};
-var _w6dkXIC={jumpCurFab:'<circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/>',
+  bugFab:['דיווח על תקלה','Report a bug'],adminFab:['ניהול המערכת','Admin panel'],adminMsgFab:['הודעה מהמנהל','Admin message'],jumpCurFab:['לשלב הנוכחי','Current stage'],w12dgFab:['משחקים יומיים','Daily games']};
+var _w6dkXIC={w12dgFab:'<line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/>',jumpCurFab:'<circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/>',
   more:'<rect width="7" height="7" x="3" y="3" rx="1.5"/><rect width="7" height="7" x="14" y="3" rx="1.5"/><rect width="7" height="7" x="14" y="14" rx="1.5"/><rect width="7" height="7" x="3" y="14" rx="1.5"/>'};
 var _w6dkOVSEL='#stageCerem,#todayHub,#wbOv,#goalOv,#legalOv,#pwOv,#certOverlay,.daily-modal,.modal-overlay,.bug-modal,.adm-modal-overlay,.duel-config,.lang-pop,.dvo,[data-takeover]';
 function _w6dkEn(){try{return typeof _enLang==='function'&&!!_enLang()}catch(e){return false}}
@@ -18702,7 +18702,7 @@ function _w7shText(kind,d,o){
     return t+L;
   }
   if(kind==='chapter')return (en?'Completed the “'+d.name+'” chapter on Product Master 🚀':'השלמתי את פרק „'+d.name+'” ב-Product Master 🚀')+'\n'+(en?'A free, game-like product management course: ':'קורס ניהול מוצר חינמי ומשחקי: ')+L;
-  if(kind==='streak')return (en?'🔥 '+d.n+' days in a row learning product management on Product Master. Who\'s in?':'🔥 '+d.n+' ימים ברצף של למידת ניהול מוצר ב-Product Master. מי איתי?')+'\n'+L;
+  if(kind==='streak')return (en?'🔥 '+(d.n===1?'1 day in a row':d.n+' days in a row')+' learning product management on Product Master. Who\'s in?':'🔥 '+(d.n===1?'יום ראשון ברצף':d.n+' ימים ברצף')+' של למידת ניהול מוצר ב-Product Master. מי איתי?')+'\n'+L;
   if(kind==='cert'){
     t=en?'I completed the Product Master product management program — '+_w7shN(d.stages)+' stages, '+_w7shN(d.score)+' points.':'השלמתי את תכנית Product Master לניהול מוצר — '+_w7shN(d.stages)+' שלבים, '+_w7shN(d.score)+' נקודות.';
     if(o.name&&d.ver)t+='\n'+(en?'Verify: ':'לאימות התעודה: ')+d.ver;
@@ -18723,7 +18723,7 @@ function _w7shCopyK(kind,d,en,name){
     t.k=en?'CHAPTER COMPLETE':'· פרק הושלם ·';t.title=d.name;t.sub=en?'One more chapter of the product journey':'עוד פרק במסע המוצר';
     t.meta=(en?d.done+' of '+d.count+' stages':d.done+'/'+d.count+' שלבים')+(d.pts>0?'   ·   '+_w7shN(d.pts)+(en?' pts':' נק׳'):'');
   }else if(kind==='streak'){
-    t.k=en?'LEARNING STREAK':'· רצף למידה ·';t.title=en?'days in a row':'ימים ברצף';
+    t.k=en?'LEARNING STREAK':'· רצף למידה ·';t.title=d.n===1?(en?'day in a row':'יום ברצף'):(en?'days in a row':'ימים ברצף');
     var ml=null;try{ml=(typeof _W6ST_ML!=='undefined')&&_W6ST_ML[d.n]}catch(e){}
     t.sub=ml?(en?ml[1]:ml[0]):(en?'A little learning every day — that\'s the whole secret':'קצת למידה בכל יום — זה כל הסוד');
   }else if(kind==='cert'){
@@ -28733,7 +28733,7 @@ function _w10nvStatsClose(restore){var o=document.getElementById('w10nvStats');i
 
 /* ---------------- places: shared by the phone dock and the desktop bar ---------------- */
 var _W10NV_PRI=['w10nvMapFab','todayFab','lbFab','w10nvProfFab'];
-var _W10NV_GROUPS=[['learn',['dailyFab','glossaryFab','srFab','chatFab','certFab','jumpCurFab']],['play',['w8gmFab','duelFab']],['app',['w10nvThemeFab','w10nvLangFab','w10nvAboutFab','bugFab','adminMsgFab','adminFab']]];
+var _W10NV_GROUPS=[['learn',['dailyFab','glossaryFab','srFab','chatFab','certFab','jumpCurFab']],['play',['w12dgFab','w8gmFab','duelFab']],['app',['w10nvThemeFab','w10nvLangFab','w10nvAboutFab','bugFab','adminMsgFab','adminFab']]];
 var _W10NV_GN={learn:['למידה','Learn'],play:['משחק ותחרות','Play & compete'],app:['האפליקציה','App']};
 function _w10nvGrp(id){for(var i=0;i<_W10NV_GROUPS.length;i++)if(_W10NV_GROUPS[i][1].indexOf(id)>=0)return _W10NV_GROUPS[i][0];return 'play'}
 function _w10nvGrpName(g){var n=_W10NV_GN[g]||_W10NV_GN.play;return n[_w10nvEn()?1:0]}
@@ -32671,8 +32671,8 @@ function _w11amShellHtml(C){
 function _w11amPhHtml(p,C,extra){
   var T=_w11amT,E=_w11amE,N=_w11amN,t='',s='',a=extra||'';
   if(p==='ov'){var d='';try{d=new Date().toLocaleDateString(_w11amEn()?'en-GB':'he-IL',{weekday:'long',day:'numeric',month:'long'})}catch(e){}
-    t=T('סקירה','Overview');s=d+' · '+(C.k.pend?T(N(C.k.pend)+' ממתינים לאישור',N(C.k.pend)+' waiting for approval'):T('אין ממתינים לאישור','nobody waiting for approval'))+' · '+(C.open?T(N(C.open)+' דיווחים פתוחים',N(C.open)+' open reports'):T('אין דיווחים פתוחים','no open reports'))}
-  else if(p==='us'){t=T('משתמשים','Users');s=T(N(C.app)+' משתמשים',N(C.app)+' users')+(C.deact?' · '+T(N(C.deact)+' ביטלו חשבון',N(C.deact)+' deactivated'):'')+' · '+T('לחיצה על שורה פותחת את כרטיס המשתמש','tap a row to open the user card')}
+    t=T('סקירה','Overview');s=d+' · '+(C.k.pend===1?T('ממתין אחד לאישור','1 waiting for approval'):C.k.pend?T(N(C.k.pend)+' ממתינים לאישור',N(C.k.pend)+' waiting for approval'):T('אין ממתינים לאישור','nobody waiting for approval'))+' · '+(C.open===1?T('דיווח פתוח אחד','1 open report'):C.open?T(N(C.open)+' דיווחים פתוחים',N(C.open)+' open reports'):T('אין דיווחים פתוחים','no open reports'))}
+  else if(p==='us'){t=T('משתמשים','Users');s=(C.app===1?T('משתמש אחד','1 user'):T(N(C.app)+' משתמשים',N(C.app)+' users'))+(C.deact?' · '+T(N(C.deact)+' ביטלו חשבון',N(C.deact)+' deactivated'):'')+' · '+T('לחיצה על שורה פותחת את כרטיס המשתמש','tap a row to open the user card')}
   else if(p==='me'){t=T('מדדים','Metrics');s=T('משפך, שימור, תובנות ושימוש — מ-'+N(C.app)+' המשתמשים שנטענו','Funnel, retention, insights and usage — from the '+N(C.app)+' users loaded')}
   else if(p==='se'){t=T('הגדרות','Settings');s=T('התראות מייל, הודעת שידור, תזכורות וגרסאות ארכיון','Mail alerts, broadcast, reminders and archived builds')}
   return '<header class="w11am-ph"><div class="w11am-pht"><h3 class="w11am-h" id="w11amH-'+p+'" tabindex="-1">'+_w11amI(p)+'<span>'+t+'</span></h3><p class="w11am-ps">'+E(s)+'</p></div>'+(a?'<div class="w11am-pha">'+a+'</div>':'')+'</header>';
@@ -33047,6 +33047,49 @@ try{if(typeof FEAT_ACT_NAMES!=='undefined'){var _w11amAN={amPage:'פורטל: מ
 // Returning users see the welcome screen first, then click to enter
 if(G.s){updateStreak()}
 
+</script>
+<style>
+/* ===== W12 polish (1.10.28): share-sheet preview clears the ✕ · the games highlight in My day ===== */
+#w7shOv .w7sh-hd{min-height:44px}
+#todayHub #w8g3Hub,#todayHub #tdGame{scroll-margin-top:64px}
+#todayHub .w12dg-hl{outline:2px solid var(--p);outline-offset:4px;border-radius:14px;transition:outline-color .5s}
+#todayHub .w12dg-hl.w12dg-out{outline-color:transparent}
+@media (prefers-reduced-motion:reduce){#todayHub .w12dg-hl{transition:none}}
+</style>
+<script>
+/* ===== W12 polish (1.10.28): "Daily games" under More ===== */
+/* one place for the 7 daily games: a hidden source button (like every More place) that opens My day at the games */
+function _w12dgAv(){
+  try{
+    if(typeof _w12dgHas0==='function'&&!_w12dgHas0('todayFab'))return false;/* in the app, where My day exists */
+    if(typeof _w11grState==='function')return _w11grState().t>0;
+    return typeof showTodayHub==='function';
+  }catch(e){return false}
+}
+function _w12dgLeft(){try{var st=_w11grState();return Math.max(0,st.t-st.n)}catch(e){return 0}}
+function _w12dgGo(){
+  try{if(document.getElementById('w8g3Ov'))_w8g3Close(true)}catch(e){}
+  try{showTodayHub()}catch(e){return}
+  var tries=0;
+  (function go(){
+    var t=document.getElementById('w8g3Hub')||document.getElementById('tdGame');
+    if(!t){if(++tries<12)setTimeout(go,50);return}
+    var rm=false;try{rm=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+    try{t.scrollIntoView({block:'start',behavior:rm?'auto':'smooth'})}catch(e){try{t.scrollIntoView()}catch(e2){}}
+    t.classList.add('w12dg-hl');
+    setTimeout(function(){t.classList.add('w12dg-out')},1400);
+    setTimeout(function(){t.classList.remove('w12dg-hl','w12dg-out')},2000);
+  })();
+}
+(function(){
+  try{
+    if(!document.getElementById('w12dgFab')){var b=document.createElement('button');b.type='button';b.id='w12dgFab';b.className='w10nv-src';b.tabIndex=-1;b.setAttribute('aria-hidden','true');b.addEventListener('click',_w12dgGo);document.body.appendChild(b)}
+    /* availability + count through the helpers the phone sheet (_w6dkModel) and the desktop menu (_w10nvHas/_w10nvBadge) use */
+    if(typeof _w6dkHas==='function'&&!_w6dkHas._w12){var h=_w6dkHas;window._w12dgHas0=h;_w6dkHas=function(id){if(id==='w12dgFab')return _w12dgAv();return h.apply(this,arguments)};_w6dkHas._w12=1}
+    if(typeof _w6dkBadge==='function'&&!_w6dkBadge._w12){var g=_w6dkBadge;_w6dkBadge=function(id){if(id==='w12dgFab'){var n=_w12dgLeft();return {n:n>0?String(n):'',d:false}}return g.apply(this,arguments)};_w6dkBadge._w12=1}
+  }catch(e){}
+})();
+/* ===== /W12 polish ===== */
 </script>
 </body>
 </html>
