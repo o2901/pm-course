@@ -12246,7 +12246,7 @@ function generateCert(){
   const certId=(function(){var h=0,src=(G.userName||'')+'|'+new Date().toISOString().slice(0,10);for(var i=0;i<src.length;i++){h=((h<<5)-h+src.charCodeAt(i))|0}return 'PM-'+Math.abs(h).toString(36).toUpperCase()})();
 
   /* W5: server-side issuance record + public verification link (fire-and-forget; the backend endpoint may lag) */
-  const _w5fVerUrl=(typeof _DB_BASE!=='undefined'&&_DB_BASE)?(_DB_BASE+'?action=verifyCert&id='+encodeURIComponent(certId)):'';
+  const _w5fVerUrl=(typeof _DB_BASE!=='undefined'&&_DB_BASE)?(_DB_BASE+'?action=verifyCert&id='+encodeURIComponent(certId)+(_enLang()?'&lang=en':'')):'';
   try{if(DB_URL){const _w6gsU=G.userName||'';const _w6gsCert=function(again){let _w5fTok='';try{_w5fTok=G.sessionToken||localStorage.getItem('pm_session_token_'+_w6gsU)||''}catch(e){}fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'issueCert',userName:_w6gsU,sessionToken:_w5fTok,certId:certId,title:(title?title.name:'מנהל מוצר מקצוען'),score:score,stages:stagesCompleted}),headers:{'Content-Type':'text/plain'},keepalive:true}).then(function(r){return r.json()}).then(function(d){/* w6gs: issueCert now needs this device's current session token AND the core stages already saved on the server; refused right after the last stage (save in flight) or after a device switch → ONE retry after this device's next save */if(!again&&d&&d.success!==true&&(d.denied==='auth'||d.error==='incomplete')){try{syncToCloud()}catch(e){}setTimeout(function(){try{if((G.userName||'')===_w6gsU)_w6gsCert(true)}catch(e){}},9000)}}).catch(function(){})};_w6gsCert(false)}}catch(e){}
   /* W11 certificate: the document is built by _w11ctDoc from the same real values (ID, verify URL, LinkedIn, stats, date) */
   const _w6i18nCE=_enLang();const certHTML=_w11ctDoc({en:_w6i18nCE,name:G.userName||'',rank:(_w6i18nCE?_t(title?title.name:'מנהל מוצר מקצוען'):(title?title.name:'מנהל מוצר מקצוען')),score:score,stages:stagesCompleted,streak:Math.max(G.maxStreak||0,G.streak||0),date:dateStr,id:certId,ver:_w5fVerUrl,flair:G.certFlair===true});
@@ -12651,7 +12651,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.29';
+const APP_VERSION='1.10.30';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -18679,7 +18679,7 @@ function _w7shChapter(tg){
 }
 function _w7shCertD(){
   var x=_w7shSt(),c=x.cert||{},dt=new Date(),ver='';
-  try{if(c.id&&typeof _DB_BASE!=='undefined'&&_DB_BASE)ver=_DB_BASE+'?action=verifyCert&id='+encodeURIComponent(c.id)}catch(e){}
+  try{if(c.id&&typeof _DB_BASE!=='undefined'&&_DB_BASE)ver=_DB_BASE+'?action=verifyCert&id='+encodeURIComponent(c.id)+(_w7shEn()?'&lang=en':'')}catch(e){}
   return {stages:(typeof _w6rtCounts==='function'?_w6rtCounts().core.done:0),score:parseInt(G.ts,10)||0,id:c.id||'',y:c.y||dt.getFullYear(),m:c.m||(dt.getMonth()+1),ver:ver};
 }
 function _w7shData(kind,a){
@@ -19234,7 +19234,7 @@ try{if(typeof _w6vcCertDoc==='function'){var _w7shOrigCertDoc=_w6vcCertDoc;_w6vc
       var id=m[1],x=_w7shSt(),dt=new Date();
       if(!x.tmp){x.cert={id:id,y:dt.getFullYear(),m:dt.getMonth()+1,at:Date.now()};_w7shSave()}
       _w7sh.certNew=1;
-      var ver=(typeof _DB_BASE!=='undefined'&&_DB_BASE)?(_DB_BASE+'?action=verifyCert&id='+encodeURIComponent(id)):'';
+      var ver=(typeof _DB_BASE!=='undefined'&&_DB_BASE)?(_DB_BASE+'?action=verifyCert&id='+encodeURIComponent(id)+((/<html[^>]*\slang="en"/i.test(String(out))||(!/<html[^>]*\slang=/i.test(String(out))&&_enLang()))?'&lang=en':'')):'';
       if(ver&&String(out).indexOf('certUrl=')<0)out=String(out).replace('&certId='+id,'&certUrl='+encodeURIComponent(ver)+'&certId='+id);
     }
   }catch(e){}
@@ -23960,6 +23960,7 @@ function _w8g3ResultShow(anim){
   if(anim&&!_w8g3RM())el.classList.add('w8g3-rin');
   sh.appendChild(el);
   sh.classList.add('w8g3-done');
+  try{if(typeof _w14pbPin==='function')_w14pbPin()}catch(e){}
   try{if(anim)el.scrollIntoView({block:'nearest',behavior:_w8g3RM()?'auto':'smooth'})}catch(e){}
   try{var b=el.querySelector('.w8g3-shb')||el.querySelector('button');if(b&&anim)b.focus({preventScroll:true})}catch(e){}
 }
@@ -24153,7 +24154,7 @@ function _w8g3PtSide(){
   var lg=_w8g3$('w8g3Leg');
   if(lg){var t='';P.leg.forEach(function(k2){var used=k2<done,act=k2===cur&&!used;
       t+='<span class="w8g3-lc w8g3-k'+k2+(used?' w8g3-used':'')+(act?' w8g3-act':'')+'">'+_w8g3GlyphSvg(k2,14)+'<b>'+_w8g3E(P.q.s[k2][0])+'</b>'+(_w8g3En()?'':'<small>'+_w8g3E(P.q.s[k2][1])+'</small>')
-        +(r.ord?'<i class="w8g3-ord" dir="ltr">'+(k2+1)+'</i>':'')+'<span class="w8g3-left" dir="ltr">'+(used?'✓':(cnt[k2]+'/'+P.size[k2]))+'</span></span>'});
+        +(r.ord?'<i class="w8g3-ord" dir="ltr">'+(k2+1)+'</i>':'')+'<span class="w8g3-left" dir="ltr" style="min-width:'+(String(P.size[k2]).length*2+1)+'ch">'+(used?'✓':(cnt[k2]+'/'+P.size[k2]))+'</span></span>'});
     if(lg._h!==t){lg.innerHTML=t;lg._h=t}}
   _w8g3.pop=-1;
 }
@@ -33108,6 +33109,11 @@ function _w12dgGo(){
 .w13mp-kl{display:block;margin-top:.1rem;font-size:.7rem;font-weight:700;line-height:1.25;color:var(--t2)}
 .w13mp-kv{display:block;font-size:1.15rem;font-weight:800;line-height:1.15;color:var(--t1);font-variant-numeric:tabular-nums;white-space:nowrap}
 .w13mp-ks{font-size:.7rem;font-weight:700;color:var(--t2)}
+/* W14 (_w14mu): the % under the number (≥1,000 answers fit their tile at 375) · books apart from learning stages */
+.w13mp-kv .w13mp-ks{display:block;margin-top:.05rem;white-space:nowrap}
+@media (max-width:420px){.w13mp-kv{font-size:1rem}}
+.w14mu-bk{flex:0 0 auto;font-size:.72rem;font-weight:700;color:var(--t2);white-space:nowrap;font-variant-numeric:tabular-nums}
+.w13mu-pt .w14mu-bkc{font-size:.85rem}
 .w13mp-days{margin:0 0 .8rem;padding:.5rem .7rem .4rem;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
 .w13mp-dh{display:flex;justify-content:space-between;gap:.5rem;margin:0 0 .35rem;font-size:.76rem;font-weight:700;color:var(--t2)}
 .w13mp-bars{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));align-items:end;gap:3px;height:52px}
@@ -33442,7 +33448,7 @@ function _w13scCheck(why,force){
       _w13sc.busy=false;if(!r||!r.ok)return;
       var e=_w13scNorm(r.headers&&r.headers.get('etag'));
       if(!e){_w13sc.noEtag++;if(why==='poll'&&!_w13scLocal())_w13scGet('noetag');return}/* a host without ETags: the served APP_VERSION, only on the 30-min visible poll */
-      if(_w13sc.base===null){if(_w13scFresh()){_w13sc.base=e;_w13scLive(e)}else _w13scGet('cache',e);return}
+      if(_w13sc.base===null){if(_w13scFresh()){_w13sc.base=e;_w13scLive(e)}else if(!(typeof _w14vcKnown==='function'&&_w14vcKnown(e)))_w13scGet('cache',e);return}
       if(e!==_w13sc.base){_w13sc.n.diff++;_w13scAvail('etag',true)}
     },function(){_w13sc.busy=false});
   }catch(e){_w13sc.busy=false}
@@ -34345,7 +34351,7 @@ function _w13muQs(id,lang){var e=(lang==='en')?_w13muEnD(id):null,h=_w13muHe(id)
 function _w13muCase(id){var h=_w13muHe(id);return !!(h&&h.cs)}
 function _w13muVisSet(navy){if(!_w13mu.vis){_w13mu.vis={};[true,false].forEach(function(nv){var ids=[];try{if(typeof _w9rtVisIds==='function')ids=_w9rtVisIds(nv)||[]}catch(e){}
     if(!ids.length){try{ids=S.filter(function(s){return nv?s.id!==26:(s.id!==1&&s.id!==25)}).map(function(s){return s.id})}catch(e){}}
-    var has={};ids.forEach(function(i){has[i]=1});_w13mu.vis[nv?'n':'c']={has:has,n:ids.length||52,ids:ids}})}
+    var has={},bk={},nb=0;ids.forEach(function(i){has[i]=1;var st=_w13muSt(i);if(st&&st.tg==='בונוס - ספר'){bk[i]=1;nb++}});_w13mu.vis[nv?'n':'c']={has:has,n:ids.length||52,ids:ids,bk:bk,nb:nb,nl:(ids.length||52)-nb}})}
   return _w13mu.vis[navy?'n':'c']}
 function _w13muSid(e){if(!e)return null;var d=String(e.d||''),m=(e.a==='openStage')?/^\s*(\d+)/.exec(d):/שלב\s*(\d+)/.exec(d);return m?parseInt(m[1],10):null}
 function _w13muLog(u){var a=_w13muJ(u&&u.activityLogJSON,[]);if(!Array.isArray(a))return [];return a.filter(function(e){return e&&typeof e==='object'&&typeof e.a==='string'&&Number(e.t)>1.5e12}).map(function(e){return {t:Number(e.t),a:e.a,d:e.d==null?'':String(e.d),p:e.p}}).sort(function(x,y){return x.t-y.t})}
@@ -34368,14 +34374,14 @@ function _w13muLite(u){var n=String(u&&u.userName!=null?u.userName:''),fx=_w13mu
   var log=_w13muLog(u),now=Date.now(),ll=0,i;for(i=log.length-1;i>=0;i--){if(log[i].t<=now+864e5){ll=log[i].t;break}}
   var sync=_w13muMs(u.lastLogin),b=fx.by[n]||null,ev=b?b.ta:0,seen=_w13muMs(u.lastActivity),act=Math.max(ll,sync,ev);
   var src=!act?'':(act===ll?'log':(act===ev?'ev':'sync'));
-  var navy=String(u.navyArm)==='true',vs=_w13muVisSet(navy),done={},dn=0,hid=[],core=0,coreT=23;
-  String(u.stagesList==null?'':u.stagesList).split(',').forEach(function(x){x=String(x).trim();if(!/^\d+$/.test(x))return;var id=+x;if(done[id])return;done[id]=1;if(vs.has[id])dn++;else hid.push(id)});
+  var navy=String(u.navyArm)==='true',vs=_w13muVisSet(navy),done={},dn=0,dl=0,db=0,hid=[],core=0,coreT=23;
+  String(u.stagesList==null?'':u.stagesList).split(',').forEach(function(x){x=String(x).trim();if(!/^\d+$/.test(x))return;var id=+x;if(done[id])return;done[id]=1;if(vs.has[id]){dn++;if(vs.bk&&vs.bk[id])db++;else dl++}else hid.push(id)});
   try{coreT=PM_IDS.length;PM_IDS.forEach(function(id){if(done[id])core++})}catch(e){}
   var cur=parseInt(String(u.lastStageVisited==null?'':u.lastStageVisited),10);if(isNaN(cur)||!_w13muSt(cur))cur=null;
   if(cur==null)for(i=log.length-1;i>=0;i--){var sd=_w13muSid(log[i]);if(sd!=null&&_w13muSt(sd)){cur=sd;break}}
   var staff='';if(String(u.isAdmin)==='true')staff='flag';else if(b&&b.f&&b.f.admin)staff='ev';else if(n&&n===_w13muMe())staff='me';
   var v=String(u.appVersion||''),fu=_w13muMs(u.firstUse),rv=(b&&b.tv)||'';
-  c={sig:sig,n:n,log:log,ll:ll,sync:sync,ev:ev,b:b,seen:seen,act:act,src:src,navy:navy,T:vs.n,done:done,dn:dn,hid:hid,core:core,coreT:coreT,cur:cur,
+  c={sig:sig,n:n,log:log,ll:ll,sync:sync,ev:ev,b:b,seen:seen,act:act,src:src,navy:navy,T:vs.n,Tl:(vs.nl!=null?vs.nl:vs.n),Tb:(vs.nb||0),dl:dl,db:db,done:done,dn:dn,hid:hid,core:core,coreT:coreT,cur:cur,
      staff:staff,v:rv||v,vs:v,rv:rv,rvt:b?b.t:0,vo:rv?_w13muVerOld(rv):0,nb:!!(act&&fx.rel&&act<fx.rel),ghost:!!((rv||(fx.ok?v:''))&&_w13muVerLt(rv||v,'1.10.21')),dead:String(u.status)==='deactivated',fu:fu,isNew:!!(fu&&now-fu<_W13MU.NEW)};
   _w13mu.lite[n]=c;return c}
 /* ONE rule for "online now" (lead, 16/11), used by the Users dot, the Overview tile (k.on) and Insights ("עכשיו במערכת"):
@@ -34383,7 +34389,7 @@ function _w13muLite(u){var n=String(u&&u.userName!=null?u.userName:''),fx=_w13mu
    30 min). Builds before 1.10.21 keep beating from idle tabs (ghosts). With no per-person event data it keeps today's behaviour. */
 function _w13muOnline(u,win){try{var now=Date.now(),la=parseInt(u&&u.lastActivity)||0;if(!la||now-la>(win||_W13MU.ON))return false;var L=_w13muLite(u);if(L.dead)return false;if(L.act&&now-L.act<=_W13MU.REAL)return true;return !L.ghost}catch(e){return true}}
 function _w13muState(L){var now=Date.now();if(L.dead)return 'dead';if(L.act&&now-L.act<_W13MU.ON)return 'on';if(L.seen&&now-L.seen<_W13MU.ON&&L.ghost&&!(L.act&&now-L.act<=_W13MU.REAL))return 'ghost';if(L.seen&&now-L.seen<_W13MU.ON)return (L.act&&L.seen<=L.act+_W13MU.GAP)?'in':'open';
-  if(!L.act)return 'none';var t=new Date();t.setHours(0,0,0,0);if(L.act>=t.getTime())return 'today';if(now-L.act<7*864e5)return 'week';return 'old'}
+  if(!L.act)return 'none';if(typeof _w13mpJer==='function'?_w13mpJer(L.act)===_w13mpJer(now):L.act>=new Date(new Date().setHours(0,0,0,0)).getTime())return 'today';if(now-L.act<7*864e5)return 'week';return 'old'}
 function _w13muStateTx(L){var st=_w13muState(L),T=_w13muT;
   if(st==='dead')return T('🚫 החשבון בוטל','🚫 Account closed');if(st==='on')return T('🟢 פעילות עכשיו','🟢 Active now');
   if(st==='in')return T('🟢 באפליקציה עכשיו · פעולה אחרונה ','🟢 In the app now · last action ')+_w13muAgo(L.act);
@@ -34417,8 +34423,8 @@ function _w13muTable(h){
       if(L.isNew)tags+='<span class="w13mu-tag w13mu-nw">'+E(T('🆕 חדש במערכת','🆕 New'))+'</span>';
       var dc={on:'w13mu-on',in:'w13mu-on',open:'w13mu-on',ghost:'',today:'w13mu-dy',week:'w13mu-wk',none:'w13mu-no',old:'',dead:''}[st]||'';
       c0.insertAdjacentHTML('beforeend','<span class="w13mu-nl"><i class="w13mu-dot '+dc+'" role="img" aria-label="'+E(_w13muStateTx(L))+'" title="'+E(_w13muStateTx(L))+'"></i>'+tags+'</span>')}}catch(e){}
-    if(iS>=0&&td[iS])try{var pc=L.T?Math.min(100,Math.round(L.dn/L.T*100)):0;td[iS].innerHTML='<span class="w13mu-pc"><b dir="ltr">'+L.dn+'/'+L.T+'</b><span class="w13mu-bar" aria-hidden="true"><i style="width:'+pc+'%"></i></span></span>'+(L.cur!=null?'<span class="w13mu-cur">'+_w13muStageLine(L)+'</span>':'');
-      td[iS].setAttribute('title',T(L.dn+' מתוך '+L.T+' שלבים במסלול · ליבה '+L.core+'/'+L.coreT,L.dn+' of '+L.T+' stages in this track · core '+L.core+'/'+L.coreT)+(L.hid.length?T(' · עוד '+L.hid.length+' מחוץ למסלול',' · +'+L.hid.length+' outside the track'):'')+(L.cur!=null?T(' · עכשיו: שלב ',' · now: stage ')+L.cur:''))}catch(e){}
+    if(iS>=0&&td[iS])try{var pc=L.Tl?Math.min(100,Math.round(L.dl/L.Tl*100)):0;td[iS].innerHTML='<span class="w13mu-pc"><b dir="ltr">'+L.dl+'/'+L.Tl+'</b>'+(L.Tb?'<span class="w14mu-bk" dir="ltr">📚 '+L.db+'</span>':'')+'<span class="w13mu-bar" aria-hidden="true"><i style="width:'+pc+'%"></i></span></span>'+(L.cur!=null?'<span class="w13mu-cur">'+_w13muStageLine(L)+'</span>':'');
+      td[iS].setAttribute('title',T(L.dl+' מתוך '+L.Tl+' שלבי לימוד'+(L.Tb?' · '+L.db+' מתוך '+L.Tb+' ספרים':'')+' · ליבה '+L.core+'/'+L.coreT,L.dl+' of '+L.Tl+' learning stages'+(L.Tb?' · '+L.db+' of '+L.Tb+' books':'')+' · core '+L.core+'/'+L.coreT)+(L.hid.length?T(' · עוד '+L.hid.length+' מחוץ למסלול',' · +'+L.hid.length+' outside the track'):'')+(L.cur!=null?T(' · עכשיו: שלב ',' · now: stage ')+L.cur:''))}catch(e){}
     if(iL>=0&&td[iL])try{var x='';if(L.act)x='<span class="w13mu-at" dir="ltr">'+E(_w13muDT(L.act))+'</span><span class="w13mu-ago" data-w13t="'+L.act+'">'+E(_w13muAgo(L.act))+'</span>';else x='<span class="w13mu-at">—</span><span class="w13mu-ago">'+E(T('אין פעילות עדיין','No activity yet'))+'</span>';
       if(L.seen&&L.seen>L.act+_W13MU.GAP)x+='<span class="w13mu-seen" title="'+E(T('האפליקציה שלחה דופק (lastActivity) בלי פעולה — כנראה טאב פתוח','The app sent a heartbeat (lastActivity) with no action — probably an open tab'))+'">👁 '+E(L.ghost?T('דופק מטאב ישן · ','old-tab heartbeat · '):T('אפליקציה פתוחה · ','app open · '))+'<span data-w13t="'+L.seen+'">'+E(_w13muAgo(L.seen))+'</span></span>';
       td[iL].innerHTML=x;td[iL].setAttribute('data-w10l',lbl);td[iL].setAttribute('title',T('מקור: ','Source: ')+(_w13muSrcTx(L.src)||'—')+(L.sync?T(' · שמירה אחרונה ',' · last save ')+_w13muDT(L.sync):''))}catch(e){}
@@ -34507,7 +34513,7 @@ function _w13muFull(u){
   if(logNot.length)dis.push(T('ביומן הפעילות יש סיום של '+(logNot.length===1?'שלב ':'שלבים ')+ids(logNot)+', שלא '+(logNot.length===1?'מופיע':'מופיעים')+' ברשימת השלבים שהושלמו.','The activity log shows stage'+(logNot.length===1?' ':'s ')+ids(logNot)+' finished, but the finished-stages list does not.'));
   if(noDet.length)dis.push(T((noDet.length===1?'שלב אחד':noDet.length+' שלבים')+' ברשימה בלי שום פירוט שמור ('+ids(noDet)+') — '+(noDet.length===1?'הושלם':'הושלמו')+' לפני שנשמר פירוט, או בגרסה ישנה.',noDet.length+' finished stage'+(noDet.length===1?' has':'s have')+' no saved detail ('+ids(noDet)+') — finished before detail was saved, or on an old version.'));
   var sc=parseInt(u.stagesCount,10),ln=Object.keys(L.done).length;if(!isNaN(sc)&&sc!==ln)dis.push(T('מונה השלבים ('+sc+') שונה ממספר השלבים ברשימה ('+ln+').','The stage counter ('+sc+') differs from the stage list ('+ln+').'));
-  if(L.hid.length)dis.push(T((L.hid.length===1?'שלב אחד שהושלם ('+ids(L.hid)+') לא שייך':L.hid.length+' שלבים שהושלמו ('+ids(L.hid)+') לא שייכים')+' למסלול הזה ('+(L.navy?'זרוע הים':'אזרחי')+') ולכן '+(L.hid.length===1?'לא נספר':'לא נספרים')+' ב-'+L.dn+'/'+L.T+'.',L.hid.length+' finished stage'+(L.hid.length===1?' is':'s are')+' ('+ids(L.hid)+') outside this track ('+(L.navy?'navy':'civilian')+') and not counted in '+L.dn+'/'+L.T+'.'));
+  if(L.hid.length)dis.push(T((L.hid.length===1?'שלב אחד שהושלם ('+ids(L.hid)+') לא שייך':L.hid.length+' שלבים שהושלמו ('+ids(L.hid)+') לא שייכים')+' למסלול הזה ('+(L.navy?'זרוע הים':'אזרחי')+') ולכן '+(L.hid.length===1?'לא נספר':'לא נספרים')+' ב-'+L.dl+'/'+L.Tl+'.',L.hid.length+' finished stage'+(L.hid.length===1?' is':'s are')+' ('+ids(L.hid)+') outside this track ('+(L.navy?'navy':'civilian')+') and not counted in '+L.dl+'/'+L.Tl+'.'));
   if(L.ghost&&L.seen&&L.seen>L.act+_W13MU.GAP)dis.push(T('טאב ישן (גרסה '+(L.rv||L.vs)+', לפני 1.10.21) שולח דופק גם כשאף אחד לא שם (נראה לאחרונה '+_w13muAgo(L.seen)+'); אין פעולה '+(L.act?'מאז '+_w13muDT(L.act):'בכלל')+'.',
     'An old tab (version '+(L.rv||L.vs)+', before 1.10.21) sends heartbeats even when nobody is there (last seen '+_w13muAgo(L.seen)+'); there has been no action '+(L.act?'since '+_w13muDT(L.act):'at all')+'.'));
   else if(L.seen&&L.seen>L.act+_W13MU.GAP)dis.push(T('האפליקציה שולחת דופק (נראתה לאחרונה '+_w13muAgo(L.seen)+') אבל אין פעולה '+(L.act?'מאז '+_w13muDT(L.act):'בכלל')+' — כנראה טאב פתוח'+(L.v?' בגרסה '+L.v:'')+'.',
@@ -34540,9 +34546,9 @@ function _w13muCard(u){
   if(L.navy)chips+='<span class="w13mu-tag">'+E(T('⚓ זרוע הים','⚓ Navy'))+'</span>';
   h+='<div class="w13mu-chips">'+chips+'</div>';
   /* progress */
-  var pc=L.T?Math.min(100,Math.round(L.dn/L.T*100)):0;
-  h+='<div class="w13mu-box w13mu-prog"><div class="w13mu-pt"><p class="w13mu-h">'+E(T('התקדמות','Progress'))+'</p><b dir="ltr">'+L.dn+'/'+L.T+'</b><span class="w13mu-sm">'+E(T(pc+'% מהשלבים במסלול',pc+'% of the stages in this track'))+'</span></div>';
-  h+='<span class="w13mu-bar w13mu-bl" role="progressbar" aria-valuemin="0" aria-valuemax="'+L.T+'" aria-valuenow="'+L.dn+'" aria-label="'+E(T('שלבים שהושלמו','Stages finished'))+'"><i style="width:'+pc+'%"></i></span>';
+  var pc=L.Tl?Math.min(100,Math.round(L.dl/L.Tl*100)):0;
+  h+='<div class="w13mu-box w13mu-prog"><div class="w13mu-pt"><p class="w13mu-h">'+E(T('התקדמות','Progress'))+'</p><b dir="ltr">'+L.dl+'/'+L.Tl+'</b>'+(L.Tb?'<span class="w14mu-bk w14mu-bkc" dir="ltr" title="'+E(T(L.db+' ספרים מתוך '+L.Tb,L.db+' of '+L.Tb+' books'))+'">📚 '+L.db+'/'+L.Tb+'</span>':'')+'<span class="w13mu-sm">'+E(T(pc+'% משלבי הלימוד במסלול',pc+'% of the learning stages in this track'))+'</span></div>';
+  h+='<span class="w13mu-bar w13mu-bl" role="progressbar" aria-valuemin="0" aria-valuemax="'+L.Tl+'" aria-valuenow="'+L.dl+'" aria-label="'+E(T('שלבים שהושלמו','Stages finished'))+'"><i style="width:'+pc+'%"></i></span>';
   h+='<div class="w13mu-ps">'+E(T('ליבה ','Core '))+'<b dir="ltr">'+L.core+'/'+L.coreT+'</b>'+(L.cur!=null?' · '+E(T('עכשיו: ','Now: '))+_w13muStIc(L.cur)+' '+_w13muB(L.cur+' · '+_w13muStT(L.cur)):'')+'</div></div>';
   /* facts, each with its source */
   var fact=function(dt,dd,sm){return '<div><dt>'+E(dt)+'</dt><dd>'+dd+(sm?'<small>'+sm+'</small>':'')+'</dd></div>'},when=function(ms){return ms?'<span dir="ltr">'+E(_w13muDT(ms))+'</span> · <span data-w13t="'+ms+'">'+E(_w13muAgo(ms))+'</span>':'—'};
@@ -34640,6 +34646,150 @@ try{if(typeof FEAT_ACT_NAMES!=='undefined'){var _w13muAN={muSort:'משתמשים
 try{if(typeof _W10AD_EN==='object'&&_W10AD_EN){var _w13muEN={'דילג לפני הדירוג':'Skipped the rating','זמני דילוג':'When skipped','תזכורת אחרונה':'Last reminder','הערת משתמש':'User note','טרם דירג (לא דילג)':'Not rated yet (never skipped)','טרם הגיע לסף (3 שלבים)':'Not at the threshold yet (3 stages)'};Object.keys(_w13muEN).forEach(function(k){if(_W10AD_EN[k]==null)_W10AD_EN[k]=_w13muEN[k]})}
   if(typeof _W10AD_ENP!=='undefined'&&Array.isArray(_W10AD_ENP)&&!_W10AD_ENP._w13mu){_W10AD_ENP.push([/^⏭️ דילג (\d+) פעמים · טרם דירג$/,'⏭️ Skipped $1 times · not rated yet'],[/^(\d+) פעמים$/,'$1 times']);_W10AD_ENP._w13mu=1}}catch(e){}
 /* ===== /W13 mon_users ===== */
+</script>
+<style id="w14pbCss">
+/* ===== W14 board pin (_w14pb): the count badge keeps one width ("0/7" … "✓"); a pinned sheet grows downward ===== */
+.w8g3-lc .w8g3-left{display:inline-block;text-align:center}
+#w8g3Ov.w14pb-pin{align-items:flex-start}
+#w8g3Ov.w14pb-pin>.w8g3-sh{margin-top:var(--w14pb-m,0px);max-height:var(--w14pb-h,calc(100dvh - 24px))}
+</style>
+<script>
+/* ===== W14 board pin (_w14pb) ===== */
+/* Desktop centres the puzzle sheet (#w8g3Ov align-items:center). Centre it once per render, then pin its top, so a later
+   height change below the board grows the sheet downward (it scrolls inside once it reaches the bottom) and the board
+   never moves while you play. Phone (≤560px, align-items:stretch) is full-height and top-anchored already: no pin. */
+function _w14pbPin(){
+  try{
+    var ov=document.getElementById('w8g3Ov'),sh=ov&&ov.querySelector('.w8g3-sh');if(!sh)return false;
+    ov.classList.remove('w14pb-pin');ov.style.removeProperty('--w14pb-m');ov.style.removeProperty('--w14pb-h');
+    var cs=getComputedStyle(ov);if(cs.alignItems!=='center')return false;
+    var pt=parseFloat(cs.paddingTop)||0,pb=parseFloat(cs.paddingBottom)||0,room=ov.clientHeight-pt-pb;if(room<=0)return false;
+    var m=Math.max(0,Math.floor((room-sh.offsetHeight)/2));
+    ov.style.setProperty('--w14pb-m',m+'px');ov.style.setProperty('--w14pb-h',Math.max(0,room-m)+'px');ov.classList.add('w14pb-pin');
+    return true;
+  }catch(e){return false}
+}
+try{if(typeof _w8g3Render==='function'&&!_w8g3Render._w14pb){var _w14pbORender=_w8g3Render;_w8g3Render=function(){var r=_w14pbORender.apply(this,arguments);_w14pbPin();return r};_w8g3Render._w14pb=1}}catch(e){}
+try{var _w14pbRz=0;window.addEventListener('resize',function(){if(_w14pbRz)return;_w14pbRz=requestAnimationFrame(function(){_w14pbRz=0;if(document.getElementById('w8g3Ov'))_w14pbPin()})})}catch(e){}
+/* ===== /W14 board pin ===== */
+</script>
+<style id="w14axCss">
+/* ===== W14 admin token expiry (_w14ax): one calm banner with the way back in ===== */
+#w14axBar{position:fixed;z-index:420;top:max(10px,env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:min(560px,calc(100vw - 24px));box-sizing:border-box;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--card,#141726);color:var(--t1,#fff);border:1px solid color-mix(in srgb,var(--s,#ff6584) 55%,var(--line,#333));box-shadow:0 12px 36px rgba(0,0,0,.35);font-size:.88rem;line-height:1.45;text-align:start}
+#w14axBar .w14ax-i{font-size:1.25rem;flex:0 0 auto}
+#w14axBar .w14ax-t{flex:1 1 auto;min-width:0}
+#w14axBar .w14ax-t b{display:block;font-weight:800}
+#w14axBar .w14ax-go{flex:0 0 auto;min-height:44px;min-width:44px;padding:0 14px;border-radius:12px;border:0;background:var(--p,#6c63ff);color:#fff;font:inherit;font-weight:800;cursor:pointer}
+#w14axBar .w14ax-x{flex:0 0 auto;min-height:44px;min-width:44px;border:0;background:transparent;color:var(--t2,#aaa);font-size:1.1rem;cursor:pointer;border-radius:12px}
+#w14axBar .w14ax-go:focus-visible,#w14axBar .w14ax-x:focus-visible{outline:2px solid var(--p,#6c63ff);outline-offset:2px}
+@media (max-width:420px){#w14axBar{flex-wrap:wrap}#w14axBar .w14ax-t{flex-basis:calc(100% - 90px)}#w14axBar .w14ax-go{flex:1 1 auto}}
+</style>
+<script>
+/* ===== W14 admin token expiry (_w14ax) ===== */
+var _w14ax={rp:null,at:0,skip:0,bar:0};
+var _W14AX_OPEN={adminLogin:1,adminAccessByFlag:1};
+function _w14axEn(){try{return typeof _enLang==='function'&&!!_enLang()}catch(e){return false}}
+function _w14axT(he,en){return _w14axEn()?en:he}
+function _w14axMsg(){return _w14axT('הכניסה לניהול פגה (מוגבלת ל-4 שעות). לא בוצע — היכנסו שוב ונסו שוב.','Admin sign-in expired (4-hour limit). Not done — sign in again and retry.')}
+function _w14axTrack(a,m){try{trackEvent('admin',a,m==null?'':String(m))}catch(e){}}
+function _w14axCanFlag(){try{if(typeof _w13mlCanFlag==='function')return _w13mlCanFlag();return !!(G&&G.isAdmin&&G.userName&&(G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName))&&typeof _w6idEmail==='function'&&_w6idEmail())}catch(e){return false}}
+function _w14axSetTok(d){
+  try{if(typeof _w13mlSetTok==='function'){_w13mlSetTok(d);return}}catch(e){}
+  _admToken=d.adminToken;_admTokenExp=d.expiresAt||(Date.now()+3*36e5);try{sessionStorage.setItem('pm_admin_token',_admToken);sessionStorage.setItem('pm_admin_token_exp',String(_admTokenExp))}catch(e){}
+}
+/* the flag renewal (no password, no user data written): one at a time (parallel calls share it); after a REFUSED renewal
+   no new attempt for 15 s */
+function _w14axRenew(F){
+  if(_w14ax.rp)return _w14ax.rp;
+  if(!_w14axCanFlag()||Date.now()-_w14ax.at<15000)return Promise.resolve(false);
+  var tok='';try{tok=G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||''}catch(e){}
+  var p;try{p=F(DB_URL,{method:'POST',body:JSON.stringify({action:'adminAccessByFlag',userName:G.userName,sessionToken:tok,email:_w6idEmail()}),headers:{'Content-Type':'text/plain'}})}catch(e){p=Promise.reject(e)}
+  _w14ax.rp=Promise.resolve(p).then(function(r){return r.json()}).then(function(d){
+      if(d&&d.success&&d.adminToken){_w14axSetTok(d);_w14ax.at=0;_w14axTrack('axRenew','ok');return true}
+      _w14ax.at=Date.now();_w14axTrack('axRenew','fail');return false},function(){_w14ax.at=Date.now();_w14axTrack('axRenew','fail:net');return false})
+    .then(function(ok){_w14ax.rp=null;return ok});
+  return _w14ax.rp;
+}
+function _w14axUnauth(t){var d=null;try{d=JSON.parse(t)}catch(e){}return !!(d&&typeof d==='object'&&d.success===false&&String(d.error||'')==='Unauthorized')}
+function _w14axJson(o){return new Response(JSON.stringify(o),{status:200,headers:{'Content-Type':'application/json'}})}
+/* the token cannot be renewed: drop it, tell the caller in words, offer the way back in */
+function _w14axExpired(action){
+  try{_admToken='';_admTokenExp=0;sessionStorage.removeItem('pm_admin_token');sessionStorage.removeItem('pm_admin_token_exp')}catch(e){}
+  _w14axTrack('axExpired',action||'');_w14axBar();
+  return _w14axJson({success:false,error:_w14axMsg(),code:'Unauthorized',expired:true});
+}
+function _w14axBar(){
+  try{
+    var old=document.getElementById('w14axBar');if(old)old.remove();
+    var b=document.createElement('div');b.id='w14axBar';b.setAttribute('role','alert');b.dir=_w14axEn()?'ltr':'rtl';
+    b.innerHTML='<span class="w14ax-i" aria-hidden="true">🔒</span><span class="w14ax-t"><b>'+_w14axT('הכניסה לניהול פגה','Admin sign-in expired')+'</b>'
+      +_w14axT('היא תקפה 4 שעות. הפעולה האחרונה לא בוצעה.','It lasts 4 hours. The last action was not done.')+'</span>'
+      +'<button type="button" class="w14ax-go" data-w14ax="signin">'+_w14axT('כניסה מחדש','Sign in again')+'</button>'
+      +'<button type="button" class="w14ax-x" data-w14ax="x" aria-label="'+_w14axT('סגירה','Close')+'">✕</button>';
+    b.addEventListener('click',function(e){var t=e.target&&e.target.closest?e.target.closest('[data-w14ax]'):null;if(!t)return;var a=t.getAttribute('data-w14ax');b.remove();
+      if(a!=='signin')return;_w14axTrack('axSignin',_w14axCanFlag()?'flag':'password');
+      try{var adv=document.getElementById('adv');if(adv&&adv.classList.contains('hid')&&typeof showAdmin==='function')showAdmin()}catch(x){}
+      try{if(_w14axCanFlag())adminEnterByFlag();else renderAdminGate()}catch(x){}});
+    document.body.appendChild(b);_w14ax.bar=Date.now();
+  }catch(e){}
+}
+function _w14axOk(){try{var b=document.getElementById('w14axBar');if(b)b.remove()}catch(e){}}
+(function(){
+  if(typeof window.fetch!=='function'||window.fetch._w14ax)return;
+  var F=window.fetch.bind(window);
+  var W=function(input,init){
+    var b=null;
+    try{
+      if(_w14ax.skip||!init||typeof init.body!=='string'||init.body.indexOf('"adminToken"')<0||typeof DB_URL==='undefined'||!DB_URL)return F(input,init);
+      var u=typeof input==='string'?input:(input&&input.url)||'';
+      if(u!==DB_URL)return F(input,init);
+      try{b=JSON.parse(init.body)}catch(e){b=null}
+      if(!b||typeof b!=='object'||!Object.prototype.hasOwnProperty.call(b,'adminToken')||_W14AX_OPEN[b.action])return F(input,init);
+    }catch(e){return F(input,init)}
+    var with_=function(tok){var c={};for(var k in init)c[k]=init[k];var nb={};for(var j in b)nb[j]=b[j];nb.adminToken=tok;c.body=JSON.stringify(nb);return c};
+    var old=false;try{old=!!(_admTokenExp&&Date.now()>_admTokenExp-60000)}catch(e){}
+    var pre=(old||!b.adminToken)?_w14axRenew(F):Promise.resolve(false);
+    return pre.then(function(renewed){
+      var sent=renewed&&_admToken?_admToken:b.adminToken;
+      return F(input,sent===b.adminToken?init:with_(sent)).then(function(res){
+        if(!res||!res.ok)return res;
+        return res.clone().text().then(function(t){
+          if(!_w14axUnauth(t)){try{var d0=JSON.parse(t);if(d0&&d0.success===true)_w14axOk()}catch(e){}return res}
+          /* refused for the token: the server did nothing. Retry ONCE with a fresh token (renewed now, or by a parallel call) */
+          var fresh=(_admToken&&_admToken!==sent)?Promise.resolve(true):_w14axRenew(F);
+          return fresh.then(function(ok){
+            if(!ok||!_admToken||_admToken===sent)return _w14axExpired(b.action);
+            return F(input,with_(_admToken)).then(function(r2){
+              if(!r2||!r2.ok)return r2;
+              return r2.clone().text().then(function(t2){if(_w14axUnauth(t2))return _w14axExpired(b.action);_w14axOk();return r2},function(){return r2});
+            });
+          });
+        },function(){return res});
+      });
+    });
+  };
+  W._w14ax=1;window.fetch=W;
+})();
+/* w13ml's own calls renew + explain by themselves (its load banner): keep them out of this guard */
+try{if(typeof _w13mlCall==='function'&&!_w13mlCall._w14ax){var _w14axOCall=_w13mlCall;_w13mlCall=function(){_w14ax.skip++;try{return _w14axOCall.apply(this,arguments)}finally{_w14ax.skip--}};_w13mlCall._w14ax=1}}catch(e){}
+/* monitoring (standing directive): Hebrew labels for the new admin events */
+try{if(typeof FEAT_ACT_NAMES!=='undefined'){var _w14axAN={axRenew:'ניהול: חידוש כניסה אוטומטי',axExpired:'ניהול: הכניסה לניהול פגה',axSignin:'ניהול: כניסה מחדש אחרי תפוגה'};Object.keys(_w14axAN).forEach(function(k){if(!FEAT_ACT_NAMES[k])FEAT_ACT_NAMES[k]=_w14axAN[k]})}}catch(e){}
+/* ===== /W14 admin token expiry ===== */
+</script>
+<script>
+/* ===== W14 cached-page update check (_w14vc) ===== */
+/* the HEAD's ETag is the one a fresh load recorded with its build → the served build is known: no 7.5 MB download */
+function _w14vcKnown(e){
+  try{
+    var o=JSON.parse(localStorage.getItem('pm_w13sc_live')||'null');
+    if(!e||!o||!o.v||!o.e||String(o.e)!==String(e)||typeof cmpVersion!=='function')return false;
+    var c=cmpVersion(String(o.v),APP_VERSION);
+    if(c>0){_w13sc.n.known=(_w13sc.n.known||0)+1;_w13scAvail('etag',true);return true}
+    if(c===0){_w13sc.n.known=(_w13sc.n.known||0)+1;_w13sc.base=e;return true}
+    return false;
+  }catch(x){return false}
+}
+/* ===== /W14 cached-page update check ===== */
 </script>
 </body>
 </html>
