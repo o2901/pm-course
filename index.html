@@ -12651,7 +12651,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.30';
+const APP_VERSION='1.10.31';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -13517,7 +13517,7 @@ function admApplyUserFilter(scrollToTable){
   var inp=$('admUserSearch');if(inp)_admSearchQ=String(inp.value||'').trim().toLowerCase();
   var filtered=_getFilteredUsers();
   var wrap=$('admTableWrap');if(wrap)wrap.innerHTML=buildAdmTable(filtered);
-  var txt=filtered.length+' משתמשים'+(_admSearchQ?' · חיפוש: "'+_admSearchQ+'"':'');
+  var txt=(filtered.length===1?'משתמש אחד':filtered.length+' משתמשים')+(_admSearchQ?' · חיפוש: "'+_admSearchQ+'"':'');
   var l1=$('admFilterLbl');if(l1)l1.textContent=txt;
   var l2=$('admFilterLbl2');if(l2)l2.textContent=txt;
   var act=_admStatFilter||'all';
@@ -13597,7 +13597,7 @@ h+='<h2 style="text-align:center;font-size:1.6rem;margin-bottom:1.5rem">🔧 פ�
 // Bug notification banner
 if(_admBugCount>0){
   h+='<div style="background:linear-gradient(135deg,rgba(255,101,132,.15),rgba(255,101,132,.05));border:2px solid rgba(255,101,132,.4);border-radius:16px;padding:1rem 1.2rem;margin-bottom:1.2rem;display:flex;justify-content:space-between;align-items:center;animation:fabPulse 2.5s infinite;cursor:pointer" onclick="admShowBugs()">';
-  h+='<div><div style="font-size:1.05rem;font-weight:700;color:var(--s)">🚨 יש '+_admBugCount+' דיווחי באגים פתוחים</div>';
+  h+='<div><div style="font-size:1.05rem;font-weight:700;color:var(--s)">🚨 '+(_admBugCount===1?'יש דיווח באג פתוח אחד':'יש '+_admBugCount+' דיווחי באגים פתוחים')+'</div>';
   h+='<div style="font-size:.82rem;color:var(--t2);margin-top:.2rem">לחץ לצפייה ולסימון כטופל</div></div>';
   h+='<div style="font-size:1.5rem">→</div>';
   h+='</div>';
@@ -13690,7 +13690,7 @@ if(!_admAnalytics){
     h+='</div>';
   });
   h+='</div>';
-  h+='<div style="font-size:.7rem;color:var(--t2);margin-top:.4rem">📈 סך הכל '+(_admAnalytics.totalEvents||0)+' אירועים מתועדים · לחצו על פיצ׳ר לראות מי לחץ, כמה, מתי ומאיזה מכשיר</div>';
+  h+='<div style="font-size:.7rem;color:var(--t2);margin-top:.4rem">📈 סך הכל '+(Number(_admAnalytics.totalEvents||0)===1?'אירוע אחד מתועד':(_admAnalytics.totalEvents||0)+' אירועים מתועדים')+' · לחצו על פיצ׳ר לראות מי לחץ, כמה, מתי ומאיזה מכשיר</div>';
 }
 h+='</div>';
 
@@ -13725,8 +13725,8 @@ h+='<div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-
 h+='<input class="adm-search" placeholder="🔍 חיפוש משתמש..." oninput="admFilter(this.value)">';
 h+='<button class="bs" style="font-size:.78rem" onclick="loadAdminData()">🔄 רענן נתונים</button>';
 h+='<span style="color:var(--t2);font-size:.72rem">עודכן: '+new Date().toLocaleTimeString('he-IL',{timeZone:'Asia/Jerusalem',hour:'2-digit',minute:'2-digit',second:'2-digit'})+' · v'+APP_VERSION+'</span>';
-h+='<button class="bs" style="font-size:.78rem;background:'+(_admBugCount>0?'rgba(255,101,132,.2)':'rgba(255,101,132,.1)')+';color:var(--s);border-color:rgba(255,101,132,.3);position:relative;'+(_admBugCount>0?'animation:fabPulse 2s infinite':'')+'" onclick="admShowBugs()">🐛 דיווחי באגים'+(_admBugCount>0?' <span style="background:var(--s);color:#fff;padding:.1rem .4rem;border-radius:10px;font-size:.7rem;font-weight:800;margin-right:.3rem">'+_admBugCount+' חדשים!</span>':'')+'</button>';
-h+='<span id="admFilterLbl" style="color:var(--t2);font-size:.78rem;margin-right:auto">'+approvedUsers.length+' משתמשים</span>';
+h+='<button class="bs" style="font-size:.78rem;background:'+(_admBugCount>0?'rgba(255,101,132,.2)':'rgba(255,101,132,.1)')+';color:var(--s);border-color:rgba(255,101,132,.3);position:relative;'+(_admBugCount>0?'animation:fabPulse 2s infinite':'')+'" onclick="admShowBugs()">🐛 דיווחי באגים'+(_admBugCount>0?' <span style="background:var(--s);color:#fff;padding:.1rem .4rem;border-radius:10px;font-size:.7rem;font-weight:800;margin-right:.3rem">'+_admBugCount+(_admBugCount===1?' חדש!':' חדשים!')+'</span>':'')+'</button>';
+h+='<span id="admFilterLbl" style="color:var(--t2);font-size:.78rem;margin-right:auto">'+(approvedUsers.length===1?'משתמש אחד':approvedUsers.length+' משתמשים')+'</span>';
 h+='</div>';
 
 // Version-rollout summary: who's already on the latest build vs. stuck on an old one
@@ -13756,7 +13756,7 @@ h+='<div class="adm-tbl-ctrl" id="admTblCtrl">'
  +'<button class="adm-fchip" data-f="month" onclick="admStatFilter(\'month\')">החודש</button>'
  +'<button class="adm-fchip" data-f="core" onclick="admStatFilter(\'core\')">סיימו ליבה</button>'
  +'<button class="adm-fchip" data-f="rated" onclick="admStatFilter(\'rated\')">דירגו</button>'
- +'<span id="admFilterLbl2" class="adm-fcount">'+approvedUsers.length+' משתמשים</span>'
+ +'<span id="admFilterLbl2" class="adm-fcount">'+(approvedUsers.length===1?'משתמש אחד':approvedUsers.length+' משתמשים')+'</span>'
  +'</div></div>';
 h+='<div style="overflow-x:auto;border-radius:12px;border:1px solid rgba(108,99,255,.15)" id="admTableWrap">'+buildAdmTable(approvedUsers)+'</div>';
 
@@ -13960,7 +13960,7 @@ function admSendTestReminder(stage){
 const lbl=stage===1?'24h':stage===2?'48h':'שבועית';
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'sendTestReminder',stage:stage,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
 .then(r=>r.json()).then(d=>{
-  if(d.success){showAchievement('🧪','מייל בדיקה נשלח','('+lbl+') ל-'+(d.sentTo||[]).length+' כתובות')}
+  if(d.success){showAchievement('🧪','מייל בדיקה נשלח','('+lbl+') '+((d.sentTo||[]).length===1?'לכתובת אחת':'ל-'+(d.sentTo||[]).length+' כתובות'))}
   else{showModal('⚠️','שגיאה',d.error||'לא ניתן לשלוח. ודאו שיש מיילים ברשימה.','הבנתי')}
 }).catch(()=>{showModal('📴','שגיאת חיבור','לא הצלחנו לשלוח בדיקה.','הבנתי')});
 }
@@ -14046,7 +14046,7 @@ function _admTitleFor(stagesList,navyArm){
 function buildAdmTable(users){
 const sorted=[...users].sort((a,b)=>{
   let va=a[_admSort.col],vb=b[_admSort.col];
-  if(['score','stagesCount','streak'].includes(_admSort.col)){va=parseInt(va)||0;vb=parseInt(vb)||0}
+  if(_admSort.col==='stagesCount'&&typeof _w15skStages==='function'){va=_w15skStages(a);vb=_w15skStages(b)}else if(['score','stagesCount','streak'].includes(_admSort.col)){va=parseInt(va)||0;vb=parseInt(vb)||0}
   else{va=String(va||'').toLowerCase();vb=String(vb||'').toLowerCase()}
   if(va<vb)return -1*_admSort.dir;if(va>vb)return 1*_admSort.dir;return 0;
 });
@@ -14079,7 +14079,7 @@ sorted.forEach((u,i)=>{
   if(_rc>0){
     const _open=Math.min(_rc,2), _week=Math.max(0,_rc-2);
     const _label=_week>0?(_open+' פתיחה + '+_week+' שבועי'):(_open+' פתיחה');
-    _rcCell='<span title="סה״כ '+_rc+' תזכורות: '+_open+' פתיחה (24ש׳+48ש׳) + '+_week+' שבועיות (תקרה 4)" style="background:rgba(255,193,7,0.15);color:#FFC107;padding:2px 6px;border-radius:8px;font-size:.7rem;white-space:nowrap">'+_label+'</span>';
+    _rcCell='<span title="סה״כ '+(_rc===1?'תזכורת אחת':_rc+' תזכורות')+': '+_open+' פתיחה (24ש׳+48ש׳) + '+(_week===1?'שבועית אחת':_week+' שבועיות')+' (תקרה 4)" style="background:rgba(255,193,7,0.15);color:#FFC107;padding:2px 6px;border-radius:8px;font-size:.7rem;white-space:nowrap">'+_label+'</span>';
   }
   const _deactBadge=_isDeactivated?' <span style="background:rgba(255,101,132,.15);color:#FF6584;padding:1px 7px;border-radius:8px;font-size:.65rem;margin-right:.3rem;font-weight:700" title="המשתמש ביטל את החשבון">🚫 מבוטל</span>':'';
   t+='<tr style="cursor:pointer;'+(_isDeactivated?'opacity:.55':'')+'" onclick="showUserDetail(\''+n+'\')">';
@@ -14268,10 +14268,10 @@ var uSatSkips=[];try{uSatSkips=JSON.parse(u.satSkipsJSON||'[]')}catch(e){}
 if(uSat>0){
 h+='<div class="am-stat"><span class="am-k">שביעות רצון</span><span class="am-v" style="color:#ffd700">'+'★'.repeat(uSat)+'☆'.repeat(5-uSat)+' ('+uSat+'/5)</span></div>';
 if(uSatNote){h+='<div class="am-stat"><span class="am-k">הערת משתמש</span><span class="am-v" style="font-size:.78rem;max-width:250px;word-break:break-word">💬 '+esc(uSatNote)+'</span></div>'}
-if(uSatSkips.length){h+='<div class="am-stat"><span class="am-k">דילג לפני הדירוג</span><span class="am-v" style="color:var(--t2)">'+uSatSkips.length+' פעמים</span></div>'}
+if(uSatSkips.length){h+='<div class="am-stat"><span class="am-k">דילג לפני הדירוג</span><span class="am-v" style="color:var(--t2)">'+(uSatSkips.length===1?'פעם אחת':uSatSkips.length+' פעמים')+'</span></div>'}
 }else if(uSatSkips.length){
 var _skTimes=uSatSkips.map(function(x){return _fmtChipDate(x.t)}).join(' · ');
-h+='<div class="am-stat"><span class="am-k">שביעות רצון</span><span class="am-v" style="color:#FF6584">⏭️ דילג '+uSatSkips.length+' פעמים · טרם דירג</span></div>';
+h+='<div class="am-stat"><span class="am-k">שביעות רצון</span><span class="am-v" style="color:#FF6584">⏭️ דילג '+(uSatSkips.length===1?'פעם אחת':uSatSkips.length+' פעמים')+' · טרם דירג</span></div>';
 h+='<div class="am-stat"><span class="am-k">זמני דילוג</span><span class="am-v" style="font-size:.72rem;color:var(--t2);max-width:250px;word-break:break-word">'+esc(_skTimes)+'</span></div>';
 }else{
 h+='<div class="am-stat"><span class="am-k">שביעות רצון</span><span class="am-v" style="color:var(--t2)">'+((parseInt(u.stagesCount)||0)>=3?'טרם דירג (לא דילג)':'טרם הגיע לסף (3 שלבים)')+'</span></div>';
@@ -14419,15 +14419,15 @@ if(qaKeys.length){
   let totalAttempts=0,retakeStages=0;const failCount={};
   qaKeys.forEach(sid=>{const arr=quizAttempts[sid]||[];totalAttempts+=arr.length;if(arr.length>1)retakeStages++;arr.forEach(at=>{(at.wrong||[]).forEach(qi=>{const k=sid+'_'+qi;failCount[k]=(failCount[k]||0)+1})})});
   h+='<div style="margin-top:1.2rem"><strong style="color:var(--p);font-size:.9rem">📝 ניסיונות מבחן וטעויות</strong>';
-  h+='<div style="font-size:.78rem;color:var(--t2);margin:.3rem 0 .6rem">סה״כ '+totalAttempts+' ניסיונות ב-'+qaKeys.length+' שלבים · '+retakeStages+' שלבים נעשו יותר מפעם אחת</div>';
+  h+='<div style="font-size:.78rem;color:var(--t2);margin:.3rem 0 .6rem">סה״כ '+(totalAttempts===1?'ניסיון אחד':totalAttempts+' ניסיונות')+' '+(qaKeys.length===1?'בשלב אחד':'ב-'+qaKeys.length+' שלבים')+' · '+(retakeStages===1?'שלב אחד נעשה':retakeStages+' שלבים נעשו')+' יותר מפעם אחת</div>';
   qaKeys.map(Number).sort((a,b)=>a-b).forEach(sid=>{
     const s=S.find(x=>x.id===sid);if(!s)return;const arr=quizAttempts[sid]||[];
     const scores=arr.map(a=>_w10scN(a&&a.ok)+'/'+_w10scN(a&&a.total)).join(' → ');
     const lastWrong=[].concat((arr[arr.length-1]||{}).wrong||[]);
-    h+='<div class="adm-section-group" style="margin-bottom:.5rem"><div class="asg-title">'+(s.ic||'')+' שלב '+sid+': '+esc(s.t)+' <span class="asg-prog">'+arr.length+' ניסיונות</span></div>';
+    h+='<div class="adm-section-group" style="margin-bottom:.5rem"><div class="asg-title">'+(s.ic||'')+' שלב '+sid+': '+esc(s.t)+' <span class="asg-prog">'+(arr.length===1?'ניסיון אחד':arr.length+' ניסיונות')+'</span></div>';
     h+='<div style="font-size:.8rem;color:var(--t2);padding:.15rem .4rem">ציונים: <strong style="color:var(--t1)">'+scores+'</strong></div>';
     if(lastWrong.length){
-      h+='<div style="font-size:.78rem;color:var(--s);padding:.15rem .4rem">טעה בניסיון האחרון ב-'+lastWrong.length+' שאלות: '+lastWrong.map(qi=>'<span title="'+esc(((s.q[qi]&&s.q[qi].q)||'').slice(0,140))+'" style="cursor:help;border-bottom:1px dotted">ש'+(_w10scN(qi)+1)+'</span>').join(', ')+'</div>';
+      h+='<div style="font-size:.78rem;color:var(--s);padding:.15rem .4rem">טעה בניסיון האחרון '+(lastWrong.length===1?'בשאלה אחת':'ב-'+lastWrong.length+' שאלות')+': '+lastWrong.map(qi=>'<span title="'+esc(((s.q[qi]&&s.q[qi].q)||'').slice(0,140))+'" style="cursor:help;border-bottom:1px dotted">ש'+(_w10scN(qi)+1)+'</span>').join(', ')+'</div>';
     }else{
       h+='<div style="font-size:.78rem;color:var(--a);padding:.15rem .4rem">✓ הניסיון האחרון ללא טעויות</div>';
     }
@@ -14823,7 +14823,7 @@ function _renderContentAnalytics(){
     var data=sm[F.k]||{};var keys=Object.keys(data);
     var uniq=fu[F.k]?Object.keys(fu[F.k]).length:0;
     var total=keys.reduce(function(a,k){return a+(data[k]||0);},0);
-    h+='<div class="pv-card" style="margin-bottom:1rem"><h3 style="font-size:.95rem">'+F.t+' — '+total+' צפיות'+(uniq?' · '+uniq+' משתמשים':'')+'</h3>';
+    h+='<div class="pv-card" style="margin-bottom:1rem"><h3 style="font-size:.95rem">'+F.t+' — '+(total===1?'צפייה אחת':total+' צפיות')+(uniq?' · '+(uniq===1?'משתמש אחד':uniq+' משתמשים'):'')+'</h3>';
     if(!keys.length){h+='<p style="color:var(--t2);font-size:.8rem">— אין צפיות עדיין</p></div>';return;}
     keys.sort(function(a,b){return data[b]-data[a];});
     h+='<div style="overflow-x:auto"><table class="adm-tbl" style="font-size:.78rem"><thead><tr><th>שלב</th>'+(F.hasCh?'<th>פרק</th>':'')+'<th>שפה</th>'+(F.hasVoice?'<th>קריין</th>':'')+'<th>צפיות</th></tr></thead><tbody>';
@@ -14851,7 +14851,7 @@ function _renderDataResearch(){
   h+='<button class="bbtn" onclick="_admBackToUsers()">→ חזרה לפאנל ניהול</button>';
   h+='<h2 style="font-size:1.4rem;margin:.3rem 0 .3rem;text-align:center">📊 מחקר נתונים — פיצ׳רים וכפתורים</h2>';
   const genStr=A.generatedAt?new Date(A.generatedAt).toLocaleString('he-IL',{timeZone:'Asia/Jerusalem'}):'';
-  h+='<p style="text-align:center;color:var(--t2);font-size:.76rem;margin:0 0 1.2rem">סך '+(A.totalEvents||0)+' אירועים · עודכן: '+esc(genStr)+' <button class="bs" style="font-size:.7rem;padding:.2rem .6rem;margin-right:.4rem" onclick="_admAnalytics=null;admShowDataResearch()">🔄 רענן</button></p>';
+  h+='<p style="text-align:center;color:var(--t2);font-size:.76rem;margin:0 0 1.2rem">'+(Number(A.totalEvents||0)===1?'סך אירוע אחד':'סך '+(A.totalEvents||0)+' אירועים')+' · עודכן: '+esc(genStr)+' <button class="bs" style="font-size:.7rem;padding:.2rem .6rem;margin-right:.4rem" onclick="_admAnalytics=null;admShowDataResearch()">🔄 רענן</button></p>';
 
   if(!A.totalEvents){
     h+='<div style="text-align:center;padding:3rem 1rem"><p style="font-size:2.5rem;margin-bottom:.5rem">🌱</p><p style="color:var(--t2);font-size:1rem">עדיין לא נאספו אירועי שימוש</p><p style="color:var(--t2);font-size:.8rem;margin-top:.4rem">ברגע שמשתמשים יתחילו להשתמש בפיצ׳רים ובכפתורים — הנתונים יופיעו כאן.</p></div>';
@@ -15001,7 +15001,7 @@ function _g3Svg(series,act){
   s+='</div>';
   var sum=0;series.forEach(function(b){sum+=b.total;});
   var unit=_g3Gran==='daily'?'ימים':(_g3Gran==='weekly'?'שבועות':'חודשים');
-  s+='<p style="font-size:.7rem;color:var(--t2);margin:.55rem 0 0">סך '+sum+' אירועים ב-'+n+' '+unit+' אחרונים'+(act.length<TRACKED_FEATURES.length?' · '+act.length+'/'+TRACKED_FEATURES.length+' פיצ\'רים נבחרו':'')+'</p>';
+  s+='<p style="font-size:.7rem;color:var(--t2);margin:.55rem 0 0">'+(sum===1?'סך אירוע אחד':'סך '+sum+' אירועים')+(n===1?' ב'+(unit==='ימים'?'יום':(unit==='שבועות'?'שבוע':'חודש'))+' האחרון':' ב-'+n+' '+unit+' אחרונים')+(act.length<TRACKED_FEATURES.length?' · '+act.length+'/'+TRACKED_FEATURES.length+' פיצ\'רים נבחרו':'')+'</p>';
   return s;
 }
 
@@ -15030,7 +15030,7 @@ _saveNotifyEmails()
 function _saveNotifyEmails(){
 _renderNotifyEmails();
 fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'setNotifyEmails',emails:_notifyEmails,adminToken:_admToken}),headers:{'Content-Type':'text/plain'}})
-.then(r=>r.json()).then(d=>{if(d.success){_notifyEmails=d.emails;_renderNotifyEmails();showAchievement('📩','רשימת מיילים עודכנה',_notifyEmails.length+' מיילים ברשימה')}})
+.then(r=>r.json()).then(d=>{if(d.success){_notifyEmails=d.emails;_renderNotifyEmails();showAchievement('📩','רשימת מיילים עודכנה',(_notifyEmails.length===1?'מייל אחד ברשימה':_notifyEmails.length+' מיילים ברשימה'))}})
 .catch(()=>{showModal('⚠️','שגיאה','לא הצלחנו לשמור. נסו שוב.','הבנתי')})
 }
 
@@ -15118,7 +15118,7 @@ function admCopyAllBugs(btn){
   var list=((window._admBugsCache)||[]).filter(function(r){return r.resolved!=='resolved'});
   if(!list.length)return;
   var txt=list.map(function(r,i){return (i+1)+'. ['+(r.timestamp||'')+'] '+(r.userName||'אנונימי')+'\nדיווח: '+(r.report||'')+'\nהקשר: '+(r.context||'-')+(r.image?('\nצילום: '+r.image):'')}).join('\n\n');
-  function done(ok){if(btn){var orig='📋 העתק את כל הפתוחים ('+list.length+')';btn.textContent=ok?('✓ הועתק — '+list.length+' דיווחים'):'❌ העתקה נכשלה';setTimeout(function(){btn.textContent=orig;},2500);}}
+  function done(ok){if(btn){var orig='📋 העתק את כל הפתוחים ('+list.length+')';btn.textContent=ok?(list.length===1?'✓ הועתק — דיווח אחד':'✓ הועתק — '+list.length+' דיווחים'):'❌ העתקה נכשלה';setTimeout(function(){btn.textContent=orig;},2500);}}
   try{navigator.clipboard.writeText(txt).then(function(){done(true)},function(){done(false)});}catch(e){done(false);}
 }
 // One-click bulk: mark every open bug report as resolved (sequential, rowIndex stays stable on resolve).
@@ -21721,7 +21721,7 @@ function _w8adKpis(M){
   /* 1 active users */
   var sp=(w8&&w8.dau&&typeof w8.dau==='object')?_w8adSpark(w8.dau):'';
   h+=tile('act','👥',T('משתמשים פעילים','Active users'),'<div class="w8ad-kv">'+N(k.a1)+' <span class="w8ad-ku">'+T('היום','today')+'</span>'+sp+'</div>',
-    T('7 ימים','7 days')+': <b>'+N(k.a7)+'</b> · '+T('30 יום','30 days')+': <b>'+N(k.a30)+'</b>'+(k.online?' · <span class="w8ad-dot" aria-hidden="true"></span>'+N(k.online)+' '+T('מחוברים','online'):''),
+    T('7 ימים','7 days')+': <b>'+N(k.a7)+'</b> · '+T('30 יום','30 days')+': <b>'+N(k.a30)+'</b>'+(k.online?' · <span class="w8ad-dot" aria-hidden="true"></span>'+(k.online===1?T('מחובר/ת אחד/ת','1 online'):N(k.online)+' '+T('מחוברים','online')):''),
     ' data-v1="'+k.a1+'" data-v7="'+k.a7+'" data-v30="'+k.a30+'"',T('משתמשים מאושרים לפי הפעילות האחרונה שלהם (היום · 7 · 30 ימים). לחיצה: רשימת הפעילים.','Approved users by their last activity (today · 7 · 30 days). Click: the active list.')+(sp?' '+T('הקו: משתמשים ייחודיים ביום, 14 ימים.','Line: unique users per day, 14 days.'):''),true);
   /* 2 sign-ups */
   h+=tile('su','🆕',T('נרשמו','Sign-ups'),'<div class="w8ad-kv">'+N(k.s7)+' <span class="w8ad-ku">'+T('ב-7 ימים','in 7 days')+'</span></div>',
@@ -21744,7 +21744,7 @@ function _w8adKpis(M){
   /* 5 session length */
   var es=(w8&&w8.sess&&w8.sess.d30&&Number(w8.sess.d30.n)>0)?w8.sess.d30:null,avg=es?Number(es.avg)||0:M.sess.avg;
   h+=tile('ses','⏱️',T('אורך סשן ממוצע','Avg session length'),'<div class="w8ad-kv">'+_w8adDur(avg)+'</div>',
-    es?(T('חציון','Median')+' '+_w8adDur(es.med)+' · '+N(es.n)+' '+T('סשנים · 30 יום','sessions · 30 days')):(M.sess.n?(T('חציון','Median')+' '+_w8adDur(M.sess.med)+' · '+N(M.sess.n)+' '+T('משתמשים · 30 יום','users · 30 days')):T('אין עדיין נתוני סשן','No session data yet')),
+    es?(T('חציון','Median')+' '+_w8adDur(es.med)+' · '+(es.n===1?T('סשן אחד · 30 יום','1 session · 30 days'):N(es.n)+' '+T('סשנים · 30 יום','sessions · 30 days'))):(M.sess.n?(T('חציון','Median')+' '+_w8adDur(M.sess.med)+' · '+(M.sess.n===1?T('משתמש/ת אחד/ת · 30 יום','1 user · 30 days'):N(M.sess.n)+' '+T('משתמשים · 30 יום','users · 30 days'))):T('אין עדיין נתוני סשן','No session data yet')),
     ' data-avg="'+M.sess.avg+'" data-n="'+M.sess.n+'"'+(es?' data-src="events"':' data-src="rows"'),
     es?T('לפי אירועי סיום סשן (30 יום, עד 90 דקות).','From session-end events (30 days, up to 90 minutes).'):T('ממוצע הסשן של כל משתמש שהיה פעיל ב-30 הימים האחרונים (או הסשן האחרון שלו), עד 90 דקות.','Each user\'s average session (or last session) among users active in the last 30 days, up to 90 minutes.'),false);
   /* 6 top features */
@@ -21754,7 +21754,7 @@ function _w8adKpis(M){
   h+=tile('top','🎈',T('הפיצ׳רים המובילים','Top features'),tv,tsub,' data-top="'+_w8adE(tp?tp.list.map(function(x){return x.f}).join(','):'')+'"',T('לחיצות לפי פיצ׳ר (בלי אירועי מערכת אוטומטיים ובלי פאנל הניהול). לחיצה על שורה: מי לחץ.','Clicks per feature (automatic system events and the admin panel left out). Click a row: who clicked.'),false);
   /* 7 pending approvals */
   h+=tile('pend','⏳',T('ממתינים לאישור','Pending approval'),'<div class="w8ad-kv">'+N(k.pend)+'</div>',
-    k.unv?('+'+N(k.unv)+' '+T('ממתינים לאימות מייל','awaiting e-mail verification')):T('אין בקשות פתוחות','No open requests'),' data-v="'+k.pend+'" data-unv="'+k.unv+'"',
+    k.unv?(k.unv===1?T('ועוד אחד/ת ממתין/ה לאימות מייל','+1 awaiting e-mail verification'):('+'+N(k.unv)+' '+T('ממתינים לאימות מייל','awaiting e-mail verification'))):T('אין בקשות פתוחות','No open requests'),' data-v="'+k.pend+'" data-unv="'+k.unv+'"',
     T('בקשות הרשמה שמחכות לאישור שלך. לחיצה: מעבר לרשימה.','Sign-up requests waiting for your approval. Click: go to the list.'),true,k.pend?'w8ad-att':'');
   /* 8 open bug reports */
   h+=tile('bug','🐛',T('באגים פתוחים','Open bug reports'),'<div class="w8ad-kv">'+N(M.bugs)+'</div>',T('לחיצה: מעבר לדיווחים','Click: open the reports'),' data-v="'+M.bugs+'"',
@@ -21783,7 +21783,7 @@ function _w8adFunnelHtml(M){
   var dr=F.drop,from=null,to=null;F.core.forEach(function(x){if(dr&&x.id===dr.from)from=x;if(dr&&x.id===dr.to)to=x});
   if(dr&&from&&to)h+='<div class="w8ad-call" role="note"><span aria-hidden="true">⚠️</span><span><b>'+T('הנטישה הגדולה ביותר:','Biggest drop-off:')+'</b> '
     +_w8adE(T(N(from.co)+' סיימו את שלב '+dr.from+', רק '+N(to.co)+' סיימו את שלב '+dr.to+' — '+N(dr.d)+' ('+dr.pct+'%) לא המשיכו. השלב מסומן בגרף ובטבלה.',N(from.co)+' finished stage '+dr.from+', only '+N(to.co)+' finished stage '+dr.to+' — '+N(dr.d)+' ('+dr.pct+'%) did not continue. The stage is marked in the chart and the table.'))+'</span></div>';
-  h+='<div class="w8ad-bar"><span class="w8ad-sub">'+_w8adE(T('מבוסס על '+N(F.n)+' משתמשים מאושרים · "התחילו" = פתחו את השלב, ענו בו או בילו בו זמן','Based on '+N(F.n)+' approved users · "Started" = opened, answered or spent time in the stage'))+'</span>'
+  h+='<div class="w8ad-bar"><span class="w8ad-sub">'+_w8adE(T((F.n===1?'מבוסס על משתמש מאושר אחד':'מבוסס על '+N(F.n)+' משתמשים מאושרים')+' · "התחילו" = פתחו את השלב, ענו בו או בילו בו זמן','Based on '+N(F.n)+(F.n===1?' approved user':' approved users')+' · "Started" = opened, answered or spent time in the stage'))+'</span>'
     +'<button type="button" class="w8ad-btn" data-a="csvf">⬇️ '+T('ייצוא משפך CSV','Export funnel CSV')+'</button></div>';
   h+='<div class="w8ad-cv" id="w8adCvBox"><canvas id="w8adFunnelCv" role="img" aria-label="'+_w8adE(T('גרף משפך: כמה משתמשים התחילו וכמה סיימו כל שלב ליבה. אותם נתונים בטבלה שמתחת.','Funnel chart: how many users started and completed each core stage. The same data is in the table below.'))+'"></canvas></div>';
   h+='<div class="w8ad-tw"><table class="w8ad-tbl w8ad-ftbl"><caption class="w8ad-sr">'+T('משפך שלבי הליבה','Core stage funnel')+'</caption>'+_w8adFHead()+'<tbody>';
@@ -21857,8 +21857,8 @@ function _w8adList(){
   var so=document.getElementById('w8adSort');if(so&&so.value!==_w8ad.sort)so.value=_w8ad.sort;
   var L=_w8adView(),per=_W8AD.PER,pages=Math.max(1,Math.ceil(L.length/per));if(_w8ad.page>=pages)_w8ad.page=pages-1;if(_w8ad.page<0)_w8ad.page=0;
   var start=_w8ad.page*per,P=L.slice(start,start+per),now=Date.now();_w8ad.list=P;
-  var cu=document.getElementById('w8adCsvU');if(cu){cu.textContent='⬇️ CSV ('+N(L.length)+')';cu.title=T('ייצוא '+L.length+' המשתמשים שברשימה (לפי הסינון והחיפוש)','Export the '+L.length+' users in this list (current filter and search)')}
-  var meta=document.getElementById('w8adMeta');if(meta)meta.textContent=N(L.length)+' '+T('משתמשים','users')+(pages>1?' · '+T('עמוד','page')+' '+(_w8ad.page+1)+'/'+pages:'');
+  var cu=document.getElementById('w8adCsvU');if(cu){cu.textContent='⬇️ CSV ('+N(L.length)+')';cu.title=(L.length===1?T('ייצוא המשתמש/ת שברשימה (לפי הסינון והחיפוש)','Export the 1 user in this list (current filter and search)'):T('ייצוא '+L.length+' המשתמשים שברשימה (לפי הסינון והחיפוש)','Export the '+L.length+' users in this list (current filter and search)'))}
+  var meta=document.getElementById('w8adMeta');if(meta)meta.textContent=(L.length===1?T('משתמש/ת אחד/ת','1 user'):N(L.length)+' '+T('משתמשים','users'))+(pages>1?' · '+T('עמוד','page')+' '+(_w8ad.page+1)+'/'+pages:'');
   if(!P.length){box.innerHTML='<p class="w8ad-empty">'+T('אין משתמשים שמתאימים לסינון.','No users match this filter.')+'</p>'}
   else{var h='<table class="w8ad-tbl w8ad-utbl"><caption class="w8ad-sr">'+T('משתמשים','Users')+'</caption><thead><tr><th scope="col">'+T('משתמש','User')+'</th><th scope="col">'+T('התקדמות (ליבה)','Progress (core)')+'</th><th scope="col" class="w8ad-hm">'+T('ניקוד','Score')+'</th><th scope="col" class="w8ad-hm">'+T('רצף','Streak')+'</th><th scope="col">'+T('פעילות אחרונה','Last active')+'</th><th scope="col" class="w8ad-hs">'+T('הרשמה','Signed up')+'</th><th scope="col" class="w8ad-hs">'+T('שפה','Lang')+'</th><th scope="col" class="w8ad-hs">'+T('מכשיר','Device')+'</th></tr></thead><tbody>';
     P.forEach(function(r,i){var cp=r.coreN?Math.round(r.core/r.coreN*100):0,dv=r.dev?(r.dev.kind==='desktop'?'💻':'📱'):'—';
@@ -21935,7 +21935,7 @@ function _w8adDrawerHtml(r){
   h+='<section class="w8ad-ds"><h4 class="w8ad-dsh">'+T('מפת שלבי הליבה','Core stage map')+'</h4><div class="w8ad-smap">';
   _w8adCoreIds().forEach(function(id){var dn=!!r.done[id],sd=!dn&&!!sg.st[id];h+='<span class="w8ad-sq'+(dn?' d':(sd?' s':''))+'" title="'+_w8adE(_w8adSLbl(id,true)+' — '+(dn?T('הושלם','completed'):(sd?T('התחיל','started'):T('לא התחיל','not started'))))+'">'+id+'</span>'});
   h+='</div><div class="w8ad-leg"><span><i class="w8ad-sq d"></i>'+T('הושלם','Completed')+'</span><span><i class="w8ad-sq s"></i>'+T('התחיל','Started')+'</span><span><i class="w8ad-sq"></i>'+T('לא התחיל','Not started')+'</span></div>';
-  var qs=Object.keys(sg.qb);if(qs.length){var qa=Math.round(qs.reduce(function(a,k){return a+sg.qb[k]},0)/qs.length*100);h+='<p class="w8ad-qs">📝 '+T('מבחנים ב-'+qs.length+' שלבים · ציון ממוצע (הטוב ביותר) '+qa+'%','Quizzes in '+qs.length+' stages · avg best score '+qa+'%')+'</p>'}
+  var qs=Object.keys(sg.qb);if(qs.length){var qa=Math.round(qs.reduce(function(a,k){return a+sg.qb[k]},0)/qs.length*100);h+='<p class="w8ad-qs">📝 '+(qs.length===1?T('מבחן בשלב אחד · ציון ממוצע (הטוב ביותר) '+qa+'%','Quiz in 1 stage · avg best score '+qa+'%'):T('מבחנים ב-'+qs.length+' שלבים · ציון ממוצע (הטוב ביותר) '+qa+'%','Quizzes in '+qs.length+' stages · avg best score '+qa+'%'))+'</p>'}
   h+='</section>';
   var L=r.log.filter(function(e){return e&&Number(e.t)>1e11}).slice(-6).reverse();
   if(L.length){h+='<section class="w8ad-ds"><h4 class="w8ad-dsh">'+T('פעילות אחרונה (יומן)','Recent activity (log)')+'</h4><ul class="w8ad-act">';L.forEach(function(e){var x=_W8AD_ACT[e.a];h+='<li><span aria-hidden="true">'+(x?x[0]:'•')+'</span><span class="w8ad-an">'+_w8adE(_w8adActN(e))+'</span><span class="w8ad-at">'+_w8adE(_w8adAgo(Number(e.t)))+'</span></li>'});h+='</ul></section>'}
@@ -22007,7 +22007,7 @@ function _w8adMount(){
   var old=document.getElementById('w8adRoot');if(old)old.remove();
   var M=_w8ad.model,T=_w8adT,tm='';try{tm=new Date(M.now).toLocaleTimeString(en?'en-GB':'he-IL',{hour:'2-digit',minute:'2-digit'})}catch(e){}
   var root=document.createElement('section');root.id='w8adRoot';root.className='w8ad'+(en?' w8ad-ltr':'');root.setAttribute('dir',en?'ltr':'rtl');root.setAttribute('lang',en?'en':'he');root.setAttribute('aria-labelledby','w8adH');
-  root.innerHTML='<div class="w8ad-hd"><h3 class="w8ad-h" id="w8adH">📌 '+T('תמונת מצב','At a glance')+'</h3><span class="w8ad-sub">'+_w8adE(T('מחושב מ-'+_w8adN(M.k.total)+' המשתמשים שנטענו · עודכן '+tm,'From the '+_w8adN(M.k.total)+' users loaded · updated '+tm))+'</span></div>'
+  root.innerHTML='<div class="w8ad-hd"><h3 class="w8ad-h" id="w8adH">📌 '+T('תמונת מצב','At a glance')+'</h3><span class="w8ad-sub">'+_w8adE(M.k.total===1?T('מחושב ממשתמש/ת אחד/ת שנטען/ה · עודכן '+tm,'From 1 user loaded · updated '+tm):T('מחושב מ-'+_w8adN(M.k.total)+' המשתמשים שנטענו · עודכן '+tm,'From the '+_w8adN(M.k.total)+' users loaded · updated '+tm))+'</span></div>'
     +'<div class="w8ad-kpis">'+_w8adKpis(M)+'</div>'
     +'<div class="w8ad-tabs" role="tablist" aria-label="'+_w8adE(T('ניתוח','Analysis'))+'"><button type="button" role="tab" class="w8ad-tab" id="w8adTbF" data-t="f" aria-controls="w8adPF">🪜 '+T('משפך שלבים','Stage funnel')+'</button><button type="button" role="tab" class="w8ad-tab" id="w8adTbU" data-t="u" aria-controls="w8adPU">👥 '+T('חקר משתמשים','User explorer')+' <span class="w8ad-cc">'+_w8adN(M.k.total)+'</span></button></div>'
     +'<div class="w8ad-pnl" id="w8adPF" role="tabpanel" aria-labelledby="w8adTbF">'+_w8adFunnelHtml(M)+'</div>'
@@ -26452,7 +26452,7 @@ function _w9plAdmStrip(M){
   var mx=Math.max(1,P.used),pct=_w9plAdmPct(P.never,P.started);
   var row=function(cls,lbl,n,sub,extra){var w=Math.max(n?2:0,Math.round(n/mx*100));return '<div class="w9pl-ufr'+(cls?' '+cls:'')+'"><span class="w9pl-ufl">'+lbl+'</span><span class="w9pl-ufb" aria-hidden="true"><i style="width:'+w+'%"></i></span><span class="w9pl-ufn"><b>'+N(n)+'</b>'+(sub?' <small>'+sub+'</small>':'')+'</span>'+(extra||'')+'</div>'};
   return '<section class="w9pl-uf" id="w9plUf" aria-labelledby="w9plUfH" data-used="'+P.used+'" data-started="'+P.started+'" data-fin="'+P.fin+'" data-never="'+P.never+'">'
-    +'<div class="w9pl-ufh"><h4 id="w9plUfH">🚪 '+T('מי לא סיים אף שלב?','Who never finished a stage?')+'</h4><span class="w8ad-sub">'+E(T('אנשים, לא שלבים · מאותם '+N(P.used)+' משתמשים מאושרים','People, not stages · the same '+N(P.used)+' approved users'))+'</span></div>'
+    +'<div class="w9pl-ufh"><h4 id="w9plUfH">🚪 '+T('מי לא סיים אף שלב?','Who never finished a stage?')+'</h4><span class="w8ad-sub">'+E((P.used===1?T('אנשים, לא שלבים · מאותו משתמש מאושר אחד','People, not stages · the same 1 approved user'):T('אנשים, לא שלבים · מאותם '+N(P.used)+' משתמשים מאושרים','People, not stages · the same '+N(P.used)+' approved users')))+'</span></div>'
     +row('',E(T('השתמשו באפליקציה','Used the app')),P.used,'')
     +row('',E(T('התחילו שלב','Started a stage')),P.started,'')
     +row('w9pl-uff',E(T('סיימו לפחות שלב אחד','Finished at least one stage')),P.fin,E(_w9plAdmPct(P.fin,P.started)+'%'))
@@ -26463,7 +26463,7 @@ function _w9plAdmStrip(M){
 }
 function _w9plAdmAlert(M){
   var P=_w9plAdmPeople(M),T=_w8adT,N=_w8adN,E=_w8adE;if(!P.never)return '';
-  return '<div class="w9pl-ufa" role="note" id="w9plUfa"><span aria-hidden="true">🚪</span><span><b>'+E(T(N(P.never)+' מתוך '+N(P.started)+' שהתחילו שלב ('+_w9plAdmPct(P.never,P.started)+'%) לא סיימו אף שלב.',N(P.never)+' of the '+N(P.started)+' who started a stage ('+_w9plAdmPct(P.never,P.started)+'%) never finished one.'))+'</b> '+E(T('זו הנטישה הגדולה במשפך — והיא לא מופיעה בגרף השלבים.','This is the biggest leak in the funnel — and the stage chart cannot show it.'))+'</span><button type="button" class="w8ad-btn" data-w9pl-a="funnel">'+E(T('למשפך ←','Open the funnel →'))+'</button></div>';
+  return '<div class="w9pl-ufa" role="note" id="w9plUfa"><span aria-hidden="true">🚪</span><span><b>'+E(T((P.never===1?'אחד/ת':N(P.never))+' מתוך '+N(P.started)+' שהתחילו שלב ('+_w9plAdmPct(P.never,P.started)+'%) '+(P.never===1?'לא סיים/ה':'לא סיימו')+' אף שלב.',N(P.never)+' of the '+N(P.started)+' who started a stage ('+_w9plAdmPct(P.never,P.started)+'%) never finished one.'))+'</b> '+E(T('זו הנטישה הגדולה במשפך — והיא לא מופיעה בגרף השלבים.','This is the biggest leak in the funnel — and the stage chart cannot show it.'))+'</span><button type="button" class="w8ad-btn" data-w9pl-a="funnel">'+E(T('למשפך ←','Open the funnel →'))+'</button></div>';
 }
 function _w9plAdmGo(a){
   try{
@@ -31189,9 +31189,9 @@ function _w10adSnapHtml(k){
   var T=_w10adT,N=_w10adN,tile=function(key,ic,lbl,v,sub,go,cls){return '<'+(go?'button type="button" data-w10a="tile"':'div')+' class="w10ad-tile'+(cls?' '+cls:'')+'" data-k="'+key+'" data-v="'+v+'"><span class="w10ad-tl"><span aria-hidden="true">'+ic+'</span> '+lbl+'</span><span class="w10ad-tv">'+N(v)+'</span>'+(sub?'<span class="w10ad-ts">'+sub+'</span>':'')+'</'+(go?'button':'div')+'>'};
   var h='<div class="w10ad-tiles">';
   h+=tile('su','🆕',T('נרשמו היום','New sign-ups today'),k.su,T('7 ימים','7 days')+': <b>'+N(k.su7)+'</b>',true);
-  h+=tile('act','👥',T('פעילים היום','Active today'),k.act,(k.on?'<span class="w10ad-dot" aria-hidden="true"></span>'+N(k.on)+' '+T('מחוברים עכשיו','online now'):T('אף אחד לא מחובר כרגע','nobody online now')),true);
-  h+=tile('cmp','🏁',T('שלבים הושלמו היום','Stages completed today'),k.cmp,N(k.ans)+' '+T('תשובות היום','answers today'),false);
-  h+=tile('bug','🐛',T('באגים פתוחים','Open bug reports'),k.bugs,k.b24!=null?(N(k.b24)+' '+T('חדשים ב-24 שע׳','new in 24 h')):T('לחיצה: הדיווחים','Tap: the reports'),true,k.bugs?'w10ad-red':'');
+  h+=tile('act','👥',T('פעילים היום','Active today'),k.act,(k.on?'<span class="w10ad-dot" aria-hidden="true"></span>'+(k.on===1?T('מחובר/ת אחד/ת עכשיו','1 online now'):N(k.on)+' '+T('מחוברים עכשיו','online now')):T('אף אחד לא מחובר כרגע','nobody online now')),true);
+  h+=tile('cmp','🏁',T('שלבים הושלמו היום','Stages completed today'),k.cmp,(k.ans===1?T('תשובה אחת היום','1 answer today'):N(k.ans)+' '+T('תשובות היום','answers today')),false);
+  h+=tile('bug','🐛',T('באגים פתוחים','Open bug reports'),k.bugs,k.b24!=null?((k.b24===1?T('אחד חדש ב-24 שע׳','1 new in 24 h'):N(k.b24)+' '+T('חדשים ב-24 שע׳','new in 24 h'))):T('לחיצה: הדיווחים','Tap: the reports'),true,k.bugs?'w10ad-red':'');
   h+=tile('pend','⏳',T('ממתינים לאישור','Pending approval'),k.pend,
     k.pend?(k.over?'<b class="w10ad-latet">'+N(k.over)+' '+T('מעל 24 שע׳','over 24 h')+'</b>':T('הוותיק ממתין','Longest wait')+' <b>'+_w10adDur(k.old)+'</b>')+(k.unv?' · '+T('ועוד '+N(k.unv)+' לפני אימות מייל','+'+N(k.unv)+' before e-mail check'):'')
       :(k.unv?T(N(k.unv)+' לפני אימות מייל',N(k.unv)+' before e-mail check'):T('אין בקשות פתוחות','No open requests')),true,k.over?'w10ad-red':(k.pend?'w10ad-amb':''));
@@ -31267,9 +31267,9 @@ function _w10adBugsHtml(){
   var open=B?B.filter(function(r){return r.resolved!=='resolved'||_w10ad.bst[parseInt(r.rowIndex,10)||0]==='ok'}):null;
   var cnt=B?B.filter(function(r){return r.resolved!=='resolved'}).length:n;
   var h=_w10adSecHead('w10adBugs','🐛','דיווחי באגים פתוחים','Open bug reports',cnt,cnt?'w10ad-red':'','<button type="button" class="w10ad-b w10ad-ghost w10ad-all" data-w10a="ball">'+T('כל הדיווחים ←','All reports →')+'</button>');
-  if(!B)h+=n?'<p class="w10ad-empty">'+T('יש '+n+' דיווחים פתוחים — לחיצה על "כל הדיווחים" פותחת אותם.','There are '+n+' open reports — "All reports" opens them.')+'</p>':'<p class="w10ad-empty">'+T('הדיווחים עוד לא נטענו — "כל הדיווחים" טוען אותם מהענן.','The reports have not loaded yet — "All reports" loads them from the cloud.')+'</p>';
+  if(!B)h+=n?'<p class="w10ad-empty">'+(n===1?T('יש דיווח פתוח אחד — לחיצה על "כל הדיווחים" פותחת אותו.','There is 1 open report — "All reports" opens it.'):T('יש '+n+' דיווחים פתוחים — לחיצה על "כל הדיווחים" פותחת אותם.','There are '+n+' open reports — "All reports" opens them.'))+'</p>':'<p class="w10ad-empty">'+T('הדיווחים עוד לא נטענו — "כל הדיווחים" טוען אותם מהענן.','The reports have not loaded yet — "All reports" loads them from the cloud.')+'</p>';
   else if(!open.length)h+='<p class="w10ad-empty">🎉 '+T('אין דיווחים פתוחים.','No open reports.')+'</p>';
-  else{h+='<div class="w10ad-bl">'+open.slice(0,_W10AD.BUGS).map(_w10adBugCard).join('')+'</div>';if(open.length>_W10AD.BUGS)h+='<button type="button" class="w10ad-b w10ad-ghost w10ad-morebtn" data-w10a="ball">'+_w10adE(T('עוד '+(open.length-_W10AD.BUGS)+' דיווחים פתוחים ←','+'+(open.length-_W10AD.BUGS)+' more open reports →'))+'</button>'}
+  else{h+='<div class="w10ad-bl">'+open.slice(0,_W10AD.BUGS).map(_w10adBugCard).join('')+'</div>';if(open.length>_W10AD.BUGS)h+='<button type="button" class="w10ad-b w10ad-ghost w10ad-morebtn" data-w10a="ball">'+_w10adE(open.length-_W10AD.BUGS===1?T('עוד דיווח פתוח אחד ←','+1 more open report →'):T('עוד '+(open.length-_W10AD.BUGS)+' דיווחים פתוחים ←','+'+(open.length-_W10AD.BUGS)+' more open reports →'))+'</button>'}
   return h;
 }
 function _w10adNavHtml(secs,k){
@@ -32676,7 +32676,7 @@ function _w11amPhHtml(p,C,extra){
   if(p==='ov'){var d='';try{d=new Date().toLocaleDateString(_w11amEn()?'en-GB':'he-IL',{weekday:'long',day:'numeric',month:'long'})}catch(e){}
     t=T('סקירה','Overview');s=d+' · '+(C.k.pend===1?T('ממתין אחד לאישור','1 waiting for approval'):C.k.pend?T(N(C.k.pend)+' ממתינים לאישור',N(C.k.pend)+' waiting for approval'):T('אין ממתינים לאישור','nobody waiting for approval'))+' · '+(C.open===1?T('דיווח פתוח אחד','1 open report'):C.open?T(N(C.open)+' דיווחים פתוחים',N(C.open)+' open reports'):T('אין דיווחים פתוחים','no open reports'))}
   else if(p==='us'){t=T('משתמשים','Users');s=(C.app===1?T('משתמש אחד','1 user'):T(N(C.app)+' משתמשים',N(C.app)+' users'))+(C.deact?' · '+T(N(C.deact)+' ביטלו חשבון',N(C.deact)+' deactivated'):'')+' · '+T('לחיצה על שורה פותחת את כרטיס המשתמש','tap a row to open the user card')}
-  else if(p==='me'){t=T('מדדים','Metrics');s=T('משפך, שימור, תובנות ושימוש — מ-'+N(C.app)+' המשתמשים שנטענו','Funnel, retention, insights and usage — from the '+N(C.app)+' users loaded')}
+  else if(p==='me'){t=T('מדדים','Metrics');s=(C.app===1?T('משפך, שימור, תובנות ושימוש — ממשתמש/ת אחד/ת שנטען/ה','Funnel, retention, insights and usage — from 1 user loaded'):T('משפך, שימור, תובנות ושימוש — מ-'+N(C.app)+' המשתמשים שנטענו','Funnel, retention, insights and usage — from the '+N(C.app)+' users loaded'))}
   else if(p==='se'){t=T('הגדרות','Settings');s=T('התראות מייל, הודעת שידור, תזכורות וגרסאות ארכיון','Mail alerts, broadcast, reminders and archived builds')}
   return '<header class="w11am-ph"><div class="w11am-pht"><h3 class="w11am-h" id="w11amH-'+p+'" tabindex="-1">'+_w11amI(p)+'<span>'+t+'</span></h3><p class="w11am-ps">'+E(s)+'</p></div>'+(a?'<div class="w11am-pha">'+a+'</div>':'')+'</header>';
 }
@@ -32689,7 +32689,7 @@ function _w11amOvHtml(C){
   else{h+='<ul class="w11am-pl" role="list">'+A.slice(0,_W11AM.PQ).map(function(p){var late=p.w>=_W10AD.SLA,warn=!late&&p.w>=_W10AD.WARN,ini=(String(p.name).trim().charAt(0)||'?').toUpperCase();
       return '<li><button type="button" class="w11am-pr" data-w11a="goq" data-n="'+E(p.name)+'"><span class="w11am-av" aria-hidden="true">'+E(ini)+'</span><span class="w11am-prb"><span class="w11am-prn" dir="auto">'+E(p.name||'—')+'</span>'+(p.email?'<span class="w11am-pre" dir="ltr">'+E(p.email)+'</span>':'<span class="w11am-pre">'+E(T('ללא מייל','No e-mail'))+'</span>')+'</span>'
         +'<span class="w11am-wait'+(late?' w11am-late':(warn?' w11am-warn':''))+'" title="'+E(late?T('מעבר ליעד של 24 שעות','Past the 24 h target'):T('זמן המתנה','Waiting time'))+'">'+(late?'⚠ ':'')+E(p.t?_w10adDur(p.w):'—')+'</span></button></li>'}).join('')+'</ul>';
-    if(A.length>_W11AM.PQ)h+='<p class="w11am-foot">'+E(T('ועוד '+N(A.length-_W11AM.PQ)+' ממתינים','+ '+N(A.length-_W11AM.PQ)+' more waiting'))+'</p>'}
+    if(A.length>_W11AM.PQ)h+='<p class="w11am-foot">'+E((A.length-_W11AM.PQ===1?T('ועוד אחד/ת ממתין/ה','+ 1 more waiting'):T('ועוד '+N(A.length-_W11AM.PQ)+' ממתינים','+ '+N(A.length-_W11AM.PQ)+' more waiting')))+'</p>'}
   if(U.length)h+='<p class="w11am-foot">✉️ '+E(T(N(U.length)+' עדיין לפני אימות מייל',N(U.length)+' still before e-mail verification'))+'</p>';
   h+='</section>';
   h+='<section class="w11am-card" id="w11amOvT" aria-labelledby="w11amOvTH"><header class="w11am-ch"><h4 id="w11amOvTH">'+_w11amI('tk')+'<span>'+T('דיווחים פתוחים אחרונים','Newest open reports')+'</span>'+(O&&O.length?'<span class="w11am-cnt w11am-red">'+N(O.length)+'</span>':'')+'</h4>'
@@ -32728,12 +32728,12 @@ function _w11amTkPaint(focus){
   /* keep the focused row / control across the repaint */
   var ae=document.activeElement,fr=null,fa=null;if(ae&&L.contains(ae)){fr=ae.getAttribute('data-r');fa=ae.getAttribute('data-w11a')}
   var F=_w11am$('w11amTkF');if(F)F.innerHTML=[['open',T('פתוחים','Open'),C.open],['res',T('טופלו','Resolved'),C.res],['all',T('הכל','All'),C.open+C.res]].map(function(s){var on=_w11am.tf===s[0];return '<button type="button" class="w11am-sg" data-w11a="tf" data-f="'+s[0]+'" aria-pressed="'+on+'">'+s[1]+' <span class="w11am-sgc">'+(C.B?N(s[2]):'…')+'</span></button>'}).join('');
-  var S=_w11am$('w11amTkSum');if(S)S.textContent=C.B?T(N(C.open)+' פתוחים · '+N(C.res)+' טופלו · הישן ביותר שפתוח: ',N(C.open)+' open · '+N(C.res)+' resolved · oldest open: ')+(function(){var o=0;C.B.forEach(function(r){if(r.resolved!=='resolved'&&r._w10t&&(!o||r._w10t<o))o=r._w10t});return o?_w10adDur(Date.now()-o):'—'})():T('הדיווחים עוד לא נטענו','The reports have not loaded yet');
+  var S=_w11am$('w11amTkSum');if(S)S.textContent=C.B?T(N(C.open)+(C.open===1?' פתוח · ':' פתוחים · ')+N(C.res)+(C.res===1?' טופל · ':' טופלו · ')+'הישן ביותר שפתוח: ',N(C.open)+' open · '+N(C.res)+' resolved · oldest open: ')+(function(){var o=0;C.B.forEach(function(r){if(r.resolved!=='resolved'&&r._w10t&&(!o||r._w10t<o))o=r._w10t});return o?_w10adDur(Date.now()-o):'—'})():T('הדיווחים עוד לא נטענו','The reports have not loaded yet');
   /* selection: only rows that still exist */
   var ids=Object.keys(_w11am.sel).filter(function(k){return _w11am.sel[k]&&_w11amFind(+k)});_w11am.sel={};ids.forEach(function(k){_w11am.sel[k]=1});
   var SB=_w11am$('w11amTkSel');if(SB){var nOpen=ids.filter(function(k){var r=_w11amFind(+k);return r&&r.resolved!=='resolved'}).length;
-    SB.innerHTML=!ids.length?'':'<div class="w11am-selbar" role="group" aria-label="'+E(T('פעולות על הבחירה','Actions on the selection'))+'"><b>'+E(T(N(ids.length)+' נבחרו',N(ids.length)+' selected'))+'</b>'
-      +(_w11am.bulkArm&&nOpen?'<span>'+E(T('לסמן '+N(nOpen)+' דיווחים כטופלו?','Mark '+N(nOpen)+' reports as resolved?'))+'</span><button type="button" class="w11am-b w11am-ghost" data-w11a="bx">'+T('ביטול','Cancel')+'</button><button type="button" class="w11am-b w11am-ok" data-w11a="bgo">'+_w11amI('ck')+'<span>'+T('כן, לסמן','Yes, mark them')+'</span></button>'
+    SB.innerHTML=!ids.length?'':'<div class="w11am-selbar" role="group" aria-label="'+E(T('פעולות על הבחירה','Actions on the selection'))+'"><b>'+E(T(ids.length===1?'נבחר אחד':N(ids.length)+' נבחרו',N(ids.length)+' selected'))+'</b>'
+      +(_w11am.bulkArm&&nOpen?'<span>'+E((nOpen===1?T('לסמן דיווח אחד כטופל?','Mark 1 report as resolved?'):T('לסמן '+N(nOpen)+' דיווחים כטופלו?','Mark '+N(nOpen)+' reports as resolved?')))+'</span><button type="button" class="w11am-b w11am-ghost" data-w11a="bx">'+T('ביטול','Cancel')+'</button><button type="button" class="w11am-b w11am-ok" data-w11a="bgo">'+_w11amI('ck')+'<span>'+T('כן, לסמן','Yes, mark them')+'</span></button>'
         :(nOpen?'<button type="button" class="w11am-b w11am-okline" data-w11a="bres">'+_w11amI('ck')+'<span>'+E(T('סימון כטופל ('+N(nOpen)+')','Mark resolved ('+N(nOpen)+')'))+'</span></button>':'')
         +'<button type="button" class="w11am-b w11am-ghost" data-w11a="bcopy">'+_w11amI('cp')+'<span>'+T('העתקה','Copy')+'</span></button><button type="button" class="w11am-b w11am-ghost" data-w11a="bclear">'+T('ניקוי הבחירה','Clear')+'</button>')+'</div>'}
   var h='';
@@ -32742,8 +32742,8 @@ function _w11amTkPaint(focus){
       :(_w11am.tf==='open'?'🎉 '+T('אין דיווחים פתוחים — אין מה למיין.','No open reports — nothing to triage.'):(_w11am.tf==='res'?T('עוד אין דיווחים שטופלו.','No resolved reports yet.'):T('עוד אין דיווחים.','No reports yet.'))))+'</div>';
   else{var n=Math.min(V.length,_w11am.tn);
     h='<ul class="w11am-tl" role="list" aria-label="'+E(T('דיווחים','Reports'))+'">'+V.slice(0,n).map(_w11amTr).join('')+'</ul>';
-    if(V.length>n)h+='<button type="button" class="w11am-b w11am-more" data-w11a="tmore">'+E(T('עוד '+N(Math.min(_W11AM.TPER,V.length-n))+' · נשארו '+N(V.length-n),'Show '+N(Math.min(_W11AM.TPER,V.length-n))+' more · '+N(V.length-n)+' left'))+'</button>';
-    h+='<p class="w11am-tkc">'+E(T('מוצגים '+N(n)+' מתוך '+N(V.length),'Showing '+N(n)+' of '+N(V.length)))+'</p>'}
+    if(V.length>n)h+='<button type="button" class="w11am-b w11am-more" data-w11a="tmore">'+E(T('עוד '+N(Math.min(_W11AM.TPER,V.length-n))+(V.length-n===1?' · נשאר ':' · נשארו ')+N(V.length-n),'Show '+N(Math.min(_W11AM.TPER,V.length-n))+' more · '+N(V.length-n)+' left'))+'</button>';
+    h+='<p class="w11am-tkc">'+E(T((n===1?'מוצג ':'מוצגים ')+N(n)+' מתוך '+N(V.length),'Showing '+N(n)+' of '+N(V.length)))+'</p>'}
   L.innerHTML=h;
   if(fr||fa){var f=null;if(fr)f=L.querySelector('[data-w11a="'+(fa||'topen')+'"][data-r="'+fr+'"]');if(!f&&fa)f=L.querySelector('[data-w11a="'+fa+'"]');if(f)try{f.focus({preventScroll:true})}catch(e){}}
   else if(focus){var m=L.querySelectorAll('.w11am-tro');var g=m[Math.max(0,Math.min(m.length-1,focus-1))];if(g&&focus>1)try{g.focus({preventScroll:true})}catch(e){}}
@@ -32992,7 +32992,7 @@ function _w11amBulkGo(){
   var rows=Object.keys(_w11am.sel).map(function(k){return +k}).filter(function(row){var r=_w11amFind(row);return r&&r.resolved!=='resolved'&&!_w11amSt(row)});_w11am.bulkArm=false;if(!rows.length){_w11amTkPaint();return Promise.resolve(0)}
   _w11amTrack('amTkBulk',rows.length>9?'10+':String(rows.length));var ok=0;
   var p=Promise.all(rows.map(function(row){return _w10adBugDone(row).then(function(r){if(r){ok++;delete _w11am.sel[row]}_w11amRowPaint(row)})})).then(function(){var T=_w11amT;
-    try{showAchievement(ok===rows.length?'✅':'⚠️',T('סומנו '+ok+' מתוך '+rows.length+' כטופלו',ok+' of '+rows.length+' marked resolved'),ok===rows.length?'':T('חלק נכשלו — נסו שוב','Some failed — try again'))}catch(e){}_w11amTkPaint();return ok});
+    try{showAchievement(ok===rows.length?'✅':'⚠️',T((ok===1?'סומן ':'סומנו ')+ok+' מתוך '+rows.length+(ok===1?' כטופל':' כטופלו'),ok+' of '+rows.length+' marked resolved'),ok===rows.length?'':T('חלק נכשלו — נסו שוב','Some failed — try again'))}catch(e){}_w11amTkPaint();return ok});
   _w11amTkPaint();return p;
 }
 function _w11amRefresh(){_w11am.refreshing=Date.now();_w11amTrack('amRefresh','');var b=document.querySelector('#w11amTop [data-w11a="refresh"]');if(b){b.disabled=true;b.classList.add('w11am-spin')}try{loadAdminData()}catch(e){}}
@@ -33281,7 +33281,7 @@ function _w13mpWhatHtml(o){
   if(o.rd)parts.push('📚 '+(o.rd===1?T('קריאה אחת','1 read'):T(N(o.rd)+' קריאות',N(o.rd)+' reads')));
   if(o.vd)parts.push('🎬 '+(o.vd===1?T('צפייה אחת עד הסוף','1 watched to the end'):T(N(o.vd)+' צפיות עד הסוף',N(o.vd)+' watched to the end')));
   if(o.feats.length){var F=o.feats.slice(0,3).map(function(x){var f=_w13mpFeat(x.f);return E(f.ic+' '+f.name)});parts.push(F.join(' · ')+(o.feats.length>3?' <span class="w13mp-m">+'+N(o.feats.length-3)+'</span>':''))}
-  if(!parts.length&&o.ev)parts.push(T(N(o.ev)+' פעולות',N(o.ev)+' actions'));
+  if(!parts.length&&o.ev)parts.push((o.ev===1?T('פעולה אחת','1 action'):T(N(o.ev)+' פעולות',N(o.ev)+' actions')));
   return parts.length?parts.join(' <span class="w13mp-m">·</span> '):'<span class="w13mp-m">'+T('נכנס/ה, בלי פעולה מתועדת נוספת','Signed in, no other recorded action')+'</span>';
 }
 function _w13mpFar(p){
@@ -33289,7 +33289,7 @@ function _w13mpFar(p){
   try{r=_w8adRow(u)}catch(e){r=null}
   var core=r?r.core:0,coreN=r&&r.coreN?r.coreN:23,nd=r?r.nDone:(parseInt(u.stagesCount)||0);if(!r)core=nd;
   var cur=String(u.lastStageVisited==null?'':u.lastStageVisited).trim(),t=T('ליבה ','Core ')+N(core)+'/'+N(coreN);
-  if(r&&r.books)t+=' · '+T(N(r.books)+' ספרים',N(r.books)+' books');
+  if(r&&r.books)t+=' · '+(r.books===1?T('ספר אחד','1 book'):T(N(r.books)+' ספרים',N(r.books)+' books'));
   if(/^\d+$/.test(cur))t+=' · '+T('עכשיו בשלב ','Now on stage ')+cur;
   return {pct:Math.max(0,Math.min(100,Math.round(core/coreN*100))),txt:t};
 }
@@ -33338,7 +33338,7 @@ function _w13mpCardHtml(){
     if(act.length>show.length)h+='<button type="button" class="w11am-b w11am-ghost w13mp-more" data-w13pa="all">'+E(T('הצגת כל '+N(act.length)+' הלומדים','Show all '+N(act.length)+' learners'))+'</button>'}
   var hbS=_w13mp.all?hb:hb.slice(0,_W13MP.HB);
   if(hb.length){h+='<div class="w13mp-hb"><p class="w13mp-sub">'+T('חלון פתוח, בלי פעולות','Open, but no actions')+' <span class="w11am-mut">· '+T('נראים "מחוברים" רק בגלל דופק של לשונית פתוחה — לא נספרים','look "online" only because an open tab sends a heartbeat — not counted')+'</span></p><ul class="w11am-pl w13mp-list" role="list">'+hbS.map(function(x){return _w13mpRowHtml(M,{name:x.name,la:x.la,last:x.last,ver:x.ver},Nd,true)}).join('')+'</ul>'
-    +(hb.length>hbS.length?'<button type="button" class="w11am-b w11am-ghost w13mp-more" data-w13pa="all">'+E(T('עוד '+N(hb.length-hbS.length)+' חלונות פתוחים','Show '+N(hb.length-hbS.length)+' more open tabs'))+'</button>':'')+'</div>'}
+    +(hb.length>hbS.length?'<button type="button" class="w11am-b w11am-ghost w13mp-more" data-w13pa="all">'+E((hb.length-hbS.length===1?T('עוד חלון פתוח אחד','Show 1 more open tab'):T('עוד '+N(hb.length-hbS.length)+' חלונות פתוחים','Show '+N(hb.length-hbS.length)+' more open tabs')))+'</button>':'')+'</div>'}
   var nc=[];if(adm.length&&!M.inc)nc.push(T('המנהל','admin')+' (<bdi>'+adm.map(function(p){return E(p.name)}).join(', ')+'</bdi>)');
   if(vis)nc.push('<span title="'+E(T('מזהים זמניים של מסך הפתיחה, לפני כניסה בשם. רובם לומדים קיימים שחזרו — לא אנשים חדשים.','Temporary welcome-screen ids, before a name is entered. Mostly existing learners coming back — not new people.'))+'">'+(vis===1?T('כניסה אחת למסך הפתיחה לפני הזדהות','1 welcome-screen visit before sign-in'):T(N(vis)+' כניסות למסך הפתיחה לפני הזדהות',N(vis)+' welcome-screen visits before sign-in'))+'</span>');
   if(hb.length)nc.push(hb.length===1?T('חלון פתוח אחד בלי פעולות','1 open tab with no actions'):T(N(hb.length)+' חלונות פתוחים בלי פעולות',N(hb.length)+' open tabs with no actions'));
@@ -33461,7 +33461,7 @@ function _w13scGet(why,etag){
       _w13sc.busy=false;if(!h)return;
       var m=h.match(/APP_VERSION\s*=\s*['"]([0-9]+(?:\.[0-9]+){1,3})['"]/);
       if(m&&cmpVersion(m[1],APP_VERSION)>0){_w13scAvail('get',true);return}
-      if(etag&&_w13sc.base===null){_w13sc.base=etag;_w13scLive(etag)}
+      if(etag&&_w13sc.base===null){_w13sc.base=etag;if(m&&m[1]===APP_VERSION)_w13scLive(etag)}
     },function(){_w13sc.busy=false});
   }catch(e){_w13sc.busy=false}
 }
@@ -34547,7 +34547,7 @@ function _w13muCard(u){
   h+='<div class="w13mu-chips">'+chips+'</div>';
   /* progress */
   var pc=L.Tl?Math.min(100,Math.round(L.dl/L.Tl*100)):0;
-  h+='<div class="w13mu-box w13mu-prog"><div class="w13mu-pt"><p class="w13mu-h">'+E(T('התקדמות','Progress'))+'</p><b dir="ltr">'+L.dl+'/'+L.Tl+'</b>'+(L.Tb?'<span class="w14mu-bk w14mu-bkc" dir="ltr" title="'+E(T(L.db+' ספרים מתוך '+L.Tb,L.db+' of '+L.Tb+' books'))+'">📚 '+L.db+'/'+L.Tb+'</span>':'')+'<span class="w13mu-sm">'+E(T(pc+'% משלבי הלימוד במסלול',pc+'% of the learning stages in this track'))+'</span></div>';
+  h+='<div class="w13mu-box w13mu-prog"><div class="w13mu-pt"><p class="w13mu-h">'+E(T('התקדמות','Progress'))+'</p><b dir="ltr">'+L.dl+'/'+L.Tl+'</b>'+(L.Tb?'<span class="w14mu-bk w14mu-bkc" dir="ltr" title="'+E(T(L.db===1?'ספר אחד מתוך '+L.Tb:L.db+' ספרים מתוך '+L.Tb,L.db+' of '+L.Tb+' books'))+'">📚 '+L.db+'/'+L.Tb+'</span>':'')+'<span class="w13mu-sm">'+E(T(pc+'% משלבי הלימוד במסלול',pc+'% of the learning stages in this track'))+'</span></div>';
   h+='<span class="w13mu-bar w13mu-bl" role="progressbar" aria-valuemin="0" aria-valuemax="'+L.Tl+'" aria-valuenow="'+L.dl+'" aria-label="'+E(T('שלבים שהושלמו','Stages finished'))+'"><i style="width:'+pc+'%"></i></span>';
   h+='<div class="w13mu-ps">'+E(T('ליבה ','Core '))+'<b dir="ltr">'+L.core+'/'+L.coreT+'</b>'+(L.cur!=null?' · '+E(T('עכשיו: ','Now: '))+_w13muStIc(L.cur)+' '+_w13muB(L.cur+' · '+_w13muStT(L.cur)):'')+'</div></div>';
   /* facts, each with its source */
@@ -34581,9 +34581,9 @@ function _w13muCard(u){
   ip.forEach(function(d,i){var srcs=Object.keys(d.src).filter(function(s){return s!=='list'}).map(_w13muSrcTx).join(' · '),parts='',need=[];
     if(d.src.pj){parts+='<span class="w13mu-pill'+(d.rd>=d.rT?' w13mu-ok':(d.rd?' w13mu-pa':''))+'">📚 '+E(T('קריאה ','Reading '))+'<span dir="ltr">'+d.rd+'/'+d.rT+'</span></span>';
       if(d.hasCase)parts+='<span class="w13mu-pill'+(d.tabs.c?' w13mu-ok':'')+'">📋 '+E(T('קייס ','Case '))+(d.tabs.c?'✓':'✗')+'</span>';
-      if(d.qT)parts+='<span class="w13mu-pill'+(d.qa>=d.qT?' w13mu-ok':(d.qa?' w13mu-pa':''))+'">❓ '+E(T('מבחן: ','Quiz: '))+'<span dir="ltr">'+d.qa+'/'+d.qT+'</span> '+E(T('נענו','answered'))+(d.qa?' · '+E(T(d.qok+' נכונות',d.qok+' correct')):'')+'</span>';
-      if(d.rT>d.rd)need.push(T((d.rT-d.rd)+' נושאים לקריאה',(d.rT-d.rd)+' topic'+(d.rT-d.rd===1?'':'s')+' to read'));if(d.hasCase&&!d.tabs.c)need.push(T('הקייס','the case'));if(d.qT>d.qa)need.push(T((d.qT-d.qa)+' שאלות',(d.qT-d.qa)+' question'+(d.qT-d.qa===1?'':'s')))}
-    if(d.att.length)parts+='<span class="w13mu-pill">📝 '+E(T(d.att.length+' ניסיונות',d.att.length+' attempt'+(d.att.length===1?'':'s')))+(d.best&&d.best.tot?' · '+E(T('הכי טוב ','best '))+'<span dir="ltr">'+d.best.ok+'/'+d.best.tot+'</span>':'')+'</span>';
+      if(d.qT)parts+='<span class="w13mu-pill'+(d.qa>=d.qT?' w13mu-ok':(d.qa?' w13mu-pa':''))+'">❓ '+E(T('מבחן: ','Quiz: '))+'<span dir="ltr">'+d.qa+'/'+d.qT+'</span> '+E(T('נענו','answered'))+(d.qa?' · '+E(T(d.qok===1?'אחת נכונה':d.qok+' נכונות',d.qok+' correct')):'')+'</span>';
+      if(d.rT>d.rd)need.push(T(d.rT-d.rd===1?'נושא אחד לקריאה':(d.rT-d.rd)+' נושאים לקריאה',(d.rT-d.rd)+' topic'+(d.rT-d.rd===1?'':'s')+' to read'));if(d.hasCase&&!d.tabs.c)need.push(T('הקייס','the case'));if(d.qT>d.qa)need.push(T(d.qT-d.qa===1?'שאלה אחת':(d.qT-d.qa)+' שאלות',(d.qT-d.qa)+' question'+(d.qT-d.qa===1?'':'s')))}
+    if(d.att.length)parts+='<span class="w13mu-pill">📝 '+E(T(d.att.length===1?'ניסיון אחד':d.att.length+' ניסיונות',d.att.length+' attempt'+(d.att.length===1?'':'s')))+(d.best&&d.best.tot?' · '+E(T('הכי טוב ','best '))+'<span dir="ltr">'+d.best.ok+'/'+d.best.tot+'</span>':'')+'</span>';
     if(d.tot)parts+='<span class="w13mu-pill">⏱ '+E([d.tm.l?'📚 '+_w13muDur(d.tm.l):'',d.tm.c?'📋 '+_w13muDur(d.tm.c):'',d.tm.q?'❓ '+_w13muDur(d.tm.q):''].filter(Boolean).join(' · '))+'</span>';
     if(d.intro)parts+='<span class="w13mu-pill">🎬 '+E(T('סרטון פתיחה נעצר ב-','Intro video paused at '))+'<span dir="ltr">'+Math.floor(d.intro/60)+':'+_w13muP2(d.intro%60)+'</span></span>';
     var th='';if(d.src.pj&&d.rT){var tl='';d.tops.forEach(function(t,j){var r=!!d.rdk[j],p=!r&&!!d.pl[j];tl+='<li class="'+(r?'w13mu-ok':(p?'w13mu-pa':'w13mu-no'))+'"><span aria-hidden="true">'+(r?'✓':(p?'▶':'○'))+'</span><span>'+_w13muB(t||(T('נושא ','Topic ')+(j+1)))+(p?' · '+E(d.pl[j]==='v'?T('מצגת באמצע','presentation paused'):T('הקראה באמצע','narration paused')):'')+'</span></li>'});
@@ -34703,7 +34703,7 @@ function _w14axRenew(F){
   if(_w14ax.rp)return _w14ax.rp;
   if(!_w14axCanFlag()||Date.now()-_w14ax.at<15000)return Promise.resolve(false);
   var tok='';try{tok=G.sessionToken||localStorage.getItem('pm_session_token_'+G.userName)||''}catch(e){}
-  var p;try{p=F(DB_URL,{method:'POST',body:JSON.stringify({action:'adminAccessByFlag',userName:G.userName,sessionToken:tok,email:_w6idEmail()}),headers:{'Content-Type':'text/plain'}})}catch(e){p=Promise.reject(e)}
+  var p;try{p=F(DB_URL,{method:'POST',body:JSON.stringify({action:'adminAccessByFlag',userName:G.userName,sessionToken:tok,email:_w6idEmail()}),headers:{'Content-Type':'text/plain'},signal:(typeof _w6sySig==='function'?_w6sySig(20000):undefined)})}catch(e){p=Promise.reject(e)}
   _w14ax.rp=Promise.resolve(p).then(function(r){return r.json()}).then(function(d){
       if(d&&d.success&&d.adminToken){_w14axSetTok(d);_w14ax.at=0;_w14axTrack('axRenew','ok');return true}
       _w14ax.at=Date.now();_w14axTrack('axRenew','fail');return false},function(){_w14ax.at=Date.now();_w14axTrack('axRenew','fail:net');return false})
@@ -34713,9 +34713,13 @@ function _w14axRenew(F){
 function _w14axUnauth(t){var d=null;try{d=JSON.parse(t)}catch(e){}return !!(d&&typeof d==='object'&&d.success===false&&String(d.error||'')==='Unauthorized')}
 function _w14axJson(o){return new Response(JSON.stringify(o),{status:200,headers:{'Content-Type':'application/json'}})}
 /* the token cannot be renewed: drop it, tell the caller in words, offer the way back in */
-function _w14axExpired(action){
-  try{_admToken='';_admTokenExp=0;sessionStorage.removeItem('pm_admin_token');sessionStorage.removeItem('pm_admin_token_exp')}catch(e){}
-  _w14axTrack('axExpired',action||'');_w14axBar();
+function _w14axExpired(action,tok){
+  /* W15 (_w15af #3): a different token that became valid meanwhile (password / flag sign-in) is kept, and no banner */
+  var keep=false;try{keep=tok!=null&&!!_admToken&&_admToken!==tok}catch(e){}
+  if(!keep)try{_admToken='';_admTokenExp=0;sessionStorage.removeItem('pm_admin_token');sessionStorage.removeItem('pm_admin_token_exp')}catch(e){}
+  _w14axTrack('axExpired',(action||'')+(keep?':kept':''));if(!keep)_w14axBar();
+  /* rev 2 (audit_1031 #5): still signed in (the newer token is kept) → a neutral "not done, try again", not "sign in again" */
+  if(keep)return _w14axJson({success:false,error:_w14axT('לא בוצע — נסו שוב.','Not done — please try again.'),code:'Unauthorized'});
   return _w14axJson({success:false,error:_w14axMsg(),code:'Unauthorized',expired:true});
 }
 function _w14axBar(){
@@ -34758,10 +34762,10 @@ function _w14axOk(){try{var b=document.getElementById('w14axBar');if(b)b.remove(
           /* refused for the token: the server did nothing. Retry ONCE with a fresh token (renewed now, or by a parallel call) */
           var fresh=(_admToken&&_admToken!==sent)?Promise.resolve(true):_w14axRenew(F);
           return fresh.then(function(ok){
-            if(!ok||!_admToken||_admToken===sent)return _w14axExpired(b.action);
-            return F(input,with_(_admToken)).then(function(r2){
+            if(!_admToken||_admToken===sent)return _w14axExpired(b.action,sent);
+            var rt=_admToken;return F(input,with_(rt)).then(function(r2){
               if(!r2||!r2.ok)return r2;
-              return r2.clone().text().then(function(t2){if(_w14axUnauth(t2))return _w14axExpired(b.action);_w14axOk();return r2},function(){return r2});
+              return r2.clone().text().then(function(t2){if(_w14axUnauth(t2))return _w14axExpired(b.action,rt);_w14axOk();return r2},function(){return r2});
             });
           });
         },function(){return res});
@@ -34790,6 +34794,79 @@ function _w14vcKnown(e){
   }catch(x){return false}
 }
 /* ===== /W14 cached-page update check ===== */
+</script>
+<script>
+/* ===== W15 admin in English (_w15ae) ===== */
+var _W15AE_EN={"גישת מנהל":"Admin access","אין לך הרשאת ניהול":"You don’t have admin rights","נדרשת התחברות מחדש":"Please sign in again","פאנל ניהול":"Admin panel","מאמת הרשאה...":"Verifying access…","לא ניתן לאמת הרשאת ניהול":"Couldn’t verify admin access","שגיאת רשת":"Network error","המשתמש ביטל הסכמה לתזכורות":"The user turned reminders off","המשתמש לא במצב מאושר":"The user isn’t approved","הזינו סיסמת מנהל":"Enter the admin password","סיסמה":"Password","כניסה":"Sign in","⏳ מתחבר...":"⏳ Signing in…","❌ סיסמה שגויה":"❌ Wrong password","❌ שגיאת רשת":"❌ Network error","מבטל זיכוי...":"Removing the credit…","מזכה שלב...":"Crediting the stage…","📴 שגיאת חיבור":"📴 Connection error","ℹ️ השלב כבר היה מסומן כהושלם":"ℹ️ The stage was already marked as completed","ℹ️ השלב לא היה מסומן":"ℹ️ The stage was not marked","משתמש אחד":"1 user","1 חדש!":"1 new!","✓ הועתק — דיווח אחד":"✓ Copied — 1 report","פעם אחת":"once","מייל אחד ברשימה":"1 e-mail on the list","ניסיון אחד":"1 attempt","לחץ להיסטוריה מלאה":"Tap for the full history","סומן כהושלם ע״י מנהל":"Marked as completed by an admin"};
+var _W15AE_ENP=[[new RegExp("^(\\d+) · תזכורת (1|2) \\((24h|48h)\\)$",""),"$1 · reminder $2 ($3)"],
+[new RegExp("^(\\d+) · שבועיות \\(×(\\d+)\\)$",""),"$1 · weekly (×$2)"],
+[new RegExp("^(\\d+) · תזכורת$",""),"$1 · reminder"],
+[new RegExp("^(\\d+) · שבועיות$",""),"$1 · weekly"],
+[new RegExp("^·(\\d+) בתהליך$",""),"·$1 in progress"],
+[new RegExp("^(\\S+) זוכה ע״י מנהל$",""),"$1 Credited by an admin"],
+[new RegExp("^(\\S+) קריאה (\\d+)/(\\d+) · (\\S+) קייס (✓|✗) · (\\S+) תשובות (\\d+)/(\\d+)( · לחץ להיסטוריה)?$",""),function(m,a,r,rt,b,c,d,q,qt,h){return a+" Read "+r+"/"+rt+" · "+b+" Case "+c+" · "+d+" Answers "+q+"/"+qt+(h?" · tap for the history":"")}],
+[new RegExp("^\\((24h|48h|שבועית)\\) (?:ל-(\\d+) כתובות|לכתובת אחת)$",""),function(m,l,n){n=n||"1";return "("+(l==="שבועית"?"weekly":l)+") to "+n+(n==="1"?" address":" addresses")}],
+[new RegExp("^משתמש אחד · חיפוש: \"([\\s\\S]*)\"$",""),"1 user · search: \"$1\""],
+[new RegExp("^(\\S+) יש דיווח באג פתוח אחד$",""),"$1 1 open bug report"],
+[new RegExp("^(\\S+) דילג פעם אחת · טרם דירג$",""),"$1 Skipped once · not rated yet"],
+[new RegExp("^שלב (\\S+) ל-([\\s\\S]+)$",""),"Stage $1 to $2"],
+[new RegExp("^(\\d+) מיילים ברשימה$",""),"$1 e-mails on the list"],
+[new RegExp("^משתמש אושר!( ⚓)?$",""),"User approved!$1"],
+[new RegExp("^למחוק את <strong>([\\s\\S]*)</strong>\\?<br>פעולה זו בלתי הפיכה\\.$",""),"Delete <strong>$1</strong>?<br>This can’t be undone."],
+[new RegExp("^✅ שלב (\\d+) סומן כהושלם · נוספה הערה$",""),"✅ Stage $1 marked as completed · note added"],
+[new RegExp("^↩️ שלב (\\d+) הוסר · נוספה הערה$",""),"↩️ Stage $1 removed · note added"],
+[new RegExp("^❌ שגיאה: ([\\s\\S]*) — ודאו שה-Apps Script עודכן$",""),function(m,e){return "❌ Error: "+(e==="נסו שוב"?"try again":e)+" — make sure the Apps Script is updated"}],
+[new RegExp("^לסמן את \"שלב (\\d+): ([\\s\\S]*)\" כהושלם עבור ([\\s\\S]*)\\?\\n\\nתתווסף הערה אוטומטית ביומן הפעילות שהשלב סומן ע\"י מנהל\\.$",""),function(m,id,t,n){return "Mark \u201cStage "+id+": "+_w15aeStage(id,t)+"\u201d as completed for "+n+"?\n\nAn automatic note will be added to the activity log saying an admin marked the stage."}],
+[new RegExp("^להסיר את \"שלב (\\d+): ([\\s\\S]*)\" מהשלבים שהושלמו עבור ([\\s\\S]*)\\?\\n\\nתתווסף הערה ביומן הפעילות שהזיכוי בוטל\\.$",""),function(m,id,t,n){return "Remove \u201cStage "+id+": "+_w15aeStage(id,t)+"\u201d from the stages "+n+" completed?\n\nA note will be added to the activity log saying the credit was removed."}]];
+var _W15AE_ENA={"📝 ניסיונות מבחן וטעויות":"📝 Quiz attempts and mistakes","ציונים:":"Scores:","✓ הניסיון האחרון ללא טעויות":"✓ No mistakes in the last attempt","תובנה:":"Insight:","🎈 שימוש בפיצ׳רים וכפתורים:":"🎈 Feature and button use:","— עדיין אין שימוש בפיצ׳רים ובכפתורים":"— No feature or button use yet","🎬 סרטוני שלבים":"🎬 Stage videos","📽️ מצגות פרקים":"📽️ Chapter presentations","🎞️ סרטוני פרק (NotebookLM)":"🎞️ Chapter videos (NotebookLM)"};
+var _W15AE_ENPA=[[new RegExp("^סה\\u05F4כ (?:(\\d+) ניסיונות|ניסיון אחד) (?:ב-(\\d+) שלבים|בשלב אחד) · (?:(\\d+) שלבים נעשו|שלב אחד נעשה) יותר מפעם אחת$",""),function(m,a,s,r){return "Total: "+(a?a+" attempts":"1 attempt")+" in "+(s?s+" stages":"1 stage")+" · "+(r?r+" stages":"1 stage")+" retaken"}],
+[new RegExp("^(\\d+) ניסיונות$",""),"$1 attempts"],
+[new RegExp("^טעה בניסיון האחרון (?:ב-(\\d+) שאלות|בשאלה אחת):$",""),function(m,n){return "Last attempt missed "+(n?n+" questions":"1 question")+":"}],
+[new RegExp("^ש(\\d+)$",""),"Q$1"],
+[new RegExp("^השאלות שהכשילו הכי הרבה: (.+)$",""),function(m,l){var r=l.replace(/שלב (\d+) ש(\d+) \((\d+)\u00D7\)/g,"Stage $1 Q$2 ($3\u00D7)");return /[\u0590-\u05FF]/.test(r)?null:"Most-missed questions: "+r}],
+[new RegExp("^📌 תובנות אישיות — מה שהמשתמש רשם לעצמו בסוף כל פרק \\((\\d+)\\)$",""),"📌 Personal reflections — what the learner noted at the end of each chapter ($1)"],
+[new RegExp("^(.+) — (?:(\\d+) צפיות|צפייה אחת)(?:( · )(?:(\\d+) משתמשים|משתמש אחד))?$",""),function(m,a,v,sp,u){var t=/[\u0590-\u05FF]/.test(a)?_w10adEnTr(a.trim(),1):a;if(t==null)return null;return t+" — "+(v?v+" views":"1 view")+(sp?" · "+(u?u+" users":"1 user"):"")}],
+[new RegExp("^סך (?:(\\d+) אירועים|אירוע אחד) (?:ב-(\\d+) (ימים|שבועות|חודשים) אחרונים|ב(יום|שבוע|חודש) האחרון)(?: · (\\d+)/(\\d+) פיצ'רים נבחרו)?$",""),function(m,e,n,u,u1,a,b){var U={"ימים":"days","שבועות":"weeks","חודשים":"months","יום":"day","שבוע":"week","חודש":"month"};return (e?e+" events":"1 event")+" in the last "+(n?n+" "+U[u]:U[u1])+(a?" · "+a+"/"+b+" features selected":"")}],
+[new RegExp("^סך (?:(\\d+) אירועים|אירוע אחד) · עודכן: (.+)$",""),function(m,e,d){return (e?e+" events":"1 event")+" · updated: "+d}],
+[new RegExp("^📈 סך הכל (?:(\\d+) אירועים מתועדים|אירוע אחד מתועד) · לחצו על פיצ\\u05F3ר לראות מי לחץ, כמה, מתי ומאיזה מכשיר$",""),function(m,e){return "📈 "+(e?e+" events":"1 event")+" recorded in total · tap a feature to see who used it, how often, when and on which device"}],
+[new RegExp("^סה\\u05F4כ (?:(\\d+) תזכורות|תזכורת אחת): (\\d+) פתיחה \\(24ש\\u05F3\\+48ש\\u05F3\\) \\+ (?:(\\d+) שבועיות|שבועית אחת) \\(תקרה (\\d+)\\)$",""),function(m,n,o,w,c){return (n?n+" reminders":"1 reminder")+" in total: "+o+" opening (24h+48h) + "+(w==null?"1":w)+" weekly (cap "+c+")"}]];
+var _w15ae={confirm0:null};
+function _w15aeEn(){try{return !!(G&&G.lang==='en')}catch(e){return false}}
+/* a stage title in the UI language (the confirms quote S[].t, which is Hebrew) */
+function _w15aeStage(id,t){try{var e=(typeof S_EN_DATA!=='undefined'&&S_EN_DATA[+id]&&S_EN_DATA[+id].t);return e||t}catch(x){return t}}
+/* a toast title that a learner-side layer decides by (W10 quiz-bonus hold _W10MO_QB, incl. W7's "קומבו!"): never pre-translated */
+function _w15aeKeyed(t){try{return typeof _W10MO_QB!=='undefined'&&!!_W10MO_QB[String(t)]}catch(e){return false}}
+/* one Hebrew ADMIN line → its English line (W15 exact, the admin map, then patterns), or the line unchanged. No UI_EN lookup here:
+   showAchievement / showModal already translate UI_EN keys at render time (_t), and inner layers decide by the Hebrew title */
+function _w15aeTr(s){
+  try{
+    if(s==null||!_w15aeEn())return s;var k=String(s);if(!/[\u0590-\u05FF]/.test(k))return s;
+    var t=k.replace(/\s+/g,' ').trim();
+    if(_W15AE_EN[t]!=null)return _W15AE_EN[t];
+    if(typeof _W10AD_EN!=='undefined'&&_W10AD_EN[t]!=null)return _W10AD_EN[t];
+    for(var i=0;i<_W15AE_ENP.length;i++){var p=_W15AE_ENP[i],m=p[0].exec(k);if(m){var r=typeof p[1]==='function'?p[1].apply(null,m):k.replace(p[0],p[1]);if(r!=null&&r!==k)return r}}
+    return s;
+  }catch(e){return s}
+}
+/* the maps the app already reads: _t() (UI_EN) for toasts / messages, the admin walker (_W10AD_EN / _W10AD_ENP) for the portal DOM */
+try{Object.keys(_W15AE_EN).forEach(function(k){if(typeof UI_EN!=='undefined'&&UI_EN[k]==null)UI_EN[k]=_W15AE_EN[k];if(typeof _W10AD_EN!=='undefined'&&_W10AD_EN[k]==null)_W10AD_EN[k]=_W15AE_EN[k]})}catch(e){}
+try{Object.keys(_W15AE_ENA).forEach(function(k){if(typeof _W10AD_EN!=='undefined'&&_W10AD_EN[k]==null)_W10AD_EN[k]=_W15AE_ENA[k]})}catch(e){}
+try{if(typeof _W10AD_ENP!=='undefined'&&Array.isArray(_W10AD_ENP)&&!_W10AD_ENP._w15ae){_W15AE_ENP.concat(_W15AE_ENPA).forEach(function(p){_W10AD_ENP.push(p)});_W10AD_ENP._w15ae=1}}catch(e){}
+/* legacy toasts / messages / confirms: the English line in English (arguments otherwise unchanged) */
+try{if(typeof showAchievement==='function'&&!showAchievement._w15ae){var _w15aeOA=showAchievement;showAchievement=function(icon,title,sub){if(_w15aeEn()&&!_w15aeKeyed(title)){title=_w15aeTr(title);sub=_w15aeTr(sub)}return _w15aeOA.call(this,icon,title,sub)};showAchievement._w15ae=1}}catch(e){}
+try{if(typeof showModal==='function'&&!showModal._w15ae){var _w15aeOM=showModal;showModal=function(icon,title,msg,btn){if(_w15aeEn()){title=_w15aeTr(title);msg=_w15aeTr(msg);if(btn)btn=_w15aeTr(btn)}return _w15aeOM.call(this,icon,title,msg,btn)};showModal._w15ae=1}}catch(e){}
+try{if(typeof window.confirm==='function'&&!window.confirm._w15ae){_w15ae.confirm0=window.confirm.bind(window);var _w15aeC=function(m){return _w15ae.confirm0(_w15aeEn()?_w15aeTr(m):m)};_w15aeC._w15ae=1;window.confirm=_w15aeC}}catch(e){}
+/* ===== /W15 admin in English ===== */
+</script>
+<style id="w15afCss">
+/* ===== W15 (_w15af #5): the four Learner-activity KPI labels on one line (the Answers tile has two lines of figures) — not at ≤420 px ===== */
+@media (min-width:421px){.w13mp-k{display:flex;flex-direction:column}.w13mp-k .w13mp-kl{margin-top:auto;padding-top:.1rem}}
+</style>
+<script>
+/* ===== W15 audit fixes (_w15af) ===== */
+/* #4 the Users-table "stages" sort key: learning stages (the figure the column shows), books only break ties */
+function _w15skStages(u){try{if(typeof _w13muLite==='function'){var L=_w13muLite(u);if(L&&typeof L.dl==='number')return L.dl*1000+(Number(L.db)||0)}}catch(e){}return (parseInt(u&&u.stagesCount)||0)*1000}
+/* ===== /W15 audit fixes ===== */
 </script>
 </body>
 </html>
