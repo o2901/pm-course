@@ -5814,6 +5814,24 @@ html[data-acc="amber"] body:not(.light) :is(.w11am-nl.on,.w11am-sg[aria-pressed=
 html[dir="ltr"] #app #adv .w11am-ltr[dir="ltr"],html[dir="ltr"] #app #adv .w11am-ltr[dir="ltr"] *:not(bdi):not([dir]),html[dir="ltr"] #app #adv .w11am-top[dir="ltr"],html[dir="ltr"] #app #adv .w11am-top[dir="ltr"] *:not(bdi):not([dir]){direction:ltr}
 @media (prefers-reduced-motion:reduce){.w11am-nl,.w11am-b,.w11am-tr{transition:none}.w11am-spin .w11am-i,.w11am-flash{animation:none}}
 /* ===== /W11 admin portal ===== */
+/* ===== W10 perf3 (_w10pf): skip collapsed lesson bodies · compositor-only map pulses (see _video_factory/_w10_perf3.js) ===== */
+/* a collapsed chapter body: not styled / laid out / painted until it opens. Opening: visible at once (no transition in the
+   open state). Collapsing: content-visibility transitions discretely over the same .35s as the grid row, so the text stays
+   visible until the row is closed, then the content is skipped. */
+@supports (content-visibility:hidden) and (transition-behavior:allow-discrete){
+.pf-acc-body:not(.open)>.pf-acc-inner{content-visibility:hidden;transition:content-visibility .35s allow-discrete}
+}
+/* W6 opacity pulses: a layer of their own, so Chrome runs them on the compositor (without it the pseudo-element had no layer and
+   every frame re-styled and re-painted the whole page). Same pixels. */
+.ti .ib::after,.w6ag-games.w6ag-hl::after{will-change:opacity}
+/* games3 "new puzzle" dot: the box-shadow pulse (main thread every frame) becomes the same ring drawn by an ::after disc that
+   scales + fades on the compositor — same keyframe offsets and easing; radius 4→11px = the 7px spread, alpha .55→0 = the shadow
+   colour fading to transparent; over the dot itself the ring colour equals the dot colour. Reduced motion: no ring (as before). */
+.w8g3-dot{position:relative;animation:none}
+.w8g3-dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:color-mix(in srgb,var(--s) 55%,transparent);pointer-events:none;animation:_w10pfDot 1.8s ease-out infinite}
+@keyframes _w10pfDot{0%{transform:scale(1);opacity:1}70%,100%{transform:scale(2.75);opacity:0}}
+@media (prefers-reduced-motion:reduce){.w8g3-dot::after{content:none;animation:none}}
+/* ===== /W10 perf3 ===== */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 </head>
@@ -10287,7 +10305,7 @@ function _addTableHints(root){
   if(root.matches&&root.matches('.tbl-wrap'))wraps.push(root);
   if(root.querySelectorAll)root.querySelectorAll('.tbl-wrap').forEach(w=>wraps.push(w));
   /* _w8pf: all overflow reads first (one layout), then the inserts — a hint insert used to force the next read to relayout */
-  const _w8pfOver=wraps.filter(w=>!w.dataset.hinted&&w.scrollWidth-w.clientWidth>8);
+  const _w8pfOver=wraps.filter(w=>!w.dataset.hinted&&!(typeof _w10pfAccHid==='function'&&_w10pfAccHid(w))&&w.scrollWidth-w.clientWidth>8);/* _w10pf: a table in a collapsed chapter body is measured when the body opens — measuring it here lays out what the browser now skips */
   _w8pfOver.forEach(w=>{
     {
       const hint=document.createElement('div');
@@ -11825,11 +11843,11 @@ function _tgEnd(){
   _tg.on=false;
   var secs=Math.round((Date.now()-_tg.t0)/1000);
   var t=_todayState();var firstToday=!(t.game>0);t.game=(t.game||0)+1;
-  var pts=firstToday?Math.max(10,Math.round(_tg.score/3)):0;
+  var pts=firstToday&&_tg.score>0?Math.max(10,Math.round(_tg.score/3)):0;
   if(pts){G.ts+=pts;try{uh()}catch(e){}}
   sv();_questMaybeReward();
   try{trackEvent('minigame','end','termMatch·'+_tg.score+'·'+secs+'s')}catch(e){}
-  var el=$('tdGame');if(el)el.innerHTML='<div style="text-align:center;padding:.6rem 0"><div style="font-size:2rem">🏅</div><div style="font-weight:800;color:var(--t1);font-size:1.1rem">'+(_enLang()?'Score: ':'ניקוד: ')+_tg.score+'</div><div style="color:var(--t2);font-size:.82rem;margin:.3rem 0">'+(pts?('+'+pts+(_enLang()?' points earned!':' נקודות נוספו!')):(_enLang()?'Daily reward already claimed — play for fun!':'הפרס היומי כבר נאסף — שיחקו להנאה!'))+'</div><button class="bs" onclick="startTermGame()">'+(_enLang()?'Play again':'עוד סיבוב')+'</button></div>';
+  var el=$('tdGame');if(el)el.innerHTML='<div style="text-align:center;padding:.6rem 0"><div style="font-size:2rem">🏅</div><div style="font-weight:800;color:var(--t1);font-size:1.1rem">'+(_enLang()?'Score: ':'ניקוד: ')+_tg.score+'</div><div style="color:var(--t2);font-size:.82rem;margin:.3rem 0">'+(pts?('+'+pts+(_enLang()?' points earned!':' נקודות נוספו!')):firstToday?(_enLang()?'No points this time — try again tomorrow':'הפעם בלי נקודות — נסו שוב מחר'):(_enLang()?'Daily reward already claimed — play for fun!':'הפרס היומי כבר נאסף — שיחקו להנאה!'))+'</div><button class="bs" onclick="startTermGame()">'+(_enLang()?'Play again':'עוד סיבוב')+'</button></div>';
   if(pts)try{cf()}catch(e){}
 }
 /* --- Library wing on the map --- */
@@ -11864,10 +11882,10 @@ function maybeWelcomeBack(){
     var _w5fDays=Math.floor((Date.now()-_w5fLast)/864e5);
     if(!(_w5fDays>=7&&_w5fDays<400))return;
     var k='wb_'+_dayKey();if(G._wbShown===k)return;G._wbShown=k;window._w5fWbDone=true;
-    G.ts+=50;sv();try{uh()}catch(e){}
+    if(typeof _ci6WbHold==='function')_ci6WbHold(_w5fDays);else G.ts+=50;sv();try{uh()}catch(e){}
     var last=G.lastStageVisited?parseInt(G.lastStageVisited):null;
     var ov=document.createElement('div');ov.id='wbOv';ov.dir=_enLang()?'ltr':'rtl';
-    ov.innerHTML='<div class="hub-box" style="text-align:center;max-width:400px"><div style="font-size:3rem">👋</div><h3 style="font-size:1.3rem;font-weight:800;color:var(--t1);margin:.4rem 0">'+(_enLang()?'Welcome back!':'ברוכים השבים!')+'</h3><p style="color:var(--t2);font-size:.9rem;margin:0 0 .8rem">'+(_enLang()?'We saved your spot. Here is a small gift for showing up:':'שמרנו לכם את המקום. מתנה קטנה על עצם החזרה:')+'</p><div style="font-size:1.6rem;font-weight:800;color:var(--p);margin-bottom:1rem">+50 '+(_enLang()?'pts':'נק׳')+'</div><div class="cer-btns">'+(last!=null?'<button class="bp" onclick="$(\'wbOv\').remove();try{ss('+last+')}catch(e){mp()}">'+(_enLang()?'Continue where I left off':'המשך מאיפה שעצרתי')+'</button>':'')+'<button class="bs" onclick="$(\'wbOv\').remove()">'+(_enLang()?'To the map':'למפה')+'</button></div></div>';
+    ov.innerHTML='<div class="hub-box" style="text-align:center;max-width:400px"><div style="font-size:3rem">👋</div><h3 style="font-size:1.3rem;font-weight:800;color:var(--t1);margin:.4rem 0">'+(_enLang()?'Welcome back!':'ברוכים השבים!')+'</h3><p style="color:var(--t2);font-size:.9rem;margin:0 0 .8rem">'+(_enLang()?'We saved your spot.':'שמרנו לכם את המקום.')+'</p><div class="ci6-wb" style="font-size:1.05rem;font-weight:800;color:var(--p);margin-bottom:1rem;line-height:1.45">'+(_enLang()?'+50 pts are waiting after your first question':'+50 נק׳ מחכות לכם אחרי השאלה הראשונה')+'</div><div class="cer-btns">'+(last!=null?'<button class="bp" onclick="$(\'wbOv\').remove();try{ss('+last+')}catch(e){mp()}">'+(_enLang()?'Continue where I left off':'המשך מאיפה שעצרתי')+'</button>':'')+'<button class="bs" onclick="$(\'wbOv\').remove()">'+(_enLang()?'To the map':'למפה')+'</button></div></div>';
     document.body.appendChild(ov);
     try{trackEvent('welcomeBack','shown',String(_w5fDays))}catch(e){}
     window._lapseDays=0;
@@ -12637,7 +12655,7 @@ function generateCert(){
 
   /* W5: server-side issuance record + public verification link (fire-and-forget; the backend endpoint may lag) */
   const _w5fVerUrl=(typeof _DB_BASE!=='undefined'&&_DB_BASE)?(_DB_BASE+'?action=verifyCert&id='+encodeURIComponent(certId)+(_enLang()?'&lang=en':'')):'';
-  try{if(DB_URL){const _w6gsU=G.userName||'';const _w6gsCert=function(again){let _w5fTok='';try{_w5fTok=G.sessionToken||localStorage.getItem('pm_session_token_'+_w6gsU)||''}catch(e){}fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'issueCert',userName:_w6gsU,sessionToken:_w5fTok,certId:certId,title:(title?title.name:'מנהל מוצר מקצוען'),score:score,stages:stagesCompleted}),headers:{'Content-Type':'text/plain'},keepalive:true}).then(function(r){return r.json()}).then(function(d){/* w6gs: issueCert now needs this device's current session token AND the core stages already saved on the server; refused right after the last stage (save in flight) or after a device switch → ONE retry after this device's next save */if(!again&&d&&d.success!==true&&(d.denied==='auth'||d.error==='incomplete')){try{syncToCloud()}catch(e){}setTimeout(function(){try{if((G.userName||'')===_w6gsU)_w6gsCert(true)}catch(e){}},9000)}}).catch(function(){})};_w6gsCert(false)}}catch(e){}
+  try{if(DB_URL){const _w6gsU=G.userName||'';const _w6gsCert=function(again){let _w5fTok='';try{_w5fTok=G.sessionToken||localStorage.getItem('pm_session_token_'+_w6gsU)||''}catch(e){}fetch(DB_URL,{method:'POST',body:JSON.stringify({action:'issueCert',userName:_w6gsU,sessionToken:_w5fTok,certId:certId,title:(title?title.name:'מנהל מוצר מקצוען'),score:score,stages:stagesCompleted}),headers:{'Content-Type':'text/plain'},keepalive:true}).then(function(r){return r.json()}).then(function(d){try{if(typeof _ci9Res==='function')_ci9Res(d,certId,again)}catch(_ci9e){}/* w6gs: issueCert now needs this device's current session token AND the core stages already saved on the server; refused right after the last stage (save in flight) or after a device switch → ONE retry after this device's next save */if(!again&&d&&d.success!==true&&(d.denied==='auth'||d.error==='incomplete')){try{syncToCloud()}catch(e){}setTimeout(function(){try{if((G.userName||'')===_w6gsU)_w6gsCert(true)}catch(e){}},9000)}}).catch(function(){try{if(typeof _ci9Res==='function')_ci9Res(null,certId,again)}catch(_ci9e){}})};_w6gsCert(false)}}catch(e){}
   /* W11 certificate: the document is built by _w11ctDoc from the same real values (ID, verify URL, LinkedIn, stats, date) */
   const _w6i18nCE=_enLang();const certHTML=_w11ctDoc({en:_w6i18nCE,name:G.userName||'',rank:(_w6i18nCE?_t(title?title.name:'מנהל מוצר מקצוען'):(title?title.name:'מנהל מוצר מקצוען')),score:score,stages:stagesCompleted,streak:Math.max(G.maxStreak||0,G.streak||0),date:dateStr,id:certId,ver:_w5fVerUrl,flair:G.certFlair===true});
   const w=window.open('','_blank');
@@ -13041,7 +13059,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  — a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.33';
+const APP_VERSION='1.10.34';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -13401,7 +13419,8 @@ function startSessionTimer(){
   const firstDay=G.firstUse?new Date(G.firstUse).toDateString():today;
   if(G.s&&firstDay!==today){
     const _period=(_h>=5&&_h<12)?'morning':((_h>=18||_h<5)?'night':null);
-    if(_period==='morning'&&G.lastMorningBonus!==today){
+    if(typeof _ci6BonusOpen==='function'){_ci6BonusOpen(_period,today)}/* W18 C2 (_ci6) MV-005: paid at the first learning action */
+    else if(_period==='morning'&&G.lastMorningBonus!==today){
       G.lastMorningBonus=today;G.ts+=10;
       try{logActivity('loginBonus','בונוס בוקר +10',10);trackEvent('login','morningBonus')}catch(e){}
       setTimeout(()=>showAchievement('☀️','בוקר טוב!','+10 נק׳ · בונוס כניסה ראשונה בבוקר'),900);
@@ -16527,7 +16546,7 @@ function _w5gEnd(){
   var en=_w5g.en,sc=_w5g.score,n=_w5g.n,ok=_w5g.correct,acc=n?Math.round(ok/n*100):0,pts=0,counted=n>0;
   if(counted){/* same daily-reward contract as _tgEnd — shared across both games */
     var t=_todayState();var firstToday=!(t.game>0);t.game=(t.game||0)+1;
-    pts=firstToday?Math.max(10,Math.round(sc/3)):0;
+    pts=firstToday&&sc>0?Math.max(10,Math.round(sc/3)):0;
     if(pts)G.ts+=pts;
     try{sv()}catch(e){}try{_questMaybeReward()}catch(e){}try{uh()}catch(e){}
     _w5gMark('tf');
@@ -16535,7 +16554,7 @@ function _w5gEnd(){
   var prev=_w5gBest(),nb=sc>0&&sc>prev;if(nb)_w5gSetBest(sc);
   var best=Math.max(prev,sc);
   try{trackEvent('minigame','end','trueFalse·'+sc+'·'+acc+'%')}catch(e){}
-  var rew=pts?('+'+pts+(en?' points earned!':' נקודות נוספו!')):(counted?(en?'Daily reward already claimed — play for fun!':'הפרס היומי כבר נאסף — שיחקו להנאה!'):(en?'No cards answered — the daily reward is still waiting':'לא נענו כרטיסים — הפרס היומי עדיין מחכה'));
+  var rew=pts?('+'+pts+(en?' points earned!':' נקודות נוספו!')):(counted?(firstToday&&!(sc>0)?(en?'No points this time — try again tomorrow':'הפעם בלי נקודות — נסו שוב מחר'):(en?'Daily reward already claimed — play for fun!':'הפרס היומי כבר נאסף — שיחקו להנאה!')):(en?'No cards answered — the daily reward is still waiting':'לא נענו כרטיסים — הפרס היומי עדיין מחכה'));
   var seen={},ms=[];
   for(var i=_w5g.miss.length-1;i>=0&&ms.length<3;i--){var m=_w5g.miss[i].t;if(seen[m.term])continue;seen[m.term]=1;ms.push(m)}
   var mh=ms.length?('<div class="w5g-miss"><h5>'+(en?'Review — the right definitions':'לחזרה — ההגדרות הנכונות')+'</h5>'+ms.map(function(m){
@@ -18205,6 +18224,7 @@ function _w6axEnhance(root){
   var all=root.getElementsByTagName('*'),groups=[],i,el,m;
   for(i=0;i<all.length;i++){
     el=all[i];if(el.namespaceURI!=='http://www.w3.org/1999/xhtml')continue;
+    if(typeof _w10pfAxSkip==='function'&&_w10pfAxSkip(el)){i+=_w10pfAxStep(el);continue}/* _w10pf: collapsed chapter body — aria-hidden + unfocusable while collapsed; enhanced on the pass after it opens */
     if(el.tagName==='BUTTON'){_w6axBtn(el);continue}
     if(el.tagName==='A'&&el.hasAttribute('href'))continue;
     m=el.getAttribute('data-w6ax');
@@ -23359,7 +23379,7 @@ const _w8rtOrigSkSync=_w6skSync;_w6skSync=function(){
 };
 try{window.addEventListener('click',function(e){try{var t=e.target;if(t&&t._w8rtT0&&Date.now()-t._w8rtT0<450){e.stopImmediatePropagation();e.preventDefault()}}catch(x){}},true)}catch(e){}
 /* RT2-11 a new calendar day counts at the first interaction / focus / return, like a login would */
-function _w8rtRoll(){try{if(!G||!G.s||!G.userName||!G.lastDay||G.v==='w'||!_w8rtLogged())return;if(G.lastDay===new Date().toDateString())return;updateStreak();try{sv()}catch(e){}try{uh()}catch(e){}}catch(e){}}
+function _w8rtRoll(){try{if(!G||!G.s||!G.userName||!G.lastDay||G.v==='w'||!_w8rtLogged())return;if(G.lastDay===new Date().toDateString())return;if(typeof window._ci6Roll==='function'){window._ci6Roll();return}updateStreak();try{sv()}catch(e){}try{uh()}catch(e){}}catch(e){}}
 try{document.addEventListener('visibilitychange',function(){if(!document.hidden)_w8rtRoll()});window.addEventListener('focus',_w8rtRoll);['pointerdown','keydown'].forEach(function(t){document.addEventListener(t,_w8rtRoll,{capture:true,passive:true})})}catch(e){}
 /* RT2-12 one login request in flight (Enter twice, chip + Enter) */
 const _w8rtOrigGo=go;go=function(){try{var b=document.querySelector('.btn-go');if(b&&b.disabled)return}catch(e){}return _w8rtOrigGo.apply(this,arguments)};/* _tryLogin disables this exact button while its request is in flight */
@@ -25511,7 +25531,7 @@ _w6axEnhance=function(root){
     if(r&&r.getElementsByTagName&&typeof Map==='function'){
       var all=r.getElementsByTagName('*'),i,el,m,cs;cache=new Map();
       for(i=0;i<all.length;i++){
-        el=all[i];if(el.tagName==='BUTTON'||el.namespaceURI!=='http://www.w3.org/1999/xhtml')continue;
+        el=all[i];if(typeof _w10pfAxSkip==='function'&&_w10pfAxSkip(el)){i+=el.getElementsByTagName('*').length;continue}if(el.tagName==='BUTTON'||el.namespaceURI!=='http://www.w3.org/1999/xhtml')continue;
         m=el.getAttribute('data-w6ax');
         if(m==='b'||(m==null&&(el.hasAttribute('onclick')||typeof el.onclick==='function')&&!(_w6axNo&&_w6axNo.has(el)))){cs=gcs(el);cache.set(el,{cursor:cs.cursor,pointerEvents:cs.pointerEvents})}
       }
@@ -33700,9 +33720,45 @@ function _w17secB3(){try{if(typeof _W16B3_SEC==='undefined'||!Array.isArray(_W16
   if(D.media)try{var M=D.media,k2;for(k2 in M.intro)STAGE_INTRO[k2]=M.intro[k2];if(typeof _W10MD_D!=='undefined')for(k2 in M.dur)_W10MD_D[k2]=M.dur[k2];for(k2 in M.aud)AV_AUDIO[k2]=M.aud[k2];for(k2 in M.pilot)AUTO_VIDEO_PILOT[k2]=M.pilot[k2]}catch(e){}
 })();
 /* ===== /W17 stage 40 ===== */
+/* ===== W10 perf3 (_w10pf) — see _video_factory/_w10_perf3.js ===== */
+/* -- lesson: a collapsed chapter body is content-visibility:hidden (CSS pack) where the browser supports it AND discrete
+      transitions (the collapse keeps the text visible until the row has closed). Elsewhere: today's behaviour, untouched. -- */
+var _w10pfCv = false;
+try { _w10pfCv = !!(window.CSS && CSS.supports && CSS.supports('content-visibility', 'hidden') && CSS.supports('transition-behavior', 'allow-discrete')); } catch (e) {}
+/* an element inside a collapsed chapter body (its content is skipped by the browser) */
+function _w10pfAccHid(el) { try { if (!_w10pfCv || !el || !el.closest) return false; var b = el.closest('.pf-acc-body'); return !!b && !b.classList.contains('open'); } catch (e) { return false; } }
+/* the W6 a11y pass steps over a collapsed body: reading computed styles in there forces, per element, the work the browser now
+   skips; the body is aria-hidden and unfocusable while collapsed, and the pass re-runs right after it opens */
+function _w10pfAxSkip(el) { return _w10pfCv && !!el.classList && el.classList.contains('pf-acc-inner') && !!el.parentElement && el.parentElement.classList.contains('pf-acc-body') && !el.parentElement.classList.contains('open'); }
+/* stepping over that body: controls it enhanced while the body was open leave the tab order exactly as W6 does for a collapsed
+   body (tabindex -1 — an attribute write, no style read); returns how many elements to step over */
+function _w10pfAxStep(inner) { try { var l = inner.querySelectorAll('[data-w6ax="b"]:not([tabindex="-1"])'); for (var i = 0; i < l.length; i++) l[i].setAttribute('tabindex', '-1'); } catch (e) {} return inner.getElementsByTagName('*').length; }
+/* opening a body: its tables get their overflow hint now (same hint, same place, before the opening's first frame), and the
+   a11y pass is scheduled (a click already schedules it; programmatic opens — deep links, resume, gates — did not) */
+var _w10pfAccT0 = pfAccToggle;
+pfAccToggle = function (btn) {
+  var r = _w10pfAccT0.apply(this, arguments);
+  if (_w10pfCv) {
+    try {
+      var b = btn && btn.classList && btn.classList.contains('pf-acc-close') ? btn.closest('.pf-acc-body') : (btn && btn.nextElementSibling);
+      if (b && b.classList && b.classList.contains('pf-acc-body') && b.classList.contains('open')) {
+        if (b.querySelector('.tbl-wrap:not([data-hinted])')) _addTableHints(b);
+        if (typeof _w6axSoon === 'function') _w6axSoon();
+      }
+    } catch (e) {}
+  }
+  return r;
+};
+/* gate / debug hook */
+function _w10pfDbg() {
+  var inn = document.querySelectorAll('#tc .pf-acc-inner'), skipped = 0;
+  for (var i = 0; i < inn.length; i++) { try { if (getComputedStyle(inn[i]).contentVisibility === 'hidden') skipped++; } catch (e) {} }
+  return { v: 1, cv: _w10pfCv, inners: inn.length, skipped: skipped };
+}
+/* ===== /W10 perf3 ===== */
 // ========== ALWAYS SHOW WELCOME SCREEN ==========
 // Returning users see the welcome screen first, then click to enter
-if(G.s){updateStreak()}
+if(G.s){window._ci6BootPend=1}/* W18 C2 (_ci6): run by the C2 block through the learning gate */
 
 </script>
 <style>
@@ -37581,6 +37637,1483 @@ function _w16iQzShow(qi){
     _w16b4qz.op[sid]=r;_w16b4QzApply(s);
   }catch(e){}
 }
+</script>
+<style id="w16r6Css">
+/* ===== W16 R6: the duel panel when nobody is online + the practice round ===== */
+#duelPanelBody .w16r6-empty{text-align:center;padding:.35rem .15rem .1rem}
+.w16r6-et{font-weight:800;color:var(--t1);font-size:.98rem;line-height:1.4}
+.w16r6-eb{color:var(--t2);font-size:.84rem;line-height:1.5;margin:.35rem 0 .75rem}
+.w16r6-card{border:1px solid color-mix(in srgb,var(--p) 38%,transparent);background:color-mix(in srgb,var(--p) 9%,transparent);border-radius:14px;padding:.8rem .85rem .9rem;text-align:start}
+.w16r6-ct{font-weight:800;color:var(--t1);font-size:.93rem;line-height:1.35}
+.w16r6-cb{color:var(--t1);font-size:.84rem;line-height:1.5;margin:.3rem 0 .15rem}
+.w16r6-meta{color:var(--t2);font-size:.78rem;line-height:1.4;margin:0 0 .7rem}
+#duelPanelBody .w16r6-go{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;margin:0;font-size:.95rem}
+.w16r6-retry{appearance:none;-webkit-appearance:none;background:none;border:0;color:var(--t2);font:inherit;font-size:.84rem;font-weight:700;min-height:44px;padding:.5rem .9rem;margin-top:.3rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.w16r6-retry:hover,.w16r6-quit:hover{color:var(--t1)}
+#duelView .w16r6-run{width:100%;max-width:520px}
+#duelView .w16r6-run .duel-q-opt{display:block;width:100%;font:inherit;font-size:.9rem;line-height:1.45;text-align:start;min-height:48px;-webkit-appearance:none;appearance:none}
+#duelView .w16r6-run .duel-q-text:focus{outline:none}
+#duelView .w16r6-gh .duel-player-name{white-space:nowrap}
+.w16r6-fb{margin-top:.8rem}
+.w16r6-ok{color:var(--a);font-weight:800;text-align:center;font-size:.95rem}
+body.light .w16r6-ok{color:#0E6B55}
+.w16r6-no{color:var(--t1);font-weight:700;line-height:1.5;font-size:.9rem}
+.w16r6-why{margin-top:.5rem;color:var(--t2);font-size:.86rem;line-height:1.6;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.65rem .8rem;text-align:start}
+.w16r6-why b{color:var(--t1)}
+#duelView .w16r6-next{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;margin:.75rem 0 0}
+.w16r6-foot{text-align:center;margin-top:.5rem}
+.w16r6-quit{appearance:none;-webkit-appearance:none;background:none;border:0;color:var(--t2);font:inherit;font-size:.82rem;min-height:44px;padding:.4rem .9rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+#duelView .w16r6-res .duel-results-pts{font-size:.95rem}
+#duelView .w16r6-res .duel-results-title:focus{outline:none}
+/* the 2-second save chip sits where the (hidden) dock was — over the round's Next button at 375 */
+body:has(#duelView:not(.hid) [data-w16r6]) #syncStatus{visibility:hidden!important}
+.w16r6-sub,.w16r6-note{color:var(--t2);font-size:.8rem;line-height:1.5;margin:.45rem 0 0}
+.w16r6-rv{text-align:start;margin:.9rem 0 .2rem;border-top:1px solid var(--line);padding-top:.7rem}
+.w16r6-rvh{font-weight:800;color:var(--t1);font-size:.88rem;margin-bottom:.35rem}
+.w16r6-rvi{padding:.45rem 0;border-bottom:1px dashed var(--line)}
+.w16r6-rvi:last-child{border-bottom:0}
+.w16r6-rvq{color:var(--t1);font-size:.84rem;line-height:1.5}
+.w16r6-rva{color:var(--a);font-size:.82rem;line-height:1.45;margin-top:.15rem;font-weight:700}
+body.light .w16r6-rva{color:#0E6B55}
+.w16r6-btns{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center;margin-top:.9rem}
+.w16r6-btns>button{flex:1 1 40%;min-height:48px;margin:0!important;display:inline-flex;align-items:center;justify-content:center}
+</style>
+<script>
+/* ===== W16 R6 duel: empty panel + practice round (_w16r6) ===== */
+var _W16R6={N:5,T:20,ADV:1100,K:'_w16r6g',NAV:['ws','mv','sv','hd','pb','ib','miv','glv','pv','lbv','pendingView'],
+  FABS:['duelFab','srFab','dailyFab','todayFab','chatFab','adminMsgFab','certFab','bugFab','glossaryFab','lbFab','adminFab']};
+var _w16r6={on:false,ph:'',olN:0,ol:null,src:'open',q:[],i:0,ok:0,cum:[],res:[],tm:0,nx:0,left:0,lock:false,gh:null,pool:'',t0:0};
+function _w16r6En(){try{return !!_enLang()}catch(e){return false}}
+function _w16r6L(he,en){return _w16r6En()?en:he}
+function _w16r6E(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return c==='&'?'&amp;':c==='<'?'&lt;':c==='>'?'&gt;':c==='"'?'&quot;':'&#39;'})}
+function _w16r6H(s){try{if(typeof _w10scHtml==='function')return _w10scHtml(s)}catch(e){}return _w16r6E(s)}
+function _w16r6Txt(s,max){var d=document.createElement('div');d.innerHTML=_w16r6H(s);var t=(d.textContent||'').replace(/\s+/g,' ').trim();if(max&&t.length>max)t=t.slice(0,max-1).trim()+'…';return t}
+function _w16r6U(){try{return (G&&G.s&&G.userName&&G.userName!=='אנונימי')?String(G.userName):''}catch(e){return ''}}
+function _w16r6Tr(a,m){try{trackEvent('duel',a,m==null?'':String(m))}catch(e){}}
+function _w16r6Sfx(k){try{if(typeof playSfx==='function')playSfx(k)}catch(e){}}
+/* the ghost = this learner's own last practice round (owner-stamped; G → localStorage via sv(), not part of the cloud whitelist) */
+function _w16r6G(){var u=_w16r6U();if(!u||!G)return null;var g=G[_W16R6.K];return (g&&typeof g==='object'&&g.u===u&&g.last&&typeof g.last.ok==='number')?g:null}
+function _w16r6GSave(ok,n,cum){
+  var u=_w16r6U();if(!u)return;var g=_w16r6G()||{u:u,k:0,best:null,last:null};
+  g.k=(parseInt(g.k,10)||0)+1;g.last={ok:ok,n:n,cum:cum.slice(0,n),at:Date.now()};if(!g.best||ok>g.best.ok)g.best={ok:ok,n:n};
+  G[_W16R6.K]=g;try{sv()}catch(e){}
+}
+/* question pool: completed stages (not the intro, not navy-only — the duel's own exclusions) · before any: the first core stages */
+function _w16r6Okay(s){if(!s||!Array.isArray(s.q)||!s.q.length)return false;if(s.id===0||s.id===1||s.id===25||s.id===26)return false;try{if(typeof _stageHidden==='function'&&_stageHidden(s))return false}catch(e){}return true}
+function _w16r6Pool(){
+  var done=[],first=[],nq=function(l){var n=0;l.forEach(function(s){n+=s.q.length});return n};
+  try{(typeof sortStages==='function'?sortStages(S):S.slice()).forEach(function(s){if(_w16r6Okay(s)&&G.done&&G.done.has(s.id))done.push(s)})}catch(e){}
+  if(nq(done)>=_W16R6.N)return {k:'done',l:done};
+  try{(typeof PM_IDS!=='undefined'?PM_IDS:[]).forEach(function(id){if(nq(first)>=_W16R6.N*3)return;var s=S.find(function(x){return x.id===id});if(_w16r6Okay(s))first.push(s)})}catch(e){}
+  return {k:'first',l:first};
+}
+function _w16r6Pick(){
+  var P=_w16r6Pool(),all=[],i,j,t;
+  P.l.forEach(function(s){s.q.forEach(function(q,qi){if(q&&Array.isArray(q.o)&&q.o.length>1&&typeof q.c==='number'&&q.c>=0&&q.c<q.o.length)all.push({sid:s.id,qi:qi,q:q})})});
+  for(i=all.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=all[i];all[i]=all[j];all[j]=t}
+  return {k:P.k,q:all.slice(0,_W16R6.N).map(function(x){
+    var o=x.q.o.map(function(txt,k){return {txt:txt,ok:k===x.q.c}});
+    for(i=o.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=o[i];o[i]=o[j];o[j]=t}
+    return {sid:x.sid,qi:x.qi,q:x.q.q,o:o.map(function(y){return y.txt}),c:o.findIndex(function(y){return y.ok}),e:x.q.e||''};
+  })};
+}
+/* ---------- the panel: nobody online / the list could not be loaded ---------- */
+function _w16r6EmptyHTML(err){
+  var P=_w16r6Pool(),g=_w16r6G(),gl=g&&g.last,N=_W16R6.N;
+  var sc=function(o){return '<bdi dir="ltr">'+o.ok+'/'+o.n+'</bdi>'};
+  return '<div class="w16r6-empty" data-w16r6="empty">'
+    +'<div class="w16r6-et">'+(err?'📡 '+_w16r6L('לא הצלחנו לבדוק מי מחובר כרגע','We couldn\'t check who\'s online right now'):'😴 '+_w16r6L('אין כרגע יריבים מחוברים','No opponents online right now'))+'</div>'
+    +(err?'<p class="w16r6-eb"></p>':'<p class="w16r6-eb">'+_w16r6L('דו-קרב חי אפשרי רק כששני לומדים מחוברים באותו זמן.','A live duel needs two learners online at the same time.')+'</p>')
+    +'<div class="w16r6-card"><div class="w16r6-ct">👻 '+_w16r6L('בינתיים: סבב אימון','Meanwhile: a practice round')+'</div>'
+    +'<p class="w16r6-cb">'+(P.k==='done'?_w16r6L(N+' שאלות מהשלבים שכבר השלמתם',N+' questions from stages you\'ve completed'):_w16r6L(N+' שאלות מהשלבים הראשונים בקורס',N+' questions from the first stages of the course'))
+    +' · '+(gl?_w16r6L('נגד התוצאה הקודמת שלכם ('+sc(gl)+')','against your last result ('+sc(gl)+')'):_w16r6L('התוצאה תהיה היריב שלכם בסבב הבא','your score becomes your opponent next time'))+'</p>'
+    +'<p class="w16r6-meta">'+_w16r6L('כ־2 דק׳ · בלי נקודות — רק תרגול','~2 min · no points, just practice')+'</p>'
+    +'<button type="button" class="bp w16r6-go" onclick="_w16r6Start(\'panel\')">▶ '+_w16r6L('סבב אימון · '+N+' שאלות','Practice round · '+N+' questions')+'</button></div>'
+    +'<button type="button" class="w16r6-retry" onclick="_w16r6Retry()">🔄 '+(err?_w16r6L('לנסות שוב','Try again'):_w16r6L('בדיקה חוזרת','Check again'))+'</button>'
+    +'</div>';
+}
+function _w16r6Panel(tk){
+  try{
+    if(tk!==_w16r6.olN)return;var ol=_w16r6.ol||{},p=$('duelPanel'),b=$('duelPanelBody');
+    if(!p||!b||!p.classList.contains('open')||ol.n>0||b.querySelector('.duel-user-card'))return;
+    var src=_w16r6.src||'open';_w16r6.src='open';
+    b.innerHTML=_w16r6EmptyHTML(!ol.ok);b.setAttribute('data-w16r6-err',ol.ok?'0':'1');
+    _w16r6Tr('empty','src='+src+(ol.ok?'':',err=1'));
+  }catch(e){}
+}
+function _w16r6Retry(){_w16r6.src='retry';try{_loadOnlineUsers()}catch(e){}}
+/* ---------- the practice round (the duel's screen and mechanics, no backend) ---------- */
+function _w16r6Clr(){if(_w16r6.tm){clearInterval(_w16r6.tm);_w16r6.tm=0}if(_w16r6.nx){clearTimeout(_w16r6.nx);_w16r6.nx=0}}
+function _w16r6Live(){var dv=$('duelView');return !!(_w16r6.on&&dv&&!dv.classList.contains('hid')&&dv.querySelector('[data-w16r6]'))}
+function _w16r6Start(src){
+  var P=_w16r6Pick();
+  if(P.q.length<_W16R6.N){try{showAchievement('❌',_w16r6L('אין מספיק שאלות לסבב','Not enough questions for a round'),'')}catch(e){}return}
+  _w16r6Clr();var g=_w16r6G();
+  _w16r6.on=true;_w16r6.ph='q';_w16r6.q=P.q;_w16r6.pool=P.k;_w16r6.i=0;_w16r6.ok=0;_w16r6.cum=[];_w16r6.res=[];_w16r6.t0=Date.now();
+  _w16r6.gh=g?{ok:g.last.ok,n:g.last.n,cum:(Array.isArray(g.last.cum)?g.last.cum:[]).slice()}:null;
+  try{_W16R6.NAV.forEach(function(v){var e=$(v);if(e)e.classList.add('hid')})}catch(e){}
+  try{_closeDuelPanel()}catch(e){}
+  try{_W16R6.FABS.forEach(function(v){var e=$(v);if(e)e.classList.add('hid')})}catch(e){}
+  var dv=$('duelView');if(!dv)return;dv.classList.remove('hid');
+  try{window.scrollTo(0,0)}catch(e){}
+  _w16r6Tr('solo_start','pool='+P.k+',n='+P.q.length+',g='+(_w16r6.gh?_w16r6.gh.ok:'-')+',src='+(src||'panel'));
+  _w16r6Q();
+}
+function _w16r6Q(){
+  var dv=$('duelView');if(!dv||!_w16r6.on)return;
+  var q=_w16r6.q[_w16r6.i],n=_w16r6.q.length,i=_w16r6.i,gh=_w16r6.gh,T=_W16R6.T;
+  _w16r6.lock=false;_w16r6.left=T;_w16r6.ph='q';
+  var gv=gh?String(i>0?(parseInt(gh.cum[i-1],10)||0):0):'—';
+  dv.innerHTML='<div class="w16r6-run" data-w16r6="run">'
+    +'<div class="duel-game-hdr">'
+    +'<div class="duel-player-score"><div class="duel-player-name">🙋 '+_w16r6E(_w16r6U())+'</div><div class="duel-player-pts" id="duelMyPts">'+_w16r6.ok+'</div></div>'
+    +'<div class="duel-vs">VS</div>'
+    +'<div class="duel-player-score w16r6-gh"><div class="duel-player-name">'+(gh?'👻 '+_w16r6L('הסבב הקודם','Last round'):'🎯 '+_w16r6L('סבב ראשון','First round'))+'</div><div class="duel-player-pts" id="duelOpPts">'+gv+'</div></div>'
+    +'</div>'
+    +'<div class="duel-progress"><span>'+_w16r6L('שאלה ','Question ')+'<bdi dir="ltr">'+(i+1)+'/'+n+'</bdi></span><div class="duel-prog-bar"><div class="duel-prog-fill" style="width:'+Math.round(i/n*100)+'%"></div></div></div>'
+    +'<div class="duel-q-card"><div class="duel-q-timer" id="duelTimer">'+T+'</div>'
+    +'<div class="duel-q-text" tabindex="-1">'+_w16r6H(q.q)+'</div>'
+    +'<div class="duel-q-opts" id="duelOpts">'+q.o.map(function(o,k){return '<button type="button" class="duel-q-opt" onclick="_w16r6Ans('+k+')">'+_w16r6H(o)+'</button>'}).join('')+'</div></div>'
+    +'<div class="w16r6-fb" id="w16r6Fb" aria-live="polite"></div>'
+    +'<div class="w16r6-foot"><button type="button" class="w16r6-quit" onclick="_w16r6SoloExit(\'quit\')">'+_w16r6L('יציאה מהסבב','Leave the round')+'</button></div>'
+    +'</div>';
+  try{_duelDecorateRound()}catch(e){}
+  try{var qt=dv.querySelector('.duel-q-text');if(qt)qt.focus({preventScroll:true})}catch(e){}
+  _w16r6.tm=setInterval(function(){
+    if(!_w16r6Live()){_w16r6Clr();return}
+    _w16r6.left--;var te=$('duelTimer');if(te){te.textContent=_w16r6.left;if(_w16r6.left<=5)te.classList.add('warn')}
+    if(_w16r6.left<=0){_w16r6Clr();_w16r6Ans(-1)}
+  },1000);
+}
+function _w16r6Ans(k){
+  if(!_w16r6Live()||_w16r6.lock||_w16r6.ph!=='q')return;
+  _w16r6.lock=true;_w16r6Clr();
+  var q=_w16r6.q[_w16r6.i],ok=k===q.c,i=_w16r6.i,last=i>=_w16r6.q.length-1,gh=_w16r6.gh;
+  if(ok)_w16r6.ok++;_w16r6.cum.push(_w16r6.ok);_w16r6.res.push({ok:ok,k:k});
+  var dv=$('duelView'),os=dv?dv.querySelectorAll('#duelOpts .duel-q-opt'):[];
+  for(var j=0;j<os.length;j++){var o=os[j];o.classList.add('disabled');o.setAttribute('aria-disabled','true');if(j===q.c)o.classList.add('correct');if(j===k&&!ok)o.classList.add('wrong')}
+  var mp_=$('duelMyPts');if(mp_)mp_.textContent=_w16r6.ok;
+  var op=$('duelOpPts');if(op&&gh)op.textContent=String(parseInt(gh.cum[i],10)||0);
+  _w16r6Sfx(ok?'correct':'wrong');
+  var fb=$('w16r6Fb');if(!fb)return;
+  if(ok){fb.innerHTML='<div class="w16r6-ok">✓ '+_w16r6L('נכון!','Correct!')+'</div>';_w16r6.nx=setTimeout(_w16r6Next,_W16R6.ADV);return}
+  fb.innerHTML='<div class="w16r6-no">'+(k<0?'⏱ '+_w16r6L('נגמר הזמן','Time\'s up'):'✗ '+_w16r6L('לא נכון','Not quite'))+' — '+_w16r6L('התשובה הנכונה מסומנת בסימן ✓','the right answer is marked ✓')+'</div>'
+    +(q.e?'<div class="w16r6-why"><b>'+_w16r6L('למה?','Why?')+'</b> '+_w16r6H(q.e)+'</div>':'')
+    +'<button type="button" class="bp w16r6-next" onclick="_w16r6Next()">'+(last?_w16r6L('לתוצאה ←','See the result →'):_w16r6L('לשאלה הבאה ←','Next question →'))+'</button>';
+  _w16r6Reveal(fb.querySelector('.w16r6-next'));
+}
+/* the Next button must be fully on screen (a long explanation pushes it below the fold at 375): measured now and again once
+   the answer styles have settled; reduced motion → no smooth scroll */
+function _w16r6Reveal(nb){
+  if(!nb)return;try{nb.focus({preventScroll:true})}catch(e){}
+  var rm=false;try{rm=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+  var f=function(){try{if(!nb.isConnected)return;var r=nb.getBoundingClientRect(),h=window.innerHeight||document.documentElement.clientHeight;if(r.bottom>h-8)window.scrollBy({top:Math.ceil(r.bottom-h+16),behavior:rm?'auto':'smooth'})}catch(e){}};
+  f();setTimeout(f,450);
+}
+function _w16r6Next(){
+  if(!_w16r6Live()||_w16r6.ph!=='q'||!_w16r6.lock)return;
+  _w16r6Clr();_w16r6.i++;
+  try{window.scrollTo(0,0)}catch(e){}
+  if(_w16r6.i>=_w16r6.q.length)_w16r6Done();else _w16r6Q();
+}
+function _w16r6Done(){
+  var dv=$('duelView');if(!dv)return;
+  var n=_w16r6.q.length,ok=_w16r6.ok,gh=_w16r6.gh,g0=_w16r6G(),best0=(g0&&g0.best)?g0.best.ok:null,secs=Math.round((Date.now()-_w16r6.t0)/1000);
+  _w16r6.ph='res';_w16r6GSave(ok,n,_w16r6.cum);
+  var cmp=gh?(ok>gh.ok?'win':(ok<gh.ok?'lose':'tie')):'first';
+  _w16r6Tr('solo_done','ok='+ok+',n='+n+',g='+(gh?gh.ok:'-')+',r='+cmp+',pool='+_w16r6.pool+',s='+secs);
+  var H={win:['🏆',_w16r6L('ניצחתם את הסבב הקודם!','You beat your last round!'),'win'],tie:['🤝',_w16r6L('תיקו עם הסבב הקודם','A tie with your last round'),'tie'],
+    lose:['👻',_w16r6L('הסבב הקודם ניצח הפעם','Your last round won this time'),'tie'],first:['✅',_w16r6L('סבב האימון הושלם','Practice round done'),'tie']}[cmp];
+  var sc=function(a,b){return '<bdi dir="ltr">'+a+'/'+b+'</bdi>'};
+  var best=(best0!=null&&ok>best0)?'⭐ '+_w16r6L('שיא אישי חדש!','New personal best!'):((best0!=null)?_w16r6L('השיא שלכם: ','Your best: ')+sc(Math.max(best0,ok),n):'');
+  var wr=[];_w16r6.res.forEach(function(r,i){if(!r.ok)wr.push(i)});
+  var rv=wr.length?'<div class="w16r6-rv"><div class="w16r6-rvh">'+_w16r6L('לחזרה','To review')+' ('+wr.length+')</div>'+wr.map(function(i){var q=_w16r6.q[i];return '<div class="w16r6-rvi"><div class="w16r6-rvq">'+_w16r6E(_w16r6Txt(q.q,170))+'</div><div class="w16r6-rva">✓ '+_w16r6E(_w16r6Txt(q.o[q.c],130))+'</div></div>'}).join('')+'</div>':'';
+  dv.innerHTML='<div class="duel-results w16r6-res" data-w16r6="res">'
+    +'<div class="duel-results-icon">'+H[0]+'</div>'
+    +'<div class="duel-results-title '+H[2]+'" tabindex="-1">'+H[1]+'</div>'
+    +'<div class="duel-results-score">'
+    +'<div class="duel-results-player"><div class="drp-name">🙋 '+_w16r6E(_w16r6U())+'</div><div class="drp-score '+(cmp==='lose'?'loser':(cmp==='tie'?'':'winner'))+'">'+ok+'/'+n+'</div></div>'
+    +(gh?'<div style="font-size:1.5rem;font-weight:900;color:var(--t2)">VS</div><div class="duel-results-player"><div class="drp-name">👻 '+_w16r6L('הסבב הקודם','Last round')+'</div><div class="drp-score '+(cmp==='lose'?'winner':(cmp==='tie'?'':'loser'))+'">'+gh.ok+'/'+gh.n+'</div></div>':'')
+    +'</div>'
+    +(best?'<div class="duel-results-pts">'+best+'</div>':'')
+    +(cmp==='first'?'<p class="w16r6-sub">'+_w16r6L('בסבב הבא תתחרו בתוצאה הזאת.','Next round, you race this score.')+'</p>':'')
+    +rv
+    +'<p class="w16r6-note">'+_w16r6L('סבב אימון לא מזכה בנקודות ולא משנה את ציוני השלבים.','Practice rounds don\'t earn points or change your stage scores.')+'</p>'
+    +'<div class="w16r6-btns"><button type="button" class="duel-results-btn w16r6-again" onclick="_w16r6Start(\'again\')">▶ '+_w16r6L('עוד סבב','Another round')+'</button>'
+    +'<button type="button" class="bs w16r6-map" onclick="_w16r6SoloExit(\'\')">🏠 '+_w16r6L('חזרה למפה','Back to map')+'</button></div>'
+    +'<button type="button" class="w16r6-retry w16r6-online" onclick="_w16r6Online()">⚔️ '+_w16r6L('לבדוק אם מישהו התחבר','See if anyone is online')+'</button>'
+    +'</div>';
+  var box=dv.querySelector('.w16r6-res');
+  _w16r6Sfx(cmp==='win'?'complete':'bonus');
+  if(cmp==='win'){try{_duelResultsTheater(box)}catch(e){}}
+  try{var tt=box.querySelector('.duel-results-title');if(tt)tt.focus({preventScroll:true})}catch(e){}
+}
+/* leave: the duel's own exit (views back, polls re-armed, mp()) */
+function _w16r6SoloExit(why){
+  var live=_w16r6Live(),ph=_w16r6.ph;
+  _w16r6Clr();
+  if(live&&ph==='q'&&why)_w16r6Tr('solo_quit','at='+_w16r6.i+',n='+_w16r6.q.length+',via='+why);
+  _w16r6.on=false;_w16r6.ph='';
+  if(live){try{_exitDuel()}catch(e){try{$('duelView').classList.add('hid');mp()}catch(x){}}}
+}
+function _w16r6Online(){_w16r6SoloExit('');setTimeout(function(){try{if(!_duelPanelOpen)_toggleDuelPanel()}catch(e){}},350)}
+window._w16r6Dbg=function(){try{return {on:_w16r6.on,ph:_w16r6.ph,i:_w16r6.i,ok:_w16r6.ok,n:_w16r6.q.length,pool:_w16r6.pool,gh:_w16r6.gh,cur:_w16r6.q[_w16r6.i]||null,olN:_w16r6.olN,ol:_w16r6.ol,g:_w16r6G()}}catch(e){return null}};
+/* ---------- wrappers (outermost, installed at parse time, pass-through on error) ---------- */
+try{if(typeof _duelPost==='function'&&!_duelPost._w16r6){var _w16r6DP=_duelPost;_duelPost=function(action,extra){
+  var p=_w16r6DP.apply(this,arguments);
+  try{if(action==='getOnlineUsers'&&p&&typeof p.then==='function'){var tk=++_w16r6.olN;p=p.then(function(d){try{_w16r6.ol={ok:!!(d&&d.success),n:(d&&d.success&&Array.isArray(d.data))?d.data.length:0};setTimeout(function(){_w16r6Panel(tk)},0)}catch(e){}return d})}}catch(e){}
+  return p};_duelPost._w16r6=1}}catch(e){}
+/* a real duel (accepted challenge) takes the screen: the round ends first */
+try{if(typeof _enterDuelGame==='function'&&!_enterDuelGame._w16r6){var _w16r6EG=_enterDuelGame;_enterDuelGame=function(){try{if(_w16r6.on){_w16r6Clr();if(_w16r6.ph==='q')_w16r6Tr('solo_quit','at='+_w16r6.i+',n='+_w16r6.q.length+',via=duel');_w16r6.on=false;_w16r6.ph=''}}catch(e){}return _w16r6EG.apply(this,arguments)};_enterDuelGame._w16r6=1}}catch(e){}
+/* browser Back during the round leaves it (the "duel is still on" toast is for real duels) */
+try{if(typeof _w10nvToast==='function'&&!_w10nvToast._w16r6){var _w16r6NT=_w10nvToast;_w10nvToast=function(k){try{if(k==='duel'&&_w16r6Live()){setTimeout(function(){_w16r6SoloExit('back')},0);return}}catch(e){}return _w16r6NT.apply(this,arguments)};_w10nvToast._w16r6=1}}catch(e){}
+/* sign-out / welcome screen: no timer keeps running */
+try{if(typeof goHome==='function'&&!goHome._w16r6){var _w16r6GH=goHome;goHome=function(){try{if(_w16r6.on){_w16r6Clr();if(_w16r6.ph==='q')_w16r6Tr('solo_quit','at='+_w16r6.i+',n='+_w16r6.q.length+',via=home');_w16r6.on=false;_w16r6.ph='';var dv=$('duelView');if(dv)dv.classList.add('hid')}}catch(e){}return _w16r6GH.apply(this,arguments)};goHome._w16r6=1}}catch(e){}
+/* a language switch re-says the empty panel (the round itself keeps its questions) */
+try{if(typeof applyLanguage==='function'&&!applyLanguage._w16r6){var _w16r6AL=applyLanguage;applyLanguage=function(){var r=_w16r6AL.apply(this,arguments);try{var b=$('duelPanelBody');if(b&&b.querySelector('[data-w16r6="empty"]'))b.innerHTML=_w16r6EmptyHTML(b.getAttribute('data-w16r6-err')==='1')}catch(e){}return r};applyLanguage._w16r6=1}}catch(e){}
+/* the W7 share nudge never opens over the duel screen */
+try{if(typeof _w7shFree==='function'&&!_w7shFree._w16r6){var _w16r6SF=_w7shFree;_w7shFree=function(){try{var dv=$('duelView');if(dv&&!dv.classList.contains('hid'))return false}catch(e){}return _w16r6SF.apply(this,arguments)};_w7shFree._w16r6=1}}catch(e){}
+/* monitoring labels (admin analytics + the W13 portal timeline) */
+try{if(typeof FEAT_ACT_NAMES==='object'&&FEAT_ACT_NAMES){var _w16r6AN={empty:'אין יריב מחובר (פאנל הדו-קרב)',solo_start:'סבב אימון התחיל',solo_done:'סבב אימון הושלם',solo_quit:'סבב אימון הופסק'};Object.keys(_w16r6AN).forEach(function(k){if(!FEAT_ACT_NAMES[k])FEAT_ACT_NAMES[k]=_w16r6AN[k]})}}catch(e){}
+try{if(typeof _W13MU==='object'&&_W13MU&&_W13MU.A){var _w16r6MA={empty:['אין יריב מחובר','nobody online'],solo_start:['סבב אימון התחיל','practice round started'],solo_done:['סבב אימון הושלם','practice round finished'],solo_quit:['סבב אימון הופסק','practice round left']};Object.keys(_w16r6MA).forEach(function(k){if(!_W13MU.A[k])_W13MU.A[k]=_w16r6MA[k]})}}catch(e){}
+/* ===== /W16 R6 duel ===== */
+</script>
+<style id="w16r6sCss">
+/* ===== W16 R6: share moments — the certificate nudge carries "Add to LinkedIn profile" ===== */
+#w7shNudge .w16r6-li{appearance:none;-webkit-appearance:none;display:inline-flex;align-items:center;gap:6px;flex:none;min-height:44px;padding:.3rem .8rem;border-radius:999px;border:1px solid color-mix(in srgb,#0A66C2 60%,transparent);background:color-mix(in srgb,#0A66C2 16%,transparent);color:var(--t1);font:inherit;font-size:.8rem;font-weight:800;line-height:1.2;cursor:pointer}
+#w7shNudge .w16r6-li:hover{background:color-mix(in srgb,#0A66C2 26%,transparent)}
+#w7shNudge .w16r6-li svg{width:16px;height:16px;flex:none}
+/* the nudge becomes a 4-column grid (icon · text · Share · ✕ as before) + a second row under the text for LinkedIn */
+#w7shNudge.w16r6-has-li{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;column-gap:10px;row-gap:6px;align-items:center}
+#w7shNudge.w16r6-has-li>.w16r6-lirow{grid-column:2/-1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+#w7shNudge .w16r6-lih{flex:1 1 170px;min-width:0;font-size:.72rem;line-height:1.35;color:var(--t2)}
+</style>
+<script>
+/* ===== W16 R6 share moments (_w16r6s) ===== */
+/* 1. the certificate nudge: "Add to LinkedIn profile" on the nudge itself (the sheet's label + honesty line) */
+function _w16r6sNudgeLi(){
+  var n=$('w7shNudge');if(!n||n.querySelector('.w16r6-li'))return;
+  var tx=n.querySelector('.w7sh-nd-tx');if(!tx)return;
+  var en=_w7shEn(),b=document.createElement('button');
+  b.type='button';b.className='w16r6-li';
+  b.innerHTML=(typeof _w7shIco==='function'?_w7shIco('li'):'')+'<span>'+(en?'Add to LinkedIn profile':'הוספה לפרופיל LinkedIn')+'</span>';
+  b.onclick=function(e){
+    if(e)e.stopPropagation();
+    var u='';try{u=_w7shLiProfile(_w7shCertD())}catch(x){}
+    if(u){try{_w7shExt(u)}catch(x){}}/* first, inside the tap (popup rules) */
+    try{_w7shTrack('share_channel','kind=cert,ch=li_profile,via=nudge')}catch(x){}
+    try{_w7shNudgeEnd('li')}catch(x){}
+  };
+  var h=document.createElement('span');h.className='w16r6-lih';
+  h.textContent=en?'Added as a certificate of completion, not a professional certification':'יתווסף כתעודת השלמה, לא כהסמכה מקצועית';
+  /* a second row under the text (grid column 2 → end), so the text column keeps its width at 375 */
+  var row=document.createElement('div');row.className='w16r6-lirow';row.appendChild(b);row.appendChild(h);
+  n.classList.add('w16r6-has-li');n.appendChild(row);
+}
+/* 2. a ceremony that completes a chapter shares the chapter card at that moment */
+function _w16r6sChOf(sid){
+  try{
+    var s=S.find(function(x){return x.id===sid});if(!s||!s.tg)return '';
+    var l=_w7shChStages(s.tg);if(l.length<2)return '';
+    for(var i=0;i<l.length;i++)if(!(G.done&&G.done.has(l[i].id)))return '';
+    return s.tg;
+  }catch(e){return ''}
+}
+function _w16r6sCer(sid){
+  var ov=$('stageCerem'),b=ov&&ov.querySelector('.w7sh-cer');if(!b||b.hasAttribute('data-w16r6s'))return;
+  var tg=_w16r6sChOf(sid);b.setAttribute('data-w16r6s',tg?'ch':'st');if(!tg)return;
+  var d=null;try{d=_w7shChapter(tg)}catch(e){}if(!d)return;
+  var en=_w7shEn(),sp=b.querySelector('span');
+  if(sp)sp.textContent=en?'Share the chapter':'שיתוף הפרק';
+  b.setAttribute('aria-label',en?'Share: “'+d.name+'” chapter complete':'שיתוף: פרק „'+d.name+'” הושלם');
+  b.onclick=function(e){
+    if(e)e.stopPropagation();
+    try{var x=_w7shSt();if(!x.tmp){var k='ch_'+tg;if(!x.ms[k])x.ms[k]=_w7shDay();x.pend=x.pend.filter(function(p){return !(p&&p.k===k)});_w7shSave()}}catch(x){}
+    _w7shOpen('chapter',{tg:tg,src:'ceremony'});
+  };
+}
+try{if(typeof _w7shNudge==='function'&&!_w7shNudge._w16r6s){var _w16r6sN0=_w7shNudge;_w7shNudge=function(p){var r=_w16r6sN0.apply(this,arguments);try{if(p&&p.kind==='cert')_w16r6sNudgeLi()}catch(e){}return r};_w7shNudge._w16r6s=1}}catch(e){}
+try{if(typeof _w7shCerBtn==='function'&&!_w7shCerBtn._w16r6s){var _w16r6sC0=_w7shCerBtn;_w7shCerBtn=function(sid){var r=_w16r6sC0.apply(this,arguments);try{_w16r6sCer(sid)}catch(e){}return r};_w7shCerBtn._w16r6s=1}}catch(e){}
+/* ===== /W16 R6 share moments ===== */
+</script>
+<style id="ci6Css">
+/* ===== W18 C2 (_ci6): the bonus / announcement toasts wrap (long sentences) — the B4 lanes still place them ===== */
+@media (max-width:1023px){body .ach-toast.ci6-wrap{white-space:normal;width:max-content;max-width:min(520px,calc(100vw - 24px));line-height:1.4}}
+body .ach-toast.ci6-wrap .ach-text{text-wrap:pretty}
+#wbOv .ci6-wb{text-wrap:balance}
+</style>
+<script>
+/* ===== W18 C2 CI-006/CI-011 rewards for learning (_ci6) ===== */
+var _ci6={allow:0,win:0,pres:0,qx:0,rk:'',annQ:'',annT:0,wrapT:{},log:[],pays:[],lps:[]};
+var _CI6_ANN=['מעכשיו נקודות הבונוס, הרצף והליגה נספרים אחרי פעולת למידה ראשונה ביום.','From now on, bonus points, your streak and the league count after your first learning action of the day.'];
+var _CI6_BUSY='#wbOv,#stageCerem,#todayHub,#w6stMs,#emailPromptOverlay,#satOverlay,#w7lnWeek,#w7lnRecap,#w7shNudge,#w7shOv,#w7hbOv,#goalOv';
+function _ci6Int(v){v=parseInt(v,10);return isFinite(v)?v:0}
+function _ci6U(){try{if(typeof G==='undefined'||!G||!G.s||!G.userName||G.userName==='אנונימי')return '';return String(G.userName)}catch(e){return ''}}
+function _ci6En(){try{return !!_enLang()}catch(e){try{return G.lang==='en'}catch(x){return false}}}
+function _ci6T(he,en){return _ci6En()?en:he}
+function _ci6Td(){return new Date().toDateString()}
+function _ci6Copy(o,f){try{Object.keys(o).forEach(function(k){try{f[k]=o[k]}catch(e){}})}catch(e){}f._ci6=1;return f}
+function _ci6Ev(f,a,m){try{_ci6.log.push([f,a,m||'',Date.now()]);if(_ci6.log.length>80)_ci6.log.shift()}catch(e){}try{trackEvent(f,a,m)}catch(e){}}
+function _ci6Learned(){var u=_ci6U(),l=G._ci6L;return !!(u&&l&&typeof l==='object'&&l.u===u&&l.d===_ci6Td())}
+function _ci6Zero(){var u=_ci6U(),z=G._ci6Z;return !!(u&&z&&typeof z==='object'&&z.u===u&&z.d===_ci6Td())}
+/* today is a counted streak day (the risk banner + "active today" read this) */
+function _ci6Counted(){return !!_ci6U()&&G.lastDay===_ci6Td()&&!_ci6Zero()}
+function _ci6Period(h){return (h>=5&&h<12)?'morning':((h>=18||h<5)?'night':null)}
+function _ci6FirstDay(){try{return G.firstUse?new Date(G.firstUse).toDateString():_ci6Td()}catch(e){return _ci6Td()}}
+
+/* ---------- MV-006 streak ---------- */
+/* would the existing updateStreak chain reset the streak now? Mirrors: W6SY (future lastDay = today; a newer cloud lastActivity moves
+   a stale lastDay forward) · W7HB (rest / pause days shift the gap) · the original rule (1 day: +1; 2 days: a freeze, refreshed weekly). */
+function _ci6Broken(){
+  var ldS=G.lastDay;if(!ldS)return false;
+  var now=new Date(),t0=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+  var ld=new Date(ldS);if(isNaN(ld.getTime()))return true;
+  if(ld.getTime()>t0)return false;
+  try{var la=window._w5cloudLastAct;if(G._cloudVerified&&typeof la==='number'&&la>0&&la<=now.getTime()+60000){var ca=new Date(la),cd=new Date(ca.getFullYear(),ca.getMonth(),ca.getDate()).getTime();if(cd>ld.getTime()){ld=new Date(cd);ldS=ld.toDateString()}}}catch(e){}
+  var gap=Math.round((new Date(now.getFullYear(),now.getMonth(),now.getDate(),12).getTime()-new Date(ld.getFullYear(),ld.getMonth(),ld.getDate(),12).getTime())/864e5);
+  if(gap<=1)return false;
+  try{if(typeof _w7hbH==='function'&&_w7hbH()&&typeof _w7hbGap==='function'){var info=_w7hbGap(ldS,now);if(info&&info.n>=2&&info.ex>0&&info.un<=1)gap=info.un+1}}catch(e){}
+  if(gap<=1)return false;
+  var fz=false;try{fz=(G.lastFreezeWeek!==_getWeekKey())||_ci6Int(G.streakFreezes)>0}catch(e){}
+  return !(gap===2&&fz);
+}
+/* login / boot / day roll: only check. A broken streak runs the chain (its events, rescue offer) and then waits at 0 for learning. */
+function _ci6Open(src){
+  var u=_ci6U();if(!u)return false;
+  var td=_ci6Td(),s0=_ci6Int(G.streak);
+  if(!G.lastDay||G.lastDay===td||s0<=0)return false;
+  if(!_ci6Broken())return false;
+  _ci6.allow++;try{updateStreak()}catch(e){}finally{_ci6.allow--}
+  if(G.lastDay===td&&_ci6Int(G.streak)<=s0){
+    G._ci6Z={u:u,d:td,was:s0};G.streak=0;
+    try{sv()}catch(e){}try{uh()}catch(e){}
+    _ci6Ev('learn','streak_wait','was='+s0+',via='+src);
+    return true;
+  }
+  return false;
+}
+/* the first learning action of the day counts the day */
+function _ci6StreakLearn(){
+  var u=_ci6U();if(!u)return false;var td=_ci6Td();
+  if(G.lastDay===td){
+    if(_ci6Zero()||_ci6Int(G.streak)<=0){G.streak=Math.max(1,_ci6Int(G.streak));G._ci6Z=null;if(!G.maxStreak||G.streak>G.maxStreak)G.maxStreak=G.streak;return true}
+    return false;
+  }
+  if(G.lastDay&&_ci6Int(G.streak)<=0){G.streak=1;G.lastDay=td;G._ci6Z=null;if(!G.maxStreak||G.streak>G.maxStreak)G.maxStreak=G.streak;return true}/* nothing to keep: no freeze spent */
+  _ci6.allow++;try{updateStreak()}catch(e){}finally{_ci6.allow--}
+  G._ci6Z=null;
+  return true;
+}
+window._ci6Roll=function(){
+  try{var u=_ci6U();if(!u||_ci6Learned())return;
+    var key=u+'|'+_ci6Td()+'|'+G.lastDay+'|'+_ci6Int(G.streak);if(_ci6.rk===key)return;_ci6.rk=key;
+    updateStreak();try{sv()}catch(e){}try{uh()}catch(e){}
+  }catch(e){}
+};
+
+/* ---------- MV-005 login bonus ---------- */
+function _ci6BonusOpen(p,td){
+  try{
+    if(!_ci6U())return;
+    var k=p==='morning'?'lastMorningBonus':(p==='night'?'lastNightBonus':'');if(!k||G[k]===td)return;
+    var t=p==='morning'?_ci6T('בונוס הבוקר מחכה: ענו על שאלה אחת כדי לאסוף +10','Your morning bonus is waiting: answer one question to collect +10')
+      :_ci6T('בונוס הלילה מחכה: ענו על שאלה אחת כדי לאסוף +10','Your night bonus is waiting: answer one question to collect +10');
+    _ci6.wrapT[t]=1;
+    setTimeout(function(){try{if(G[k]!==td&&_ci6U())showAchievement(p==='morning'?'☀️':'🌙',t,'')}catch(e){}},900);
+  }catch(e){}
+}
+function _ci6BonusDue(){
+  var now=new Date(),td=now.toDateString(),p=_ci6Period(now.getHours());if(!p)return null;
+  if(_ci6FirstDay()===td)return null;
+  var k=p==='morning'?'lastMorningBonus':'lastNightBonus';if(G[k]===td)return null;
+  return {p:p,k:k,td:td};
+}
+function _ci6BonusPay(via){
+  if(!_ci6U())return false;var b=_ci6BonusDue();if(!b)return false;
+  var p=b.p;G[b.k]=b.td;G.ts=_ci6Int(G.ts)+10;_ci6.pres+=10;
+  try{logActivity('loginBonus',p==='morning'?'בונוס בוקר +10':'בונוס לילה +10',10)}catch(e){}
+  try{trackEvent('login',p==='morning'?'morningBonus':'nightBonus','via='+via)}catch(e){}
+  _ci6.pays.push(['bonus',p,via,10]);
+  var T=p==='morning'?(_ci6En()?['Good morning!','+10 pts · for your first step this morning']:['בוקר טוב!','+10 נק׳ · על הצעד הראשון הבוקר'])
+    :(_ci6En()?['Good evening!','+10 pts · for your first step tonight']:['לילה טוב!','+10 נק׳ · על הצעד הראשון הלילה']);
+  setTimeout(function(){try{showAchievement(p==='morning'?'☀️':'🌙',T[0],T[1])}catch(e){}},700);
+  return true;
+}
+
+/* ---------- MV-007 welcome back ---------- */
+function _ci6WbHold(days){
+  try{var u=_ci6U();if(!u){G.ts=_ci6Int(G.ts)+50;return}G._ci6W={u:u,d:_ci6Td(),n:_ci6Int(days)}}catch(e){}
+}
+function _ci6WbPay(){
+  var u=_ci6U(),w=G._ci6W;if(!u||!w||typeof w!=='object'||w.u!==u)return false;
+  G._ci6W=null;if(w.d!==_ci6Td())return true;/* that day passed: nothing pending any more */
+  G.ts=_ci6Int(G.ts)+50;_ci6.pres+=50;
+  try{trackEvent('welcomeBack','paid','days='+_ci6Int(w.n))}catch(e){}
+  _ci6.pays.push(['wb',_ci6Int(w.n),'',50]);
+  var t=_ci6T('ברוכים השבים! +50 נק׳','Welcome back! +50 pts');
+  setTimeout(function(){try{showAchievement('👋',t,'')}catch(e){}},1300);
+  return true;
+}
+function _ci6NeedPay(){var u=_ci6U();if(!u)return false;if(!_ci6Learned())return true;try{if(_ci6BonusDue())return true}catch(e){}var w=G._ci6W;return !!(w&&w.u===u)}
+
+/* ---------- one learning action ---------- */
+function _ci6Learn(via){
+  try{
+    var u=_ci6U();if(!u)return;
+    var first=!_ci6Learned(),ch=false;
+    if(first){G._ci6L={u:u,d:_ci6Td(),via:String(via||''),t:Date.now()};ch=true;_ci6Ev('learn','day_first','via='+via)}
+    if(first||_ci6Zero()){try{ch=_ci6StreakLearn()||ch}catch(e){}}
+    try{ch=_ci6BonusPay(via)||ch}catch(e){}
+    try{ch=_ci6WbPay()||ch}catch(e){}
+    if(ch){try{sv()}catch(e){}try{uh()}catch(e){}}
+  }catch(e){}
+}
+
+/* ---------- MV-008 league: learning points only ---------- */
+function _ci6Wk(){
+  var u=_ci6U();if(!u)return null;
+  var k='';try{k=_w6lgWk()}catch(e){return null}if(!k)return null;
+  var g=G._ci6G;
+  if(!g||typeof g!=='object'||g.u!==u||typeof g.k!=='string'){
+    var w0=0;try{var lg=_w6lgEnsure(false);if(lg&&lg.k===k)w0=Math.max(0,_ci6Int(G.ts)-_ci6Int(lg.base))}catch(e){}
+    g=G._ci6G={u:u,k:k,w0:w0,lp:0,pk:'',pp:0};
+  }else if(g.k!==k){g=G._ci6G={u:u,k:k,w0:0,lp:0,pk:g.k,pp:Math.max(0,_ci6Int(g.w0)+_ci6Int(g.lp))}}
+  return g;
+}
+function _ci6WkPts(g){return Math.max(0,_ci6Int(g.w0)+_ci6Int(g.lp))}
+function _ci6AddLp(d,src){var g=_ci6Wk();if(!g||!(d>0))return;g.lp=_ci6Int(g.lp)+d;_ci6.lps.push([src,d]);if(_ci6.lps.length>60)_ci6.lps.shift()}
+function _ci6Win(fn,self,args,src){
+  if(_ci6.win>0||!_ci6U())return fn.apply(self,args);
+  try{_ci6Wk()}catch(e){}
+  _ci6.win++;var t0=_ci6Int(G.ts),p0=_ci6.pres,r;
+  try{r=fn.apply(self,args)}
+  finally{_ci6.win--;try{var d=_ci6Int(G.ts)-t0-(_ci6.pres-p0);if(d>0)_ci6AddLp(d,src)}catch(e){}}
+  return r;
+}
+
+/* ---------- MV-009 small league ---------- */
+function _ci6LgFix(){
+  var l=document.getElementById('lbv');if(!l)return;var w=l.querySelector('.w6lg-wrap');if(!w)return;
+  var bd=w.querySelector('ol.w6lg-board:not(.w6lg-load)'),n=bd?bd.querySelectorAll('li.w6lg-row').length:0,small=n<6;
+  var sub=null;for(var i=0;i<w.children.length;i++){if(w.children[i].matches&&w.children[i].matches('p.w6lg-sub')){sub=w.children[i];break}}
+  if(sub)sub.textContent=small?_ci6T('נקודות מלמידה שנצברו מיום ראשון ועד מוצאי שבת.','Points from learning, earned since Sunday, through Saturday night.')
+    :_ci6T('נקודות מלמידה שנצברו מיום ראשון ועד מוצאי שבת. 30% העליונים מסומנים כמובילים.',"Points from learning, earned since Sunday, through Saturday night. The top 30% are marked as this week's leaders.");
+  if(small){w.querySelectorAll('li.w6lg-cut').forEach(function(x){x.remove()});w.querySelectorAll('li.w6lg-promo').forEach(function(x){x.classList.remove('w6lg-promo')})}
+  else w.querySelectorAll('li.w6lg-cut > span').forEach(function(s){s.textContent=_ci6T('▲ המובילים השבוע',"▲ This week's leaders")});
+  w.setAttribute('data-ci6-n',String(n));
+}
+function _ci6PinFix(h,rows){
+  var n=Array.isArray(rows)?rows.length:0;if(n<2||typeof h!=='string')return h;
+  if(n<6)return h.replace(/<div class="w6lg-hint[^"]*">[^<]*(אזור העלייה|promotion zone)[^<]*<\/div>/,'');
+  return h.split('אתם באזור העלייה — המשיכו כך!').join('אתם בין המובילים השבוע — המשיכו כך!')
+    .split('You are in the promotion zone — keep it up!').join("You're among this week's leaders — keep it up!")
+    .split('עוד נקודה אחת לאזור העלייה').join('עוד נקודה אחת למובילים')
+    .replace(/עוד (\d+) נק׳ לאזור העלייה/,'עוד $1 נק׳ למובילים').replace(/(\d+) (pts?) to the promotion zone/,'$1 $2 to the leaders');
+}
+
+/* ---------- announcement (once) ---------- */
+function _ci6AnnSeen(u){if(G._ci6A===u)return true;try{return localStorage.getItem('pm_ci6_ann_'+u)==='1'}catch(e){return false}}
+function _ci6AnnMark(u){G._ci6A=u;try{localStorage.setItem('pm_ci6_ann_'+u,'1')}catch(e){}try{sv()}catch(e){}}
+/* automation switch (C1 / W9 _w9obAuto precedent): fixed-date gate fixtures never get it unless a suite asks (__pmCiAuto / ?ob=1) */
+function _ci6Auto(){try{return !navigator.webdriver||window.__pmCiAuto===1||/[?&]ob=1(&|$)/.test(location.search)}catch(e){return true}}
+function _ci6AnnTry(n){
+  var u=_ci6U();if(!u||!_ci6Auto()||_ci6AnnSeen(u)||_ci6.annQ===u)return;
+  var fu=null;try{fu=G.firstUse?new Date(G.firstUse):null}catch(e){}
+  if(fu&&!isNaN(fu.getTime())&&fu.toDateString()===_ci6Td()){_ci6AnnMark(u);return}/* a new learner meets these rules as the rules */
+  var busy=false;try{busy=G.v!=='m'||!!document.querySelector(_CI6_BUSY)}catch(e){}
+  if(busy){if((n||0)<8)_ci6.annT=setTimeout(function(){_ci6.annT=0;_ci6AnnTry((n||0)+1)},2500);return}
+  var t=_ci6En()?_CI6_ANN[1]:_CI6_ANN[0];_ci6.wrapT[t]=2;_ci6.annQ=u;
+  try{showAchievement('📣',t,'')}catch(e){_ci6.annQ=''}
+}
+
+/* ---------- debug (gate rows) ---------- */
+window._ci6Dbg=function(cmd){
+  try{
+    if(cmd==='ann-reset'){var u=_ci6U();_ci6.annQ='';clearTimeout(_ci6.annT);_ci6.annT=0;G._ci6A=null;try{localStorage.removeItem('pm_ci6_ann_'+u)}catch(e){}return 1}
+    if(cmd==='clear'){_ci6.pays.length=0;_ci6.lps.length=0;_ci6.log.length=0;_ci6.rk='';return 1}
+    var g=null;try{g=_ci6Wk()}catch(e){}
+    return {L:G._ci6L||null,Z:G._ci6Z||null,W:G._ci6W||null,G:g,wk:g?_ci6WkPts(g):-1,pays:_ci6.pays.slice(),lps:_ci6.lps.slice(),log:_ci6.log.slice(),
+      streak:G.streak,lastDay:G.lastDay,learned:_ci6Learned(),counted:_ci6Counted(),broken:_ci6Broken(),ann:_ci6AnnSeen(_ci6U())};
+  }catch(e){return {err:String(e&&e.message||e)}}
+};
+
+/* ---------- wrappers (outermost, parse time, pass-through on error) ---------- */
+(function(){
+  /* streak: open checks, learning counts */
+  try{var us=updateStreak;if(typeof us==='function'&&!us._ci6){updateStreak=_ci6Copy(us,function(){
+    if(_ci6.allow>0||!_ci6U()||_ci6Learned()){var t0=_ci6Int(G.ts);try{return us.apply(this,arguments)}finally{try{var d=_ci6Int(G.ts)-t0;if(d)_ci6.pres+=d}catch(e){}}}
+    try{_ci6Open('call')}catch(e){}
+  })}}catch(e){}
+  try{var o1=sa;if(typeof o1==='function'&&!o1._ci6){sa=_ci6Copy(o1,function(sid,qi){
+    var had=true;try{had=!!(G.qa&&G.qa[sid]&&G.qa[sid][qi]!==undefined)}catch(e){}
+    if(!had)_ci6.allow++;var r;
+    try{r=_ci6Win(o1,this,arguments,'answer')}finally{if(!had)_ci6.allow--}
+    try{if(!had&&G.qa&&G.qa[sid]&&G.qa[sid][qi]!==undefined)_ci6Learn('answer')}catch(e){}
+    return r})}}catch(e){}
+  try{var o2=answerWeekly;if(typeof o2==='function'&&!o2._ci6){answerWeekly=_ci6Copy(o2,function(){
+    var day=-1,had=true;try{day=getDayNumber();had=!!(G._weeklyAns&&G._weeklyAns.wk===day)}catch(e){}
+    if(!had)_ci6.allow++;var r;
+    try{r=_ci6Win(o2,this,arguments,'daily')}finally{if(!had)_ci6.allow--}
+    try{if(!had&&G._weeklyAns&&G._weeklyAns.wk===day)_ci6Learn('daily')}catch(e){}
+    return r})}}catch(e){}
+  try{var o3=tryCompleteStage;if(typeof o3==='function'&&!o3._ci6){tryCompleteStage=_ci6Copy(o3,function(sid){
+    var had=true;try{had=!!(G.done&&G.done.has(sid))}catch(e){}
+    var r=_ci6Win(o3,this,arguments,'stage');
+    try{if(!had&&G.done&&G.done.has(sid))_ci6Learn('stage')}catch(e){}
+    return r})}}catch(e){}
+  var seenN=function(){try{return G._seenSec?Object.keys(G._seenSec).length:0}catch(e){return 0}};
+  try{var o4=_markSeenByScroll;if(typeof o4==='function'&&!o4._ci6){_markSeenByScroll=_ci6Copy(o4,function(){
+    if(!_ci6NeedPay())return o4.apply(this,arguments);
+    var n0=seenN(),r=o4.apply(this,arguments);try{if(seenN()>n0)_ci6Learn('read')}catch(e){}return r})}}catch(e){}
+  try{var o5=_markTopicConsumed;if(typeof o5==='function'&&!o5._ci6){_markTopicConsumed=_ci6Copy(o5,function(){
+    if(!_ci6NeedPay())return o5.apply(this,arguments);
+    var n0=seenN(),r=o5.apply(this,arguments);try{if(seenN()>n0)_ci6Learn('read')}catch(e){}return r})}}catch(e){}
+  /* MV-011: the finished practice round */
+  try{var o6=_w16r6Done;if(typeof o6==='function'&&!o6._ci6){_w16r6Done=_ci6Copy(o6,function(){
+    var fin=false,ok=0;
+    try{fin=!!(document.getElementById('duelView')&&_w16r6&&_w16r6.on&&_w16r6.ph==='q'&&Array.isArray(_w16r6.q)&&_w16r6.q.length>0&&Array.isArray(_w16r6.res)&&_w16r6.res.length>=_w16r6.q.length);ok=_ci6Int(_w16r6.ok)}catch(e){}
+    var r=o6.apply(this,arguments);
+    if(fin&&_ci6U()){try{
+      var t=_todayState();t.q=_ci6Int(t.q)+ok;
+      _ci6.qx++;try{_questMaybeReward()}catch(e){}finally{_ci6.qx--}
+      _ci6Learn('practice');
+      var nt=document.querySelector('#duelView .w16r6-note');if(nt)nt.textContent=_ci6T('סבב אימון לא מזכה בנקודות, אבל נספר לרצף ולמשימות.','Practice rounds don\'t earn points, but they count for your streak and quests.');
+    }catch(e){}}
+    return r})}}catch(e){}
+  /* MV-008 learning windows without a learning action of their own */
+  try{var o7=_saveReflection;if(typeof o7==='function'&&!o7._ci6){_saveReflection=_ci6Copy(o7,function(){return _ci6Win(o7,this,arguments,'reflection')})}}catch(e){}
+  try{var o8=_tgEnd;if(typeof o8==='function'&&!o8._ci6){_tgEnd=_ci6Copy(o8,function(){var sc=0;try{sc=_ci6Int(_tg.score)}catch(e){}return sc>0?_ci6Win(o8,this,arguments,'game'):o8.apply(this,arguments)})}}catch(e){}
+  try{var o9=_w5gEnd;if(typeof o9==='function'&&!o9._ci6){_w5gEnd=_ci6Copy(o9,function(){var sc=0;try{sc=(_w5g&&_w5g.on)?_ci6Int(_w5g.score):0}catch(e){}return sc>0?_ci6Win(o9,this,arguments,'game'):o9.apply(this,arguments)})}}catch(e){}
+  try{var o10=_w8g3Reward;if(typeof o10==='function'&&!o10._ci6){_w8g3Reward=_ci6Copy(o10,function(){return _ci6Win(o10,this,arguments,'puzzle')})}}catch(e){}
+  /* quest rewards outside a window: q15 / st1 are learning; the "play the daily game" quest and practice-fed quests are not league */
+  try{var o11=_questMaybeReward;if(typeof o11==='function'&&!o11._ci6){_questMaybeReward=_ci6Copy(o11,function(){
+    if(_ci6.win>0&&_ci6.qx<=0)return o11.apply(this,arguments);
+    var pre={};try{Object.keys(G._qRewarded||{}).forEach(function(k){pre[k]=1})}catch(e){}
+    var r=o11.apply(this,arguments);
+    try{var add=0;Object.keys(G._qRewarded||{}).forEach(function(k){if(pre[k])return;var id=k.slice(k.lastIndexOf('_')+1),q=null;DAILY_QUESTS.forEach(function(x){if(x.id===id)q=x});if(!q)return;
+      if(_ci6.qx>0){_ci6.pays.push(['quest',id,'practice',_ci6Int(q.pts)]);return}if(id==='q15'||id==='st1')add+=_ci6Int(q.pts)});
+      if(add>0&&_ci6.win<=0)_ci6AddLp(add,'quest')}catch(e){}
+    return r})}}catch(e){}
+  /* league send / show / merge / last-week result */
+  try{var o12=_w6lgPayload;if(typeof o12==='function'&&!o12._ci6){_w6lgPayload=_ci6Copy(o12,function(p){
+    var r=o12.apply(this,arguments);
+    try{if(p&&p.action==='save'&&typeof p.weekPts==='number'){var g=_ci6Wk();if(g&&g.k===p.weekKey)p.weekPts=_ci6WkPts(g)}}catch(e){}
+    return r})}}catch(e){}
+  try{var o13=_w6lgMine;if(typeof o13==='function'&&!o13._ci6){_w6lgMine=_ci6Copy(o13,function(){
+    var r=o13.apply(this,arguments);if(!(r>=0))return r;
+    try{var g=_ci6Wk();if(g)return _ci6WkPts(g)}catch(e){}return r})}}catch(e){}
+  try{var o14=_w6lgOnResp;if(typeof o14==='function'&&!o14._ci6){_w6lgOnResp=_ci6Copy(o14,function(d){
+    var r=o14.apply(this,arguments);
+    try{if(d&&d.success===true&&Array.isArray(d.rows)&&_ci6U()){var g=_ci6Wk(),k=/^\d{4}-\d{2}-\d{2}$/.test(String(d.week||''))?String(d.week):(g&&g.k);
+      if(g&&g.k===k)d.rows.forEach(function(x){if(x&&String(x.name||'').trim()===G.userName){var sp=_ci6Int(x.pts);if(sp>_ci6WkPts(g))g.w0=Math.max(0,sp-_ci6Int(g.lp))}})}}catch(e){}
+    return r})}}catch(e){}
+  try{var o15=_w6lgResult;if(typeof o15==='function'&&!o15._ci6){_w6lgResult=_ci6Copy(o15,function(prev){
+    try{var u=_ci6U(),sn=_w6lgSnap();if(u&&sn){var cur=_w6lgWk();if(sn.k!==cur&&sn.k===_w6lgShift(cur,-7)){
+      var mk='pm_w6lg_res_'+G.userName,seen=null;try{seen=localStorage.getItem(mk)}catch(e){}
+      if(seen!==sn.k){
+        var g=G._ci6G,lp=null;if(g&&typeof g==='object'&&g.u===u){if(g.pk===sn.k)lp=_ci6Int(g.pp);else if(g.k===sn.k)lp=_ci6WkPts(g)}
+        if(lp!=null)prev={u:G.userName,k:sn.k,base:0,last:lp};
+        var mine=(prev&&prev.u===G.userName&&prev.k===sn.k&&typeof prev.last==='number'&&typeof prev.base==='number')?Math.max(0,prev.last-prev.base):0;
+        if(_w6lgRank(sn.rows,G.userName,mine).length<5){try{localStorage.setItem(mk,sn.k)}catch(e){}return}
+      }}}}catch(e){}
+    return o15.call(this,prev)})}}catch(e){}
+  try{var o16=_w6lgRenderWeek;if(typeof o16==='function'&&!o16._ci6){_w6lgRenderWeek=_ci6Copy(o16,function(){var r=o16.apply(this,arguments);try{_ci6LgFix()}catch(e){}return r})}}catch(e){}
+  try{var o17=_w6lgPinHtml;if(typeof o17==='function'&&!o17._ci6){_w6lgPinHtml=_ci6Copy(o17,function(my,mine,rows){var h=o17.apply(this,arguments);try{h=_ci6PinFix(h,rows)}catch(e){}return h})}}catch(e){}
+  /* streak-at-risk follows the learning day */
+  try{var o18=_w6stActiveToday;if(typeof o18==='function'&&!o18._ci6){_w6stActiveToday=_ci6Copy(o18,function(){try{if(_ci6U())return _ci6Counted()}catch(e){}return o18.apply(this,arguments)})}}catch(e){}
+  try{var o19=_w6stRiskHTML;if(typeof o19==='function'&&!o19._ci6){_w6stRiskHTML=_ci6Copy(o19,function(){var h=o19.apply(this,arguments);try{h=String(h).split('Your streak is at risk — one short stage will save it').join('Your streak counts once you answer one question today').split('הרצף שלכם בסכנה — שלב קצר אחד ישמור אותו').join('הרצף שלכם יתעדכן אחרי שאלה אחת היום')}catch(e){}return h})}}catch(e){}
+  /* toasts: wrap the long lines, keep the announcement up longer, mark it seen when it is really on screen */
+  try{var o20=_w6skShow;if(typeof o20==='function'&&!o20._ci6){_w6skShow=_ci6Copy(o20,function(){
+    var r=o20.apply(this,arguments);
+    try{var c=_w6skCur,ti=c&&c.it?String(c.it.title):'';if(c&&c.el&&_ci6.wrapT[ti]){
+      c.el.classList.add('ci6-wrap');
+      if(_ci6.wrapT[ti]===2){var el=c.el;el.classList.add('ci6-ann');clearTimeout(c.t);c.t=setTimeout(function(){try{_w6skHide(el)}catch(e){}},6500);
+        var u=_ci6U();if(u&&!_ci6AnnSeen(u)){_ci6AnnMark(u);_ci6Ev('learn','rules_note',_ci6En()?'lang=en':'lang=he')}}
+      try{if(typeof _w16b4TbSoon==='function')_w16b4TbSoon(c.el)}catch(e){}
+    }}catch(e){}
+    return r})}}catch(e){}
+  try{var o21=mp;if(typeof o21==='function'&&!o21._ci6){mp=_ci6Copy(o21,function(){var r=o21.apply(this,arguments);
+    try{var u=_ci6U();if(u&&_ci6Auto()&&!_ci6AnnSeen(u)&&_ci6.annQ!==u&&!_ci6.annT)_ci6.annT=setTimeout(function(){_ci6.annT=0;_ci6AnnTry(0)},1800)}catch(e){}
+    return r})}}catch(e){}
+  /* monitoring labels (admin analytics + the W13 portal timeline) */
+  try{if(typeof FEAT_ACT_NAMES==='object'&&FEAT_ACT_NAMES){var an={day_first:'פעולת למידה ראשונה ביום',streak_wait:'רצף ממתין לפעולת למידה',rules_note:'הודעת כללי הבונוס הוצגה',paid:'בונוס חזרה שולם'};Object.keys(an).forEach(function(k){if(!FEAT_ACT_NAMES[k])FEAT_ACT_NAMES[k]=an[k]})}}catch(e){}
+  try{if(typeof _W13MU==='object'&&_W13MU&&_W13MU.A){var ma={day_first:['פעולת למידה ראשונה ביום','first learning action of the day'],streak_wait:['רצף ממתין לפעולת למידה','streak waits for learning'],rules_note:['הודעת כללי הבונוס הוצגה','bonus rules note shown'],paid:['בונוס חזרה שולם','welcome-back bonus paid']};Object.keys(ma).forEach(function(k){if(!_W13MU.A[k])_W13MU.A[k]=ma[k]})}}catch(e){}
+})();
+/* the boot-time check (source line "if(G.s){...}" now only flags it) runs through the gate above */
+try{if(window._ci6BootPend){window._ci6BootPend=0;updateStreak()}}catch(e){}
+/* ===== /W18 C2 (_ci6) ===== */
+</script>
+<style id="w18c3PartsCss">
+/* ===== W18 C3 CI-004 (_ci4): long stages in visible parts — UI only (1.10.33) ===== */
+#tc .ci004-hid{display:none!important}
+#tc .ci004-chip{display:flex;align-items:center;gap:.6rem;margin:1.5rem .1rem .75rem;font-size:.82rem;font-weight:800;line-height:1.3;color:var(--w11pl-acc-tx,var(--p));outline:none;scroll-margin-top:96px}
+#tc .ci004-chip::before,#tc .ci004-chip::after{content:"";flex:1 1 0;min-width:12px;height:1px;background:color-mix(in srgb,var(--p) 35%,transparent)}
+#tc .ci004-chip>span{flex:none;padding:.28rem .8rem;border-radius:999px;border:1px solid color-mix(in srgb,var(--p) 45%,transparent);background:color-mix(in srgb,var(--p) 10%,var(--card))}
+#tc .ci004-chip:focus-visible>span{outline:2px solid var(--p);outline-offset:2px}
+#tc .ci004-card{margin:.25rem 0 1.4rem;padding:1.05rem 1.1rem 1rem;border-radius:16px;border:1.5px dashed color-mix(in srgb,var(--p) 50%,transparent);background:color-mix(in srgb,var(--p) 7%,var(--card));text-align:center}
+#tc .ci004-card-h{margin:0 0 .7rem;font-weight:800;font-size:1rem;line-height:1.4;color:var(--t1)}
+#tc .ci004-card-h[hidden]{display:none}
+#tc .ci004-card .ci004-next{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;min-height:44px;margin:0;max-width:100%;white-space:normal;line-height:1.35}
+#tc .ci004-card-s{margin:.65rem 0 0;font-size:.85rem;line-height:1.5;color:var(--t2)}
+#tc .ci004-ban{display:flex;align-items:flex-start;gap:.6rem;margin:0 0 1.1rem;padding:.75rem .95rem;border-radius:14px;border:1px solid color-mix(in srgb,var(--g) 45%,transparent);background:color-mix(in srgb,var(--g) 10%,var(--card));color:var(--t1);font-size:.88rem;line-height:1.55;text-align:start}
+#tc .ci004-ban .ci004-ic{flex:none;font-size:1.05rem;line-height:1.45}
+@media (max-width:480px){#tc .ci004-card{padding:1rem .9rem .95rem}#tc .ci004-card .ci004-next{width:100%}}
+</style>
+<script>
+/* ===== W18 C3 CI-004 (_ci4): long stages in visible parts — UI only (1.10.33) =====
+   Parts = groups of whole topics (H3), ~6 min each, for a stage whose reading estimate (_w8rnEst(s).l, the B4 header formula)
+   exceeds 8 min. Nothing inside a topic is touched (narration / slides / MP3 mapping read the topic's own DOM). Wrappers only. */
+var _CI4={TH:8,PART:6,BAN:20};
+var _ci4={rv:{},plan:{},he:{},p75:null,n:{apply:0,next:0,ensure:0}};
+function _ci4En(){try{return G.lang==='en'}catch(e){return false}}
+function _ci4B(x){return '<bdi>'+String(x).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})+'</bdi>'}
+function _ci4Min(m){return Math.max(1,Math.round(m||0))}
+function _ci4St(id){try{return _w8rnSt(id)}catch(e){return null}}
+/* the HEBREW estimate of a stage in either language: _w8rnEst's formula on the Hebrew snapshot (_applyStageLang swaps s.th / cs / q;
+   a stage without a snapshot is not swapped, so its own content is the same in both languages) */
+function _ci4EstHe(s){
+  try{if(!s)return null;var k=s.id;if(_ci4.he[k])return _ci4.he[k];
+    var h=(typeof _HE_SNAP!=='undefined'&&_HE_SNAP&&_HE_SNAP[s.id])||s;
+    var th=h.th||[],lens=[],L=0,i;for(i=0;i<th.length;i++){var n=String((th[i]&&th[i].c)||'').length;lens.push(n);L+=n}
+    var l=Math.max(2,Math.round(L/2200)),cc=Math.max(2,Math.round(String((h.cs&&h.cs.c)||'').length/2200)),q=Math.max(2,Math.round(((h.q&&h.q.length)||0)*0.7));
+    var c={l:l,tot:l+cc+q,topic:lens.map(function(n){return L?l*n/L:(th.length?l/th.length:0)})};
+    _ci4.he[k]=c;return c;
+  }catch(e){return null}
+}
+/* the 75th percentile (nearest rank) of the course stages' Hebrew totals: "longer than most" is true at or above it */
+function _ci4P75(){
+  try{if(_ci4.p75!=null)return _ci4.p75;var v=[],i;
+    for(i=0;i<S.length;i++){var s=S[i];if(!s||!(s.id<100))continue;var e=_ci4EstHe(s);if(e&&e.topic.length)v.push(e.tot)}
+    if(!v.length)return Infinity;v.sort(function(a,b){return a-b});
+    _ci4.p75=v[Math.max(0,Math.ceil(0.75*v.length)-1)];return _ci4.p75;
+  }catch(e){return Infinity}
+}
+function _ci4Long(s){try{var e=_ci4EstHe(s);return !!(s&&s.id<100&&e&&e.tot>_CI4.BAN&&e.tot>=_ci4P75())}catch(x){return false}}
+/* the plan: {sid, tot, l, ht, hl, parts:[{a,b,min}]} or null (cached per stage + language). WHICH stages split and WHERE: the Hebrew
+   estimate (the same in both languages); min / tot: the current language's estimate (what the LX-003 header shows) */
+function _ci4Plan(s){
+  try{
+    if(!s||!s.th||s.th.length<2||typeof _w8rnEst!=='function')return null;
+    var k=s.id+'|'+(_ci4En()?'en':'he');if(_ci4.plan[k]!==undefined)return _ci4.plan[k];
+    var H=_ci4EstHe(s),e=_w8rnEst(s),n=s.th.length,P=null;
+    if(H&&e&&H.l>_CI4.TH&&H.topic.length===n){
+      var cnt=Math.max(2,Math.min(n,Math.ceil(H.l/_CI4.PART))),cum=[0],cl=[0],i,j,b;
+      for(i=0;i<n;i++){cum.push(cum[i]+(+H.topic[i]||0));cl.push(cl[i]+(+e.topic[i]||0))}
+      var tot=cum[n],cuts=[],prev=0;
+      for(j=1;j<cnt;j++){var want=tot*j/cnt,best=-1,bd=Infinity;for(b=prev+1;b<=n-(cnt-j);b++){var d=Math.abs(cum[b]-want);if(d<bd){bd=d;best=b}}cuts.push(best);prev=best}
+      cuts.push(n);var parts=[],a=0;
+      for(j=0;j<cuts.length;j++){parts.push({a:a,b:cuts[j]-1,min:cl[cuts[j]]-cl[a]});a=cuts[j]}
+      P={sid:s.id,parts:parts,tot:e.tot,l:e.l,ht:H.tot,hl:H.l};
+    }
+    _ci4.plan[k]=P;return P;
+  }catch(x){return null}
+}
+function _ci4PartOf(P,i){for(var p=0;p<P.parts.length;p++)if(i>=P.parts[p].a&&i<=P.parts[p].b)return p;return P.parts.length-1}
+function _ci4Seen(sid,i){try{return !!(G._seenSec&&G._seenSec[sid+'_'+i])}catch(e){return false}}
+function _ci4PartDone(P,p){for(var i=P.parts[p].a;i<=P.parts[p].b;i++)if(!_ci4Seen(P.sid,i))return false;return true}
+/* how many parts are open: the part of the first unread topic (all read = all), this session's opens, the B8 resume record */
+function _ci4Rv(s,P){
+  var n=s.th.length,r=P.parts.length-1,i;
+  for(i=0;i<n;i++)if(!_ci4Seen(s.id,i)){r=_ci4PartOf(P,i);break}
+  var m=_ci4.rv[s.id];if(m!=null&&m>r)r=m;
+  try{var a=(typeof _w16b8PosOf==='function')?_w16b8PosOf(s.id):null;
+    if(a&&a.t==='l'){if(a.pv!=null&&(a.pv|0)>r)r=a.pv|0;if(a.i!=null&&a.i>=0&&a.i<n){var q=_ci4PartOf(P,a.i);if(q>r)r=q}}}catch(e){}
+  return Math.max(0,Math.min(P.parts.length-1,r));
+}
+function _ci4Clear(tc){
+  var x=tc.querySelectorAll('.ci004-chip,.ci004-card,.ci004-ban'),i;for(i=0;i<x.length;i++)x[i].remove();
+  var y=tc.querySelectorAll('[data-ci4p]');for(i=0;i<y.length;i++){y[i].removeAttribute('data-ci4p');y[i].classList.remove('ci004-hid')}
+  tc.classList.remove('ci004-on');
+}
+/* DOM writes only (no layout reads): runs inside rt(), before the first paint */
+function _ci4Apply(){
+  try{
+    var tc=document.getElementById('tc');if(!tc)return;_ci4Clear(tc);
+    if(window._ci4Off||typeof G==='undefined'||!G||G.v!=='s'||G.tab!=='l')return;
+    var s=_ci4St(G.st),P=_ci4Plan(s);if(!P)return;
+    var secs=tc.querySelectorAll('.csec[data-idx]'),n=s.th.length,i;if(secs.length!==n)return;
+    /* every topic behind its accordion: a plain topic inside a closed part would count as read by the scroll rule */
+    for(i=0;i<n;i++){if(parseInt(secs[i].getAttribute('data-idx'),10)!==i||!secs[i].querySelector('.pf-acc-body'))return}
+    _ci4.n.apply++;
+    var rv=_ci4Rv(s,P),T=P.parts.length,en=_ci4En(),dir=en?'ltr':'rtl',p;
+    tc.classList.add('ci004-on');
+    for(p=0;p<T;p++){
+      var pt=P.parts[p];
+      for(i=pt.a;i<=pt.b;i++){
+        var sec=secs[i];sec.setAttribute('data-ci4p',String(p+1));if(p>rv)sec.classList.add('ci004-hid');
+        var dv=sec.nextElementSibling;
+        if(dv&&dv.classList.contains('sec-divider')){dv.setAttribute('data-ci4p',String(p+1));if(p>rv||(i===pt.b&&p>=rv))dv.classList.add('ci004-hid')}
+      }
+      var chip=document.createElement('div');chip.className='ci004-chip'+(p>rv?' ci004-hid':'');
+      chip.setAttribute('data-ci4p',String(p+1));chip.setAttribute('data-i18n','1');chip.setAttribute('tabindex','-1');chip.dir=dir;
+      chip.innerHTML='<span>'+(en?'Reading '+_ci4B(p+1)+' of '+_ci4B(T):'קטע '+_ci4B(p+1)+' מתוך '+_ci4B(T))+'</span>';
+      secs[pt.a].parentNode.insertBefore(chip,secs[pt.a]);
+      if(p<T-1){
+        var m=_ci4Min(P.parts[p+1].min),card=document.createElement('div');
+        card.className='ci004-card'+(p!==rv?' ci004-hid':'');card.setAttribute('data-ci4p',String(p+1));card.setAttribute('data-i18n','1');
+        card.setAttribute('role','group');card.setAttribute('aria-label',en?'End of reading '+(p+1)+' of '+T:'סוף קטע '+(p+1)+' מתוך '+T);card.dir=dir;
+        card.innerHTML='<div class="ci004-card-h"'+(_ci4PartDone(P,p)?'':' hidden')+'>'+(en?'Reading '+_ci4B(p+1)+' done.':'סיימתם את קטע '+_ci4B(p+1)+'.')+'</div>'
+          +'<button type="button" class="bp ci004-next" onclick="_ci4Next('+(p+1)+')"><span aria-hidden="true">▶</span> <span class="ci004-nl">'+(en?'Reading '+_ci4B(p+2)+' · ~'+_ci4B(m)+' min':'לקטע '+_ci4B(p+2)+' · כ־'+_ci4B(m)+' דק׳')+'</span></button>'
+          +'<div class="ci004-card-s">'+(en?'You can stop here — your progress is saved.':'אפשר לעצור כאן — ההתקדמות נשמרת.')+'</div>';
+        secs[pt.b].parentNode.insertBefore(card,secs[pt.b].nextSibling);
+      }
+    }
+    var done=false;try{done=!!(G.done&&G.done.has(s.id))}catch(e){}
+    var all=true;for(i=0;i<n;i++)if(!_ci4Seen(s.id,i)){all=false;break}
+    if(_ci4Long(s)&&!done&&!all){
+      var bn=document.createElement('div');bn.className='ci004-ban';bn.setAttribute('role','note');bn.setAttribute('data-i18n','1');bn.dir=dir;
+      bn.innerHTML='<span class="ci004-ic" aria-hidden="true">⏱</span><span class="ci004-bt">'+(en
+        ?'This stage is longer than most: '+_ci4B(T)+' readings, about '+_ci4B(P.tot)+' min. You can stop after any reading — your progress is saved.'
+        :'השלב הזה ארוך מהרגיל: '+_ci4B(T)+' קטעי קריאה, כ־'+_ci4B(P.tot)+' דק׳. אפשר לעצור אחרי כל קטע — ההתקדמות נשמרת.')+'</span>';
+      var sp=tc.querySelector('.sec-progress')||tc.querySelector('.learn-header');
+      if(sp&&sp.parentNode===tc)tc.insertBefore(bn,sp.nextSibling);else tc.insertBefore(bn,tc.firstChild);
+    }
+  }catch(e){}
+}
+/* the card's button: open part p (0-based), move focus + scroll to its chip, let B8 record the place */
+function _ci4Next(p){
+  try{
+    var sid=parseInt(G.st,10),s=_ci4St(sid),P=_ci4Plan(s);if(!P||!(p>=1&&p<P.parts.length))return;
+    _ci4.rv[sid]=Math.max(_ci4Rv(s,P),p);_ci4Apply();_ci4.n.next++;
+    try{trackEvent('learn','reading_next','s='+sid+',p='+(p+1)+',of='+P.parts.length)}catch(e){}
+    var chip=document.querySelector('#tc .ci004-chip[data-ci4p="'+(p+1)+'"]');
+    if(chip){try{chip.focus({preventScroll:true})}catch(e){}try{if(typeof _w8rnScrollTo==='function')_w8rnScrollTo(chip);else chip.scrollIntoView({block:'start'})}catch(e){}}
+    setTimeout(function(){try{if(typeof _w16b8Rec==='function')_w16b8Rec('ci4')}catch(e){}},900);
+  }catch(e){}
+}
+/* open the parts up to topic i (any path that targets a topic: resume landing, Next, dots, jump, a toggle) */
+function _ci4Ensure(sid,i,min){
+  try{
+    sid=parseInt(sid,10);if(isNaN(sid)||parseInt(G.st,10)!==sid||isNaN(i))return false;
+    var s=_ci4St(sid),P=_ci4Plan(s);if(!P)return false;
+    var need=_ci4PartOf(P,i);if(min!=null&&!isNaN(+min))need=Math.max(need,Math.min(P.parts.length-1,+min|0));
+    if(need<=_ci4Rv(s,P))return false;
+    _ci4.rv[sid]=need;_ci4.n.ensure++;
+    if(G.v==='s'&&G.tab==='l')_ci4Apply();
+    return true;
+  }catch(e){return false}
+}
+/* _markSeenByScroll's active dot: hidden topics have top=0 → it would point at the last hidden topic. Read before it, write after. */
+function _ci4Act(){
+  try{var tc=document.getElementById('tc');if(!tc||!tc.classList.contains('ci004-on')||G.v!=='s'||G.tab!=='l')return null;
+    var secs=tc.querySelectorAll('.csec[data-idx]'),vh=window.innerHeight||document.documentElement.clientHeight||800,act=0;
+    for(var i=0;i<secs.length;i++){var sec=secs[i];if(sec.classList.contains('ci004-hid'))continue;if(sec.getBoundingClientRect().top<=vh*0.4)act=parseInt(sec.getAttribute('data-idx'),10)}
+    return act}catch(e){return null}
+}
+function _ci4Dots(act){try{var d=document.querySelectorAll('#tc .sec-dot');for(var i=0;i<d.length;i++){var on=(i===act);if(d[i].classList.contains('active')!==on)d[i].classList.toggle('active',on)}}catch(e){}}
+/* a part's card says "done" only once its topics are read by the existing rules */
+function _ci4Sync(){
+  try{var tc=document.getElementById('tc');if(!tc||!tc.classList.contains('ci004-on'))return;var P=_ci4Plan(_ci4St(G.st));if(!P)return;
+    var c=tc.querySelectorAll('.ci004-card');
+    for(var i=0;i<c.length;i++){var p=parseInt(c[i].getAttribute('data-ci4p'),10)-1,h=c[i].querySelector('.ci004-card-h');if(h&&P.parts[p]){var dn=_ci4PartDone(P,p);if(h.hidden===dn)h.hidden=!dn}}
+  }catch(e){}
+}
+(function(){
+  function wrap(nm,mk){try{var f=window[nm];if(typeof f!=='function'||f._ci4)return;var w=mk(f);
+    for(var k in f){try{if(Object.prototype.hasOwnProperty.call(f,k)&&!(k in w))w[k]=f[k]}catch(e){}}w._ci4=1;window[nm]=w}catch(e){}}
+  wrap('rt',function(o){return function(){var r=o.apply(this,arguments);try{_ci4Apply()}catch(e){}return r}});
+  wrap('_markSeenByScroll',function(o){return function(){var a=_ci4Act();var r=o.apply(this,arguments);if(a!=null)_ci4Dots(a);return r}});
+  wrap('_updateReadProgress',function(o){return function(){var r=o.apply(this,arguments);try{_ci4Sync()}catch(e){}return r}});
+  wrap('pfAccToggle',function(o){return function(btn){try{var sec=btn&&btn.closest?btn.closest('#tc .csec[data-idx]'):null;if(sec&&sec.classList.contains('ci004-hid'))_ci4Ensure(G.st,parseInt(sec.getAttribute('data-idx'),10))}catch(e){}return o.apply(this,arguments)}});
+  wrap('_w8rnGoPart',function(o){return function(k,arg){try{if(k==='l'&&arg!=null)_ci4Ensure(G.st,parseInt(arg,10))}catch(e){}return o.apply(this,arguments)}});
+  wrap('_jumpToTopic',function(o){return function(i){try{_ci4Ensure(G.st,parseInt(i,10))}catch(e){}return o.apply(this,arguments)}});
+  wrap('_w7lnLand',function(o){return function(sid,tg){try{if(tg&&tg.tab==='l'&&tg.sec!=null)_ci4Ensure(sid,parseInt(tg.sec,10),tg.rec&&tg.rec.pv!=null?tg.rec.pv:null)}catch(e){}return o.apply(this,arguments)}});
+  wrap('_w16b8Anchor',function(o){return function(){var a=o.apply(this,arguments);try{if(a&&a.t==='l'){var s=_ci4St(G.st),P=_ci4Plan(s);if(P){a.pt=_ci4PartOf(P,a.i);a.pv=_ci4Rv(s,P)}}}catch(e){}return a}});
+  try{document.addEventListener('click',function(ev){try{var d=ev.target&&ev.target.closest?ev.target.closest('#tc .sec-dot[data-si]'):null;if(d)_ci4Ensure(G.st,parseInt(d.getAttribute('data-si'),10))}catch(e){}},true)}catch(e){}
+  try{if(typeof FEAT_ACT_NAMES!=='undefined'&&FEAT_ACT_NAMES&&!FEAT_ACT_NAMES.reading_next)FEAT_ACT_NAMES.reading_next='מעבר לקטע הקריאה הבא בשלב ארוך'}catch(e){}
+  try{if(typeof _W13MU!=='undefined'&&_W13MU&&_W13MU.A&&!_W13MU.A.reading_next)_W13MU.A.reading_next=['מעבר לקטע הקריאה הבא בשלב ארוך','opened the next reading of a long stage']}catch(e){}
+})();
+/* ===== /W18 C3 CI-004 ===== */
+</script>
+<script>
+/* ===== W18 C3 CI-010 (_ci10): minimum client version from the load reply — client side (1.10.33) =====
+   GAS w7j echoes Script Property MIN_CLIENT as minClient (unset by default → nothing happens). Read defensively; wrappers only. */
+var _CI10={K:'pm_ci10',MAXD:2,TICK:2000,RE:/^[0-9]{1,4}(\.[0-9]{1,6}){1,3}$/};
+var _ci10={min:'',need:false,dis:0,hid:false,pend:false,tk:0,n:{seen:0,show:0,dis:0,go:0,held:0}};
+function _ci10En(){try{return typeof _enLang==='function'&&!!_enLang()}catch(e){return false}}
+function _ci10T(a,m){try{if(typeof trackEvent==='function')trackEvent('version',a,m==null?'':String(m))}catch(e){}}
+function _ci10Get(){try{var o=JSON.parse(localStorage.getItem(_CI10.K)||'null');return (o&&typeof o==='object')?o:null}catch(e){return null}}
+function _ci10Put(o){try{localStorage.setItem(_CI10.K,JSON.stringify(o))}catch(e){}}
+/* the field: top level or inside data; anything but a dotted number → '' */
+function _ci10Pick(d){
+  try{if(!d||typeof d!=='object')return '';var m=d.minClient;
+    if((m==null||m==='')&&d.data&&typeof d.data==='object'&&!Array.isArray(d.data))m=d.data.minClient;
+    if(m==null||typeof m==='object')return '';m=String(m).trim();return _CI10.RE.test(m)?m:''}catch(e){return ''}
+}
+function _ci10Reply(d){
+  try{var m=_ci10Pick(d);if(!m)return;_ci10.n.seen++;
+    if(typeof APP_VERSION==='undefined'||typeof cmpVersion!=='function'||cmpVersion(m,APP_VERSION)<=0)return;
+    if(_ci10.need&&_ci10.min===m){_ci10Show();return}
+    var st=_ci10Get();_ci10.min=m;_ci10.need=true;_ci10.hid=false;_ci10.dis=(st&&st.m===m)?Math.max(0,Math.min(_CI10.MAXD,st.n|0)):0;
+    _ci10T('min_client',APP_VERSION+'<'+m);
+    _ci10Show();
+  }catch(e){}
+}
+function _ci10InStage(){try{return G.v==='s'}catch(e){return false}}
+/* the map (or the home screen) with nothing open on top */
+function _ci10Safe(){
+  try{if(_ci10InStage())return false;
+    var v=(typeof _w13scView==='function')?_w13scView():((G&&G.v==='m')?'map':'');if(v!=='map'&&v!=='home')return false;
+    if(typeof _W13SC_OV==='string'&&typeof _w13scVis==='function'){var l=document.querySelectorAll(_W13SC_OV);for(var i=0;i<l.length;i++)if(_w13scVis(l[i]))return false}
+    try{if(typeof _duelId!=='undefined'&&_duelId)return false}catch(e){}
+    return true}catch(e){return false}
+}
+function _ci10Rm(){try{var b=document.getElementById('updateBanner');if(b&&b.hasAttribute('data-ci10')){b.remove();try{document.documentElement.style.setProperty('--w6f-bb','0px')}catch(e){}}}catch(e){}}
+function _ci10Show(){
+  try{
+    if(!_ci10.need)return;
+    if(_ci10InStage()||_ci10.hid){_ci10Rm();return}
+    var en=_ci10En(),sticky=_ci10.dis>=_CI10.MAXD,key=_ci10.min+'|'+(sticky?'s':'d')+'|'+(en?'en':'he'),old=document.getElementById('updateBanner');
+    if(old&&old.getAttribute('data-ci10')===key)return;
+    if(old)old.remove();
+    var b=document.createElement('div');
+    b.id='updateBanner';b.className='w13sc-bn ci010-bn';b.setAttribute('data-ci10',key);b.setAttribute('data-i18n','1');
+    b.setAttribute('role','status');b.setAttribute('aria-live','polite');b.dir=en?'ltr':'rtl';b.lang=en?'en':'he';
+    b.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:99999;display:flex;align-items:center;font-family:Heebo,system-ui,sans-serif';
+    b.innerHTML='<div class="w13sc-in"><span class="w13sc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></span>'
+      +'<span class="w13sc-tx">'+(en?'A newer version with progress fixes is ready. Refresh to continue (your progress is saved).':'יש גרסה חדשה עם תיקוני התקדמות. רעננו כדי להמשיך (ההתקדמות נשמרת).')+'</span>'
+      +'<button type="button" class="w13sc-go">'+(en?'Refresh':'לרענון')+'</button>'
+      +(sticky?'':'<span class="w13sc-x" role="button" tabindex="0" aria-label="'+(en?'Not now':'לא עכשיו')+'" title="'+(en?'Not now':'לא עכשיו')+'">✕</span>')+'</div>';
+    b.querySelector('.w13sc-go').addEventListener('click',function(){_ci10Go()});
+    var x=b.querySelector('.w13sc-x');
+    if(x){x.addEventListener('click',function(){_ci10Dismiss()});x.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();_ci10Dismiss()}})}
+    document.body.appendChild(b);_ci10.n.show++;
+    try{if(typeof _w6fBannerH==='function')_w6fBannerH()}catch(e){}
+    if(_ci10.n.show===1)_ci10T('min_banner',_ci10.min);
+  }catch(e){}
+}
+function _ci10Dismiss(){
+  try{if(!_ci10.need||_ci10.dis>=_CI10.MAXD)return;
+    _ci10.dis++;_ci10.n.dis++;_ci10Put({m:_ci10.min,n:_ci10.dis,t:Date.now()});_ci10.hid=true;_ci10Rm();_ci10T('min_dismiss',String(_ci10.dis));
+  }catch(e){}
+}
+function _ci10Reload(how){try{if(typeof _w13scReload==='function')_w13scReload(how);else location.reload()}catch(e){}}
+/* Refresh: reload now on the map / home; anywhere else (a stage, a quiz, a duel, an open sheet) wait until the learner is back there */
+function _ci10Go(){
+  try{_ci10.n.go++;
+    if(_ci10Safe()){_ci10.pend=false;_ci10Reload('ci10');return}
+    _ci10.pend=true;_ci10.n.held++;if(_ci10InStage())_ci10Rm();
+    if(!_ci10.tk)_ci10.tk=setInterval(function(){try{
+      if(!_ci10.pend){clearInterval(_ci10.tk);_ci10.tk=0;return}
+      if(_ci10Safe()){clearInterval(_ci10.tk);_ci10.tk=0;_ci10.pend=false;_ci10Reload('ci10-held')}
+    }catch(e){}},_CI10.TICK);
+  }catch(e){}
+}
+(function(){
+  /* the reply: a clone of every load answer (the app's own handlers read the original) */
+  try{var f0=window.fetch;if(typeof f0==='function'&&!f0._ci10){
+    var fw=function(u,o){
+      var pr=f0.apply(this,arguments);
+      try{var bd=o&&o.body;if(typeof bd==='string'&&bd.indexOf('{"action":"load"')===0&&pr&&typeof pr.then==='function')
+        pr.then(function(r){try{if(r&&r.ok&&typeof r.clone==='function')r.clone().json().then(_ci10Reply,function(){})}catch(e){}},function(){})}catch(e){}
+      return pr};
+    for(var k in f0){try{if(Object.prototype.hasOwnProperty.call(f0,k)&&!(k in fw))fw[k]=f0[k]}catch(e){}}
+    fw._ci10=1;window.fetch=fw}}catch(e){}
+  function wrap(nm,mk){try{var f=window[nm];if(typeof f!=='function'||f._ci10)return;var w=mk(f);
+    for(var k in f){try{if(Object.prototype.hasOwnProperty.call(f,k)&&!(k in w))w[k]=f[k]}catch(e){}}w._ci10=1;window[nm]=w}catch(e){}}
+  /* back on the map: a "not now" ends; a held Refresh reloads now */
+  wrap('mp',function(o){return function(){var r=o.apply(this,arguments);try{if(_ci10.need){_ci10.hid=false;if(_ci10.pend&&_ci10Safe()){_ci10.pend=false;_ci10Reload('ci10-held')}else _ci10Show()}}catch(e){}return r}});
+  /* into a stage: never on screen there */
+  wrap('ss',function(o){return function(){var r=o.apply(this,arguments);try{if(_ci10.need&&_ci10InStage())_ci10Rm()}catch(e){}return r}});
+  /* one banner: when the minimum applies, the W13 prompt shows this one */
+  wrap('_w13scShow',function(o){return function(){if(_ci10.need){try{_ci10Show()}catch(e){}return}return o.apply(this,arguments)}});
+  /* the profile badge says an update is waiting (W13's own "available" badge) */
+  wrap('_versionBadgeHtml',function(o){return function(){if(_ci10.need&&typeof _w13sc!=='undefined'&&_w13sc){var a=_w13sc.avail;_w13sc.avail=true;try{return o.apply(this,arguments)}finally{_w13sc.avail=a}}return o.apply(this,arguments)}});
+  try{if(typeof applyLanguage==='function'&&!applyLanguage._ci10){var al=applyLanguage;applyLanguage=function(){var r=al.apply(this,arguments);try{if(_ci10.need)_ci10Show()}catch(e){}return r};for(var k in al){try{if(Object.prototype.hasOwnProperty.call(al,k)&&!(k in applyLanguage))applyLanguage[k]=al[k]}catch(e){}}applyLanguage._ci10=1}}catch(e){}
+  try{if(typeof FEAT_ACT_NAMES!=='undefined'&&FEAT_ACT_NAMES){var N={min_client:'גרסה ישנה מהמינימום',min_banner:'באנר עדכון חובה הוצג',min_dismiss:'באנר עדכון חובה נדחה'};for(var a in N)if(!FEAT_ACT_NAMES[a])FEAT_ACT_NAMES[a]=N[a]}}catch(e){}
+})();
+window._ci10Dbg=function(){try{return {min:_ci10.min,need:_ci10.need,dis:_ci10.dis,hid:_ci10.hid,pend:_ci10.pend,safe:_ci10Safe(),n:JSON.parse(JSON.stringify(_ci10.n))}}catch(e){return null}};
+/* ===== /W18 C3 CI-010 ===== */
+</script>
+<style id="ci2Css">
+/* ===== W18 C1 CI-002 stage-0-first gate (_ci2) ===== */
+#ci2Sheet>.daily-modal-box{max-width:400px;padding:24px 16px 16px;text-align:start}
+#ci2Sheet .ci2-ic{font-size:2.25rem;line-height:1;margin:0 0 12px}
+#ci2Sheet .ci2-h{margin:0 0 8px;padding-inline-end:40px;font-size:1.2rem;font-weight:800;line-height:1.35;color:var(--t1);text-wrap:balance}
+#ci2Sheet .ci2-p{margin:0 0 16px;font-size:.95rem;line-height:1.6;color:var(--t2);text-wrap:pretty}
+#ci2Sheet .ci2-nw{white-space:nowrap}
+#ci2Sheet .ci2-b{display:block;width:100%;min-height:48px;margin:0;box-sizing:border-box;padding:.7rem 1rem;line-height:1.4;font-size:1rem}
+#ci2Sheet .ci2-b+.ci2-b{margin-top:8px}
+html[dir="ltr"] #ci2Sheet .ci2-p,#ci2Sheet [dir="ltr"] .ci2-p{direction:ltr}
+</style>
+<script>
+/* ===== W18 C1 CI-002 stage-0-first gate (_ci2) ===== */
+var _ci2={v:1,n:0,last:null,open:null,mo:null};
+function _ci2En(){try{return typeof _enLang==='function'?!!_enLang():(G&&G.lang==='en')}catch(e){return false}}
+function _ci2L(he,en){return _ci2En()?en:he}
+function _ci2E(x){return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+/* the W9 onboarding switch: real browsers yes; automation only with ?ob=1 (or the C1 suites' window.__pmCiAuto) */
+function _ci2On(){try{if(window.__pmCiAuto===1)return true;if(typeof _w9obAuto==='function')return !!_w9obAuto();return navigator.webdriver!==true}catch(e){return true}}
+function _ci2St(id){try{id=parseInt(id,10);for(var i=0;i<S.length;i++)if(S[i].id===id)return S[i]}catch(e){}return null}
+function _ci2T(act,sid){try{trackEvent('ob','stage0_prompt','act='+act+',s='+sid)}catch(e){}}
+/* this learner's "already shown" stages on this device (another account on the device never inherits them) */
+function _ci2Own(){try{var u=String(G.userName||''),o=G._ci2s;if(!o||typeof o!=='object'||o.u!==u){o={u:u,s:{}};G._ci2s=o}if(!o.s||typeof o.s!=='object')o.s={};return o}catch(e){return {u:'',s:{}}}}
+/* the first stage of this learner's own path (the map's core journey, rg's order) */
+function _ci2First(){try{var L=sortStages(S).filter(function(s){return s.tg!=='בונוס - ספר'&&s.tg!=='בונוס מיוחד'&&!_stageHidden(s)});return L.length?L[0].id:-1}catch(e){return -1}}
+function _ci2Need(sid){
+  try{
+    if(!_ci2On())return false;
+    if(typeof G==='undefined'||!G||!G.s||!G.userName||G.userName==='אנונימי')return false;
+    if(!(G.done instanceof Set)||G.done.size!==0)return false;
+    sid=parseInt(sid,10);if(isNaN(sid)||sid===0)return false;
+    var s=_ci2St(sid);if(!s||!_ci2St(0))return false;
+    if(typeof _stageHidden==='function'&&_stageHidden(s))return false;
+    if(sid===25&&!G.interviewUnlocked)return false;/* its own lock message */
+    if(_ci2First()!==0)return false;
+    if(_ci2Own().s[sid])return false;
+    return true;
+  }catch(e){return false}
+}
+/* the stage-0 minutes: the stage header's formula (_w8rnEst), the same number the B4 hero shows */
+function _ci2Min(){try{var s=_ci2St(0);if(s&&typeof _w8rnEst==='function')return Math.max(1,Math.round(_w8rnEst(s).tot||0))}catch(e){}return 0}
+function _ci2Html(sid){
+  var en=_ci2En(),m=_ci2Min(),s0=_ci2St(0);
+  var p=en?('Stage 0 is a'+(m?' <span class="ci2-nw">~'+m+'-min</span>':'')+' intro that sets up everything else')
+          :('שלב 0 הוא מבוא'+(m?' של <span class="ci2-nw">כ־'+m+' דק׳</span>':'')+' שמכין לכל השאר');
+  return '<div class="daily-modal-box" dir="'+(en?'ltr':'rtl')+'" lang="'+(en?'en':'he')+'">'
+    +'<div class="ci2-ic" aria-hidden="true">'+((s0&&s0.ic)||'🧭')+'</div>'
+    +'<h3 class="ci2-h" id="ci2H">'+_ci2E(_ci2L('כדאי להתחיל כאן','Start here'))+'</h3>'
+    +'<p class="ci2-p" id="ci2P">'+p+'</p>'
+    +'<button type="button" class="bp ci2-b" data-ci2="start">'+_ci2E(_ci2L('▶ להתחיל בשלב 0','▶ Start stage 0'))+'</button>'
+    +'<button type="button" class="bs ci2-b" data-ci2="anyway">'+_ci2E(_ci2L('לפתוח בכל זאת','Open anyway'))+'</button>'
+    +'</div>';
+}
+function _ci2Soon(){try{if(typeof _w6skSoon==='function')_w6skSoon()}catch(e){}}
+function _ci2Show(sid){
+  try{
+    var old=document.getElementById('ci2Sheet');if(old){old._ci2done=1;old.remove()}
+    var o=_ci2Own();o.s[sid]=Date.now();try{sv()}catch(e){}
+    var ov=document.createElement('div');ov.id='ci2Sheet';ov.className='daily-modal ci2-ov';ov.setAttribute('data-ci2-sid',String(sid));
+    ov.setAttribute('aria-labelledby','ci2H');ov.setAttribute('aria-describedby','ci2P');
+    ov.innerHTML=_ci2Html(sid);
+    ov.addEventListener('click',function(e){
+      var b=e.target&&e.target.closest?e.target.closest('[data-ci2]'):null;
+      if(b){e.stopPropagation();_ci2Act(b.getAttribute('data-ci2'),sid);return}
+      if(e.target===ov)_ci2Act('close',sid);
+    });
+    document.body.appendChild(ov);
+    _ci2.open=sid;_ci2.last={sid:sid,at:Date.now()};_ci2.n++;
+    /* ✕ (W11 nav) and Escape (W6 stack) remove the overlay: that is a "close" */
+    try{if(_ci2.mo)_ci2.mo.disconnect();_ci2.mo=new MutationObserver(function(){if(!ov.isConnected){try{_ci2.mo.disconnect()}catch(x){}_ci2.mo=null;if(!ov._ci2done){ov._ci2done=1;_ci2.open=null;_ci2T('close',sid)}}});_ci2.mo.observe(document.body,{childList:true})}catch(e){}
+    _ci2T('show',sid);_ci2Soon();
+  }catch(e){try{ss(sid)}catch(x){}}
+}
+function _ci2Act(a,sid){
+  var ov=document.getElementById('ci2Sheet');if(ov){ov._ci2done=1;ov.remove()}
+  _ci2.open=null;_ci2Soon();
+  if(a==='start'){_ci2T('start',sid);_ci2Go0();return}
+  if(a==='anyway'){_ci2T('anyway',sid);try{ss(sid);window.scrollTo(0,0)}catch(e){}return}
+  _ci2T('close',sid);
+}
+/* stage 0 where the learner is (B8 / W7 resume); untouched → its first topic already open (W9 "Start here") */
+function _ci2Go0(){
+  try{
+    var s=_ci2St(0),p=(s&&typeof _w8rnProg==='function')?_w8rnProg(s):null;
+    if(typeof _w7lnGo==='function')_w7lnGo(0,'ci2');else{ss(0);window.scrollTo(0,0)}
+    if(p&&!p.started)setTimeout(function(){try{if(G.v==='s'&&+G.st===0&&typeof _w8rnGoPart==='function'){var q=_w8rnProg(s);if(!q.lAll)_w8rnGoPart('l',q.first>=0?q.first:0)}}catch(e){}},90);
+  }catch(e){try{ss(0)}catch(x){}}
+}
+/* special-bonus cards and book cards carry no data-sid: tag them in rg's own order (same filters as rg) */
+function _ci2Tag(){
+  try{
+    var g=document.getElementById('sg');if(!g)return;var so=sortStages(S);
+    var sb=so.filter(function(s){return s.tg==='בונוס מיוחד'&&!_stageHidden(s)}),bk=so.filter(function(s){return s.tg==='בונוס - ספר'});
+    var cards=[].slice.call(g.querySelectorAll('.j-node:not([data-sid])')).filter(function(n){return !n.closest('.journey')});
+    if(cards.length===sb.length)cards.forEach(function(n,i){n.setAttribute('data-ci2-sid',String(sb[i].id))});
+    var bc=g.querySelectorAll('#bonus-grid .j-bonus-card');if(bc.length===bk.length)[].forEach.call(bc,function(n,i){n.setAttribute('data-ci2-sid',String(bk[i].id))});
+  }catch(e){}
+}
+/* the map-node tap path only: a capture-phase listener that runs before the node's own onclick (=ss(id)) */
+function _ci2Tap(e){
+  try{
+    var t=e.target,n=(t&&t.closest)?t.closest('#sg .j-node,#sg .j-bonus-card'):null;if(!n)return;
+    var sid=n.getAttribute('data-sid');if(sid==null)sid=n.getAttribute('data-ci2-sid');if(sid==null)return;
+    if(!_ci2Need(sid))return;
+    e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();
+    _ci2Show(parseInt(sid,10));
+  }catch(x){}
+}
+(function(){
+  try{window.addEventListener('click',_ci2Tap,true)}catch(e){}
+  try{var o=rg;if(typeof o==='function'&&!o._ci2){rg=function(){var r=o.apply(this,arguments);try{_ci2Tag()}catch(e){}return r};for(var k in o){try{if(Object.prototype.hasOwnProperty.call(o,k)&&!(k in rg))rg[k]=o[k]}catch(e){}}rg._ci2=1}}catch(e){}
+  try{var a=applyLanguage;if(typeof a==='function'&&!a._ci2){applyLanguage=function(){var r=a.apply(this,arguments);try{var ov=document.getElementById('ci2Sheet');if(ov){var sid=parseInt(ov.getAttribute('data-ci2-sid'),10);ov.innerHTML=_ci2Html(sid)}}catch(e){}return r};for(var k2 in a){try{if(Object.prototype.hasOwnProperty.call(a,k2)&&!(k2 in applyLanguage))applyLanguage[k2]=a[k2]}catch(e){}}applyLanguage._ci2=1}}catch(e){}
+  /* the daily-goal question (maybeAskGoal: 1.2 s after every map paint, fresh learners) must not open over this sheet: while the sheet is up it waits — G._goalAsked stays unset, so it is asked on the next map visit */
+  try{var g=maybeAskGoal;if(typeof g==='function'&&!g._ci2){maybeAskGoal=function(){try{if(document.getElementById('ci2Sheet'))return}catch(e){}return g.apply(this,arguments)};for(var k3 in g){try{if(Object.prototype.hasOwnProperty.call(g,k3)&&!(k3 in maybeAskGoal))maybeAskGoal[k3]=g[k3]}catch(e){}}maybeAskGoal._ci2=1}}catch(e){}
+  try{if(typeof FEAT_META==='object'&&FEAT_META&&!FEAT_META.ob){FEAT_META.ob={ic:'🧭',name:'מסלול התחלה ושימור (C1)',col:'#26A69A'};if(typeof TRACKED_FEATURES!=='undefined'&&TRACKED_FEATURES.indexOf('ob')<0){TRACKED_FEATURES.push('ob');if(typeof OTHER_FEATURES!=='undefined'&&OTHER_FEATURES.indexOf('ob')<0)OTHER_FEATURES.push('ob')}}
+    if(typeof FEAT_ACT_NAMES==='object'&&FEAT_ACT_NAMES&&!FEAT_ACT_NAMES.stage0_prompt)FEAT_ACT_NAMES.stage0_prompt='הצעה להתחיל בשלב 0'}catch(e){}
+})();
+/* ===== /W18 C1 CI-002 ===== */
+</script>
+<style id="ci5Css">
+/* ===== W18 C1 CI-005 micro-step (_ci5): a variant of the B4 hero, never a second card ===== */
+#continue-hero .continue-hero.ci5-on .w16b4-hm,#continue-hero .continue-hero.ci5-on .w16b4-hb,#continue-hero .continue-hero.ci5-on .ch-sub{display:none!important}
+#continue-hero .continue-hero.ci5-on .ch-label{font-size:.84rem;font-weight:800;text-wrap:balance}
+#continue-hero .ci5-m{margin-top:4px;font-size:.88rem;font-weight:700;line-height:1.45;color:var(--t2);text-wrap:balance}
+#continue-hero .ci5-m .ci5-t{color:var(--t1)}
+#continue-hero .ci5-nw{white-space:nowrap}
+#continue-hero .ci5-b{display:block;margin-top:12px;padding:.72rem 1rem;min-height:48px;box-sizing:border-box;border-radius:14px;text-align:center;font-weight:800;font-size:1rem;line-height:1.5;color:#fff;background:linear-gradient(135deg,var(--p,#8B85FF),#6a5cf0);box-shadow:0 6px 18px rgba(106,92,240,.28)}
+#continue-hero .ci5-row{display:flex;justify-content:flex-start;margin:-16px 0 8px;max-width:500px;width:100%}
+#continue-hero .ci5-x{min-height:44px;padding:0 4px;border:0;background:none;color:var(--t2);font:inherit;font-size:.86rem;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+#continue-hero .ci5-x:focus-visible{outline:2px solid var(--p);outline-offset:2px;border-radius:6px}
+</style>
+<script>
+/* ===== W18 C1 CI-005 learning ledger + micro-step (_ci5) ===== */
+var _ci5={v:1,sc:-1,hooks:[],shown:{},n:0,sv:0};
+function _ci5En(){try{return typeof _enLang==='function'?!!_enLang():(G&&G.lang==='en')}catch(e){return false}}
+function _ci5L(he,en){return _ci5En()?en:he}
+function _ci5E(x){return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function _ci5On(){try{if(window.__pmCiAuto===1)return true;if(typeof _w9obAuto==='function')return !!_w9obAuto();return navigator.webdriver!==true}catch(e){return true}}
+function _ci5U(){try{return (G&&G.s&&G.userName&&G.userName!=='אנונימי')?String(G.userName):''}catch(e){return ''}}
+/* a local calendar day as a number (noon-based, so a DST change never moves it) */
+function _ci5D(t){var d=new Date(t);return Math.round(new Date(d.getFullYear(),d.getMonth(),d.getDate(),12).getTime()/864e5)}
+function _ci5Own(){var u=_ci5U(),L=G._ci5L;if(!L||typeof L!=='object'||L.u!==u){L={u:u,last:0,d:{}};G._ci5L=L}if(!L.d||typeof L.d!=='object')L.d={};return L}
+function _ci5SvSoon(){if(_ci5.sv)return;_ci5.sv=setTimeout(function(){_ci5.sv=0;try{sv()}catch(e){}},400)}
+/* ---------- (1) one learning action ---------- */
+function _ci5Learn(kind){
+  try{
+    if(!_ci5U())return;var L=_ci5Own(),now=Date.now(),k=_ci5D(now),fresh=!L.d[k];
+    L.last=now;L.k=kind;L.d[k]=1;
+    var ks=Object.keys(L.d);if(ks.length>60){ks.sort(function(a,b){return a-b});ks.slice(0,ks.length-60).forEach(function(x){delete L.d[x]})}
+    _ci5SvSoon();
+    _ci5.hooks.forEach(function(f){try{f(kind,fresh)}catch(e){}});
+    if(G.v==='m'){try{_w16b4Hero()}catch(e){}}
+  }catch(e){}
+}
+/* dated learning in the app's own records (works for history before this build and for other devices) */
+function _ci5Hist(){
+  var out=[],now=Date.now()+864e5;
+  try{(G.activityLog||[]).forEach(function(a){if(!a||!a.t)return;if(a.a==='answer'||(a.a==='completeStage'&&String(a.d||'').indexOf('רטרואקטיבי')<0))out.push(+a.t)})}catch(e){}
+  try{Object.keys(G.quizAttempts||{}).forEach(function(k){var l=G.quizAttempts[k];if(Array.isArray(l))l.forEach(function(q){if(q&&q.t)out.push(+q.t)})})}catch(e){}
+  try{Object.keys(G.wrongQ||{}).forEach(function(k){var w=G.wrongQ[k];if(w&&w.ts)out.push(+w.ts)})}catch(e){}
+  try{if(G._weeklyAns&&typeof G._weeklyAns.wk==='number'){var d=new Date(2024,0,1,12);d.setDate(d.getDate()+G._weeklyAns.wk);out.push(d.getTime())}}catch(e){}
+  return out.filter(function(t){return t>1.5e12&&t<now});
+}
+function _ci5Ever(){try{if(G.done&&G.done.size)return true;var s=G._seenSec||{};for(var k in s)if(s[k])return true;var q=G.qa||{};for(var a in q)if(q[a]&&Object.keys(q[a]).length)return true}catch(e){}return false}
+/* the last learning action: {t, est} — est=1 when only an upper bound is known (no dated record: before the oldest log entry) */
+function _ci5Last(){
+  var t=0,est=0;
+  try{var L=G._ci5L;if(L&&L.u===_ci5U())t=+L.last||0}catch(e){}
+  _ci5Hist().forEach(function(x){if(x>t)t=x});
+  if(!t&&_ci5Ever()){
+    var o=0;try{(G.activityLog||[]).forEach(function(a){if(a&&a.t&&(!o||a.t<o))o=+a.t})}catch(e){}
+    if(!o)o=parseInt(G.firstUse,10)||0;if(o){t=o;est=1}
+  }
+  return {t:t,est:est};
+}
+/* the distinct learning days (local day numbers) */
+function _ci5Days(){
+  var d={};
+  try{var L=G._ci5L;if(L&&L.u===_ci5U()&&L.d)Object.keys(L.d).forEach(function(k){d[k]=1})}catch(e){}
+  _ci5Hist().forEach(function(x){d[_ci5D(x)]=1});
+  return Object.keys(d).map(Number).sort(function(a,b){return a-b});
+}
+/* ---------- (2) coasting ---------- */
+function _ci5DisKey(){return 'pm_ci5_no'}
+function _ci5Dis(){try{var o=JSON.parse(localStorage.getItem(_ci5DisKey())||'{}');return !!(o&&o.u===_ci5U()&&o.d===_ci5D(Date.now()))}catch(e){return false}}
+function _ci5Coast(){
+  try{
+    if(!_ci5On()||!_ci5U()||!(G.done instanceof Set))return null;
+    if(typeof PM_IDS!=='undefined'&&PM_IDS.length&&PM_IDS.every(function(i){return G.done.has(i)}))return null;/* graduates: CI-009 */
+    var lt=_ci5Last();if(!lt.t)return null;
+    var days=(Date.now()-lt.t)/864e5;if(days<14)return null;
+    if(_ci5Dis())return null;
+    return {t:lt.t,days:Math.floor(days),est:lt.est};
+  }catch(e){return null}
+}
+function _ci5Sid(card){
+  var a=card.getAttribute('data-ci5-sid');if(a!=null)return parseInt(a,10);
+  var m=/(?:_w7lnGo|ss|_w16b4HeroGo)\((\d+)/.exec(card.getAttribute('onclick')||'');return m?parseInt(m[1],10):null;
+}
+/* the next piece of the hero's stage: {k:'l',sec} / {k:'c'} / {k:'q',qi,r,R,left} + minutes */
+function _ci5Step(sid){
+  try{
+    var s=_w8rnSt(sid);if(!s||(G.done&&G.done.has(s.id)))return null;
+    var e=_w8rnEst(s),tg=(typeof _w7lnTarget==='function')?_w7lnTarget(s.id):null,qn=(s.q||[]).length;
+    if(!tg){if((s.th||[]).length)tg={tab:'l',sec:0};else if(s.cs)tg={tab:'c'};else if(qn)tg={tab:'q',qi:0};else return null}
+    if(tg.tab==='l'&&s.th&&s.th[tg.sec])return {s:s,k:'l',sec:tg.sec,n:s.th.length,m:Math.max(1,Math.round(e.topic[tg.sec]||1))};
+    if(tg.tab==='c')return {s:s,k:'c',m:Math.max(1,Math.round(e.c||2))};
+    if(tg.tab==='q'&&qn){
+      var R=_w8rnRounds(qn),ri=_w8rnRoundOf(R,tg.qi),rd=R[ri],qa=(G.qa&&G.qa[s.id])||{},left=0,i;
+      for(i=rd.a;i<=rd.b;i++)if(qa[i]===undefined)left++;if(!left)left=rd.b-rd.a+1;
+      return {s:s,k:'q',qi:tg.qi,r:ri+1,R:R.length,left:left,m:Math.max(1,Math.round(left*0.7))};
+    }
+  }catch(e){}
+  return null;
+}
+function _ci5Nw(h){return '<span class="ci5-nw">'+h+'</span>'}
+function _ci5Line(st){
+  /* the card's title already names the stage (B4: "שלב n: …"), so the line names only the piece */
+  var B=function(x){return '<bdi>'+_ci5E(x)+'</bdi>'};
+  if(st.k==='l'){var t=(typeof _w8rnCut==='function'&&typeof _w8rnTitle==='function')?_w8rnCut(_w8rnTitle(st.s.th[st.sec].t),40):String(st.s.th[st.sec].t||'');
+    return _ci5Nw(_ci5E(_ci5L('נושא ','Topic '))+B(st.sec+1)+_ci5E(_ci5L(' מתוך ',' of '))+B(st.n)+':')+' <span class="ci5-t" dir="auto">'+_ci5E(t)+'</span>'}
+  if(st.k==='c')return _ci5Nw(_ci5E(_ci5L('הקייס של השלב','The stage case')));
+  var q=_ci5Nw(B(st.left)+' '+_ci5E(_ci5L(st.left===1?'שאלה':'שאלות',st.left===1?'question':'questions')));
+  if(st.R>1)return _ci5Nw(_ci5E(_ci5L('סבב ','Round '))+B(st.r)+_ci5E(_ci5L(' מתוך ',' of '))+B(st.R))+' · '+q;
+  return q;
+}
+function _ci5Off(card){
+  try{
+    if(!card.classList.contains('ci5-on')&&!card._ci5o)return;
+    var o=card._ci5o;card.classList.remove('ci5-on');card.removeAttribute('data-ci5-sid');card.removeAttribute('data-ci5');
+    var m=card.querySelector('.ci5-m');if(m)m.remove();var b=card.querySelector('.ci5-b');if(b)b.remove();
+    var row=document.querySelector('#continue-hero .ci5-row');if(row)row.remove();
+    if(o){var lab=card.querySelector('.ch-label');if(lab&&lab.innerHTML===o.mine)lab.innerHTML=o.lab;if((card.getAttribute('onclick')||'').indexOf('_ci5Go(')===0)card.setAttribute('onclick',o.oc||'');card._ci5o=null}
+  }catch(e){}
+}
+function _ci5Hero(){
+  try{
+    var el=document.getElementById('continue-hero');if(!el)return;var card=el.querySelector('.continue-hero');if(!card)return;
+    var c=_ci5Coast(),sid=c?_ci5Sid(card):null,st=(sid!=null)?_ci5Step(sid):null;
+    if(!st){_ci5Off(card);return}
+    var lab=card.querySelector('.ch-label'),body=card.querySelector('.ch-body');if(!lab||!body){_ci5Off(card);return}
+    var en=_ci5En(),h=_ci5Nw(_ci5E(_ci5L('הצעד הבא שלכם','Your next step')))+' · '+_ci5Nw(_ci5E(_w8rnMin(st.m)));
+    /* what B4 drew (kept to put back): re-read whenever B4 has rewritten it since the last pass */
+    var oc=card.getAttribute('onclick')||'';
+    if(!card._ci5o)card._ci5o={lab:lab.innerHTML,oc:oc,mine:null};
+    else if(lab.innerHTML!==card._ci5o.mine)card._ci5o.lab=lab.innerHTML;
+    if(oc.indexOf('_ci5Go(')!==0)card._ci5o.oc=oc;
+    if(lab.innerHTML!==h)lab.innerHTML=h;card._ci5o.mine=lab.innerHTML;
+    card.classList.add('ci5-on');card.setAttribute('data-ci5',st.k);card.setAttribute('data-ci5-sid',String(st.s.id));
+    var m=card.querySelector('.ci5-m');if(!m){m=document.createElement('div');m.className='ci5-m';var ti=card.querySelector('.ch-title');if(ti&&ti.parentNode===body)body.insertBefore(m,ti.nextSibling);else body.appendChild(m)}
+    var line=_ci5Line(st);m.setAttribute('dir',en?'ltr':'rtl');if(m.innerHTML!==line)m.innerHTML=line;
+    var b=card.querySelector('.ci5-b');if(!b){b=document.createElement('span');b.className='ci5-b';b.setAttribute('aria-hidden','true');body.appendChild(b)}
+    var bt=_ci5L('▶ להתחיל','▶ Start');if(b.textContent!==bt)b.textContent=bt;
+    card.setAttribute('onclick','_ci5Go('+st.s.id+')');
+    var row=el.querySelector('.ci5-row');if(!row){row=document.createElement('div');row.className='ci5-row';row.innerHTML='<button type="button" class="ci5-x" onclick="_ci5No()"></button>';if(card.parentNode===el)el.insertBefore(row,card.nextSibling);else el.appendChild(row)}
+    row.setAttribute('dir',en?'ltr':'rtl');var x=row.querySelector('.ci5-x'),xt=_ci5L('לא עכשיו','Not now');if(x&&x.textContent!==xt)x.textContent=xt;
+    var dk=_ci5U()+'|'+_ci5D(Date.now());if(!_ci5.shown[dk]){_ci5.shown[dk]=1;try{trackEvent('ob','microstep','act=shown,k='+st.k+',s='+st.s.id+',d='+c.days+(c.est?'+':''))}catch(e){}}
+    _ci5.n++;
+  }catch(e){}
+}
+function _ci5Go(sid){
+  try{var st=_ci5Step(sid);try{trackEvent('ob','microstep','act=go,k='+(st?st.k:'-')+',s='+sid)}catch(e){}
+    if(st&&st.k==='l'){_w7lnGo(sid,'continue',{sec:st.sec});return}
+    _w7lnGo(sid,'continue');
+  }catch(e){try{ss(sid)}catch(x){}}
+}
+function _ci5No(){
+  try{var card=document.querySelector('#continue-hero .continue-hero'),sid=card?card.getAttribute('data-ci5-sid'):'',k=card?card.getAttribute('data-ci5'):'';
+    localStorage.setItem(_ci5DisKey(),JSON.stringify({u:_ci5U(),d:_ci5D(Date.now())}));
+    try{trackEvent('ob','microstep','act=not_now,k='+(k||'-')+',s='+(sid||'-'))}catch(e){}
+    if(card)_ci5Off(card);try{_w16b4Hero()}catch(e){}
+    try{var c2=document.querySelector('#continue-hero .continue-hero');if(c2)c2.focus({preventScroll:true})}catch(e){}
+  }catch(e){}
+}
+/* the first map arrival of this page load that shows the micro-step: the map stays at its top, where the card is, instead of
+   centring the current node 200 ms later (rg) — W9's own hold, as for its "Start here" card; later arrivals are untouched */
+function _ci5Arrive(){try{if(_ci5.held)return;var c=document.querySelector('#continue-hero .continue-hero.ci5-on');if(!c)return;_ci5.held=1;if(typeof _w9obHoldScroll==='function')_w9obHoldScroll();window.scrollTo(0,0)}catch(e){}}
+/* ---------- wrappers: every learning action ends in _ci5Learn ---------- */
+function _ci5SeenN(){var n=0;try{var s=G._seenSec||{};for(var k in s)if(s[k])n++}catch(e){}return n}
+function _ci5Copy(o,w,tag){for(var k in o){try{if(Object.prototype.hasOwnProperty.call(o,k)&&!(k in w))w[k]=o[k]}catch(e){}}w[tag]=1;return w}
+(function(){
+  try{var o1=sa;if(typeof o1==='function'&&!o1._ci5){sa=_ci5Copy(o1,function(sid,qi){var had=true;try{had=!!(G.qa&&G.qa[sid]&&G.qa[sid][qi]!==undefined)}catch(e){}var r=o1.apply(this,arguments);try{if(!had&&G.qa&&G.qa[sid]&&G.qa[sid][qi]!==undefined)_ci5Learn('answer')}catch(e){}return r},'_ci5')}}catch(e){}
+  try{var o2=answerWeekly;if(typeof o2==='function'&&!o2._ci5){answerWeekly=_ci5Copy(o2,function(){var day=-1,had=true;try{day=getDayNumber();had=!!(G._weeklyAns&&G._weeklyAns.wk===day)}catch(e){}var r=o2.apply(this,arguments);try{if(!had&&G._weeklyAns&&G._weeklyAns.wk===day)_ci5Learn('daily')}catch(e){}return r},'_ci5')}}catch(e){}
+  try{var o3=tryCompleteStage;if(typeof o3==='function'&&!o3._ci5){tryCompleteStage=_ci5Copy(o3,function(sid){var had=true;try{had=!!(G.done&&G.done.has(sid))}catch(e){}var r=o3.apply(this,arguments);try{if(!had&&G.done&&G.done.has(sid))_ci5Learn('stage')}catch(e){}return r},'_ci5')}}catch(e){}
+  ['_markSeenByScroll','_updateReadProgress','_markTopicConsumed'].forEach(function(nm){
+    try{var o=window[nm];if(typeof o!=='function'||o._ci5)return;window[nm]=_ci5Copy(o,function(){var n0=_ci5SeenN(),r=o.apply(this,arguments);try{var n1=_ci5SeenN();if(n1>n0&&G.v==='s')_ci5Learn('read')}catch(e){}return r},'_ci5')}catch(e){}
+  });
+  try{var o4=trackEvent;if(typeof o4==='function'&&!o4._ci5){trackEvent=_ci5Copy(o4,function(f,a){try{if(f==='duel'&&a==='solo_done')_ci5Learn('practice')}catch(e){}return o4.apply(this,arguments)},'_ci5')}}catch(e){}
+  try{var o6=mp;if(typeof o6==='function'&&!o6._ci5){mp=_ci5Copy(o6,function(){var arrive=false;try{arrive=G.v!=='m'}catch(e){}var r=o6.apply(this,arguments);if(arrive){try{_ci5Arrive()}catch(e){}}return r},'_ci5')}}catch(e){}
+  try{var o5=_w16b4Hero;if(typeof o5==='function'&&!o5._ci5){_w16b4Hero=_ci5Copy(o5,function(){var r=o5.apply(this,arguments);try{_ci5Hero()}catch(e){}return r},'_ci5')}}catch(e){}
+  try{if(typeof FEAT_ACT_NAMES==='object'&&FEAT_ACT_NAMES&&!FEAT_ACT_NAMES.microstep)FEAT_ACT_NAMES.microstep='הצעד הבא (חזרה ללמידה)'}catch(e){}
+})();
+/* ===== /W18 C1 CI-005 ===== */
+</script>
+<style id="ci7Css">
+/* ===== W18 C1 CI-007 first-week path (_ci7) ===== */
+#continue-hero .ci7-w{margin-top:12px;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--p) 24%,transparent)}
+#continue-hero .continue-hero.ci5-on .ci7-w,#continue-hero .continue-hero.ci9-on .ci7-w{display:none!important}
+#continue-hero .ci7-h{margin:0 0 8px;font-size:.84rem;font-weight:800;line-height:1.4;color:var(--t1);text-wrap:balance}
+#continue-hero .ci7-d{display:flex;gap:8px;margin:0;padding:0;list-style:none}
+#continue-hero .ci7-d li{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;gap:4px;min-height:32px;padding:0 4px;box-sizing:border-box;border-radius:999px;font-size:.8rem;font-weight:800;line-height:1.2;white-space:nowrap;color:var(--t2);border:1.5px dashed color-mix(in srgb,var(--t2) 50%,transparent)}
+#continue-hero .ci7-d li.on{color:#06281f;background:var(--a,#35C9A3);border:1.5px solid transparent}
+#continue-hero .ci7-d li.nx{color:var(--t1);border:1.5px solid var(--p,#8B85FF)}
+#continue-hero .ci7-s{margin:8px 0 0;font-size:.82rem;font-weight:600;line-height:1.45;color:var(--t2);text-wrap:balance}
+#continue-hero .ci7-s .ci7-a{display:block;color:var(--a,#35C9A3);font-weight:800}
+#continue-hero .ci7-s .ci7-b{display:block}
+#stageCerem .ci7-pl{margin:12px auto 0;max-width:30rem;text-align:center}
+/* the app's global p{direction:rtl} and #stageCerem{direction:rtl} would flip the English row ("?When…"): follow the row's own dir */
+#stageCerem .ci7-pl[dir="ltr"],#stageCerem .ci7-pl[dir="ltr"] *{direction:ltr}
+#stageCerem .ci7-pl[dir="rtl"],#stageCerem .ci7-pl[dir="rtl"] *{direction:rtl}
+#continue-hero .ci7-w[dir="ltr"] p{direction:ltr}
+#continue-hero .ci7-w[dir="rtl"] p{direction:rtl}
+#stageCerem .ci7-plh{margin:0 0 8px;font-size:.95rem;font-weight:800;line-height:1.4;color:var(--t1)}
+#stageCerem .ci7-plb{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+#stageCerem .ci7-plb button{min-height:44px;min-width:88px;padding:0 16px;border-radius:999px;border:1.5px solid color-mix(in srgb,var(--p,#8B85FF) 70%,transparent);background:color-mix(in srgb,var(--p,#8B85FF) 12%,transparent);color:var(--t1);font:inherit;font-weight:800;font-size:.92rem;cursor:pointer}
+#stageCerem .ci7-plb button:focus-visible{outline:2px solid var(--p,#8B85FF);outline-offset:2px}
+#stageCerem .ci7-plok{margin:0;font-size:.92rem;font-weight:800;line-height:1.4;color:var(--a,#35C9A3)}
+</style>
+<script>
+/* ===== W18 C1 CI-007 first-week path (_ci7) ===== */
+var _ci7={v:1,n:0,pl:0};
+var _CI7_SLOT={am:['בוקר','בבוקר','Morning','in the morning','morning'],noon:['צהריים','בצהריים','Afternoon','in the afternoon','afternoon'],pm:['ערב','בערב','Evening','in the evening','evening']};
+function _ci7En(){try{return typeof _enLang==='function'?!!_enLang():(G&&G.lang==='en')}catch(e){return false}}
+function _ci7L(he,en){return _ci7En()?en:he}
+function _ci7E(x){return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function _ci7On(){try{if(window.__pmCiAuto===1)return true;if(typeof _w9obAuto==='function')return !!_w9obAuto();return navigator.webdriver!==true}catch(e){return true}}
+function _ci7U(){try{return (G&&G.s&&G.userName&&G.userName!=='אנונימי')?String(G.userName):''}catch(e){return ''}}
+/* week 1 = local days F..F+6 from the first use; null outside it */
+function _ci7Win(){
+  try{var fu=parseInt(G.firstUse,10);if(!(fu>1.5e12))return null;var F=_ci5D(fu),T=_ci5D(Date.now());if(T<F||T>F+6)return null;
+    var days=_ci5Days().filter(function(d){return d>=F&&d<=F+6});return {F:F,T:T,days:days,n:days.length,today:days.indexOf(T)>=0}}catch(e){return null}
+}
+function _ci7Plan(){try{var p=G._ci7p;return (p&&p.u===_ci7U())?p:null}catch(e){return null}}
+function _ci7State(){
+  if(!_ci7On()||!_ci7U()||typeof _ci5Days!=='function')return null;
+  var w=_ci7Win();if(!w||w.n<1)return null;
+  if(w.n>=3&&w.days[2]!==w.T)return null;/* the 3rd day was before today: done */
+  return w;
+}
+function _ci7Line(w){
+  /* two short lines (the hero's text column is ~195 px on a phone): what today is · what comes next */
+  var p=_ci7Plan(),sl=(p&&p.slot&&_CI7_SLOT[p.slot])?_CI7_SLOT[p.slot]:null,en=_ci7En(),B=function(x){return '<bdi>'+x+'</bdi>'};
+  var L2=function(a,b){return '<span class="ci7-a">'+a+'</span> <span class="ci7-b">'+b+'</span>'};
+  if(w.n>=3)return L2(_ci7E(_ci7L('3 מתוך 3 ✓','3 of 3 ✓')),_ci7E(_ci7L('עברתם את השבוע הראשון','You made it through your first week')));
+  var d=w.n+1,last=(w.T>=w.F+6),ok=_ci7E(_ci7L('היום נספר ✓','Today counts ✓'));
+  if(w.today){
+    if(last)return ok;
+    if(sl)return L2(ok,en?_ci7E('Tomorrow '+sl[4]+' — day ')+B(d):_ci7E('מחר '+sl[1]+' — יום ')+B(d));
+    return L2(ok,en?_ci7E('See you tomorrow for day ')+B(d):_ci7E('נתראה מחר ליום ')+B(d));
+  }
+  if(sl&&p.at&&_ci5D(p.at)<w.T)return L2(en?_ci7E('You planned to learn '+sl[3]):_ci7E('קבעתם ללמוד '+sl[1]),en?_ci7E('Day ')+B(d)+_ci7E(': one short step and it counts'):_ci7E('יום ')+B(d)+_ci7E(': צעד קצר אחד וזה נספר'));
+  return en?(_ci7E('Day ')+B(d)+_ci7E(': one short step today and it counts')):(_ci7E('יום ')+B(d)+_ci7E(': צעד קצר אחד היום וזה נספר'));
+}
+function _ci7Html(w){
+  var en=_ci7En(),h='<p class="ci7-h">'+_ci7E(_ci7L('השבוע הראשון שלכם: 3 ימים קצרים','Your first week: 3 short days'))+'</p><ol class="ci7-d">',i;
+  for(i=1;i<=3;i++){var on=i<=w.n,nx=!on&&i===w.n+1;h+='<li class="'+(on?'on':(nx?'nx':''))+'">'+_ci7E(_ci7L('יום ','Day '))+'<bdi>'+i+'</bdi>'+(on?'<span aria-hidden="true"> ✓</span><span class="ci7-sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">'+_ci7E(_ci7L(' (הושלם)',' (done)'))+'</span>':'')+'</li>'}
+  return h+'</ol><p class="ci7-s">'+_ci7Line(w)+'</p>';
+}
+function _ci7Hero(){
+  try{
+    var el=document.getElementById('continue-hero');if(!el)return;var card=el.querySelector('.continue-hero');if(!card)return;
+    var box=card.querySelector('.ci7-w'),w=(card.classList.contains('ci5-on')||card.classList.contains('ci9-on'))?null:_ci7State();
+    var body=card.querySelector('.ch-body');
+    if(!w||!body){if(box)box.remove();card.removeAttribute('data-ci7');return}
+    if(!box){box=document.createElement('div');box.className='ci7-w'}
+    var hb=body.querySelector('.w16b4-hb');if(hb){if(box.nextSibling!==hb||box.parentNode!==body)body.insertBefore(box,hb)}else if(box.parentNode!==body||box.nextSibling)body.appendChild(box);
+    box.setAttribute('dir',_ci7En()?'ltr':'rtl');var h=_ci7Html(w);if(box._h!==h){box.innerHTML=h;box._h=h}
+    card.setAttribute('data-ci7',String(w.n));_ci7.n++;
+  }catch(e){}
+}
+/* a new learning day: the n-th one inside week 1 is counted once (ob/week1 day=n) */
+function _ci7Day(){
+  try{var w=_ci7Win();if(!w||!w.today||!_ci7U())return;var f=G._ci7f;if(!f||f.u!==_ci7U()){f={u:_ci7U(),n:0};G._ci7f=f}
+    if(w.n>(f.n|0)){f.n=w.n;try{trackEvent('ob','week1','day='+w.n)}catch(e){}try{sv()}catch(e){}}}catch(e){}
+}
+/* ---------- (2) the planning row in the stage-0 ceremony ---------- */
+function _ci7PlanNeed(sid){
+  try{if(sid!==0||!_ci7On()||!_ci7U())return false;var p=_ci7Plan();if(p&&p.asked)return false;
+    var fu=parseInt(G.firstUse,10);if(fu>1.5e12){var F=_ci5D(fu),T=_ci5D(Date.now());if(T>F+6)return false}
+    return true}catch(e){return false}
+}
+function _ci7PlanHtml(chosen){
+  var en=_ci7En();
+  if(chosen&&_CI7_SLOT[chosen]){var sl=_CI7_SLOT[chosen];return '<p class="ci7-plok" role="status">'+_ci7E(en?('✓ Saved: tomorrow '+sl[4]):('✓ נשמר: מחר '+sl[1]))+'</p>'}
+  var b='';['am','noon','pm'].forEach(function(k){b+='<button type="button" data-ci7p="'+k+'">'+_ci7E(en?_CI7_SLOT[k][2]:_CI7_SLOT[k][0])+'</button>'});
+  return '<p class="ci7-plh" id="ci7PlH">'+_ci7E(_ci7L('מתי תלמדו מחר?','When will you learn tomorrow?'))+'</p><div class="ci7-plb" role="group" aria-labelledby="ci7PlH">'+b+'</div>';
+}
+function _ci7PlanMount(sid){
+  try{
+    var ov=document.getElementById('stageCerem');if(!ov)return;
+    var row=ov.querySelector('.ci7-pl');
+    if(!row){
+      if(!_ci7PlanNeed(sid))return;
+      var cta=ov.querySelector('.cer-btns')||((ov.querySelector('.w7jc-cta')||{}).parentNode)||null;if(!cta||!cta.parentNode)return;
+      row=document.createElement('div');row.className='ci7-pl';row.setAttribute('dir',_ci7En()?'ltr':'rtl');row.innerHTML=_ci7PlanHtml(null);
+      row.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('[data-ci7p]'):null;if(!b)return;e.stopPropagation();_ci7PlanPick(b.getAttribute('data-ci7p'),row)});
+      cta.parentNode.insertBefore(row,cta);
+      var p=_ci7Plan();if(!p){p={u:_ci7U()};G._ci7p=p}p.asked=Date.now();try{sv()}catch(e){}
+      _ci7.pl++;
+      /* the dialog reveals its rows one by one (.cer-in>* until .on): this row follows its buttons */
+      var sync=function(){try{if(!cta.classList||cta.classList.contains('on')||!row.parentNode||!row.parentNode.classList||!row.parentNode.classList.contains('cer-in'))row.classList.add('on')}catch(e){}};sync();
+      if(!row.classList.contains('on')){try{var mo=new MutationObserver(function(){sync();if(row.classList.contains('on'))mo.disconnect()});mo.observe(cta,{attributes:true,attributeFilter:['class']});setTimeout(function(){try{mo.disconnect();row.classList.add('on')}catch(e){}},4000)}catch(e){row.classList.add('on')}}
+    }
+  }catch(e){}
+}
+function _ci7PlanPick(k,row){
+  try{if(!_CI7_SLOT[k])return;var p=_ci7Plan();if(!p){p={u:_ci7U(),asked:Date.now()};G._ci7p=p}p.slot=k;p.at=Date.now();try{sv()}catch(e){}
+    try{trackEvent('ob','plan','slot='+k)}catch(e){}
+    if(row){row.innerHTML=_ci7PlanHtml(k);row.setAttribute('data-ci7-slot',k)}
+    try{var c=document.querySelector('#stageCerem .w7jc-cta,#stageCerem .cer-btns .bp,#stageCerem .cer-btns .bs');if(c)c.focus({preventScroll:true})}catch(e){}
+  }catch(e){}
+}
+(function(){
+  try{if(typeof _ci5==='object'&&_ci5&&Array.isArray(_ci5.hooks))_ci5.hooks.push(function(kind,fresh){if(fresh)_ci7Day()})}catch(e){}
+  try{var o=_w16b4Hero;if(typeof o==='function'&&!o._ci7){var w=function(){var r=o.apply(this,arguments);try{_ci7Hero()}catch(e){}return r};for(var k in o){try{if(Object.prototype.hasOwnProperty.call(o,k)&&!(k in w))w[k]=o[k]}catch(e){}}w._ci7=1;_w16b4Hero=w}}catch(e){}
+  try{var c=showStageCeremony;if(typeof c==='function'&&!c._ci7){var wc=function(s,sid){var r=c.apply(this,arguments);var id=(typeof sid==='number')?sid:(s&&s.id);
+      if(id===0){try{_ci7PlanMount(0)}catch(e){}[0,300,900].forEach(function(ms){setTimeout(function(){try{_ci7PlanMount(0)}catch(e){}},ms)})}return r};
+    for(var k2 in c){try{if(Object.prototype.hasOwnProperty.call(c,k2)&&!(k2 in wc))wc[k2]=c[k2]}catch(e){}}wc._ci7=1;showStageCeremony=wc}}catch(e){}
+  try{var a=applyLanguage;if(typeof a==='function'&&!a._ci7){var wa=function(){var r=a.apply(this,arguments);try{var row=document.querySelector('#stageCerem .ci7-pl');if(row){row.setAttribute('dir',_ci7En()?'ltr':'rtl');row.innerHTML=_ci7PlanHtml(row.getAttribute('data-ci7-slot'))}}catch(e){}return r};for(var k3 in a){try{if(Object.prototype.hasOwnProperty.call(a,k3)&&!(k3 in wa))wa[k3]=a[k3]}catch(e){}}wa._ci7=1;applyLanguage=wa}}catch(e){}
+  try{if(typeof FEAT_ACT_NAMES==='object'&&FEAT_ACT_NAMES){if(!FEAT_ACT_NAMES.week1)FEAT_ACT_NAMES.week1='השבוע הראשון: יום למידה';if(!FEAT_ACT_NAMES.plan)FEAT_ACT_NAMES.plan='תכנון זמן הלמידה של מחר'}}catch(e){}
+})();
+/* ===== /W18 C1 CI-007 ===== */
+</script>
+<style id="ci9Css">
+/* ===== W18 C1 CI-009 graduation card (_ci9): a variant of the B4 hero ===== */
+#continue-hero .continue-hero.ci9-on{cursor:pointer!important;justify-content:flex-start!important;border-color:color-mix(in srgb,var(--g,#FFD166) 70%,transparent)!important;background:linear-gradient(135deg,rgba(255,209,102,.16),rgba(108,99,255,.12))!important;box-shadow:0 8px 28px rgba(255,209,102,.16)}
+#continue-hero .continue-hero.ci9-on>.ch-icon:not(.ci9-ic),#continue-hero .continue-hero.ci9-on .ch-body>:not(.ci9-x){display:none!important}
+#continue-hero .continue-hero.ci9-on .ch-body{text-align:start!important}
+#continue-hero.ci9-hero .w7ln-cm{display:none!important}
+#continue-hero .ci9-k{font-size:.8rem;font-weight:800;line-height:1.4;color:var(--a,#35C9A3);text-wrap:balance}
+#continue-hero .ci9-t{margin-top:2px;font-size:1.2rem;font-weight:800;line-height:1.3;color:var(--t1);text-wrap:balance}
+#continue-hero .ci9-s{margin-top:4px;font-size:.86rem;font-weight:600;line-height:1.45;color:var(--t2);text-wrap:pretty}
+#continue-hero .ci9-b{display:block;margin-top:12px;padding:.72rem 1rem;min-height:48px;box-sizing:border-box;border-radius:14px;text-align:center;font-weight:800;font-size:1rem;line-height:1.5;color:#2a1f00;background:linear-gradient(135deg,#FFE08A,#F2B53C);box-shadow:0 6px 18px rgba(242,181,60,.3)}
+#continue-hero .ci9-nw{white-space:nowrap}
+</style>
+<script>
+/* ===== W18 C1 CI-009 graduation card (_ci9) ===== */
+var _ci9={v:1,n:0,shown:{}};
+function _ci9En(){try{return typeof _enLang==='function'?!!_enLang():(G&&G.lang==='en')}catch(e){return false}}
+function _ci9L(he,en){return _ci9En()?en:he}
+function _ci9E(x){return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function _ci9On(){try{if(window.__pmCiAuto===1)return true;if(typeof _w9obAuto==='function')return !!_w9obAuto();return navigator.webdriver!==true}catch(e){return true}}
+function _ci9U(){try{return (G&&G.s&&G.userName&&G.userName!=='אנונימי')?String(G.userName):''}catch(e){return ''}}
+function _ci9Day(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+function _ci9Rec(){try{var r=G._ci9c;return (r&&r.u===_ci9U())?r:null}catch(e){return null}}
+/* (A) generateCert's issueCert answer (d = the reply, null = no network); again = it was the app's one retry */
+function _ci9Res(d,id,again){
+  try{
+    var u=_ci9U();if(!u)return;var ok=!!(d&&d.success===true),err=d?String(d.error||d.denied||'refused'):'network';
+    var retry=!again&&!!d&&d.success!==true&&(d.denied==='auth'||d.error==='incomplete');/* the app retries once, 9 s later */
+    G._ci9c={u:u,id:String(id||'').slice(0,24),ok:ok?1:0,err:ok?'':err.slice(0,24),at:Date.now(),fin:(ok||!retry)?1:0};
+    try{sv()}catch(e){}
+    try{trackEvent('ob','grad',ok?'act=issued':('act=refused,err='+err.replace(/[^A-Za-z0-9_-]/g,'').slice(0,16)+(again?',retry=1':'')))}catch(e){}
+    if(G.v==='m'){try{_w16b4Hero()}catch(e){}}
+  }catch(e){}
+}
+function _ci9Core(){try{return PM_IDS.length}catch(e){return 23}}
+/* (B) every core stage done and no certificate on record → why ('never' | 'refused'), else null */
+function _ci9Need(){
+  try{
+    if(!_ci9On()||!_ci9U()||!(G.done instanceof Set))return null;
+    if(typeof PM_IDS==='undefined'||!PM_IDS.length||!PM_IDS.every(function(i){return G.done.has(i)}))return null;
+    var r=_ci9Rec();
+    if(r&&r.ok===1)return null;
+    if(r&&r.ok===0&&r.fin)return 'refused';
+    if(!G._certIssued)return 'never';
+    return null;
+  }catch(e){return null}
+}
+function _ci9Off(el,card){
+  try{
+    if(el)el.classList.remove('ci9-hero');if(!card||!card.classList.contains('ci9-on'))return;
+    card.classList.remove('ci9-on');card.removeAttribute('data-ci9');
+    [].forEach.call(card.querySelectorAll('.ci9-ic,.ci9-x'),function(n){n.remove()});
+    if((card.getAttribute('onclick')||'').indexOf('_ci9Go(')===0)card.setAttribute('onclick',card._ci9oc||'mp()');card._ci9oc=null;
+  }catch(e){}
+}
+function _ci9Hero(){
+  try{
+    var el=document.getElementById('continue-hero');if(!el)return;var card=el.querySelector('.continue-hero');if(!card){el.classList.remove('ci9-hero');return}
+    var why=_ci9Need(),body=card.querySelector('.ch-body');
+    if(!why||!body){_ci9Off(el,card);return}
+    var en=_ci9En(),n=_ci9Core();
+    var h='<div class="ci9-k">'+_ci9E(en?('All '+n+' core stages done ✓'):('סיימתם את כל '+n+' שלבי הליבה ✓'))+'</div>'
+      +'<div class="ci9-t">'+_ci9E(_ci9L('התעודה שלכם מוכנה','Your certificate is ready'))+'</div>'
+      +'<div class="ci9-s">'+_ci9E(why==='refused'?_ci9L('בפעם הקודמת היא לא נרשמה אצלנו — פתחו אותה שוב כדי לרשום אותה',"Last time it wasn't recorded on our side — open it again to record it"):_ci9L('תעודת השלמה עם קישור אימות, על שמכם','A certificate of completion with a verification link, in your name'))+'</div>'
+      +'<span class="ci9-b" aria-hidden="true">'+_ci9E(_ci9L('לקבל את התעודה ←','Get my certificate →'))+'</span>';
+    var x=body.querySelector('.ci9-x');if(!x){x=document.createElement('div');x.className='ci9-x';body.appendChild(x)}
+    x.setAttribute('dir',en?'ltr':'rtl');if(x._h!==h){x.innerHTML=h;x._h=h}
+    var ic=card.querySelector('.ci9-ic');if(!ic){ic=document.createElement('div');ic.className='ch-icon ci9-ic';ic.setAttribute('aria-hidden','true');ic.textContent='🎓';card.insertBefore(ic,card.firstChild)}
+    var oc=card.getAttribute('onclick')||'';if(oc.indexOf('_ci9Go(')!==0){card._ci9oc=oc;card.setAttribute('onclick','_ci9Go()')}
+    card.classList.add('ci9-on');card.setAttribute('data-ci9',why);el.classList.add('ci9-hero');
+    var dk=_ci9U()+'|'+_ci9Day();if(!_ci9.shown[dk]){_ci9.shown[dk]=1;try{trackEvent('ob','grad','act=show,why='+why)}catch(e){}}
+    _ci9.n++;
+  }catch(e){}
+}
+/* the first map arrival of this page load that shows the graduation card: the map stays at its top (W9's hold, as CI-005) */
+function _ci9Arrive(){try{if(_ci9.held)return;var c=document.querySelector('#continue-hero .continue-hero.ci9-on');if(!c)return;_ci9.held=1;if(typeof _w9obHoldScroll==='function')_w9obHoldScroll();window.scrollTo(0,0)}catch(e){}}
+function _ci9Go(){
+  try{trackEvent('ob','grad','act=go,why='+(_ci9Need()||'-'))}catch(e){}
+  try{generateCert()}catch(e){}
+  setTimeout(function(){try{if(G.v==='m')_w16b4Hero()}catch(e){}},0);
+}
+(function(){
+  try{var o=_w16b4Hero;if(typeof o==='function'&&!o._ci9){var w=function(){var r=o.apply(this,arguments);try{_ci9Hero()}catch(e){}return r};for(var k in o){try{if(Object.prototype.hasOwnProperty.call(o,k)&&!(k in w))w[k]=o[k]}catch(e){}}w._ci9=1;_w16b4Hero=w}}catch(e){}
+  try{var m=mp;if(typeof m==='function'&&!m._ci9){var wm=function(){var arrive=false;try{arrive=G.v!=='m'}catch(e){}var r=m.apply(this,arguments);if(arrive){try{_ci9Arrive()}catch(e){}}return r};for(var k2 in m){try{if(Object.prototype.hasOwnProperty.call(m,k2)&&!(k2 in wm))wm[k2]=m[k2]}catch(e){}}wm._ci9=1;mp=wm}}catch(e){}
+  try{if(typeof FEAT_ACT_NAMES==='object'&&FEAT_ACT_NAMES&&!FEAT_ACT_NAMES.grad)FEAT_ACT_NAMES.grad='כרטיס התעודה (סיום הקורס)'}catch(e){}
+})();
+/* ===== /W18 C1 CI-009 ===== */
+</script>
+<style id="g1kpiCss">
+/* ===== W18 G1 CI-012 churn KPIs (_g1k) ===== */
+#g1kpi .g1k-h4{font-size:.8rem;font-weight:700;color:var(--t2);margin:.1rem 0 .45rem}
+#g1kpi .g1k-rem{display:flex;flex-wrap:wrap;gap:.4rem;margin:0;padding:0;list-style:none}
+#g1kpi .g1k-rem li{background:var(--cardh);border:1px solid var(--line);border-radius:10px;padding:.35rem .6rem;font-size:.78rem;color:var(--t1);min-width:0;line-height:1.4}
+#g1kpi .g1k-rem li b{font-weight:800}
+#g1kpi .g1k-rem .g1k-n,#g1kpi .w8ad-ks .g1k-n{color:var(--t2);font-weight:600}
+#g1kpi .g1k-foot{font-size:.72rem;color:var(--t2);margin:.75rem 0 0;line-height:1.5}
+#g1kpi .w8ad-kpi{cursor:default}
+#g1kpi .w8ad-ks{overflow-wrap:anywhere}
+</style>
+<script id="g1kpiJs">
+/* ===== W18 G1 CI-012 churn KPIs (_g1k) ===== */
+function _g1kEn(){try{if(typeof _w10adEn==='function')return !!_w10adEn()}catch(e){}try{return !!(G&&G.lang==='en')}catch(e){return false}}
+function _g1kE(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function _g1kI(v){v=Number(v);return isFinite(v)&&v>=0?Math.round(v):0}
+function _g1kData(){try{var A=(typeof _admAnalytics!=='undefined'&&_admAnalytics&&typeof _admAnalytics==='object')?_admAnalytics:null,K=A?A.ci12:null;
+  return (K&&typeof K==='object'&&K.v===1&&Object.prototype.toString.call(K.act7)==='[object Array]')?K:null}catch(e){return null}}
+/* [k, n, unknown] → '73%' + the k/n beside it (n = 0 → '—') */
+function _g1kPct(a){var k=_g1kI(a&&a[0]),n=_g1kI(a&&a[1]);return n?Math.round(100*k/n)+'%':'—'}
+function _g1kKN(a){return '<bdi dir="ltr">'+_g1kI(a&&a[0])+'/'+_g1kI(a&&a[1])+'</bdi>'}
+function _g1kHtml(K,en){
+  var T=function(he,x){return en?x:he},x=K.x&&typeof K.x==='object'?K.x:null;
+  var sub=function(id,a,xa,coast){var s=[];
+    if(xa)s.push(T('בלי הלומד הפעיל ביותר: ','Without the most active learner: ')+'<b>'+(coast?_g1kI(xa[0]):'<bdi dir="ltr">'+_g1kPct(xa)+'</bdi>')+'</b> <span class="g1k-n">'+(coast?T('מתוך ','of ')+_g1kI(xa[1]):_g1kKN(xa))+'</span>');
+    if(_g1kI(a&&a[2]))s.push(T('לא ידוע: ','Unknown: ')+_g1kI(a[2]));
+    return s.join(' · ')};
+  var card=function(id,label,tip,a,coast){var xa=x?x[id]:null;
+    return '<div class="w8ad-kpi" data-g1k="'+id+'" title="'+_g1kE(tip)+'"><p class="w8ad-kl">'+_g1kE(label)+'</p>'
+      +'<div class="w8ad-kv">'+(coast?'<bdi dir="ltr">'+_g1kI(a&&a[0])+'</bdi><span class="w8ad-ku">'+T('מתוך ','of ')+_g1kI(a&&a[1])+'</span>':'<bdi dir="ltr">'+_g1kPct(a)+'</bdi><span class="w8ad-ku">'+_g1kKN(a)+'</span>')+'</div>'
+      +'<div class="w8ad-ks">'+sub(id,a,xa,coast)+'</div></div>'};
+  var h='<div class="w8ad-hd"><h3 class="w8ad-h" id="g1kpiH">'+T('מדדי נטישה','Churn KPIs')+'</h3><span class="w8ad-sub">'
+    +T('לומדים מאושרים, בלי חשבונות הניהול · ','Approved learners, admin accounts excluded · ')+'<bdi dir="ltr">'+_g1kI(K.n)+'</bdi>'+T(' לומדים',' learners')+'</span></div>';
+  h+='<div class="w8ad-kpis">'
+    +card('act7',T('פעילות תוך 7 ימים','Active within 7 days'),T('לומדים שהייתה להם פעילות בשבוע שאחרי מייל האישור','Learners with any activity in the week after the approval mail'),K.act7)
+    +card('s0in7',T('שלב 0 תוך 7 ימים','Stage 0 within 7 days'),T('לומדים שסיימו את שלב 0 בשבוע שאחרי מייל האישור','Learners who finished stage 0 in the week after the approval mail'),K.s0in7)
+    +card('wk1',T('3 ימי פעילות ומעלה בשבוע הראשון','Week 1: 3+ active days'),T('3 ימים שונים או יותר עם פעילות ב-7 הימים מהכניסה הראשונה','3 or more different days with activity in the 7 days from the first sign-in'),K.wk1)
+    +card('coast',T('נכנסים בלי ללמוד','Coasting'),T('באמצע הקורס (4–22 שלבי ליבה), נכנסו ב-30 הימים האחרונים, בלי פעולת למידה 14 ימים או יותר','Mid-course (4–22 core stages), opened the app in the last 30 days, no learning action for 14+ days'),K.coast,true)
+    +'</div>';
+  var S=(K.rem&&K.rem.s&&typeof K.rem.s==='object')?K.rem.s:{},XS=(x&&x.rem&&x.rem.s)?x.rem.s:null,ks=Object.keys(S).filter(function(k){return /^\d+$/.test(k)}).sort(function(a,b){return a-b});
+  h+='<p class="g1k-h4">'+T('חזרה תוך 48 שעות לפי מספר התזכורת · ','48-hour return by reminder number · ')+T('<bdi dir="ltr">'+_g1kI(K.rem&&K.rem.w||28)+'</bdi> הימים האחרונים','last <bdi dir="ltr">'+_g1kI(K.rem&&K.rem.w||28)+'</bdi> days')+'</p>';
+  if(!ks.length)h+='<p class="g1k-foot" style="margin-top:0">'+T('אין תזכורות בחלון הזה.','No reminders in this window.')+'</p>';
+  else{h+='<ul class="g1k-rem">';ks.forEach(function(k){var a=S[k];h+='<li data-g1k-seq="'+_g1kE(k)+'">'+(k==='0'?T('תזכורת הפעלה','Activation nudge'):T('תזכורת ','Reminder ')+'<bdi dir="ltr">'+_g1kI(k)+'</bdi>')+': <b><bdi dir="ltr">'+_g1kPct(a)+'</bdi></b> <span class="g1k-n">'+_g1kKN(a)+'</span></li>'});h+='</ul>'}
+  h+='<p class="g1k-foot">'+T('פעילים ב-7 הימים האחרונים: ','Active in the last 7 days: ')+'<b><bdi dir="ltr">'+_g1kI(K.wau)+'</bdi></b>'+(x?' · '+T('בלי הלומד הפעיל ביותר: ','without the most active learner: ')+'<b><bdi dir="ltr">'+_g1kI(K.wauX)+'</bdi></b>':'')
+    +'<br>'+T('״לא ידוע״: יומן הפעילות השמור לא מספיק כדי לקבוע, ולכן הם לא נספרים באחוזים. הנתונים מתעדכנים עד 5 דקות.','"Unknown": the stored activity log cannot tell, so they are not counted in the percentages. Updates within 5 minutes.')+'</p>';
+  return h}
+function _g1kMount(){
+  var old=document.getElementById('g1kpi'),K=_g1kData(),w8=document.getElementById('w8adRoot'),host=document.getElementById('w11amMp-fun');
+  if(!K||(!w8&&!host)){if(old&&old.parentNode)old.parentNode.removeChild(old);return}
+  var en=_g1kEn(),el=old||document.createElement('section');
+  el.id='g1kpi';el.className='w8ad g1k'+(en?' w8ad-ltr':'');el.setAttribute('dir',en?'ltr':'rtl');el.setAttribute('lang',en?'en':'he');el.setAttribute('aria-labelledby','g1kpiH');
+  el.innerHTML=_g1kHtml(K,en);
+  if(w8&&w8.parentNode){if(w8.nextElementSibling!==el)w8.insertAdjacentElement('afterend',el)}else if(el.parentNode!==host)host.appendChild(el);
+}
+(function(){
+  try{var o=renderAdminDashboard;if(typeof o==='function'&&!o._g1k){renderAdminDashboard=function(){var x=o.apply(this,arguments);try{_g1kMount()}catch(e){}return x};for(var k in o){try{renderAdminDashboard[k]=o[k]}catch(e){}}renderAdminDashboard._g1k=1}}catch(e){}
+  try{var a=applyLanguage;if(typeof a==='function'&&!a._g1k){applyLanguage=function(){var r=a.apply(this,arguments);try{if(document.getElementById('g1kpi'))_g1kMount()}catch(e){}return r};for(var k2 in a){try{applyLanguage[k2]=a[k2]}catch(e){}}applyLanguage._g1k=1}}catch(e){}
+})();
+/* ===== /W18 G1 CI-012 ===== */
+</script>
+<script id="w18intObEn">
+/* ===== W18 INT 1.10.34 · OBEN: the admin English name of C1's feature "ob" (FEAT_META.ob is Hebrew only) ===== */
+try{if(typeof _W8AD_FEN==='object'&&_W8AD_FEN&&!_W8AD_FEN.ob)_W8AD_FEN.ob='Onboarding & retention path (C1)'}catch(e){}
+try{if(typeof _W13MP_FN==='object'&&_W13MP_FN&&!_W13MP_FN.ob)_W13MP_FN.ob=['🧭','מסלול התחלה ושימור','Onboarding & retention path']}catch(e){}
+</script>
+<script id="w18intC2En">
+/* ===== W18 INT 1.10.34 · C2EN: C2's Hebrew toasts/notes in UI_EN so the English layer can re-translate them after a language switch ===== */
+try{if(typeof UI_EN!=='undefined'){var _w18iC2={
+'בונוס הבוקר מחכה: ענו על שאלה אחת כדי לאסוף +10':'Your morning bonus is waiting: answer one question to collect +10',
+'בונוס הלילה מחכה: ענו על שאלה אחת כדי לאסוף +10':'Your night bonus is waiting: answer one question to collect +10',
+'בוקר טוב!':'Good morning!',
+'לילה טוב!':'Good evening!',
+'+10 נק׳ · על הצעד הראשון הבוקר':'+10 pts · for your first step this morning',
+'+10 נק׳ · על הצעד הראשון הלילה':'+10 pts · for your first step tonight',
+'ברוכים השבים! +50 נק׳':'Welcome back! +50 pts',
+'נקודות מלמידה שנצברו מיום ראשון ועד מוצאי שבת.':'Points from learning, earned since Sunday, through Saturday night.',
+'סבב אימון לא מזכה בנקודות, אבל נספר לרצף ולמשימות.':"Practice rounds don't earn points, but they count for your streak and quests."};
+if(typeof _CI6_ANN!=='undefined'&&_CI6_ANN&&_CI6_ANN[0]&&_CI6_ANN[1])_w18iC2[_CI6_ANN[0]]=_CI6_ANN[1];
+for(var _k in _w18iC2){if(UI_EN[_k]==null)UI_EN[_k]=_w18iC2[_k]}}}catch(e){}
 </script>
 </body>
 </html>
