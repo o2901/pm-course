@@ -2,6 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<script id="fl41c0Js">/* FL41 C0 (prod hotfix, _w19/flick41): a cold first session switches to the learner's assigned map in-session. Kill: marker below {c:0} (apply --kill), window._FL41={c:0} before load, or ?flick=0. */(function(W){var F=/*FL41C0*/{c:1}/*/FL41C0*/;try{var o=W._FL41;if(o&&typeof o==='object'&&Object.prototype.hasOwnProperty.call(o,'c'))F.c=o.c?1:0}catch(e){}try{if(/[?&]flick=0(&|$)/.test(String(location.search||'')))F.c=0}catch(e){}W._FL41=F})(window);</script><style id="fl41c0Css">/* FL41 C0: map placeholder (themed, no art of its own) + a one-time fade-in */html.fl41-mh.pmm-on #pmmMap>*,html.fl41-mh:not(.pmm-on) #mv #sg>*{visibility:hidden!important}html.fl41-mh.pmm-on #pmmMap,html.fl41-mh:not(.pmm-on) #mv #sg{min-height:62vh;border-radius:22px;background:radial-gradient(90% 55% at 50% 30%,color-mix(in srgb,var(--p,#8B85FF) 34%,transparent),transparent 72%),radial-gradient(70% 40% at 50% 92%,color-mix(in srgb,var(--p,#8B85FF) 18%,transparent),transparent 70%),linear-gradient(180deg,var(--card,#171A26),var(--bg,#101218));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--p,#8B85FF) 22%,transparent);animation:fl41Pulse 1.6s ease-in-out infinite alternate}@keyframes fl41Pulse{from{opacity:.75}to{opacity:1}}#pmmMap.fl41-in{animation:fl41In .3s ease-out both}@keyframes fl41In{from{opacity:0}to{opacity:1}}@media (prefers-reduced-motion:reduce){html.fl41-mh.pmm-on #pmmMap,html.fl41-mh:not(.pmm-on) #mv #sg,#pmmMap.fl41-in{animation:none}}</style>
 <!-- LAND42 (entering the app lands on the map, _w19/land42) -->
 <script id="land42Js">/* LAND42: the W10 router (_w10nvStart) re-opened the last screen it found in this tab's history (history.state / #/hash).
    A learner who was on the Profile when the tab reloaded or was restored therefore entered the app on the Profile.
@@ -20993,7 +20994,7 @@ const DB_URL=_isLocalDev?'':(_DB_BASE+'?src='+_envSrc);
 //   • MAJOR (first)  - a huge change / redesign.
 // _checkForNewVersion() re-fetches the deployed file and compares its APP_VERSION to ours via
 // cmpVersion() (segment-wise numeric compare), so clients on an older build get the refresh prompt.
-const APP_VERSION='1.10.41';
+const APP_VERSION='1.10.41.1';
 // === Staging banner: renders ONLY on a Vercel preview host; never on production or localhost ===
 function _mountStagingBadge(){
   if(!_isStaging||document.getElementById('stagingBadge'))return;
@@ -53710,7 +53711,7 @@ function urlStyle(){try{var m=/[?&]m2=(a|b|c|d|classic)(?:&|#|$)/i.exec(location
 function prev(){var o=rd(KP);if(!o||!val(o.s))return '';var u=uname();return (!u||!o.u||o.u===u)?val(o.s):''}
 function xk(s){return 'pm_m2'+s+'_ok'}
 function xOk(s){var o=rd(xk(s));return !!(o&&o.r===ADD[s].rev)}
-function can(s){s=norm(s);return s?(!ADD[s]||xOk(s)):false}
+var C0=!!(window._FL41&&window._FL41.c);/*FL41 C0*/function xBad(s){var o=rd(xk(s));return !!(o&&o.r==='x'&&Date.now()-(+o.t||0)<864e5)}function can(s){s=norm(s);return s?(!ADD[s]||xOk(s)||(C0&&M2B.c0any===1&&!xBad(s))):false}function flH(on,why){/*FL41 C0: the map region waits behind a themed placeholder; released with a short fade*/try{var h=document.documentElement,c=h.classList;if(on){if(!c.contains('fl41-mh')){c.add('fl41-mh');M2B.fl={t:Math.round(performance.now()),why:why}}flT();return}if(!c.contains('fl41-mh'))return;c.remove('fl41-mh');if(M2B.flT){clearTimeout(M2B.flT);M2B.flT=0}if(M2B.fl){M2B.fl.rel=why;M2B.fl.r=Math.round(performance.now())}var pm=document.getElementById('pmmMap'),mv=document.getElementById('mv');if(pm&&mv&&!mv.classList.contains('hid')){pm.classList.remove('fl41-in');void pm.offsetWidth;pm.classList.add('fl41-in')}}catch(e){}}function flT(){/*FL41 C0: never held longer than 3.5 s once the map is on screen*/try{if(M2B.flT||!document.documentElement.classList.contains('fl41-mh'))return;var m=document.getElementById('mv');if(!m||m.classList.contains('hid'))return;M2B.flT=setTimeout(function(){M2B.flT=0;flH(0,'timeout')},3500)}catch(e){}}function c0go(r){/*FL41 C0: the learner already touched / scrolled the map on screen: never switch under their finger, switch the next time the map view opens*/if(!mvHidden()&&M2B.uix){M2B.c0p=r;try{trackEvent('map2','c0_wait',r[0])}catch(e){}return}late(r)}try{['pointerdown','touchstart','wheel','keydown'].forEach(function(t){document.addEventListener(t,function(){try{if(C0&&M2B.late&&!M2B.c0done&&!mvHidden())M2B.uix=Date.now()}catch(e){}},{capture:true,passive:true})})}catch(e){}function flAsk(){try{return typeof DB_URL!=='undefined'&&!!DB_URL&&!urlStyle()}catch(e){return false}}function late(nr){/*FL41 C0: switch this session to the assigned Map 2.0 style, once*/try{var P=window._PMM;if(!P||typeof P!=='object'){flH(0,'nopmm');return}M2B.late=2;M2B.lt=Date.now();M2B.cur=nr[0];M2B.src=nr[1];M2B.rot=nr[2]||null;flags(P,true);window.__M2=nr[0].toUpperCase();window.__M2BASE=base();window.__M2LOW=lowPower();if(ADD[nr[0]])window[xvar(nr[0])]=xbase(nr[0]);try{if(navigator.connection&&navigator.connection.saveData)window.__M2NOART=true}catch(e){}wr(KL,{s:nr[0],u:uname(),t:Date.now()});if(mvHidden())flH(1,'late');try{trackEvent('map2','c0',nr[0]+'/'+nr[1])}catch(e){}arm();load()}catch(e){flH(0,'late-err')}}
 function srv(){var o=rd(KG);var s=o?norm(o.s):'';return can(s)?s:''}
 function rule(){var r=rd(KR);if(!r||typeof r!=='object')return null;var u=uname();if(u&&r.un&&r.un!==u)return {g:r.g,n:'all',u:'',navy:false};return r}
 function lvl(v,skip){v=val(v);if(!v)return null;var ok=function(s){return s!==skip&&can(s)},r=rparse(v);if(r){var s=rpick(v,ok,Date.now());return s?[s,r.p]:null}return ok(v)?[v,null]:null}
@@ -53724,7 +53725,7 @@ function lowPower(){try{if(matchMedia('(prefers-reduced-motion: reduce)').matche
 function flags(P,on){P.tr=P.st=P.gm=P.cl=on?1:0}
 window._m2Pre=function(P){try{var r=M2B.resolve();M2B.cur=r[0];M2B.src=r[1];M2B.rot=r[2]||null;
 try{var last=rd(KL),u=uname();if(M2B.rot&&r[1]!=='url'&&last&&last.s&&last.s!==r[0]&&(!last.u||!u||last.u===u))M2B.note=[r[0],M2B.rot];if(r[1]!=='url')wr(KL,{s:r[0],u:u,t:Date.now()})}catch(e){}
-if(r[0]==='classic')return;
+if(r[0]==='classic'){if(C0&&r[1]==='default'&&!rd(KR)&&uname()&&flAsk())flH(1,'cold');return}
 flags(P,true);window.__M2=r[0].toUpperCase();window.__M2BASE=base();window.__M2LOW=lowPower();
 if(ADD[r[0]])window[xvar(r[0])]=xbase(r[0]);
 try{if(navigator.connection&&navigator.connection.saveData)window.__M2NOART=true}catch(e){}
@@ -53732,7 +53733,7 @@ setTimeout(arm,0);
 }catch(e){}};
 function addCss(h){var l=document.createElement('link');l.rel='stylesheet';l.href=h;document.head.appendChild(l)}
 function addJs(h,ok,bad){var s=document.createElement('script');s.src=h;s.async=false;s.onload=ok;s.onerror=bad;document.head.appendChild(s);return s}
-function go(){try{window.__M2T=performance.now();_pmmS.sig='';_pmmRender(true);_pmmCenter()}catch(e){}}
+function go(){try{window.__M2T=performance.now();_pmmS.sig='';var c0k=C0&&M2B.late===2&&!M2B.c0done&&M2B.uix>(M2B.lt||0),c0y=pageYOffset,c0f=document.getElementById('pmmFrame'),c0t=c0f?c0f.scrollTop:0;_pmmRender(true);if(c0k){/*FL41 C0: the learner scrolled meanwhile: keep their place, no jump to here*/window.scrollTo(0,c0y);c0f=document.getElementById('pmmFrame');if(c0f)c0f.scrollTop=c0t}else _pmmCenter()}catch(e){}if(C0){var hd=document.documentElement.classList.contains('fl41-mh');flH(0,'ready');if(M2B.late===2)M2B.c0done=1;if(!hd&&M2B.late===2&&!M2B.xfd&&!mvHidden()){M2B.xfd=1;try{var pm=document.getElementById('pmmMap');if(pm){pm.classList.remove('fl41-in');void pm.offsetWidth;pm.classList.add('fl41-in')}}catch(e){}}}}
 function xFail(s){wr(xk(s),{r:'x',t:Date.now()});M2B.x[s]=3;if(M2B.note&&M2B.note[0]===s)M2B.note=null;try{var r=M2B.resolve(s),d=(r[0]==='a'||r[0]==='b')?r[0]:'a';_M2.dir=d.toUpperCase();window.__M2=_M2.dir;M2B.cur=d;M2B.src+='/'+s+'fail';wr(KL,{s:d,u:uname(),t:Date.now()})}catch(e){}}
 function load(){if(M2B.st)return;M2B.st=1;var b=window.__M2BASE||base(),q='',x=ADD[M2B.cur]?M2B.cur:'',xb=x?(window[xvar(x)]||xbase(x)):'';try{q=typeof APP_VERSION!=='undefined'?'?v='+encodeURIComponent(APP_VERSION):''}catch(e){}
 addCss(b+'m2.css'+q);if(x)addCss(xb+ADD[x].f+'.css'+q);/*m2ab*/var wantAB=(M2B.cur==='a'||M2B.cur==='b')&&!window.__M2ABOFF;if(wantAB){window.__M2ABBASE=window.__M2ABBASE||abbase();M2B.abst=1;addCss(window.__M2ABBASE+'m2ab.css'+q)}/*/m2ab*/
@@ -53743,10 +53744,10 @@ function arm(){if(M2B.armed)return;M2B.armed=1;
 try{if(typeof _pmmRender==='function'){var o=_pmmRender;_pmmRender=function(f){var r=o.apply(this,arguments);try{if(!M2B.st&&document.querySelector('#pmmMap .pmm-world'))soon();seen()}catch(e){}return r}}}catch(e){}
 try{if(document.querySelector('#pmmMap .pmm-world'))soon()}catch(e){}}
 function probeX(s,force){if(M2B.probe[s]||xOk(s))return;var o=rd(xk(s));if(!force&&o&&o.r==='x'&&Date.now()-(+o.t||0)<864e5)return;M2B.probe[s]=1;
-var run=function(){var n=0,bad=false,xb=xbase(s),a=ADD[s],fin=function(ok){if(!ok)bad=true;if(++n<2)return;wr(xk(s),bad?{r:'x',t:Date.now()}:{r:a.rev,t:Date.now()});M2B.probe[s]=bad?2:3;try{trackEvent('map2',s+'_probe',bad?'fail':'ok')}catch(e){}if(document.getElementById('m2Adm'))paint()};
+var run=function(){var n=0,bad=false,xb=xbase(s),a=ADD[s],fin=function(ok){if(!ok)bad=true;if(++n<2)return;wr(xk(s),bad?{r:'x',t:Date.now()}:{r:a.rev,t:Date.now()});M2B.probe[s]=bad?2:3;try{trackEvent('map2',s+'_probe',bad?'fail':'ok')}catch(e){}if(C0&&M2B.c0w===s){M2B.c0w='';if(bad)flH(0,'c0-fail');else{var r2=M2B.resolve();if(M2B.late===1&&r2[0]!=='classic'&&r2[1]!=='url'&&r2[1]!=='preview')c0go(r2);else flH(0,'c0-'+r2[0])}}if(document.getElementById('m2Adm'))paint()};
 var im=new Image();im.onload=function(){fin(im.naturalWidth>0)};im.onerror=function(){fin(false)};im.src=xb+a.img;
 if(typeof window[a.fn]==='function')fin(true);else addJs(xb+a.f+'.js',function(){fin(typeof window[a.fn]==='function')},function(){fin(false)})};
-if(force)run();else if(window.requestIdleCallback)requestIdleCallback(run,{timeout:4000});else setTimeout(run,2500)}
+if(force||(C0&&M2B.c0now===1))run();else if(window.requestIdleCallback)requestIdleCallback(run,{timeout:4000});else setTimeout(run,2500)}
 function probe(){var r=rule();if(!r)return;var want={},add=function(v){v=val(v);if(!v)return;var p=rparse(v);(p?p.l:[v]).forEach(function(s){want[s]=1})};
 add(r.u);if(r.navy===true&&String(r.n)!=='all')add(r.n==null||r.n===''?'c':r.n);add(r.g);
 Object.keys(ADD).forEach(function(s){if(want[s])probeX(s,false)})}
@@ -53764,8 +53765,8 @@ function onReply(d){try{if(!d||typeof d!=='object')return;seen();var x=d.data&&t
 if(d.success===true&&x){var mr=x.mapRule;if(mr&&typeof mr==='object')wr(KR,{g:val(mr.g)||'classic',n:String(mr.n)==='all'?'all':(val(mr.n)||'c'),u:val(mr.u),navy:mr.navy===true||String(mr.navy)==='true',un:uname(),t:Date.now()});else if(rd(KR))wr(KR,null)}
 var v=d.mapStyle;if((v==null||v==='')&&x)v=x.mapStyle;v=norm(v);
 if(v){M2B.srv=v;var o=rd(KG);if(!o||o.s!==v)wr(KG,{s:v,t:Date.now()});var p=rd(KP);if(p&&norm(p.s)===v)wr(KP,null)}
-probe();
-var nr=M2B.resolve();if((M2B.src==='server'||M2B.src==='default'||M2B.src==='navy'||M2B.src==='user')&&nr[0]!==M2B.cur&&nr[0]!=='classic'&&M2B.cur!=='classic'){M2B.pend=nr[0];M2B.src=nr[1];M2B.rot=nr[2]||null;tryPend()}
+var c0=C0&&M2B.cur==='classic'&&M2B.src==='default'&&!M2B.late;if(c0)M2B.c0now=1;probe();M2B.c0now=0;
+var nr=M2B.resolve();if(c0){M2B.late=1;if(nr[0]!=='classic'&&nr[1]!=='url'&&nr[1]!=='preview')c0go(nr);else{M2B.c0any=1;var w0=M2B.resolve();M2B.c0any=0;if(w0[0]!=='classic'&&ADD[w0[0]]&&w0[1]!=='url'&&w0[1]!=='preview'&&M2B.probe[w0[0]]===1){M2B.c0w=w0[0];if(mvHidden())flH(1,'c0')}else flH(0,'cold-'+nr[0])}}if((M2B.src==='server'||M2B.src==='default'||M2B.src==='navy'||M2B.src==='user')&&nr[0]!==M2B.cur&&nr[0]!=='classic'&&M2B.cur!=='classic'){M2B.pend=nr[0];M2B.src=nr[1];M2B.rot=nr[2]||null;tryPend()}
 if(document.getElementById('m2Adm'))paint();
 }catch(e){}}
 try{var f0=window.fetch;if(typeof f0==='function'&&!f0._m2b){var fw=function(u,o){var pr=f0.apply(this,arguments);
@@ -53773,7 +53774,7 @@ try{var bd=o&&o.body;if(typeof bd==='string'&&bd.indexOf('{"action":"load"')===0
 return pr};
 for(var k in f0){try{if(Object.prototype.hasOwnProperty.call(f0,k)&&!(k in fw))fw[k]=f0[k]}catch(e){}}fw._m2b=1;window.fetch=fw}}catch(e){}
 try{document.addEventListener('visibilitychange',tryPend)}catch(e){}
-try{var mo=new MutationObserver(function(){if(M2B.pend)tryPend();if(M2B.note)note()});var mvE=function(){var m=document.getElementById('mv');if(m){mo.observe(m,{attributes:true,attributeFilter:['class']});setTimeout(note,2500)}else setTimeout(mvE,500)};setTimeout(mvE,0)}catch(e){}
+try{var mo=new MutationObserver(function(){if(C0){flT();if(mvHidden()){M2B.uix=0;if(M2B.c0p){var c0q=M2B.c0p;M2B.c0p=null;late(c0q)}}}if(M2B.pend)tryPend();if(M2B.note)note()});var mvE=function(){var m=document.getElementById('mv');if(m){mo.observe(m,{attributes:true,attributeFilter:['class']});setTimeout(note,2500)}else setTimeout(mvE,500)};setTimeout(mvE,0)}catch(e){}
 (function(){var F=['','מפה 2.0 (סגנון המפה)','Map 2.0 (map style)','#E8C45C'],A={style:['סגנון המפה שהוצג','map style shown'],admin_set:['מנהל: סגנון מפה נשמר בשרת','admin: map style saved on the server'],
 admin_preview:['מנהל: תצוגה מקדימה במכשיר','admin: preview on this device'],admin_clear:['מנהל: תצוגה מקדימה בוטלה','admin: preview cleared'],admin_show:['מנהל: הצג עכשיו','admin: show now'],
 admin_navy:['מנהל: מפה ללומדי זרוע הים נשמרה','admin: map for navy learners saved'],admin_user:['מנהל: מפה אישית ללומד נשמרה','admin: a learner\'s own map saved'],c_probe:['בדיקת המפה הימית במכשיר','sea map check on the device'],d_probe:['בדיקת מפת החלל במכשיר','space map check on the device'],
